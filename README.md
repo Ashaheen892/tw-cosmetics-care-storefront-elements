@@ -1,219 +1,81 @@
 # Cosmetics & Care Storefront Elements
 
+عناصر واجهة تفاعلية (Twilight Bundles) لمتاجر مستحضرات التجميل والعناية على منصة سلة.
+عشرة عناصر مستقلة، كل عنصر بفكرة وتصميم وتجربة تفاعلية مختلفة، بدعم كامل للعربية واتجاه RTL،
+وقابلة للتخصيص بالكامل من إعدادات التاجر، دون أي خدمات خارجية أو ذكاء اصطناعي.
 
+## العناصر العشرة
 
-This starter kit provides a foundation for building custom Twilight components for Salla's e-commerce platform. It includes a pre-configured build setup and development environment to help you get started quickly.
+| Tag (`salla-*`) | المجلد | الوصف |
+| --- | --- | --- |
+| `salla-beauty-shade-finder` | `beauty-shade-finder` | محدد درجة المكياج المناسبة عبر عينات ألوان تفاعلية |
+| `salla-beauty-routine-builder` | `beauty-routine-builder` | منشئ روتين العناية عبر أسئلة متتابعة ينتج خطوات مرتبة |
+| `salla-makeup-look-builder` | `makeup-look-builder` | منشئ إطلالة المكياج خطوة بخطوة مع ملخص وسعر إجمالي |
+| `salla-beauty-ingredient-lab` | `beauty-ingredient-lab` | مختبر المكونات الفعّالة والقوام ببطاقات زجاجية |
+| `salla-beauty-product-swipe` | `beauty-product-swipe` | سحب واكتشاف المنتجات (Like / Skip) مع نتيجة مقترحة |
+| `salla-beauty-comparison-arena` | `beauty-comparison-arena` | ساحة مقارنة بصرية بين منتجين أو ثلاثة |
+| `salla-beauty-care-assistant` | `beauty-care-assistant` | مساعد تفاعلي بنظام أسئلة متفرعة (شجرة قرار) |
+| `salla-beauty-routine-duel` | `beauty-routine-duel` | مواجهة اختيارات متقابلة تنتهي بنتيجة |
+| `salla-beauty-collection-reveal` | `beauty-collection-reveal` | كشف إبداعي عن المجموعة بستة أوضاع (حقيبة/صندوق/أدراج/بتلات/ستارة/منصة) |
+| `salla-virtual-beauty-boutique` | `virtual-beauty-boutique` | متجر جمال افتراضي بنقاط تفاعلية على صورة مشهد |
 
-## Getting Started
+تُسجَّل كل العناصر تلقائياً عبر `sallaTransformPlugin` باسم `salla-<اسم-المجلد>`.
 
-1. Clone this repository
-2. Remove the example components in `src/components/` using:
-   ```
-   tw-delete-component
-   ```
-3. Create your own components using the component generator:
-   ```
-   tw-create-component <component-name>
-   ```
-4. Run `pnpm install` to install dependencies
-5. Run `pnpm run dev` to start the development server
-6. Run `pnpm run build` to build your components for production
-
-## Project Structure
+## البنية
 
 ```
 src/
-  components/
-    your-component-name/
-      index.ts        # Main component file
-      styles.ts       # Component styles (optional)
-      types.ts        # Component types (optional)
+  components/<name>/
+    index.ts     # مكوّن LitElement (export default) — يقرأ الإعدادات من config
+    styles.ts    # أنماط CSS الخاصة بالعنصر
+    types.ts     # أنواع TypeScript
+    utils.ts     # منطق تحليل الإعدادات وربط المنتجات
+  utils/          # أدوات مشتركة (Salla API، بطاقة المنتج، الترجمة، الأنماط، إلخ)
+scripts/
+  generate_bundle.py           # يولّد twilight-bundle.json
+  capture-element-screenshots.mjs
+twilight-bundle.json           # إعدادات جميع العناصر (المصدر النهائي المعتمد)
 ```
 
-## Built-in Plugins
+## الأدوات المشتركة (`src/utils`)
 
-This starter kit includes three Vite plugins that handle the build process:
+- `sallaApi.ts` — استدعاءات Salla SDK بصمت (منتجات، تفاصيل، سلة، قائمة أمنيات).
+- `productResolver.ts` — تحويل قيم منتقي المنتجات إلى بطاقات جاهزة مع جلب التفاصيل الناقصة.
+- `productCard.ts` — بطاقة منتج موحّدة (صورة، خصم، سعر، تقييم، أمنيات، إضافة للسلة).
+- `productPicker.ts` — قراءة مصادر المنتجات/التصنيفات وبناء خصائص `salla-products-slider`.
+- `helpers.ts` — قراءة الثيم، الترجمة `t()`، الألوان، الأسعار، عملة المتجر، وغيرها.
+- `localizedString.ts` — قراءة النصوص متعددة اللغات حسب لغة الصفحة.
+- `sharedStyles.ts` — هيكل القسم المشترك ونقاط الكسر واحترام `prefers-reduced-motion`.
 
-### 1. Transform Plugin (`sallaTransformPlugin`)
-- Transforms component files to ensure proper naming and registration
-- Matches components in `src/components/*/index.ts`
-- To disable: Remove from `vite.config.ts` plugins array
-
-### 2. Build Plugin (`sallaBuildPlugin`)
-- Handles component bundling and output
-- Creates individual files for each component in `dist/`
-- Configures external dependencies (lit libraries)
-- To customize: Remove from plugins array and configure your own build settings:
-  ```typescript
-  {
-    build: {
-      lib: {
-        entry: {/* your entries */},
-        formats: ['es'],
-        fileName: (format, entryName) => `${entryName}.js`
-      },
-      rollupOptions: {
-        external: [/^lit/],
-        output: {/* your output config */}
-      }
-    }
-  }
-  ```
-
-### 3. Demo Plugin (`sallaDemoPlugin`)
-- Provides a development environment for testing components
-- Creates a demo page with your components
-- Configures hot module reloading
-- To disable: Remove from plugins array and set up your own dev server
-
-### Demo Plugin Options
-
-The `sallaDemoPlugin` accepts the following configuration options:
-
-```typescript
-{
-  // Optional: Show only specific components
-  components?: string[];
-
-  // Optional: Customize the demo grid layout
-  grid?: {
-    // CSS grid-template-columns value
-    columns?: string;     // default: 'repeat(auto-fill, minmax(300px, 1fr))'
-    
-    // Gap between components
-    gap?: string;        // default: '1rem'
-    
-    // Responsive breakpoint
-    minWidth?: string;   // default: '300px'
-  };
-
-  // Optional: Add custom CSS
-  css?: string;
-
-  // Optional: Add custom JavaScript
-  js?: string;
-}
-```
-
-#### Example Configuration
-
-```typescript
-// vite.config.ts
-export default defineConfig({
-  plugins: [
-    // ... other plugins
-    sallaDemoPlugin({
-      // Show only specific components
-      components: ['product-card', 'scroll-top'],
-      
-      // Customize grid layout
-      grid: {
-        columns: 'repeat(3, 1fr)',
-        gap: '1.5rem',
-        minWidth: '768px'
-      },
-
-      // Add custom styles
-      css: `
-        .component-card {
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-          transition: transform 0.2s;
-        }
-        .component-card:hover {
-          transform: translateY(-2px);
-        }
-      `,
-
-      // Add custom JavaScript
-      js: `
-        console.log('Demo page loaded!');
-        // Add your custom JavaScript here
-      `
-    })
-  ]
-});
-```
-
-## Component Management
-
-### Creating New Components
-
-This starter kit includes a component generator to help you create new components quickly. To use it, run:
+## التطوير والبناء
 
 ```bash
-pnpm tw-create-component <component-name>
+pnpm install
+pnpm dev        # بيئة معاينة مع بيانات افتراضية من twilight-bundle.json
+pnpm build      # ينتج ملفات dist/ لكل عنصر
+pnpm typecheck  # فحص TypeScript
 ```
 
-Or run without arguments for interactive mode:
+## توليد إعدادات العناصر
+
+`twilight-bundle.json` هو المصدر المعتمد وهو موجود في المستودع جاهزاً. لإعادة توليده:
 
 ```bash
-pnpm tw-create-component
+python3 scripts/generate_bundle.py
 ```
 
-The generator will:
-1. Prompt you for a component name (in kebab-case format)
-2. Validate that the name is in kebab-case and doesn't already exist
-3. Create a new component folder with an `index.ts` file
-4. Add the component definition to `twilight-bundle.json`
+خمسة عناصر (`makeup-look-builder`، `beauty-product-swipe`، `beauty-comparison-arena`،
+`beauty-routine-duel`، `virtual-beauty-boutique`) تشترك في نفس كود المشروع المرجعي للأزياء،
+لذا يقرأ المولّد مخطط حقولها من الحزمة الشقيقة `tw-fashion-style-storefront-elements`
+ويكيّف نصوصها للتجميل. باقي العناصر تُبنى داخل المولّد مباشرةً. (إعادة التوليد اختيارية فقط.)
 
-### Deleting Components
+## ملاحظات تقنية
 
-To remove a component, use:
-
-```bash
-pnpm tw-delete-component <component-name>
-```
-
-Or run without arguments to see a list of available components:
-
-```bash
-pnpm tw-delete-component
-```
-
-This will:
-1. Show a list of available components to select from
-2. Ask for confirmation before deletion
-3. Remove the component folder from `src/components/`
-4. Remove the component definition from `twilight-bundle.json`
-
-## Component Requirements
-
-Each component should:
-1. Be a class that extends `LitElement`
-2. Export the class as default
-3. Be placed in its own directory under `src/components/`
-4. Have an `index.ts` as the entry point
-
-Example:
-```typescript
-import { css, html, LitElement } from 'lit';
-import { property } from 'lit/decorators.js';
-
-export default class MyComponent extends LitElement {
-  @property({ type: Object })
-  config?: {
-    name: string;
-    //... other properties
-  };
-
-  static styles = css`/* your styles */`;
-
-  render() {
-    return html`<div>Hello ${this.config?.name || 'World'}!</div>`;
-  }
-}
-```
-
-## Building for Production
-
-Run `pnpm run build` to create production-ready bundles in the `dist/` directory. Each component will have its own file named after the component (e.g., `my-component.js`).
-
-## Development
-
-Run `pnpm run dev` to start the development server. This will:
-1. Create a demo page with all your components
-2. Enable hot module reloading
-3. Provide a development environment for testing
+- دعم كامل لـ RTL/LTR باستخدام CSS Logical Properties.
+- تنظيف مستمعي الأحداث في `disconnectedCallback` واحترام تقليل الحركة.
+- حالات فارغة واضحة عند غياب المنتجات أو الصور، دون كسر العنصر.
+- الأسعار والصور وروابط المنتجات تأتي من Salla SDK عبر منتقي المنتجات.
+- لا توجد مكتبات خارجية سوى `lit`.
 
 ## License
 

@@ -1,15 +1,18 @@
 {
     "name": "tw-cosmetics-care-storefront-elements",
     "version": "1.0.0",
-    "description": "",
+    "description": "Creative Twilight storefront elements for cosmetics and beauty-care Salla stores",
     "type": "module",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "@salla.sa/twilight-bundles": "^0.1.0",
+        "playwright": "^1.61.1",
+        "typescript": "^5.6.3",
         "vite": "^5.0.0"
     },
     "author": "sajispprt@gmail.com",
@@ -17,5 +20,8 @@
         "type": "git",
         "url": "https://github.com/Ashaheen892/tw-cosmetics-care-storefront-elements"
     },
-    "private": true
+    "private": true,
+    "dependencies": {
+        "lit": "^3.3.2"
+    }
 }
