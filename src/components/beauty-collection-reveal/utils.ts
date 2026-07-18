@@ -4,6 +4,7 @@ import {
   getRadioValue,
   getUnitValue,
   normalizeCollection,
+  t,
 } from '../../utils/helpers.js';
 import { localizedString, type LocaleValue } from '../../utils/localizedString.js';
 import { REVEAL_MODES, type RevealItem, type RevealMode } from './types.js';
@@ -17,6 +18,13 @@ export function resolveMode(config: Record<string, unknown>): RevealMode {
 export function revealStagger(config: Record<string, unknown>): number {
   const speed = getUnitValue(config.bcr_speed, 140);
   return Math.max(0, Math.min(600, speed));
+}
+
+/** Localized card count label after reveal. */
+export function cardCountLabel(count: number): string {
+  return count === 1
+    ? t('بطاقة واحدة', '1 card')
+    : t(`${count} بطاقات`, `${count} cards`);
 }
 
 /** Parse configurable content cards from the `bcr_items` collection. */

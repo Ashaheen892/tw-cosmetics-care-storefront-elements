@@ -15,13 +15,18 @@ import { componentStyles } from './styles.js';
 import { parseFamilies, resolveLayout } from './utils.js';
 import type { FamilyLayout, FragranceFamily } from './types.js';
 
+const REVEAL_DELAYS = [0, 400, 800];
+
 export default class BeautyFragranceFinder extends LitElement {
   @property({ type: Object })
   config: Record<string, unknown> = {};
 
   @state() private activeId = '';
+  @state() private revealStep = 0;
 
   private boundLangHandler = () => this.requestUpdate();
+  private revealTimers: number[] = [];
+  private lastRevealFamilyId = '';
 
   static styles = [sharedSectionCss, componentStyles];
 
@@ -31,12 +36,43 @@ export default class BeautyFragranceFinder extends LitElement {
   }
 
   disconnectedCallback(): void {
+    this.clearRevealTimers();
     window.removeEventListener('language-changed', this.boundLangHandler);
     super.disconnectedCallback();
   }
 
   updated(changed: Map<string, unknown>): void {
-    if (changed.has('config')) this.activeId = '';
+    if (changed.has('config')) {
+      this.activeId = '';
+      this.revealStep = 0;
+      this.lastRevealFamilyId = '';
+    }
+    const familyId = this.resolveActive(this.families)?.id ?? '';
+    if (familyId && familyId !== this.lastRevealFamilyId) {
+      this.lastRevealFamilyId = familyId;
+      this.startRevealSequence();
+    }
+  }
+
+  private clearRevealTimers(): void {
+    this.revealTimers.forEach((id) => window.clearTimeout(id));
+    this.revealTimers = [];
+  }
+
+  private startRevealSequence(): void {
+    this.clearRevealTimers();
+    const reduced = prefersReducedMotion();
+    if (reduced) {
+      this.revealStep = 3;
+      return;
+    }
+    this.revealStep = 0;
+    REVEAL_DELAYS.forEach((delay, i) => {
+      const id = window.setTimeout(() => {
+        this.revealStep = i + 1;
+      }, delay);
+      this.revealTimers.push(id);
+    });
   }
 
   private get families(): FragranceFamily[] {
@@ -58,6 +94,7 @@ export default class BeautyFragranceFinder extends LitElement {
   }
 
   private select(id: string): void {
+    if (id === this.activeId) return;
     this.activeId = id;
   }
 
@@ -69,9 +106,14 @@ export default class BeautyFragranceFinder extends LitElement {
     this.activeId = families[next]?.id ?? '';
   }
 
+  private chipHint(family: FragranceFamily): string {
+    return family.season || family.mood[0] || '';
+  }
+
   private renderChip(family: FragranceFamily, layout: FamilyLayout, index: number, total: number) {
     const active = this.resolveActive(this.families)?.id === family.id;
     const isSicon = family.icon.startsWith('sicon-');
+    const hint = this.chipHint(family);
     const chipStyle: Record<string, string> = family.color ? { '--fam-color': family.color } : {};
     if (layout === 'wheel') {
       chipStyle['--i-angle'] = `${(360 / Math.max(total, 1)) * index}deg`;
@@ -86,25 +128,53 @@ export default class BeautyFragranceFinder extends LitElement {
         title=${family.name}
         @click=${() => this.select(family.id)}
       >
-        <span class="bff-chip__swatch">
+        <span class="bff-chip__swatch" aria-hidden="true">
           ${family.icon
             ? isSicon
               ? html`<span class=${family.icon}></span>`
               : html`<span>${family.icon}</span>`
             : nothing}
         </span>
-        <span class="bff-chip__name">${family.name}</span>
+        <span class="bff-chip__meta">
+          <span class="bff-chip__name">${family.name}</span>
+          ${hint && layout !== 'wheel' ? html`<span class="bff-chip__hint">${hint}</span>` : nothing}
+        </span>
+        ${layout !== 'wheel' ? html`<span class="bff-chip__dot" aria-hidden="true"></span>` : nothing}
       </button>
     `;
   }
 
-  private renderTier(labelKey: string, label: string, notes: string[]) {
+  private renderTier(
+    labelKey: 'top' | 'heart' | 'base',
+    label: string,
+    notes: string[],
+    stepIndex: number
+  ) {
+    const visible = this.revealStep >= stepIndex;
+    const reduced = prefersReducedMotion();
     return html`
-      <div class=${`bff-tier bff-tier--${labelKey}`}>
+      <div
+        class=${classMap({
+          'bff-tier': true,
+          [`bff-tier--${labelKey}`]: true,
+          'is-visible': visible,
+          'is-instant': reduced,
+        })}
+        role="listitem"
+        aria-hidden=${visible ? 'false' : 'true'}
+      >
         <span class="bff-tier__label">${label}</span>
         ${notes.length
           ? html`<div class="bff-tier__notes">
-              ${notes.map((note) => html`<span class="bff-note">${note}</span>`)}
+              ${notes.map(
+                (note, i) => html`
+                  <span
+                    class=${classMap({ 'bff-note': true, 'is-visible': visible, 'is-instant': reduced })}
+                    style=${styleMap(reduced ? {} : { '--note-i': String(i) })}
+                    >${note}</span
+                  >
+                `
+              )}
             </div>`
           : html`<span class="bff-tier__empty">${t('—', '—')}</span>`}
       </div>
@@ -120,45 +190,67 @@ export default class BeautyFragranceFinder extends LitElement {
     const topLabel = localizedString(c.bff_pyramid_top_label as string) || t('المقدمة', 'Top');
     const heartLabel = localizedString(c.bff_pyramid_heart_label as string) || t('القلب', 'Heart');
     const baseLabel = localizedString(c.bff_pyramid_base_label as string) || t('الأساس', 'Base');
-    const seasonLabel = localizedString(c.bff_season_label as string) || t('أفضل موسم', 'Best season');
-    const occasionLabel = localizedString(c.bff_occasion_label as string) || t('المناسبة', 'Occasion');
+    const seasonLabel = localizedString(c.bff_season_label as string) || t('أنسب موسم', 'Best season');
+    const occasionLabel = localizedString(c.bff_occasion_label as string) || t('أنسب مناسبة', 'Occasion');
 
     const hasPyramid = family.top.length || family.heart.length || family.base.length;
     const style: Record<string, string> = family.color ? { '--fam-color': family.color } : {};
 
     return html`
-      <div class="fs-card bff-panel" id="bff-detail" role="region" aria-live="polite" style=${styleMap(style)}>
-        <div class="bff-panel__head">
-          <h3 class="bff-panel__title">
-            ${family.icon
-              ? html`<span class="bff-panel__badge">${isSicon ? html`<span class=${family.icon}></span>` : family.icon}</span>`
+      <article class="bff-story" id="bff-detail" role="region" aria-live="polite" style=${styleMap(style)}>
+        <div class=${classMap({ 'bff-hero': true, 'bff-hero--media': !!family.image })}>
+          <div class="bff-hero__body">
+            <div class="bff-hero__top">
+              ${family.icon
+                ? html`<span class="bff-hero__icon" aria-hidden="true">
+                    ${isSicon ? html`<span class=${family.icon}></span>` : family.icon}
+                  </span>`
+                : html`<span class="bff-hero__icon" aria-hidden="true">✦</span>`}
+
+              ${showNav
+                ? html`<div class="bff-nav">
+                    <button
+                      type="button"
+                      class="bff-nav__btn"
+                      aria-label=${t('السابق', 'Previous')}
+                      @click=${() => this.step(families, -1)}
+                    >
+                      ‹
+                    </button>
+                    <button
+                      type="button"
+                      class="bff-nav__btn"
+                      aria-label=${t('التالي', 'Next')}
+                      @click=${() => this.step(families, 1)}
+                    >
+                      ›
+                    </button>
+                  </div>`
+                : nothing}
+            </div>
+
+            <h3 class="bff-hero__title">${family.name}</h3>
+            ${family.desc ? html`<p class="bff-hero__desc">${family.desc}</p>` : nothing}
+            ${family.mood.length
+              ? html`<div class="bff-mood">
+                  ${family.mood.map((m) => html`<span class="bff-mood__tag">${m}</span>`)}
+                </div>`
               : nothing}
-            <span>${family.name}</span>
-          </h3>
-          ${showNav
-            ? html`<div class="bff-nav">
-                <button type="button" class="bff-nav__btn" aria-label=${t('السابق', 'Previous')} @click=${() => this.step(families, -1)}>‹</button>
-                <button type="button" class="bff-nav__btn" aria-label=${t('التالي', 'Next')} @click=${() => this.step(families, 1)}>›</button>
+          </div>
+
+          ${family.image
+            ? html`<div class="bff-hero__media">
+                <img src=${family.image} alt="" loading="lazy" decoding="async" />
               </div>`
             : nothing}
         </div>
 
-        ${family.image
-          ? html`<img class="bff-panel__img" src=${family.image} alt="" loading="lazy" decoding="async" />`
-          : nothing}
-        ${family.desc ? html`<p class="bff-panel__desc">${family.desc}</p>` : nothing}
-
-        ${family.mood.length
-          ? html`<div class="bff-mood">
-              ${family.mood.map((m) => html`<span class="bff-mood__tag">${m}</span>`)}
-            </div>`
-          : nothing}
-
         ${showPyramid && hasPyramid
-          ? html`<div class="bff-pyramid" role="list">
-              ${this.renderTier('top', topLabel, family.top)}
-              ${this.renderTier('heart', heartLabel, family.heart)}
-              ${this.renderTier('base', baseLabel, family.base)}
+          ? html`<div class="bff-pyramid" role="list" aria-label=${t('هرم النوتات', 'Notes pyramid')}>
+              <p class="bff-pyramid__intro">${t('تتكشّف النوتات تدريجيًا…', 'Notes unfold gradually…')}</p>
+              ${this.renderTier('top', topLabel, family.top, 1)}
+              ${this.renderTier('heart', heartLabel, family.heart, 2)}
+              ${this.renderTier('base', baseLabel, family.base, 3)}
             </div>`
           : nothing}
 
@@ -186,7 +278,7 @@ export default class BeautyFragranceFinder extends LitElement {
               </a>
             </div>`
           : nothing}
-      </div>
+      </article>
     `;
   }
 
@@ -229,8 +321,9 @@ export default class BeautyFragranceFinder extends LitElement {
               </div>`
             : nothing}
 
-          <div class="bff-layout">
-            <div class="bff-selector">
+          <div class="bff-shell">
+            <aside class="bff-selector">
+              <p class="bff-selector__label">${t('اختاري عائلة عطرية', 'Pick a fragrance family')}</p>
               <div
                 class=${classMap({
                   'bff-chips': true,
@@ -238,14 +331,14 @@ export default class BeautyFragranceFinder extends LitElement {
                 })}
                 role="group"
                 aria-label=${t('عائلات العطر', 'Fragrance families')}
-                style=${styleMap(layout === 'wheel' ? { '--wheel-r': '130px' } : {})}
+                style=${styleMap(layout === 'wheel' ? { '--wheel-r': '120px' } : {})}
               >
                 ${layout === 'wheel'
-                  ? html`<div class="bff-wheel-core">${t('اختاري عائلة', 'Pick a family')}</div>`
+                  ? html`<div class="bff-wheel-core">${t('عائلات', 'Families')}</div>`
                   : nothing}
                 ${families.map((family, i) => this.renderChip(family, layout, i, total))}
               </div>
-            </div>
+            </aside>
 
             ${active ? this.renderDetail(active, families) : nothing}
           </div>

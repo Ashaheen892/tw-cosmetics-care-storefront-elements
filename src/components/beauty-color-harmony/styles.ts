@@ -1,9 +1,28 @@
 import { css } from 'lit';
 
 export const componentStyles = css`
+  :host {
+    display: block;
+    direction: inherit;
+    width: 100%;
+  }
+
   .bch-wrap {
     display: grid;
     gap: 1.5rem;
+    width: 100%;
+    max-width: 1040px;
+    margin-inline: auto;
+  }
+
+  .bch-controls {
+    display: grid;
+    gap: 1.15rem;
+    padding: 1.15rem 1.2rem;
+    border-radius: var(--section-radius, 20px);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #f2dde7);
+    box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
   .bch-group {
@@ -13,11 +32,10 @@ export const componentStyles = css`
 
   .bch-group__label {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 800;
     letter-spacing: 0.01em;
     color: var(--muted-color, #8f7a86);
-    text-transform: uppercase;
   }
 
   /* —— base color chips —— */
@@ -31,13 +49,14 @@ export const componentStyles = css`
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    padding: 0.4rem 0.7rem 0.4rem 0.4rem;
+    min-height: 44px;
+    padding: 0.4rem 0.85rem 0.4rem 0.4rem;
     border: 1px solid var(--border-color, #f2dde7);
     border-radius: 999px;
     background: var(--card-bg, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-weight: 700;
     line-height: 1.2;
     cursor: pointer;
@@ -54,8 +73,8 @@ export const componentStyles = css`
   }
 
   .bch-color__swatch {
-    width: 1.7rem;
-    height: 1.7rem;
+    width: 1.75rem;
+    height: 1.75rem;
     border-radius: 50%;
     flex: 0 0 auto;
     border: 2px solid #fff;
@@ -69,22 +88,47 @@ export const componentStyles = css`
 
   /* —— harmony type chips —— */
   .bch-types {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 0.5rem;
   }
 
+  @media (min-width: 640px) {
+    .bch-types {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
   .bch-type {
-    padding: 0.5rem 1rem;
+    display: grid;
+    gap: 0.2rem;
+    min-height: 64px;
+    padding: 0.7rem 0.9rem;
     border: 1px solid var(--border-color, #f2dde7);
-    border-radius: 999px;
-    background: var(--card-bg, #fff);
+    border-radius: calc(var(--section-radius, 16px) * 0.65);
+    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-weight: 700;
     cursor: pointer;
+    text-align: start;
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .bch-type__label {
+    line-height: 1.3;
+  }
+
+  .bch-type__hint {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+    line-height: 1.35;
+  }
+
+  .bch-type[aria-pressed='true'] .bch-type__hint {
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .bch-type:hover {
@@ -100,30 +144,70 @@ export const componentStyles = css`
   /* —— result area —— */
   .bch-result {
     display: grid;
-    gap: 1.25rem;
+    gap: 1.15rem;
+  }
+
+  @media (min-width: 900px) {
+    .bch-result {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+
+  .bch-preview,
+  .bch-zones-wrap {
+    display: grid;
+    gap: 0.8rem;
+    min-width: 0;
+  }
+
+  .bch-preview {
+    padding: 1.2rem;
+    border-radius: calc(var(--section-radius, 16px) * 0.9);
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff)),
+      var(--card-bg, #fff)
+    );
+    border: 1px solid var(--border-color, #f2dde7);
+    box-shadow: 0 12px 32px rgba(43, 33, 28, 0.08);
+  }
+
+  .bch-zones-wrap {
+    padding: 1.2rem;
+    border-radius: calc(var(--section-radius, 16px) * 0.9);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #f2dde7);
+  }
+
+  .bch-preview__label {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--muted-color, #8f7a86);
   }
 
   .bch-strip {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     gap: 0.75rem;
   }
 
   .bch-swatch {
-    flex: 1 1 100px;
-    min-width: 88px;
     display: grid;
-    gap: 0.4rem;
+    gap: 0.45rem;
     justify-items: center;
     text-align: center;
+    min-width: 0;
   }
 
   .bch-swatch__chip {
     width: 100%;
-    aspect-ratio: 3 / 2;
-    border-radius: calc(var(--section-radius, 16px) * 0.65);
+    aspect-ratio: 4 / 3;
+    border-radius: calc(var(--section-radius, 16px) * 0.55);
     border: 1px solid color-mix(in srgb, #000 8%, transparent);
-    box-shadow: 0 6px 16px rgba(20, 14, 12, 0.14);
+    box-shadow: 0 8px 20px rgba(20, 14, 12, 0.16);
     background: var(--swatch, #ccc);
   }
 
@@ -136,16 +220,15 @@ export const componentStyles = css`
     font-variant-numeric: tabular-nums;
   }
 
-  /* —— zone mapping cards —— */
   .bch-zones {
     display: grid;
-    gap: 0.85rem;
+    gap: 0.75rem;
     grid-template-columns: 1fr;
   }
 
   @media (min-width: 640px) {
     .bch-zones {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
     }
   }
 
@@ -153,11 +236,10 @@ export const componentStyles = css`
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    padding: 0.85rem;
-    background: var(--card-bg, #fff);
+    padding: 0.8rem;
+    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 60%, #fff);
     border: 1px solid var(--border-color, #f2dde7);
-    border-radius: calc(var(--section-radius, 16px) * 0.75);
-    box-shadow: 0 6px 18px rgba(43, 33, 28, 0.05);
+    border-radius: calc(var(--section-radius, 16px) * 0.7);
   }
 
   .bch-zone__swatch {
@@ -177,7 +259,7 @@ export const componentStyles = css`
   }
 
   .bch-zone__label {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 800;
     color: var(--text-color, #33232e);
   }
@@ -193,7 +275,7 @@ export const componentStyles = css`
   .bch-notice {
     margin: 0;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: var(--muted-color, #8f7a86);
     line-height: 1.6;
   }

@@ -87,17 +87,61 @@ export const componentStyles = css`
   .bta-play__hint {
     position: absolute;
     inset-inline: 0;
-    bottom: 0.5rem;
+    bottom: 3.5rem;
     text-align: center;
     font-size: 0.74rem;
     color: var(--muted-color, #8f7a86);
     pointer-events: none;
   }
 
-  .bta-play__btn {
+  .bta-play__cta {
     position: absolute;
-    top: 0.6rem;
-    inset-inline-end: 0.6rem;
+    left: 50%;
+    bottom: 0.85rem;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0.55rem 1.25rem;
+    border: none;
+    border-radius: 999px;
+    background: var(--sample-color, var(--accent-color, #c2527f));
+    color: #fff;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 45%, transparent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+
+  [dir='rtl'] .bta-play__cta {
+    left: 50%;
+    right: auto;
+  }
+
+  .bta-play__cta:hover,
+  .bta-play__cta:focus-visible {
+    transform: translateX(-50%) scale(1.02);
+    box-shadow: 0 10px 26px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 55%, transparent);
+  }
+
+  [dir='rtl'] .bta-play__cta:hover,
+  [dir='rtl'] .bta-play__cta:focus-visible {
+    transform: translateX(-50%) scale(1.02);
+  }
+
+  .bta-play__cta-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    font-size: 0.72rem;
+    line-height: 1;
   }
 
   .bta-details { display: grid; gap: 0.85rem; }
@@ -105,15 +149,24 @@ export const componentStyles = css`
   .bta-details__desc { margin: 0; color: var(--muted-color, #8f7a86); line-height: 1.65; font-size: 0.9rem; }
 
   .bta-indicators { display: grid; gap: 0.55rem; }
+
+  .bta-indicators .fs-meter {
+    --meter-fill: var(--meter-color, var(--accent-color, #c2527f));
+  }
+
+  .bta-indicators .fs-meter > span {
+    background: var(--meter-fill, var(--accent-color, #c2527f));
+  }
+
   .bta-ind { display: grid; grid-template-columns: 7.5rem 1fr auto; align-items: center; gap: 0.6rem; font-size: 0.8rem; }
   .bta-ind__label { color: var(--muted-color, #8f7a86); font-weight: 700; }
-  .bta-ind__val { color: var(--accent-color, #c2527f); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .bta-ind__val { color: var(--meter-color, var(--accent-color, #c2527f)); font-weight: 800; font-variant-numeric: tabular-nums; }
 
   .bta-dots { display: inline-flex; gap: 0.28rem; }
   .bta-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; background: color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent); }
-  .bta-dot.is-on { background: var(--accent-color, #c2527f); }
-  .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--accent-color, #c2527f); }
-  .bta-circle.is-on { background: var(--accent-color, #c2527f); }
+  .bta-dot.is-on { background: var(--meter-color, var(--accent-color, #c2527f)); }
+  .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--meter-color, var(--accent-color, #c2527f)); }
+  .bta-circle.is-on { background: var(--meter-color, var(--accent-color, #c2527f)); }
 
   .bta-gauge {
     --p: 0;
@@ -121,7 +174,7 @@ export const componentStyles = css`
     height: 1.5rem;
     border-radius: 3rem 3rem 0 0;
     background:
-      conic-gradient(from 270deg at 50% 100%, var(--accent-color, #c2527f) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
+      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, #c2527f)) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
   }
 
   .bta-facts { display: grid; gap: 0.4rem; font-size: 0.84rem; }
@@ -163,6 +216,6 @@ export const componentStyles = css`
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bta-smear, .bta-sample__blob { transition: none !important; }
+    .bta-smear, .bta-sample__blob, .bta-play__cta { transition: none !important; }
   }
 `;

@@ -17,3 +17,5 @@ export interface SunCondition {
   factor: number;
   desc: string;
 }
+
+export type SpfStepKey = 'phototype' | 'spf' | 'condition';

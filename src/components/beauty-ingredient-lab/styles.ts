@@ -31,10 +31,10 @@ export const componentStyles = css`
     border-radius: 50%;
     background: radial-gradient(
       circle at 30% 30%,
-      color-mix(in srgb, var(--accent-color, #c2527f) 40%, #fff),
+      color-mix(in srgb, var(--accent-color, #c2527f) 28%, #fff),
       transparent 70%
     );
-    opacity: 0.5;
+    opacity: 0.28;
     animation: bil-float 9s ease-in-out infinite;
   }
 
@@ -48,35 +48,52 @@ export const componentStyles = css`
     }
   }
 
-  .bil-toolbar {
+  .bil-filter-wrap {
     position: relative;
     z-index: 1;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 0.45rem;
     margin-bottom: 1rem;
   }
 
-  .bil-filter {
-    min-height: 40px;
-    padding: 0.45rem 0.95rem;
-    border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--card-bg, #fff) 70%, transparent);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    color: var(--text-color, #33232e);
-    font: inherit;
-    font-weight: 600;
-    font-size: 0.83rem;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  .bil-filter__label {
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--muted-color, #8f7a86);
   }
 
-  .bil-filter[aria-pressed='true'] {
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
-    color: #fff;
+  .bil-segment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    padding: 0.22rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+    border: 1px solid var(--border-color, #f2dde7);
+  }
+
+  .bil-segment__btn {
+    flex: 1 1 auto;
+    min-height: 40px;
+    min-width: 3.5rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--muted-color, #8f7a86);
+    font: inherit;
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .bil-segment__btn[aria-pressed='true'] {
+    background: var(--card-bg, #fff);
+    color: var(--accent-color, #c2527f);
+    box-shadow: 0 2px 10px rgba(43, 33, 28, 0.1);
   }
 
   .bil-grid {
@@ -89,27 +106,24 @@ export const componentStyles = css`
 
   .bil-card {
     display: grid;
-    gap: 0.5rem;
-    padding: 0.95rem;
-    border-radius: 18px;
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
-    background: color-mix(in srgb, var(--card-bg, #fff) 78%, transparent);
-    -webkit-backdrop-filter: blur(9px);
-    backdrop-filter: blur(9px);
-    box-shadow: 0 8px 24px rgba(43, 33, 28, 0.07);
+    gap: 0.45rem;
+    padding: 0.85rem;
+    border-radius: 16px;
+    border: 1px solid var(--border-color, #f2dde7);
+    background: var(--card-bg, #fff);
     cursor: pointer;
     text-align: start;
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .bil-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 38px rgba(43, 33, 28, 0.13);
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 35%, var(--border-color, #f2dde7));
   }
 
   .bil-card[aria-pressed='true'] {
     border-color: var(--accent-color, #c2527f);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, #c2527f) 30%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, #c2527f) 28%, transparent);
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 5%, var(--card-bg, #fff));
   }
 
   .bil-card__badge {
@@ -154,10 +168,34 @@ export const componentStyles = css`
     margin-top: 1rem;
     display: grid;
     gap: 0.9rem;
-    padding: 1.1rem;
+    padding: 1.25rem;
     border-radius: 18px;
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 2px solid var(--accent-color, #c2527f);
+    box-shadow:
+      0 12px 32px rgba(43, 33, 28, 0.1),
+      inset 0 1px 0 color-mix(in srgb, var(--accent-color, #c2527f) 8%, transparent);
+  }
+
+  .bil-detail::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 1rem;
+    bottom: 1rem;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+    background: linear-gradient(
+      180deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 45%, #5a2f4d)
+    );
+  }
+
+  [dir='rtl'] .bil-detail::before {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    border-radius: 4px 0 0 4px;
   }
 
   .bil-detail__head {
@@ -240,11 +278,8 @@ export const componentStyles = css`
       animation: none;
     }
     .bil-card,
-    .bil-filter {
+    .bil-segment__btn {
       transition: none;
-    }
-    .bil-card:hover {
-      transform: none;
     }
   }
 `;

@@ -1,17 +1,24 @@
 {
     "name": "tw-cosmetics-care-storefront-elements",
     "version": "1.0.0",
-    "description": "Creative Twilight storefront elements for cosmetics and beauty-care Salla stores",
+    "description": "",
     "type": "module",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "typecheck": "tsc --noEmit"
+        "preview:clean": "vite --host 127.0.0.1 --port 5173",
+        "capture:gifs": "node scripts/capture-element-gifs.mjs",
+        "upload:gifs": "node scripts/upload-gifs-and-update-bundle.mjs",
+        "notion:guides": "node scripts/build-notion-guides.mjs"
     },
     "devDependencies": {
         "@salla.sa/twilight-bundles": "^0.1.0",
+        "gifenc": "^1.0.3",
+        "omggif": "^1.0.10",
         "playwright": "^1.61.1",
+        "pngjs": "^7.0.0",
+        "sharp": "^0.35.3",
         "typescript": "^5.6.3",
         "vite": "^5.0.0"
     },

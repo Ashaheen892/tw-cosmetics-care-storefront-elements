@@ -12,7 +12,7 @@ import {
 import { localizedString } from '../../utils/localizedString.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
-import { parseItems, resolveMode, revealStagger } from './utils.js';
+import { parseItems, resolveMode, revealStagger, cardCountLabel } from './utils.js';
 import type { RevealItem, RevealMode } from './types.js';
 
 export default class BeautyCollectionReveal extends LitElement {
@@ -79,8 +79,10 @@ export default class BeautyCollectionReveal extends LitElement {
 
     const inner = html`
       ${coverImg ? html`<img class="bcr-cover__img" src=${coverImg} alt="" loading="lazy" decoding="async" />` : nothing}
+      <div class="bcr-cover__scrim" aria-hidden="true"></div>
       <div class="bcr-cover__inner">
         ${coverTitle ? html`<h3 class="bcr-cover__title">${coverTitle}</h3>` : nothing}
+        <p class="bcr-cover__hint">${t('اضغطي للكشف عن البطاقات', 'Tap to reveal the cards')}</p>
         <button type="button" class="fs-btn bcr-cover__btn" @click=${this.reveal}>${btnText}</button>
       </div>
     `;
@@ -190,12 +192,8 @@ export default class BeautyCollectionReveal extends LitElement {
           </div>
 
           ${this.revealed
-            ? nothing
-            : html`<div class="bcr-actions">
-                <button type="button" class="fs-btn" @click=${this.reveal}>
-                  ${localizedString(c.bcr_reveal_btn as string) || t('اكشفي المجموعة', 'Reveal collection')}
-                </button>
-              </div>`}
+            ? html`<p class="bcr-count" role="status">${cardCountLabel(items.length)}</p>`
+            : nothing}
         </div>
       </section>
     `;

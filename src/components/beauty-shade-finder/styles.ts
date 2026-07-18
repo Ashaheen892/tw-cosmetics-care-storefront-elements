@@ -2,43 +2,80 @@ import { css } from 'lit';
 
 export const componentStyles = css`
   :host {
+    display: block;
     direction: inherit;
+    width: 100%;
   }
 
   .bsf-wrap {
     display: grid;
-    gap: 1.4rem;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
   }
 
-  .bsf-steps {
+  .bsf-wrap:has(.bsf-results) {
+    max-width: 960px;
+  }
+
+  .bsf-progress {
     display: grid;
-    gap: 1rem;
+    gap: 0.45rem;
   }
 
-  .bsf-step {
+  .bsf-progress__bar {
+    height: 6px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    overflow: hidden;
+  }
+
+  .bsf-progress__bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+    );
+    transition: width 0.25s ease;
+  }
+
+  .bsf-progress__text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .bsf-question {
     display: grid;
-    gap: 0.55rem;
+    gap: 0.75rem;
+    padding: 1.15rem 1.2rem;
+    border-radius: var(--section-radius, 16px);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #f2dde7);
+    box-shadow: 0 8px 24px rgba(194, 82, 127, 0.06);
   }
 
-  .bsf-step__label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 700;
-    font-size: 0.95rem;
+  .bsf-question__title {
+    margin: 0;
+    font-size: 1.12rem;
+    font-weight: 800;
+    line-height: 1.35;
     color: var(--text-color, #33232e);
   }
 
-  .bsf-step__num {
-    display: grid;
-    place-items: center;
-    width: 1.55rem;
-    height: 1.55rem;
-    border-radius: 50%;
-    background: var(--accent-color, #c2527f);
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 800;
+  .bsf-question__hint {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--muted-color, #8f7a86);
+    padding: 0.65rem 0.8rem;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, #fff);
+    border-inline-start: 3px solid var(--accent-color, #c2527f);
   }
 
   .bsf-chips {
@@ -48,15 +85,15 @@ export const componentStyles = css`
   }
 
   .bsf-chip {
-    min-height: 42px;
-    padding: 0.5rem 1rem;
+    min-height: 44px;
+    padding: 0.55rem 1.05rem;
     border-radius: 999px;
     border: 1px solid var(--border-color, #f2dde7);
     background: var(--card-bg, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
     font-weight: 600;
-    font-size: 0.86rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
       transform 0.15s ease;
@@ -73,12 +110,24 @@ export const componentStyles = css`
     transform: translateY(-1px);
   }
 
+  .bsf-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .bsf-nav .fs-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
   .bsf-results {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    gap: 1.4rem;
+    gap: 1.25rem;
     align-items: start;
-    padding: 1.2rem;
+    padding: 1.15rem;
     border-radius: var(--section-radius, 16px);
     background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
     border: 1px solid var(--border-color, #f2dde7);
@@ -87,9 +136,21 @@ export const componentStyles = css`
   .bsf-results__title {
     grid-column: 1 / -1;
     margin: 0;
-    font-size: 1.02rem;
-    font-weight: 700;
+    font-size: 1.05rem;
+    font-weight: 800;
     color: var(--text-color, #33232e);
+  }
+
+  .bsf-results__count {
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .bsf-results__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
   }
 
   .bsf-swatches {
@@ -148,7 +209,7 @@ export const componentStyles = css`
 
   .bsf-detail {
     display: grid;
-    gap: 0.7rem;
+    gap: 0.65rem;
     padding: 1rem;
     border-radius: calc(var(--section-radius, 16px) * 0.9);
     background: var(--card-bg, #fff);
@@ -156,33 +217,20 @@ export const componentStyles = css`
   }
 
   .bsf-detail__media {
-    position: relative;
     aspect-ratio: 4 / 3;
     border-radius: calc(var(--section-radius, 16px) * 0.7);
-    overflow: hidden;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 40%, #fff);
-  }
-
-  .bsf-detail__swatch {
-    position: absolute;
-    inset-block-end: 0.6rem;
-    inset-inline-end: 0.6rem;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 -40px 50px rgba(0, 0, 0, 0.12);
   }
 
   .bsf-detail__name {
     margin: 0;
-    font-size: 1.02rem;
-    font-weight: 700;
+    font-size: 1.05rem;
+    font-weight: 800;
     color: var(--text-color, #33232e);
   }
 
   .bsf-detail__number {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--muted-color, #8f7a86);
   }
@@ -194,11 +242,25 @@ export const componentStyles = css`
     color: var(--muted-color, #8f7a86);
   }
 
+  .bsf-detail__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .bsf-detail__chip {
+    opacity: 0.55;
+  }
+
+  .bsf-detail__chip--on {
+    opacity: 1;
+  }
+
   .bsf-detail__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: 0.2rem;
+    margin-top: 0.15rem;
   }
 
   @media (max-width: 720px) {
@@ -209,7 +271,8 @@ export const componentStyles = css`
 
   @media (prefers-reduced-motion: reduce) {
     .bsf-chip,
-    .bsf-swatch__chip {
+    .bsf-swatch__chip,
+    .bsf-progress__bar span {
       transition: none;
     }
   }

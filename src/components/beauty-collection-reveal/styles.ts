@@ -14,15 +14,41 @@ export const componentStyles = css`
     min-height: 260px;
   }
 
+  /* Closed: compact centered hero (mid-frame, not full card stack height) */
+  .bcr-scene:not(.is-open) {
+    width: min(100%, 720px);
+    margin-inline: auto;
+    aspect-ratio: 16 / 10;
+    max-height: min(42vh, 380px);
+  }
+
+  .bcr-scene:not(.is-open) .bcr-stage {
+    visibility: hidden;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  @media (max-width: 639px) {
+    .bcr-scene:not(.is-open) {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-height: min(50vw, 260px);
+      min-height: 200px;
+    }
+  }
+
   /* —— Cover —— */
   .bcr-cover {
     position: absolute;
     inset: 0;
     z-index: 3;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem;
     background: linear-gradient(160deg, #33232e, #4a382f);
     color: #fff;
     transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1),
@@ -36,27 +62,65 @@ export const componentStyles = css`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.55;
+    object-position: center;
+    opacity: 0.45;
+  }
+
+  .bcr-cover__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(20, 14, 12, 0.35) 0%,
+      rgba(20, 14, 12, 0.72) 55%,
+      rgba(20, 14, 12, 0.88) 100%
+    );
+    pointer-events: none;
   }
 
   .bcr-cover__inner {
     position: relative;
     z-index: 1;
     display: grid;
-    gap: 0.9rem;
+    gap: 0.65rem;
     justify-items: center;
+    align-content: center;
+    width: min(100%, 22rem);
+    margin: 0 auto;
   }
 
   .bcr-cover__title {
     margin: 0;
-    font-size: clamp(1.3rem, 3vw, 2rem);
+    font-size: clamp(1.2rem, 3.2vw, 1.85rem);
     font-weight: 800;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    line-height: 1.25;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+  }
+
+  .bcr-cover__hint {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.82);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
   }
 
   .bcr-cover__btn {
-    background: #fff;
-    color: #33232e;
+    min-height: 48px;
+    padding: 0.65rem 1.75rem;
+    background: var(--accent-color, #c2527f);
+    border-color: var(--accent-color, #c2527f);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  }
+
+  .bcr-cover__btn:hover,
+  .bcr-cover__btn:focus-visible {
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 88%, #fff);
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 88%, #fff);
+    color: #fff;
   }
 
   /* Split covers for curtain / petals need two halves */
@@ -263,10 +327,20 @@ export const componentStyles = css`
     color: #fff;
   }
 
-  .bcr-actions {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
+  .bcr-count {
+    margin: 0.85rem 0 0;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--muted-color, #8f7a86);
+    letter-spacing: 0.01em;
+  }
+
+  .bcr-count::before {
+    content: '✦';
+    margin-inline-end: 0.35rem;
+    color: var(--accent-color, #c2527f);
+    opacity: 0.75;
   }
 
   @media (prefers-reduced-motion: reduce) {

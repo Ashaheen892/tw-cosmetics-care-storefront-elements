@@ -36,6 +36,7 @@ export default class BeautyLightingFinishSimulator extends LitElement {
   @state() private cmpA = '';
   @state() private cmpB = '';
   @state() private sliderPos = 50;
+  @state() private compareOn: boolean | null = null;
 
   private boundLangHandler = () => this.requestUpdate();
 
@@ -58,6 +59,7 @@ export default class BeautyLightingFinishSimulator extends LitElement {
       this.selFinish = '';
       this.cmpA = '';
       this.cmpB = '';
+      this.compareOn = null;
     }
   }
 
@@ -99,6 +101,7 @@ export default class BeautyLightingFinishSimulator extends LitElement {
       const finish = (this.selFinish as Finish) || this.defaultFinish(lights);
       return (
         lights.find((l) => l.name === name && l.finish === finish) ||
+        lights.find((l) => l.finish === finish) ||
         lights.find((l) => l.name === name) ||
         lights[0]
       );
@@ -110,7 +113,10 @@ export default class BeautyLightingFinishSimulator extends LitElement {
 
   private renderPicture(light: LightState, cls: string, eager: boolean) {
     if (!light?.image) {
-      return html`<div class="bls-pic bls-pic--empty ${cls}"></div>`;
+      return html`<div class="bls-pic bls-pic--empty ${cls}" role="img" aria-label=${t('لا توجد صورة', 'No image')}>
+        <span class="bls-empty__icon" aria-hidden="true">◯</span>
+        <span class="bls-empty__text">${t('أضيفي صورة لهذه الحالة', 'Add an image for this state')}</span>
+      </div>`;
     }
     return html`<picture class="bls-pic ${cls}">
       ${light.imageMobile
@@ -187,10 +193,32 @@ export default class BeautyLightingFinishSimulator extends LitElement {
     </div>`;
   }
 
+  private renderLightChip(light: LightState, active: boolean) {
+    const isSicon = light.icon.startsWith('sicon-');
+    return html`
+      <button
+        type="button"
+        class=${classMap({ 'bls-chip': true, 'is-active': active })}
+        aria-pressed=${active ? 'true' : 'false'}
+        @click=${() => (this.selId = light.id)}
+      >
+        <span class="bls-chip__icon" aria-hidden="true">
+          ${light.icon
+            ? isSicon
+              ? html`<span class=${light.icon}></span>`
+              : light.icon
+            : '✦'}
+        </span>
+        <span class="bls-chip__name">${light.name}</span>
+        <span class="bls-chip__dot" aria-hidden="true"></span>
+      </button>
+    `;
+  }
+
   private renderSingle(lights: LightState[], locale: 'ar' | 'en') {
     const c = this.config || {};
     const finishEnabled = isTruthy(c.bls_enable_finish, false) && usedFinishes(lights).length > 0;
-    const eagerAll = String(this.config?.bls_preload ?? 'lazy') === 'eager';
+    const eagerAll = getRadioValue(this.config?.bls_preload, 'lazy') === 'eager';
     const transition = resolveTransition(c);
     const active = this.activeSingle(lights, finishEnabled);
     const names = this.uniqueNames(lights);
@@ -199,57 +227,75 @@ export default class BeautyLightingFinishSimulator extends LitElement {
     const activeFinish = (this.selFinish as Finish) || this.defaultFinish(lights);
 
     return html`
-      <div class="bls-wrap">
-        <div class=${classMap({ 'bls-stage': true, 'bls-stage--fade': transition === 'fade' })}>
-          ${eagerAll
-            ? lights.map((l) =>
-                this.renderPicture(l, `bls-layer ${l.id === active?.id ? 'is-on' : ''}`, true)
-              )
-            : this.renderPicture(active, '', true)}
-          ${!active?.image ? html`<div class="bls-empty">${t('أضيفي صورًا لكل حالة إضاءة', 'Add an image for each lighting state')}</div>` : nothing}
-          <div class="bls-caption"><b>${active?.name}</b>${active?.colorEffect ? html` — ${active.colorEffect}` : nothing}</div>
+      <div class="bls-shell">
+        <aside class="bls-aside">
+          <div class="bls-controls-card">
+            ${finishEnabled
+              ? html`
+                  <div class="bls-controls">
+                    <span class="bls-controls__label">${t('اللمسة النهائية', 'Finish')}</span>
+                    <div class="bls-finish-chips" role="group" aria-label=${t('اللمسة النهائية', 'Finish')}>
+                      ${finishes.map(
+                        (f) => html`<button
+                          type="button"
+                          class=${classMap({ 'bls-finish-chip': true, 'is-active': f === activeFinish })}
+                          aria-pressed=${f === activeFinish ? 'true' : 'false'}
+                          @click=${() => (this.selFinish = f)}
+                        >
+                          ${finishLabel(f, locale)}
+                        </button>`
+                      )}
+                    </div>
+                  </div>
+                  <div class="bls-controls">
+                    <span class="bls-controls__label">${t('نوع الإضاءة', 'Lighting')}</span>
+                    <div class="bls-chips" role="group" aria-label=${t('حالات الإضاءة', 'Lighting states')}>
+                      ${names.map((n) => {
+                        const sample = lights.find((l) => l.name === n);
+                        const isSicon = !!sample?.icon.startsWith('sicon-');
+                        return html`<button
+                          type="button"
+                          class=${classMap({ 'bls-chip': true, 'is-active': n === activeName })}
+                          aria-pressed=${n === activeName ? 'true' : 'false'}
+                          @click=${() => (this.selName = n)}
+                        >
+                          <span class="bls-chip__icon" aria-hidden="true">
+                            ${sample?.icon
+                              ? isSicon
+                                ? html`<span class=${sample.icon}></span>`
+                                : sample.icon
+                              : '✦'}
+                          </span>
+                          <span class="bls-chip__name">${n}</span>
+                          <span class="bls-chip__dot" aria-hidden="true"></span>
+                        </button>`;
+                      })}
+                    </div>
+                  </div>
+                `
+              : html`<div class="bls-controls">
+                  <span class="bls-controls__label">${t('اختاري الإضاءة', 'Pick a lighting')}</span>
+                  <div class="bls-chips" role="group" aria-label=${t('حالات الإضاءة', 'Lighting states')}>
+                    ${lights.map((l) => this.renderLightChip(l, l.id === active?.id))}
+                  </div>
+                </div>`}
+          </div>
+
+          ${active ? this.renderPanel(active, locale) : nothing}
+        </aside>
+
+        <div class="bls-mirror">
+          <div class=${classMap({ 'bls-stage': true, 'bls-stage--fade': transition === 'fade' })}>
+            ${eagerAll
+              ? lights.map((l) =>
+                  this.renderPicture(l, `bls-layer ${l.id === active?.id ? 'is-on' : ''}`, true)
+                )
+              : this.renderPicture(active, '', true)}
+            <div class="bls-caption">
+              <b>${active?.name}</b>${active?.colorEffect ? html` — ${active.colorEffect}` : nothing}
+            </div>
+          </div>
         </div>
-
-        ${finishEnabled
-          ? html`
-              <div class="bls-controls">
-                <span class="bls-controls__label">${t('اللمسة النهائية', 'Finish')}</span>
-                ${finishes.map(
-                  (f) => html`<button
-                    type="button"
-                    class=${classMap({ 'bls-chip': true, 'is-active': f === activeFinish })}
-                    aria-pressed=${f === activeFinish ? 'true' : 'false'}
-                    @click=${() => (this.selFinish = f)}
-                  >${finishLabel(f, locale)}</button>`
-                )}
-              </div>
-              <div class="bls-controls">
-                <span class="bls-controls__label">${t('نوع الإضاءة', 'Lighting')}</span>
-                ${names.map(
-                  (n) => html`<button
-                    type="button"
-                    class=${classMap({ 'bls-chip': true, 'is-active': n === activeName })}
-                    aria-pressed=${n === activeName ? 'true' : 'false'}
-                    @click=${() => (this.selName = n)}
-                  >${n}</button>`
-                )}
-              </div>
-            `
-          : html`<div class="bls-controls">
-              ${lights.map(
-                (l) => html`<button
-                  type="button"
-                  class=${classMap({ 'bls-chip': true, 'is-active': l.id === active?.id })}
-                  aria-pressed=${l.id === active?.id ? 'true' : 'false'}
-                  @click=${() => (this.selId = l.id)}
-                >
-                  ${l.icon ? html`<span class=${l.icon.startsWith('sicon-') ? l.icon : ''}>${l.icon.startsWith('sicon-') ? '' : l.icon}</span>` : nothing}
-                  ${l.name}
-                </button>`
-              )}
-            </div>`}
-
-        ${active ? this.renderPanel(active, locale) : nothing}
       </div>
     `;
   }
@@ -325,8 +371,9 @@ export default class BeautyLightingFinishSimulator extends LitElement {
     const desc = localizedString(c.bls_desc as string);
     const locale = getPageLocale() === 'en' ? 'en' : 'ar';
     const viewMode = resolveViewMode(c);
-    const showCompare = isTruthy(c.bls_show_compare, false);
-    const effectiveMode = viewMode === 'compare' && showCompare && lights.length >= 2 ? 'compare' : 'single';
+    const showCompare = isTruthy(c.bls_show_compare, true) && lights.length >= 2;
+    const compareActive = this.compareOn ?? viewMode === 'compare';
+    const effectiveMode = showCompare && compareActive ? 'compare' : 'single';
 
     if (!lights.length) {
       return html`<div class="fs-empty" role="status">
@@ -350,6 +397,27 @@ export default class BeautyLightingFinishSimulator extends LitElement {
             ? html`<div class="fs-header">
                 ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
                 ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>`
+            : nothing}
+
+          ${showCompare
+            ? html`<div class="bls-mode-toggle" role="group" aria-label=${t('طريقة العرض', 'View mode')}>
+                <button
+                  type="button"
+                  class=${classMap({ 'bls-mode-toggle__btn': true, 'is-active': effectiveMode === 'single' })}
+                  aria-pressed=${effectiveMode === 'single' ? 'true' : 'false'}
+                  @click=${() => (this.compareOn = false)}
+                >
+                  ${t('حالة واحدة', 'Single')}
+                </button>
+                <button
+                  type="button"
+                  class=${classMap({ 'bls-mode-toggle__btn': true, 'is-active': effectiveMode === 'compare' })}
+                  aria-pressed=${effectiveMode === 'compare' ? 'true' : 'false'}
+                  @click=${() => (this.compareOn = true)}
+                >
+                  ${t('مقارنة', 'Compare')}
+                </button>
               </div>`
             : nothing}
 

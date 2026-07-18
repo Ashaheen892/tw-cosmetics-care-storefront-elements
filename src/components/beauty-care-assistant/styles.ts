@@ -49,7 +49,7 @@ export const componentStyles = css`
     color: var(--text-color, #33232e);
   }
 
-  .bca-topbar__hint {
+  .bca-trail__hint {
     font-size: 0.76rem;
     color: var(--muted-color, #8f7a86);
   }
@@ -58,6 +58,11 @@ export const componentStyles = css`
     padding: 1.1rem;
     display: grid;
     gap: 1rem;
+  }
+
+  .bca-progress-wrap {
+    display: grid;
+    gap: 0.35rem;
   }
 
   .bca-progress {
@@ -70,8 +75,85 @@ export const componentStyles = css`
   .bca-progress > span {
     display: block;
     height: 100%;
-    background: var(--accent-color, #c2527f);
-    transition: width 0.4s ease;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+    );
+    transition: width 0.35s ease;
+  }
+
+  .bca-progress__label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .bca-trail {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .bca-trail__list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    min-width: min-content;
+  }
+
+  .bca-trail__item {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  .bca-trail__item--current .bca-trail__sep {
+    display: none;
+  }
+
+  .bca-trail__chip {
+    display: inline-flex;
+    align-items: center;
+    max-width: 9rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color, #f2dde7);
+    background: var(--card-bg, #fff);
+    color: var(--text-color, #33232e);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  button.bca-trail__chip:hover {
+    border-color: var(--accent-color, #c2527f);
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
+  }
+
+  .bca-trail__chip--current {
+    border-color: var(--accent-color, #c2527f);
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
+    color: var(--accent-color, #c2527f);
+    cursor: default;
+    max-width: 11rem;
+  }
+
+  .bca-trail__sep {
+    margin-inline: 0.25rem;
+    color: var(--muted-color, #8f7a86);
+    font-size: 0.85rem;
+    user-select: none;
   }
 
   .bca-bubble {
@@ -83,6 +165,13 @@ export const componentStyles = css`
     font-size: 1rem;
     line-height: 1.6;
     border-start-start-radius: 4px;
+  }
+
+  .bca-question-img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 14px;
   }
 
   .bca-answers {
@@ -129,13 +218,35 @@ export const componentStyles = css`
 
   .bca-result {
     display: grid;
-    gap: 0.9rem;
+    gap: 0.75rem;
+    padding: 1.1rem 1.15rem;
+    border-radius: calc(var(--section-radius, 18px) * 0.85);
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--accent-color, #c2527f) 14%, var(--card-bg, #fff)),
+      var(--card-bg, #fff)
+    );
+    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 28%, var(--border-color, #f2dde7));
+    box-shadow: 0 10px 28px rgba(194, 82, 127, 0.1);
+  }
+
+  .bca-result__badge {
+    width: 2.4rem;
+    height: 2.4rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent-color, #c2527f);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
   }
 
   .bca-result__title {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     font-weight: 800;
+    line-height: 1.3;
     color: var(--text-color, #33232e);
   }
 
@@ -143,6 +254,14 @@ export const componentStyles = css`
     margin: 0;
     color: var(--muted-color, #8f7a86);
     line-height: 1.65;
+    font-size: 0.95rem;
+  }
+
+  .bca-result__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.15rem;
   }
 
   /* —— Style: expert (avatar-forward) —— */
@@ -188,7 +307,8 @@ export const componentStyles = css`
 
   @media (prefers-reduced-motion: reduce) {
     .bca-answer,
-    .bca-progress > span {
+    .bca-progress > span,
+    .bca-trail__chip {
       transition: none;
     }
   }
@@ -196,6 +316,9 @@ export const componentStyles = css`
   @media (max-width: 520px) {
     .bca-bubble {
       max-width: 100%;
+    }
+    .bca-result__title {
+      font-size: 1.2rem;
     }
   }
 `;

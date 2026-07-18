@@ -1,42 +1,43 @@
-import { css as l } from "lit";
-function m() {
+import { css as m } from "lit";
+function p() {
   var r, t, o;
   try {
-    const e = typeof Salla < "u" ? (t = (r = Salla == null ? void 0 : Salla.lang) == null ? void 0 : r.getLocale) == null ? void 0 : t.call(r) : void 0, n = (o = document.documentElement.lang) == null ? void 0 : o.split(/[-_]/)[0];
-    return (e || n || "ar").toLowerCase();
+    const e = typeof Salla < "u" ? (t = (r = Salla == null ? void 0 : Salla.lang) == null ? void 0 : r.getLocale) == null ? void 0 : t.call(r) : void 0, n = (o = document.documentElement.lang) == null ? void 0 : o.split("-")[0];
+    return String(e || n || "ar").toLowerCase();
   } catch {
     return "ar";
   }
 }
 function b(r, t = "") {
-  if (r == null) return t;
+  if (r == null)
+    return t;
   if (typeof r == "string")
     return r.trim() || t;
-  if (typeof r == "number" && Number.isFinite(r))
+  if (typeof r == "number")
     return String(r);
   if (typeof r == "object") {
-    const o = r, n = [m(), "ar", "en", ...Object.keys(o)];
-    for (const c of n) {
-      const i = o[c];
-      if (typeof i == "string" && i.trim()) return i.trim();
-      if (typeof i == "number" && Number.isFinite(i)) return String(i);
+    const o = r, n = [p(), "ar", "en", ...Object.keys(o)];
+    for (const l of n) {
+      const c = o[l];
+      if (typeof c == "string" && c.trim())
+        return c.trim();
     }
   }
   return t;
 }
-function u(r) {
+function g(r) {
   return Object.entries(r || {}).reduce((t, [o, e]) => {
     const n = o.includes(".") ? o.split(".").pop() : o;
     return t[n] = e, t;
   }, {});
 }
-function w(r) {
-  return Array.isArray(r) ? r.filter((t) => !!t && typeof t == "object").map((t) => u(t)) : [];
+function v(r) {
+  return Array.isArray(r) ? r.filter((t) => !!t && typeof t == "object").map((t) => g(t)) : [];
 }
-function s(r, t = 0) {
-  return typeof r == "number" && Number.isFinite(r) ? r : typeof r == "string" && r.trim() !== "" && Number.isFinite(Number(r)) ? Number(r) : r && typeof r == "object" && "value" in r ? s(r.value, t) : t;
+function a(r, t = 0) {
+  return typeof r == "number" && Number.isFinite(r) ? r : typeof r == "string" && r.trim() !== "" && Number.isFinite(Number(r)) ? Number(r) : r && typeof r == "object" && "value" in r ? a(r.value, t) : t;
 }
-function y(r, t = 0) {
+function w(r, t = 0) {
   if (typeof r == "number" && Number.isFinite(r)) return r;
   if (typeof r == "string" && r.trim() !== "") {
     const o = Number(r.replace(",", "."));
@@ -47,7 +48,7 @@ function y(r, t = 0) {
 function _(r, t, o) {
   return Math.min(o, Math.max(t, r));
 }
-function a(r, t = !1) {
+function i(r, t = !1) {
   if (typeof r == "boolean") return r;
   if (typeof r == "string") {
     const o = r.toLowerCase().trim();
@@ -56,15 +57,15 @@ function a(r, t = !1) {
   }
   return typeof r == "number" ? r !== 0 : t;
 }
-function d(r) {
+function s(r) {
   if (!r) return "";
   if (typeof r == "string") {
     const t = r.trim();
-    return g(t) ? t : "";
+    return u(t) ? t : "";
   }
   if (Array.isArray(r)) {
     for (const t of r) {
-      const o = d(t);
+      const o = s(t);
       if (o) return o;
     }
     return "";
@@ -79,13 +80,13 @@ function d(r) {
       t.path
     ];
     for (const e of o) {
-      const n = d(e);
+      const n = s(e);
       if (n) return n;
     }
   }
   return "";
 }
-function g(r) {
+function u(r) {
   if (!r || r === "#") return !1;
   if (r.startsWith("/") || r.startsWith("#") || r.startsWith("?") || r.startsWith("mailto:") || r.startsWith("tel:") || r.startsWith("whatsapp:"))
     return !0;
@@ -96,14 +97,14 @@ function g(r) {
     return !1;
   }
 }
-function v(r) {
+function y(r) {
   try {
     return new URL(r, window.location.origin).origin !== window.location.origin;
   } catch {
     return !1;
   }
 }
-function x(r) {
+function h(r) {
   if (!r || typeof r != "string") return !1;
   try {
     const t = new URL(r, window.location.origin);
@@ -113,8 +114,7 @@ function x(r) {
   }
 }
 function k(r, t, o, e) {
-  var c, i;
-  return ((i = typeof document < "u" ? (c = document.documentElement.lang) == null ? void 0 : c.split(/[-_]/)[0] : "ar") == null ? void 0 : i.toLowerCase()) === "en" ? t : r;
+  return p() === "en" ? t : r;
 }
 function z(r, t) {
   try {
@@ -150,20 +150,20 @@ function $(r, t, o) {
     buttonColor: String(
       e[`${t}button_color`] ?? (o == null ? void 0 : o.buttonColor) ?? "#ffffff"
     ),
-    radius: `${s(e[`${t}radius`], 20)}px`,
-    spaceDesktop: s(
+    radius: `${a(e[`${t}radius`], 20)}px`,
+    spaceDesktop: a(
       e[`${t}space_desktop`],
       48
     ),
-    spaceMobile: s(
+    spaceMobile: a(
       e[`${t}space_mobile`],
       28
     ),
-    animate: a(e[`${t}animate`], !0),
-    fullWidth: a(e[`${t}full_width`], !1),
-    noBottomMargin: a(e.notmrb, !1),
-    hasContainer: a(e.has_container, !0),
-    bgOverride: a(e.add_component_background_color, !1) ? String(e.component_background_color ?? "").trim() : ""
+    animate: i(e[`${t}animate`], !0),
+    fullWidth: i(e[`${t}full_width`], !1),
+    noBottomMargin: i(e.notmrb, !1),
+    hasContainer: i(e.has_container, !0),
+    bgOverride: i(e.add_component_background_color, !1) ? String(e.component_background_color ?? "").trim() : ""
   };
 }
 function A(r) {
@@ -190,7 +190,7 @@ function A(r) {
     "--section-container-pad-sm": t ? "12px" : "0px"
   };
 }
-function f(r, t = "") {
+function d(r, t = "") {
   if (typeof r == "string" && r.trim()) return r.trim();
   if (Array.isArray(r) && r[0]) {
     const o = r[0];
@@ -203,27 +203,27 @@ function f(r, t = "") {
   if (r && typeof r == "object") {
     const o = r;
     if (Array.isArray(o.selected) && o.selected[0])
-      return f(o.selected, t);
+      return d(o.selected, t);
     if ("value" in o && o.value != null && !Array.isArray(o.value))
       return String(o.value ?? t);
     if (Array.isArray(o.value) && o.value[0])
-      return f(o.value, t);
+      return d(o.value, t);
   }
   return t;
 }
-function M(r) {
+function C(r) {
   const t = b(r, "");
   return t ? t.split(/[,،|/]/).map((o) => o.trim()).filter(Boolean) : [];
 }
-function p(r) {
+function f(r) {
   if (!r) return "";
   if (typeof r == "string") {
     const t = r.trim();
-    return x(t) || t.startsWith("/") ? t : "";
+    return h(t) || t.startsWith("/") ? t : "";
   }
   if (Array.isArray(r)) {
     for (const t of r) {
-      const o = p(t);
+      const o = f(t);
       if (o) return o;
     }
     return "";
@@ -231,16 +231,20 @@ function p(r) {
   if (typeof r == "object") {
     const t = r, o = [t.url, t.src, t.image, t.thumbnail, t.original];
     for (const e of o) {
-      const n = p(e);
+      const n = f(e);
       if (n) return n;
     }
   }
   return "";
 }
-const N = l`
+const M = m`
   :host {
     display: block;
     overflow-x: clip;
+    --fs-success: #2f9e63;
+    --fs-caution: #e0a100;
+    --fs-danger: #cf4b4b;
+    --fs-unknown: #8f7a86;
   }
 
   .fs-section {
@@ -385,11 +389,116 @@ const N = l`
   }
 
   .fs-empty {
-    padding: 2rem 1rem;
+    display: grid;
+    place-items: center;
+    gap: 0.55rem;
+    padding: 2.4rem 1.25rem;
     text-align: center;
     color: var(--muted-color, #8f7a86);
-    border: 1px dashed var(--border-color, #f2dde7);
-    border-radius: var(--section-radius, 16px);
+    border: 1px dashed color-mix(in srgb, var(--accent-color, #c2527f) 28%, var(--border-color, #f2dde7));
+    border-radius: var(--section-radius, 20px);
+    background:
+      radial-gradient(
+        80% 80% at 50% 0%,
+        color-mix(in srgb, var(--accent-color, #c2527f) 7%, transparent),
+        transparent 70%
+      ),
+      color-mix(in srgb, var(--card-bg, #fff) 70%, var(--section-bg, #fbf5f8));
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .fs-coach {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 9%, #fff);
+    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 22%, var(--border-color, #f2dde7));
+    color: var(--text-color, #33232e);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .fs-coach__mark {
+    flex: 0 0 auto;
+    width: 1.55rem;
+    height: 1.55rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--accent-color, #c2527f);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .fs-progress {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .fs-progress__bar {
+    height: 6px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 75%, #fff);
+    overflow: hidden;
+  }
+
+  .fs-progress__bar > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 65%, #5a2f4d)
+    );
+    transition: width 0.28s ease;
+  }
+
+  .fs-progress__label {
+    font-size: 0.8rem;
+    font-weight: 650;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .fs-stage {
+    position: relative;
+    border-radius: var(--section-radius, 20px);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #f2dde7);
+    box-shadow: 0 12px 32px rgba(120, 44, 82, 0.08);
+    overflow: hidden;
+  }
+
+  .fs-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 1.7rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, #fff);
+    color: var(--accent-color, #c2527f);
+  }
+
+  .fs-pill--success {
+    background: color-mix(in srgb, var(--fs-success) 14%, #fff);
+    color: var(--fs-success);
+  }
+
+  .fs-pill--caution {
+    background: color-mix(in srgb, var(--fs-caution) 16%, #fff);
+    color: #9a6d00;
+  }
+
+  .fs-pill--danger {
+    background: color-mix(in srgb, var(--fs-danger) 14%, #fff);
+    color: var(--fs-danger);
   }
 
   .fs-meter {
@@ -403,7 +512,11 @@ const N = l`
   .fs-meter > span {
     display: block;
     height: 100%;
-    background: var(--accent-color, #c2527f);
+    background: linear-gradient(
+      90deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 60%, #5a2f4d)
+    );
     border-radius: inherit;
     transition: width 0.45s ease;
   }
@@ -792,6 +905,85 @@ const N = l`
       font-size: 0.88rem;
     }
 
+    /* Compact primary CTAs on phone */
+    .fs-btn {
+      min-height: 36px;
+      padding: 0.4rem 1.05rem;
+      font-size: 0.86rem;
+      gap: 0.35rem;
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color, #c2527f) 20%, transparent);
+    }
+
+    .fs-btn:hover {
+      box-shadow: 0 6px 14px color-mix(in srgb, var(--accent-color, #c2527f) 26%, transparent);
+    }
+
+    .fs-tap {
+      min-height: 36px;
+      min-width: 36px;
+    }
+
+    .fs-actions {
+      gap: 0.4rem;
+    }
+
+    /*
+     * Shrink choice chips / options / toggles across all beauty tools.
+     * !important beats per-component min-heights (styles load after shared).
+     * Excludes icon-only nav handles and visual sample pickers.
+     */
+    button[class*='chip']:not([class*='icon']):not([class*='nav']),
+    button[class*='option'],
+    button[class*='segment'],
+    button[class*='toggle'],
+    button[class*='answer'],
+    button[class*='finish'],
+    button[role='tab'],
+    button.bch-color,
+    button.bch-type,
+    button.bta-play__cta,
+    button.bil-segment__btn,
+    button.brl-step__toggle,
+    button.bcr-cover__btn,
+    a.fs-btn {
+      min-height: 34px !important;
+      padding-top: 0.35rem !important;
+      padding-bottom: 0.35rem !important;
+      font-size: 0.82rem !important;
+    }
+
+    /* Form controls that read as large tap targets */
+    input.bpa-input,
+    select.bpa-select,
+    .bpa-input,
+    .bpa-select {
+      min-height: 38px !important;
+      padding: 0.45rem 0.7rem !important;
+      font-size: 0.88rem !important;
+    }
+
+    /* Multi-line option cards stay readable but smaller */
+    button.bch-type,
+    button.bsg-option:not([class*='compact']) {
+      min-height: 46px !important;
+      padding: 0.5rem 0.75rem !important;
+      font-size: 0.84rem !important;
+    }
+
+    /* Chip leading icons / swatches scale with compact chips */
+    button[class*='chip'] [class*='swatch'],
+    button[class*='chip'] [class*='icon'] {
+      width: 1.65rem !important;
+      height: 1.65rem !important;
+      font-size: 0.8rem !important;
+    }
+
+    button.bca-answer [class*='icon'],
+    button.bca-answer img {
+      width: 1.75rem !important;
+      height: 1.75rem !important;
+    }
+
     .fs-product-card__body {
       padding: 0.65rem 0.65rem 0.75rem;
       gap: 0.35rem;
@@ -845,22 +1037,22 @@ const N = l`
 `;
 export {
   A as a,
-  d as b,
-  s as c,
-  M as d,
-  p as e,
+  s as b,
+  a as c,
+  C as d,
+  f as e,
   _ as f,
-  f as g,
-  y as h,
-  a as i,
-  m as j,
-  z as k,
+  d as g,
+  w as h,
+  i,
+  z as j,
+  S as k,
   b as l,
-  S as m,
-  w as n,
-  v as o,
+  p as m,
+  v as n,
+  y as o,
   j as p,
   $ as r,
-  N as s,
+  M as s,
   k as t
 };

@@ -105,7 +105,7 @@ export default class BeautyTextureAbsorptionLab extends LitElement {
   private renderIndicators(tx: Texture, type: IndicatorType, higher?: Record<string, boolean>) {
     const rows = indicatorRows(tx, this.locale);
     if (!rows.length) return nothing;
-    return html`<div class="bta-indicators">
+    return html`<div class="bta-indicators" style=${styleMap({ '--meter-color': tx.color })}>
       ${rows.map((row) => {
         const pct = (row.value / 5) * 100;
         let visual;
@@ -154,7 +154,7 @@ export default class BeautyTextureAbsorptionLab extends LitElement {
     const showNotes = isTruthy(c.bta_show_notes, true);
     const speed = this.motionDisabled() ? 0 : Math.max(0, toNumber(c.bta_spread_speed, 500));
 
-    return html`<div class="bta-stage" style=${styleMap({ '--sample-color': tx.color })}>
+    return html`<div class="bta-stage" style=${styleMap({ '--sample-color': tx.color, '--meter-color': tx.color })}>
       <div
         class="bta-play"
         style=${styleMap({ '--spread': String(this.spread), '--spread-speed': `${speed}ms` })}
@@ -165,8 +165,9 @@ export default class BeautyTextureAbsorptionLab extends LitElement {
           ? html`<img class="bta-play__img" src=${tx.image} alt=${tx.name} loading="lazy" decoding="async" />`
           : html`<span class="bta-smear"></span>`}
         ${enableSpread
-          ? html`<button type="button" class="fs-btn bta-play__btn" @click=${() => this.toggleSpread()}>
-              ${this.spread > 0.5 ? t('إعادة', 'Reset') : t('جرّبي الانتشار', 'Spread it')}
+          ? html`<button type="button" class="bta-play__cta" @click=${() => this.toggleSpread()}>
+              <span class="bta-play__cta-icon" aria-hidden="true">${this.spread > 0.5 ? '↺' : '▶'}</span>
+              ${this.spread > 0.5 ? t('إعادة', 'Reset') : t('طبّقي القوام', 'Apply texture')}
             </button>`
           : nothing}
         ${enableSpread && !tx.image
@@ -213,12 +214,12 @@ export default class BeautyTextureAbsorptionLab extends LitElement {
         ${picker('bta-b', b, (v) => (this.cmpB = v), t('القوام الثاني', 'Second texture'))}
       </div>
       <div class="bta-compare">
-        <div class="bta-compare__col" style=${styleMap({ '--sample-color': a.color })}>
+        <div class="bta-compare__col" style=${styleMap({ '--sample-color': a.color, '--meter-color': a.color })}>
           <h3 class="bta-details__name">${a.name}</h3>
           ${this.renderIndicators(a, indType, higherA)}
           ${this.renderFacts(a)}
         </div>
-        <div class="bta-compare__col" style=${styleMap({ '--sample-color': b.color })}>
+        <div class="bta-compare__col" style=${styleMap({ '--sample-color': b.color, '--meter-color': b.color })}>
           <h3 class="bta-details__name">${b.name}</h3>
           ${this.renderIndicators(b, indType, higherB)}
           ${this.renderFacts(b)}

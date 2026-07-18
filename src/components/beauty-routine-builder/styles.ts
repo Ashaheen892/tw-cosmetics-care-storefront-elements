@@ -2,7 +2,9 @@ import { css } from 'lit';
 
 export const componentStyles = css`
   :host {
+    display: block;
     direction: inherit;
+    width: 100%;
   }
 
   .brb-shell {
@@ -25,26 +27,63 @@ export const componentStyles = css`
     position: relative;
     z-index: 1;
     display: grid;
-    gap: 1.4rem;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+    padding: 1.15rem;
+    box-sizing: border-box;
   }
 
-  .brb-quiz {
+  .brb-inner:has(.brb-results) {
+    max-width: 880px;
+  }
+
+  .brb-progress {
     display: grid;
-    gap: 1rem;
-    padding: 1.15rem;
+    gap: 0.45rem;
+  }
+
+  .brb-progress__bar {
+    height: 6px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    overflow: hidden;
+  }
+
+  .brb-progress__bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+    );
+    transition: width 0.25s ease;
+  }
+
+  .brb-progress__text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .brb-question {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.15rem 1.2rem;
     border-radius: var(--section-radius, 16px);
     background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, #fbf5f8));
     border: 1px solid var(--border-color, #f2dde7);
+    box-shadow: 0 8px 24px rgba(194, 82, 127, 0.06);
   }
 
-  .brb-q {
-    display: grid;
-    gap: 0.5rem;
-  }
-
-  .brb-q__label {
-    font-weight: 700;
-    font-size: 0.92rem;
+  .brb-question__title {
+    margin: 0;
+    font-size: 1.12rem;
+    font-weight: 800;
+    line-height: 1.35;
     color: var(--text-color, #33232e);
   }
 
@@ -55,26 +94,44 @@ export const componentStyles = css`
   }
 
   .brb-chip {
-    min-height: 42px;
-    padding: 0.5rem 1rem;
+    min-height: 44px;
+    padding: 0.55rem 1.05rem;
     border-radius: 999px;
     border: 1px solid var(--border-color, #f2dde7);
     background: var(--card-bg, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .brb-chip:hover {
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 45%, var(--border-color, #f2dde7));
   }
 
   .brb-chip[aria-pressed='true'] {
     background: var(--accent-color, #c2527f);
     border-color: var(--accent-color, #c2527f);
     color: #fff;
+    transform: translateY(-1px);
   }
 
-  .brb-routine {
+  .brb-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .brb-nav .fs-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .brb-results {
     display: grid;
     gap: 0.9rem;
   }
@@ -90,8 +147,19 @@ export const componentStyles = css`
   .brb-routine__title {
     margin: 0;
     font-size: 1.05rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text-color, #33232e);
+  }
+
+  .brb-routine__count {
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .brb-results__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
   }
 
   .brb-timeline {
@@ -165,23 +233,6 @@ export const componentStyles = css`
     font-size: 0.8rem;
   }
 
-  .brb-summary {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.9rem 1.1rem;
-    border-radius: var(--section-radius, 16px);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 25%, var(--border-color, #f2dde7));
-  }
-
-  .brb-summary__total {
-    font-weight: 800;
-    color: var(--text-color, #33232e);
-  }
-
   .brb-card--sharp {
     --card-radius: 4px;
   }
@@ -202,7 +253,8 @@ export const componentStyles = css`
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .brb-chip {
+    .brb-chip,
+    .brb-progress__bar span {
       transition: none;
     }
   }

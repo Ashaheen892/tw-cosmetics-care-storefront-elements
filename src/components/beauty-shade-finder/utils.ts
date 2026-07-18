@@ -3,7 +3,7 @@ import {
   getRadioValue,
   normalizeCollection,
 } from '../../utils/helpers.js';
-import { localizedString } from '../../utils/localizedString.js';
+import { getPageLocale, localizedString } from '../../utils/localizedString.js';
 import type {
   DimensionKey,
   Shade,
@@ -79,12 +79,7 @@ export const DIMENSIONS: DimensionDef[] = [
 ];
 
 export function isEn(): boolean {
-  return (
-    (typeof document !== 'undefined'
-      ? document.documentElement.lang?.split(/[-_]/)[0]
-      : 'ar'
-    )?.toLowerCase() === 'en'
-  );
+  return getPageLocale() === 'en';
 }
 
 /** Build steps with merchant label overrides. */

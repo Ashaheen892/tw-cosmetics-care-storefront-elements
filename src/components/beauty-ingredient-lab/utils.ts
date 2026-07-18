@@ -5,7 +5,7 @@ import {
   normalizeCollection,
   parseTags,
 } from '../../utils/helpers.js';
-import { localizedString } from '../../utils/localizedString.js';
+import { getPageLocale, localizedString } from '../../utils/localizedString.js';
 import type { Ingredient, TextureOption } from './types.js';
 
 interface TextureDef {
@@ -26,12 +26,7 @@ export const TEXTURES: TextureDef[] = [
 ];
 
 export function isEn(): boolean {
-  return (
-    (typeof document !== 'undefined'
-      ? document.documentElement.lang?.split(/[-_]/)[0]
-      : 'ar'
-    )?.toLowerCase() === 'en'
-  );
+  return getPageLocale() === 'en';
 }
 
 export function textureLabel(value: string): string {

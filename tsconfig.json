@@ -3,14 +3,11 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "target": "ES2017",
-    "lib": ["ES2017", "DOM", "DOM.Iterable"],
+    "lib": ["ES2017", "DOM"],
     "moduleResolution": "nodenext",
     "module": "nodenext",
-    "strict": true,
     "skipLibCheck": true,
-    "noEmit": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true
+    "noEmit": true
   },
   "include": ["src/**/*.ts"]
 }

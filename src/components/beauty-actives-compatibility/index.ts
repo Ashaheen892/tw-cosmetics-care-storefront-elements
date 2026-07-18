@@ -12,19 +12,23 @@ import {
 import { localizedString } from '../../utils/localizedString.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
-import { findVerdict, parseActives, parseRules } from './utils.js';
-import type { Active, CompatibilityLevel, Rule } from './types.js';
+import { parseActives, parseRules, resolveVerdict } from './utils.js';
+import type { Active, VerdictLevel } from './types.js';
 
-const VERDICT_COLORS: Record<CompatibilityLevel, string> = {
+const VERDICT_COLORS: Record<VerdictLevel, string> = {
   compatible: '#2f7d5b',
   caution: '#b8791f',
   avoid: '#b23a4a',
+  unknown: '#6b7280',
+  same: '#8f7a86',
 };
 
-const VERDICT_ICONS: Record<CompatibilityLevel, string> = {
+const VERDICT_ICONS: Record<VerdictLevel, string> = {
   compatible: '✓',
   caution: '!',
   avoid: '✕',
+  unknown: '?',
+  same: '↔',
 };
 
 export default class BeautyActivesCompatibility extends LitElement {
@@ -59,7 +63,7 @@ export default class BeautyActivesCompatibility extends LitElement {
     return parseActives(this.config?.bac_actives);
   }
 
-  private get rules(): Rule[] {
+  private get rules() {
     return parseRules(this.config?.bac_rules);
   }
 
@@ -71,26 +75,30 @@ export default class BeautyActivesCompatibility extends LitElement {
   private renderChips(
     actives: Active[],
     selectedId: string,
-    onPick: (id: string) => void
+    onPick: (id: string) => void,
+    slotLabel: string
   ) {
     return html`
-      <div class="bac-chips" role="group">
-        ${actives.map((active) => {
-          const selected = active.id === selectedId;
-          return html`
-            <button
-              type="button"
-              class=${classMap({ 'bac-chip': true, 'is-selected': selected })}
-              style=${styleMap(active.color ? { '--swatch': active.color } : {})}
-              aria-pressed=${selected ? 'true' : 'false'}
-              title=${active.desc || active.name}
-              @click=${() => onPick(active.id)}
-            >
-              <span class="bac-chip__swatch"></span>
-              <span>${active.name}</span>
-            </button>
-          `;
-        })}
+      <div class="bac-slot">
+        <p class="bac-slot__label">${slotLabel}</p>
+        <div class="bac-chips" role="group" aria-label=${slotLabel}>
+          ${actives.map((active) => {
+            const selected = active.id === selectedId;
+            return html`
+              <button
+                type="button"
+                class=${classMap({ 'bac-chip': true, 'is-selected': selected })}
+                style=${styleMap(active.color ? { '--swatch': active.color } : {})}
+                aria-pressed=${selected ? 'true' : 'false'}
+                title=${active.desc || active.name}
+                @click=${() => onPick(active.id)}
+              >
+                <span class="bac-chip__swatch" aria-hidden="true"></span>
+                <span>${active.name}</span>
+              </button>
+            `;
+          })}
+        </div>
       </div>
     `;
   }
@@ -100,79 +108,74 @@ export default class BeautyActivesCompatibility extends LitElement {
     const activeA = actives.find((a) => a.id === aId) ?? null;
     const activeB = actives.find((a) => a.id === bId) ?? null;
 
-    const resultTitle =
-      localizedString(c.bac_result_title as string) || t('النتيجة', 'Result');
     const defaultNote =
       localizedString(c.bac_default_note as string) ||
       t(
-        'لا يوجد تعارض معروف بين هذين المكوّنين، وغالبًا يمكن استخدامهما معًا.',
-        'No known conflict between these two ingredients; they can generally be used together.'
+        'لا توجد قاعدة محددة لهذا الزوج في قاعدة البيانات.',
+        'No specific rule for this pair in the database.'
       );
 
-    const labels: Record<CompatibilityLevel, string> = {
+    const labels: Record<VerdictLevel, string> = {
       compatible:
         localizedString(c.bac_label_compatible as string) || t('متوافقان', 'Compatible'),
       caution:
         localizedString(c.bac_label_caution as string) || t('بحذر', 'Use with caution'),
       avoid: localizedString(c.bac_label_avoid as string) || t('تجنّبي الدمج', 'Avoid'),
+      unknown:
+        localizedString(c.bac_label_unknown as string) || t('لا قاعدة / غير معروف', 'No rule / unknown'),
+      same: t('نفس المكوّن', 'Same ingredient'),
     };
 
-    let level: CompatibilityLevel;
-    let note: string;
-    let timing = '';
-
-    if (aId && bId && aId === bId) {
-      level = 'compatible';
-      note = t(
-        'اخترتِ المكوّن نفسه مرتين. اختاري مكوّنًا مختلفًا لفحص التوافق بينهما.',
-        'You picked the same ingredient twice. Choose a different one to check compatibility.'
-      );
-    } else {
-      const rule = findVerdict(this.rules, aId, bId);
-      if (rule) {
-        level = rule.level;
-        note = rule.note || defaultNote;
-        timing = rule.timing;
-      } else {
-        level = 'compatible';
-        note = defaultNote;
-      }
-    }
-
+    const verdict = resolveVerdict(this.rules, aId, bId, defaultNote);
+    const { level, note, tip, timing } = verdict;
     const color = VERDICT_COLORS[level];
+
+    const resultTitle = localizedString(c.bac_result_title as string);
 
     return html`
       <div
-        class="fs-card bac-result"
+        class=${classMap({ 'bac-verdict': true, [`bac-verdict--${level}`]: true })}
         role="region"
         aria-live="polite"
+        aria-label=${labels[level]}
         style=${styleMap({ '--verdict-color': color })}
       >
-        <div class="bac-result__head">
-          <h3 class="bac-result__title">${resultTitle}</h3>
-          <span class="bac-badge">
-            <span class="bac-badge__icon" aria-hidden="true">${VERDICT_ICONS[level]}</span>
-            <span>${labels[level]}</span>
-          </span>
+        ${resultTitle ? html`<h3 class="bac-verdict__title">${resultTitle}</h3>` : nothing}
+        <div class="bac-verdict__hero">
+          <span class="bac-verdict__icon" aria-hidden="true">${VERDICT_ICONS[level]}</span>
+          <span class="bac-verdict__badge">${labels[level]}</span>
         </div>
 
         ${activeA && activeB
-          ? html`<div class="bac-pair">
-              <span
-                class="bac-pair__dot"
-                style=${styleMap(activeA.color ? { background: activeA.color } : {})}
-              ></span>
-              <span>${activeA.name}</span>
-              <span class="bac-pair__sep">+</span>
-              <span
-                class="bac-pair__dot"
-                style=${styleMap(activeB.color ? { background: activeB.color } : {})}
-              ></span>
-              <span>${activeB.name}</span>
+          ? html`<div class="bac-pair" aria-label=${t('المكوّنان المختاران', 'Selected pair')}>
+              <span class="bac-pair__pill">
+                <span
+                  class="bac-pair__dot"
+                  style=${styleMap(activeA.color ? { background: activeA.color } : {})}
+                  aria-hidden="true"
+                ></span>
+                <span>${activeA.name}</span>
+              </span>
+              <span class="bac-pair__vs" aria-hidden="true">+</span>
+              <span class="bac-pair__pill">
+                <span
+                  class="bac-pair__dot"
+                  style=${styleMap(activeB.color ? { background: activeB.color } : {})}
+                  aria-hidden="true"
+                ></span>
+                <span>${activeB.name}</span>
+              </span>
             </div>`
           : nothing}
 
-        <p class="bac-note">${note}</p>
+        <p class="bac-verdict__note">${note}</p>
+
+        ${tip
+          ? html`<div class="bac-tip">
+              <span class="bac-tip__label">${t('نصيحة', 'Tip')}</span>
+              <p class="bac-tip__text">${tip}</p>
+            </div>`
+          : nothing}
 
         ${timing
           ? html`<div class="bac-timing">
@@ -238,18 +241,17 @@ export default class BeautyActivesCompatibility extends LitElement {
               </div>`
             : nothing}
 
-          <div class="bac-picker">
-            <div class="bac-row">
-              <p class="bac-row__label">${pickALabel}</p>
-              ${this.renderChips(actives, aId, (id) => (this.selectedA = id))}
-            </div>
-            <div class="bac-row">
-              <p class="bac-row__label">${pickBLabel}</p>
-              ${this.renderChips(actives, bId, (id) => (this.selectedB = id))}
-            </div>
-          </div>
-
           ${this.renderResult(actives, aId, bId)}
+
+          <div class="bac-picker" aria-label=${t('اختيار المكوّنين', 'Pick ingredients')}>
+            ${this.renderChips(actives, aId, (id) => (this.selectedA = id), pickALabel)}
+            <div class="bac-divider" aria-hidden="true">
+              <span class="bac-divider__line"></span>
+              <span class="bac-divider__icon">↕</span>
+              <span class="bac-divider__line"></span>
+            </div>
+            ${this.renderChips(actives, bId, (id) => (this.selectedB = id), pickBLabel)}
+          </div>
 
           ${showNotice ? html`<p class="bac-notice">${notice}</p>` : nothing}
         </div>

@@ -1,9 +1,9 @@
 import { css as T, LitElement as E, nothing as d, html as i } from "lit";
-import { property as R, state as k } from "lit/decorators.js";
+import { property as R, state as x } from "lit/decorators.js";
 import { classMap as w } from "lit/directives/class-map.js";
 import { styleMap as f } from "lit/directives/style-map.js";
-import { n as F, l as b, e as L, g as I, f as P, h as O, s as M, j, p as S, i as u, t as c, r as B, a as H } from "./sharedStyles-cRSiglXC.js";
-const D = T`
+import { n as F, l as b, e as L, g as I, f as z, h as P, s as M, m as B, p as S, i as u, t as c, r as j, a as H } from "./sharedStyles--LaFqDVC.js";
+const X = T`
   .bta-samples {
     display: flex;
     flex-wrap: wrap;
@@ -90,17 +90,61 @@ const D = T`
   .bta-play__hint {
     position: absolute;
     inset-inline: 0;
-    bottom: 0.5rem;
+    bottom: 3.5rem;
     text-align: center;
     font-size: 0.74rem;
     color: var(--muted-color, #8f7a86);
     pointer-events: none;
   }
 
-  .bta-play__btn {
+  .bta-play__cta {
     position: absolute;
-    top: 0.6rem;
-    inset-inline-end: 0.6rem;
+    left: 50%;
+    bottom: 0.85rem;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0.55rem 1.25rem;
+    border: none;
+    border-radius: 999px;
+    background: var(--sample-color, var(--accent-color, #c2527f));
+    color: #fff;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 45%, transparent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+
+  [dir='rtl'] .bta-play__cta {
+    left: 50%;
+    right: auto;
+  }
+
+  .bta-play__cta:hover,
+  .bta-play__cta:focus-visible {
+    transform: translateX(-50%) scale(1.02);
+    box-shadow: 0 10px 26px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 55%, transparent);
+  }
+
+  [dir='rtl'] .bta-play__cta:hover,
+  [dir='rtl'] .bta-play__cta:focus-visible {
+    transform: translateX(-50%) scale(1.02);
+  }
+
+  .bta-play__cta-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    font-size: 0.72rem;
+    line-height: 1;
   }
 
   .bta-details { display: grid; gap: 0.85rem; }
@@ -108,15 +152,24 @@ const D = T`
   .bta-details__desc { margin: 0; color: var(--muted-color, #8f7a86); line-height: 1.65; font-size: 0.9rem; }
 
   .bta-indicators { display: grid; gap: 0.55rem; }
+
+  .bta-indicators .fs-meter {
+    --meter-fill: var(--meter-color, var(--accent-color, #c2527f));
+  }
+
+  .bta-indicators .fs-meter > span {
+    background: var(--meter-fill, var(--accent-color, #c2527f));
+  }
+
   .bta-ind { display: grid; grid-template-columns: 7.5rem 1fr auto; align-items: center; gap: 0.6rem; font-size: 0.8rem; }
   .bta-ind__label { color: var(--muted-color, #8f7a86); font-weight: 700; }
-  .bta-ind__val { color: var(--accent-color, #c2527f); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .bta-ind__val { color: var(--meter-color, var(--accent-color, #c2527f)); font-weight: 800; font-variant-numeric: tabular-nums; }
 
   .bta-dots { display: inline-flex; gap: 0.28rem; }
   .bta-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; background: color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent); }
-  .bta-dot.is-on { background: var(--accent-color, #c2527f); }
-  .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--accent-color, #c2527f); }
-  .bta-circle.is-on { background: var(--accent-color, #c2527f); }
+  .bta-dot.is-on { background: var(--meter-color, var(--accent-color, #c2527f)); }
+  .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--meter-color, var(--accent-color, #c2527f)); }
+  .bta-circle.is-on { background: var(--meter-color, var(--accent-color, #c2527f)); }
 
   .bta-gauge {
     --p: 0;
@@ -124,7 +177,7 @@ const D = T`
     height: 1.5rem;
     border-radius: 3rem 3rem 0 0;
     background:
-      conic-gradient(from 270deg at 50% 100%, var(--accent-color, #c2527f) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
+      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, #c2527f)) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
   }
 
   .bta-facts { display: grid; gap: 0.4rem; font-size: 0.84rem; }
@@ -166,10 +219,10 @@ const D = T`
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bta-smear, .bta-sample__blob { transition: none !important; }
+    .bta-smear, .bta-sample__blob, .bta-play__cta { transition: none !important; }
   }
-`, N = ["drops", "circles", "swatches", "slides", "blobs", "bubbles"], G = ["bars", "dots", "circles", "semicircle"], _ = (l) => P(O(l, 0), 0, 5);
-function U(l) {
+`, D = ["drops", "circles", "swatches", "slides", "blobs", "bubbles"], N = ["bars", "dots", "circles", "semicircle"], _ = (l) => z(P(l, 0), 0, 5);
+function G(l) {
   return F(l).map((e, s) => ({
     id: String(e.tex_id ?? "").trim() || `texture-${s + 1}`,
     name: b(e.name) || `${s + 1}`,
@@ -192,7 +245,7 @@ function U(l) {
     note: b(e.note)
   })).filter((e) => e.name || e.desc);
 }
-function W(l, e) {
+function U(l, e) {
   return [
     ["lightness", ["الخفة", "Lightness"], l.lightness],
     ["thickness", ["السماكة", "Thickness"], l.thickness],
@@ -202,27 +255,27 @@ function W(l, e) {
     ["greasiness", ["الإحساس الدهني", "Greasiness"], l.greasiness]
   ].filter(([, , a]) => a > 0).map(([a, [t, r], n]) => ({ key: a, label: e === "en" ? r : t, value: n }));
 }
-function X(l) {
+function W(l) {
   const e = I(l.bta_sample_shape, "drops");
-  return N.includes(e) ? e : "drops";
+  return D.includes(e) ? e : "drops";
 }
 function C(l) {
   const e = I(l.bta_indicator_type, "bars");
-  return G.includes(e) ? e : "bars";
+  return N.includes(e) ? e : "bars";
 }
-var q = Object.defineProperty, $ = (l, e, s, a) => {
+var q = Object.defineProperty, y = (l, e, s, a) => {
   for (var t = void 0, r = l.length - 1, n; r >= 0; r--)
     (n = l[r]) && (t = n(e, s, t) || t);
   return t && q(e, s, t), t;
 };
-const x = class x extends E {
+const k = class k extends E {
   constructor() {
     super(...arguments), this.config = {}, this.selId = "", this.cmpA = "", this.cmpB = "", this.spread = 0, this.compareOpen = !1, this.boundLangHandler = () => this.requestUpdate(), this.onPlayPointer = (e) => {
       var n;
       const s = e.currentTarget;
       (n = s.setPointerCapture) == null || n.call(s, e.pointerId);
       const a = s.getBoundingClientRect(), r = getComputedStyle(this).direction === "rtl" ? (a.right - e.clientX) / a.width : (e.clientX - a.left) / a.width;
-      this.spread = P(Number(r.toFixed(2)), 0, 1);
+      this.spread = z(Number(r.toFixed(2)), 0, 1);
     };
   }
   connectedCallback() {
@@ -235,11 +288,11 @@ const x = class x extends E {
     e.has("config") && (this.selId = "", this.cmpA = "", this.cmpB = "", this.spread = 0);
   }
   get locale() {
-    return j() === "en" ? "en" : "ar";
+    return B() === "en" ? "en" : "ar";
   }
   get textures() {
     var e;
-    return U((e = this.config) == null ? void 0 : e.bta_textures);
+    return G((e = this.config) == null ? void 0 : e.bta_textures);
   }
   active(e) {
     var a;
@@ -264,8 +317,8 @@ const x = class x extends E {
     this.spread = this.spread > 0.5 ? 0 : 1;
   }
   renderIndicators(e, s, a) {
-    const t = W(e, this.locale);
-    return t.length ? i`<div class="bta-indicators">
+    const t = U(e, this.locale);
+    return t.length ? i`<div class="bta-indicators" style=${f({ "--meter-color": e.color })}>
       ${t.map((r) => {
       const n = r.value / 5 * 100;
       let p;
@@ -294,8 +347,8 @@ const x = class x extends E {
     </div>` : d;
   }
   renderExplore(e) {
-    const s = this.config || {}, a = this.active(e), t = C(s), r = u(s.bta_show_indicators, !0), n = u(s.bta_enable_spread, !0), p = u(s.bta_show_images, !0), h = u(s.bta_show_tips, !0), m = u(s.bta_show_notes, !0), o = this.motionDisabled() ? 0 : Math.max(0, O(s.bta_spread_speed, 500));
-    return i`<div class="bta-stage" style=${f({ "--sample-color": a.color })}>
+    const s = this.config || {}, a = this.active(e), t = C(s), r = u(s.bta_show_indicators, !0), n = u(s.bta_enable_spread, !0), p = u(s.bta_show_images, !0), h = u(s.bta_show_tips, !0), m = u(s.bta_show_notes, !0), o = this.motionDisabled() ? 0 : Math.max(0, P(s.bta_spread_speed, 500));
+    return i`<div class="bta-stage" style=${f({ "--sample-color": a.color, "--meter-color": a.color })}>
       <div
         class="bta-play"
         style=${f({ "--spread": String(this.spread), "--spread-speed": `${o}ms` })}
@@ -305,8 +358,9 @@ const x = class x extends E {
     } : void 0}
       >
         ${p && a.image ? i`<img class="bta-play__img" src=${a.image} alt=${a.name} loading="lazy" decoding="async" />` : i`<span class="bta-smear"></span>`}
-        ${n ? i`<button type="button" class="fs-btn bta-play__btn" @click=${() => this.toggleSpread()}>
-              ${this.spread > 0.5 ? c("إعادة", "Reset") : c("جرّبي الانتشار", "Spread it")}
+        ${n ? i`<button type="button" class="bta-play__cta" @click=${() => this.toggleSpread()}>
+              <span class="bta-play__cta-icon" aria-hidden="true">${this.spread > 0.5 ? "↺" : "▶"}</span>
+              ${this.spread > 0.5 ? c("إعادة", "Reset") : c("طبّقي القوام", "Apply texture")}
             </button>` : d}
         ${n && !a.image ? i`<span class="bta-play__hint">${c("اسحبي داخل المساحة لرؤية الانتشار", "Drag inside the area to see it spread")}</span>` : d}
       </div>
@@ -325,11 +379,11 @@ const x = class x extends E {
     const s = this.config || {}, a = C(s), t = e.find((o) => o.id === this.cmpA) || e[0], r = e.find((o) => o.id === this.cmpB) || e[1] || e[0], n = ["lightness", "thickness", "absorption", "hydration", "gloss", "greasiness"], p = {}, h = {};
     for (const o of n)
       t[o] > r[o] ? p[o] = !0 : r[o] > t[o] && (h[o] = !0);
-    const m = (o, v, z, A) => i`
+    const m = (o, v, A, O) => i`
       <div>
-        <label style="font-size:0.76rem;font-weight:700;color:var(--muted-color);display:block;margin-bottom:0.25rem">${A}</label>
-        <select id=${o} @change=${(y) => z(y.target.value)}>
-          ${e.map((y) => i`<option value=${y.id} ?selected=${y.id === (v == null ? void 0 : v.id)}>${y.name}</option>`)}
+        <label style="font-size:0.76rem;font-weight:700;color:var(--muted-color);display:block;margin-bottom:0.25rem">${O}</label>
+        <select id=${o} @change=${($) => A($.target.value)}>
+          ${e.map(($) => i`<option value=${$.id} ?selected=${$.id === (v == null ? void 0 : v.id)}>${$.name}</option>`)}
         </select>
       </div>
     `;
@@ -339,12 +393,12 @@ const x = class x extends E {
         ${m("bta-b", r, (o) => this.cmpB = o, c("القوام الثاني", "Second texture"))}
       </div>
       <div class="bta-compare">
-        <div class="bta-compare__col" style=${f({ "--sample-color": t.color })}>
+        <div class="bta-compare__col" style=${f({ "--sample-color": t.color, "--meter-color": t.color })}>
           <h3 class="bta-details__name">${t.name}</h3>
           ${this.renderIndicators(t, a, p)}
           ${this.renderFacts(t)}
         </div>
-        <div class="bta-compare__col" style=${f({ "--sample-color": r.color })}>
+        <div class="bta-compare__col" style=${f({ "--sample-color": r.color, "--meter-color": r.color })}>
           <h3 class="bta-details__name">${r.name}</h3>
           ${this.renderIndicators(r, a, h)}
           ${this.renderFacts(r)}
@@ -353,7 +407,7 @@ const x = class x extends E {
     `;
   }
   render() {
-    const e = this.config || {}, s = B(e, "bta_"), a = s.animate && !S(), t = this.textures, r = b(e.bta_title), n = b(e.bta_desc), p = X(e), h = u(e.bta_enable_compare, !0) && t.length >= 2, m = t.length ? this.active(t) : null;
+    const e = this.config || {}, s = j(e, "bta_"), a = s.animate && !S(), t = this.textures, r = b(e.bta_title), n = b(e.bta_desc), p = W(e), h = u(e.bta_enable_compare, !0) && t.length >= 2, m = t.length ? this.active(t) : null;
     return t.length ? i`
       <section
         class=${w({ "fs-section": !0, "fs-animate": a })}
@@ -409,25 +463,25 @@ const x = class x extends E {
       </div>`;
   }
 };
-x.styles = [M, D];
-let g = x;
-$([
+k.styles = [M, X];
+let g = k;
+y([
   R({ type: Object })
 ], g.prototype, "config");
-$([
-  k()
+y([
+  x()
 ], g.prototype, "selId");
-$([
-  k()
+y([
+  x()
 ], g.prototype, "cmpA");
-$([
-  k()
+y([
+  x()
 ], g.prototype, "cmpB");
-$([
-  k()
+y([
+  x()
 ], g.prototype, "spread");
-$([
-  k()
+y([
+  x()
 ], g.prototype, "compareOpen");
 typeof g < "u" && g.registerSallaComponent("salla-beauty-texture-absorption-lab");
 export {

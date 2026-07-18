@@ -9,7 +9,3 @@ interface SallaGlobal {
 }
 
 declare const Salla: SallaGlobal | undefined;
-
-interface HTMLElementTagNameMap {
-  'salla-products-slider': HTMLElement;
-}

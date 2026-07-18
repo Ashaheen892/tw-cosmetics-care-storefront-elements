@@ -1,3 +1,9 @@
+export interface TrailStep {
+  questionKey: string;
+  questionText: string;
+  answerLabel: string;
+}
+
 export interface AssistantAnswer {
   id: string;
   label: string;

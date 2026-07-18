@@ -1,9 +1,9 @@
-import { css as P, LitElement as j, nothing as i, html as t } from "lit";
-import { property as E, state as H } from "lit/decorators.js";
-import { classMap as v } from "lit/directives/class-map.js";
-import { styleMap as $ } from "lit/directives/style-map.js";
-import { n as O, l as f, b as R, e as U, d as W, f as z, h as g, g as x, s as Y, t as d, i as m, r as q, p as V, a as X } from "./sharedStyles-cRSiglXC.js";
-const B = P`
+import { css as N, LitElement as O, nothing as o, html as t } from "lit";
+import { property as R, state as T } from "lit/decorators.js";
+import { classMap as x } from "lit/directives/class-map.js";
+import { styleMap as C } from "lit/directives/style-map.js";
+import { n as Z, l as p, b as U, e as W, d as q, f as _, h as u, g as y, s as G, j as K, k as V, t as s, i as h, r as X, p as B, a as F } from "./sharedStyles--LaFqDVC.js";
+const J = N`
   .bfz-layout {
     display: grid;
     gap: 1.5rem;
@@ -23,11 +23,16 @@ const B = P`
     }
   }
 
+  .bfz-stage-wrap {
+    position: relative;
+    max-width: 520px;
+    margin-inline: auto;
+    width: 100%;
+  }
+
   .bfz-stage {
     position: relative;
     width: 100%;
-    max-width: 520px;
-    margin-inline: auto;
     aspect-ratio: var(--bfz-aspect, 3 / 4);
     border-radius: var(--section-radius, 16px);
     overflow: hidden;
@@ -44,15 +49,39 @@ const B = P`
     display: block;
   }
 
-  .bfz-stage__empty {
+  .bfz-stage__empty,
+  .bfz-stage__missing {
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 1.5rem;
     color: var(--muted-color, #8f7a86);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    background: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--border-color, #f2dde7) 25%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--border-color, #f2dde7) 25%, var(--card-bg, #fff)) 10px,
+      color-mix(in srgb, var(--border-color, #f2dde7) 12%, var(--card-bg, #fff)) 10px,
+      color-mix(in srgb, var(--border-color, #f2dde7) 12%, var(--card-bg, #fff)) 20px
+    );
+  }
+
+  .bfz-stage__missing p {
+    margin: 0;
+    max-width: 14rem;
+    font-weight: 600;
+  }
+
+  .bfz-stage__missing-icon {
+    font-size: 2.5rem;
+    opacity: 0.35;
+    margin-bottom: 0.5rem;
+    line-height: 1;
   }
 
   .bfz-dot {
@@ -299,16 +328,105 @@ const B = P`
     line-height: 1.6;
   }
 
-  .bfz-placeholder {
-    color: var(--muted-color, #8f7a86);
-    font-size: 0.9rem;
-    text-align: center;
-    padding: 1rem;
+  .bfz-dot.is-coach-pulse {
+    animation: bfz-coach-dot 1.8s ease-in-out infinite;
   }
 
-  /* Bottom sheet on mobile */
+  @keyframes bfz-coach-dot {
+    0%, 100% { box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28), 0 0 0 0 color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 45%, transparent); }
+    50% { box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28), 0 0 0 8px color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 0%, transparent); }
+  }
+
+  .bfz-coach {
+    position: absolute;
+    inset-inline: 0;
+    bottom: -0.35rem;
+    transform: translateY(100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 12px;
+    background: var(--text-color, #33232e);
+    color: #fff;
+    font-size: 0.84rem;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(20, 14, 12, 0.22);
+    z-index: 5;
+    animation: bfz-coach-in 0.35s ease;
+  }
+
+  .bfz-coach__text {
+    margin: 0;
+  }
+
+  .bfz-coach__dismiss {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: color-mix(in srgb, #fff 18%, transparent);
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.75rem;
+  }
+
+  @keyframes bfz-coach-in {
+    from { opacity: 0; transform: translateY(calc(100% + 6px)); }
+    to { opacity: 1; transform: translateY(100%); }
+  }
+
+  .bfz-panel--empty {
+    min-height: 10rem;
+    display: grid;
+    place-items: center;
+  }
+
+  .bfz-empty-state {
+    text-align: center;
+    padding: 1.25rem 1rem;
+    max-width: 20rem;
+    margin-inline: auto;
+  }
+
+  .bfz-empty-state__icon {
+    display: block;
+    font-size: 2rem;
+    color: var(--accent-color, #c2527f);
+    opacity: 0.5;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  .bfz-empty-state__title {
+    margin: 0 0 0.4rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-color, #33232e);
+  }
+
+  .bfz-empty-state__text {
+    margin: 0;
+    font-size: 0.86rem;
+    color: var(--muted-color, #8f7a86);
+    line-height: 1.6;
+  }
+
+  .bfz-layout--sheet .bfz-sheet-close {
+    display: grid;
+  }
+
+  /* Bottom sheet on mobile; desktop keeps inline panel + empty state */
   @media (max-width: 859px) {
-    .bfz-layout--sheet .bfz-panel {
+    .bfz-layout--sheet .bfz-panel--empty {
+      display: none;
+    }
+
+    .bfz-layout--sheet .bfz-panel:not(.bfz-panel--empty) {
       position: fixed;
       inset-inline: 0;
       bottom: 0;
@@ -319,6 +437,7 @@ const B = P`
       box-shadow: 0 -12px 40px rgba(20, 14, 12, 0.28);
       animation: bfz-sheet-up 0.28s ease;
     }
+
     .bfz-sheet-backdrop {
       position: fixed;
       inset: 0;
@@ -333,140 +452,149 @@ const B = P`
     to { transform: translateY(0); }
   }
 
-  .bfz-sheet-close {
-    display: none;
-  }
-  @media (max-width: 859px) {
-    .bfz-layout--sheet .bfz-sheet-close {
-      display: grid;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .bfz-dot,
     .bfz-dot__pulse,
+    .bfz-dot.is-coach-pulse,
+    .bfz-coach,
     .bfz-panel {
       animation: none !important;
       transition: none !important;
     }
   }
-`, G = ["pulse", "ring", "number", "icon", "area", "label"];
-function y(c) {
-  const e = f(c, "");
+`, Q = ["pulse", "ring", "number", "icon", "area", "label"];
+function S(d) {
+  const e = p(d, "");
   return e ? e.split(/\r?\n|،|;|,/).map((a) => a.trim()).filter(Boolean) : [];
 }
-function J(c) {
-  return O(c).map((e, a) => {
-    const s = f(e.name), r = f(e.title) || s;
+function ee(d) {
+  return Z(d).map((e, a) => {
+    const r = p(e.name), i = p(e.title) || r;
     return {
       id: String(e.zone_id ?? "").trim() || `zone-${a + 1}`,
-      name: s,
-      x: z(g(e.x, 50), 0, 100),
-      y: z(g(e.y, 50), 0, 100),
-      dotSize: z(g(e.dot_size, 30), 12, 120),
+      name: r,
+      x: _(u(e.x, 50), 0, 100),
+      y: _(u(e.y, 50), 0, 100),
+      dotSize: _(u(e.dot_size, 30), 12, 120),
       dotColor: String(e.dot_color ?? "").trim(),
       icon: String(e.icon ?? "").trim(),
-      title: r,
-      desc: f(e.desc),
-      tags: W(e.tags),
-      steps: y(e.steps),
-      tips: y(e.tips),
-      warning: f(e.warning),
-      image: U(e.image),
-      link: R(e.link)
+      title: i,
+      desc: p(e.desc),
+      tags: q(e.tags),
+      steps: S(e.steps),
+      tips: S(e.tips),
+      warning: p(e.warning),
+      image: W(e.image),
+      link: U(e.link)
     };
   }).filter((e) => e.name || e.title || e.desc);
 }
-function K(c) {
-  const e = x(c.bfz_dot_shape, "pulse");
-  return G.includes(e) ? e : "pulse";
+function te(d) {
+  const e = y(d.bfz_dot_shape, "pulse");
+  return Q.includes(e) ? e : "pulse";
 }
-function Q(c) {
-  return x(c.bfz_detail_mode, "inline") === "sheet" ? "sheet" : "inline";
+function ae(d) {
+  return y(d.bfz_detail_mode, "inline") === "sheet" ? "sheet" : "inline";
 }
-function F(c, e = "3/4") {
-  return (x(c.bfz_aspect, e) || e).replace("/", " / ");
+function re(d, e = "3/4") {
+  return (y(d.bfz_aspect, e) || e).replace("/", " / ");
 }
-var Z = Object.defineProperty, w = (c, e, a, s) => {
-  for (var r = void 0, o = c.length - 1, n; o >= 0; o--)
-    (n = c[o]) && (r = n(e, a, r) || r);
-  return r && Z(e, a, r), r;
+var ie = Object.defineProperty, $ = (d, e, a, r) => {
+  for (var i = void 0, c = d.length - 1, n; c >= 0; c--)
+    (n = d[c]) && (i = n(e, a, i) || i);
+  return i && ie(e, a, i), i;
 };
-const _ = class _ extends j {
+const I = "tw-bfz-coach-seen", w = class w extends O {
   constructor() {
-    super(...arguments), this.config = {}, this.activeId = "", this.boundLangHandler = () => this.requestUpdate();
+    super(...arguments), this.config = {}, this.activeId = "", this.showCoach = !1, this.boundLangHandler = () => this.requestUpdate();
   }
   connectedCallback() {
-    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler);
+    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.showCoach = !K(I, !1);
   }
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
   updated(e) {
-    e.has("config") && (this.activeId = "");
+    e.has("config") && (this.activeId = this.defaultZoneId(this.zones));
+  }
+  dismissCoach() {
+    this.showCoach = !1, V(I, !0);
   }
   get zones() {
     var e;
-    return J((e = this.config) == null ? void 0 : e.bfz_zones);
+    return ee((e = this.config) == null ? void 0 : e.bfz_zones);
+  }
+  /** Merchant preset, otherwise the first zone — never leave the panel empty. */
+  defaultZoneId(e) {
+    var r, i;
+    if (!e.length) return "";
+    const a = String(((r = this.config) == null ? void 0 : r.bfz_default_zone) ?? "").trim();
+    return a && e.some((c) => c.id === a) ? a : ((i = e[0]) == null ? void 0 : i.id) ?? "";
   }
   resolveActive(e) {
-    var s;
-    if (!e.length) return null;
+    if (!e.length || this.activeId === "__none__") return null;
     if (this.activeId) {
-      const r = e.find((o) => o.id === this.activeId);
+      const r = e.find((i) => i.id === this.activeId);
       if (r) return r;
     }
-    const a = String(((s = this.config) == null ? void 0 : s.bfz_default_zone) ?? "").trim();
-    if (a) {
-      const r = e.find((o) => o.id === a);
-      if (r) return r;
-    }
-    return null;
+    const a = this.defaultZoneId(e);
+    return e.find((r) => r.id === a) ?? e[0] ?? null;
   }
   select(e) {
-    this.activeId = e;
+    this.activeId = e, this.dismissCoach();
   }
   step(e, a) {
     var n;
-    const s = this.resolveActive(e), o = ((s ? e.findIndex((l) => l.id === s.id) : -1) + a + e.length) % e.length;
-    this.activeId = ((n = e[o]) == null ? void 0 : n.id) ?? "";
+    const r = this.resolveActive(e), c = ((r ? e.findIndex((l) => l.id === r.id) : -1) + a + e.length) % e.length;
+    this.activeId = ((n = e[c]) == null ? void 0 : n.id) ?? "", this.dismissCoach();
   }
-  renderDot(e, a, s, r, o) {
-    const n = this.activeId === e.id, l = e.name || e.title, h = a === "label" || o;
+  renderDot(e, a, r, i, c, n, l) {
+    const g = l === e.id, f = e.name || e.title, v = a === "label" || c, z = r || n;
     return t`
       <button
         type="button"
-        class=${v({
+        class=${x({
       "bfz-dot": !0,
       [`bfz-dot--${a}`]: !0,
-      "is-active": n
+      "is-active": g,
+      "is-coach-pulse": n && !g
     })}
-        style=${$({
+        style=${C({
       "--dot-x": `${e.x}%`,
       "--dot-y": `${e.y}%`,
       "--dot-size": `${e.dotSize}px`,
       ...e.dotColor ? { "--dot-color": e.dotColor } : {}
     })}
-        aria-pressed=${n ? "true" : "false"}
+        aria-pressed=${g ? "true" : "false"}
         aria-controls="bfz-detail"
-        aria-label=${l}
-        title=${l}
+        aria-label=${f}
+        title=${f}
         @click=${() => this.select(e.id)}
       >
-        ${s && a === "pulse" ? t`<span class="bfz-dot__pulse"></span>` : i}
-        ${a === "number" ? t`<span>${r + 1}</span>` : a === "icon" && e.icon ? t`<span class=${e.icon.startsWith("sicon-") ? e.icon : ""}>${e.icon.startsWith("sicon-") ? "" : e.icon}</span>` : i}
-        ${h ? t`<span class="bfz-dot__label">${l}</span>` : i}
+        ${z ? t`<span class="bfz-dot__pulse" aria-hidden="true"></span>` : o}
+        ${a === "number" ? t`<span>${i + 1}</span>` : a === "icon" && e.icon ? t`<span class=${e.icon.startsWith("sicon-") ? e.icon : ""}>${e.icon.startsWith("sicon-") ? "" : e.icon}</span>` : o}
+        ${v ? t`<span class="bfz-dot__label">${f}</span>` : o}
       </button>
     `;
   }
+  renderEmptyPanel(e) {
+    return t`<div class="bfz-panel bfz-panel--empty" id="bfz-detail" role="region">
+      <div class="bfz-empty-state">
+        <span class="bfz-empty-state__icon" aria-hidden="true">◎</span>
+        <h3 class="bfz-empty-state__title">${s("اختاري منطقة", "Pick a zone")}</h3>
+        <p class="bfz-empty-state__text">
+          ${s(
+      "اضغطي على أي نقطة في الخريطة لعرض خطوات العناية والنصائح الخاصة بكل منطقة.",
+      "Tap any hotspot on the map to see care steps and tips for that zone."
+    )}
+        </p>
+      </div>
+    </div>`;
+  }
   renderDetail(e, a) {
     if (!e)
-      return t`<div class="bfz-panel">
-        <p class="bfz-placeholder">
-          ${d("اختاري منطقة من الخريطة لعرض تفاصيل العناية بها.", "Pick a zone on the map to see its care details.")}
-        </p>
-      </div>`;
-    const s = this.config || {}, r = m(s.bfz_show_nav, !0) && this.zones.length > 1, o = d("خطوات العناية", "Care steps"), n = d("نصائح", "Tips");
+      return this.renderEmptyPanel(a);
+    const r = this.config || {}, i = h(r.bfz_show_nav, !0) && this.zones.length > 1, c = s("خطوات العناية", "Care steps"), n = s("نصائح", "Tips");
     return t`
       <div class="bfz-panel" id="bfz-detail" role="region" aria-live="polite">
         <div class="bfz-panel__head">
@@ -475,95 +603,114 @@ const _ = class _ extends j {
             ${a === "sheet" ? t`<button
                   type="button"
                   class="bfz-nav__btn bfz-sheet-close"
-                  aria-label=${d("إغلاق", "Close")}
-                  @click=${() => this.activeId = ""}
-                >✕</button>` : i}
-            ${r ? t`
-                  <button type="button" class="bfz-nav__btn" aria-label=${d("السابق", "Previous")} @click=${() => this.step(this.zones, -1)}>‹</button>
-                  <button type="button" class="bfz-nav__btn" aria-label=${d("التالي", "Next")} @click=${() => this.step(this.zones, 1)}>›</button>
-                ` : i}
+                  aria-label=${s("إغلاق", "Close")}
+                  @click=${() => this.activeId = "__none__"}
+                >✕</button>` : o}
+            ${i ? t`
+                  <button type="button" class="bfz-nav__btn" aria-label=${s("السابق", "Previous")} @click=${() => this.step(this.zones, -1)}>‹</button>
+                  <button type="button" class="bfz-nav__btn" aria-label=${s("التالي", "Next")} @click=${() => this.step(this.zones, 1)}>›</button>
+                ` : o}
           </div>
         </div>
 
-        ${e.image ? t`<img class="bfz-panel__img" src=${e.image} alt="" loading="lazy" decoding="async" />` : i}
-        ${e.desc ? t`<p class="bfz-panel__desc">${e.desc}</p>` : i}
+        ${e.image ? t`<img class="bfz-panel__img" src=${e.image} alt="" loading="lazy" decoding="async" />` : o}
+        ${e.desc ? t`<p class="bfz-panel__desc">${e.desc}</p>` : o}
 
-        ${e.tags.length ? t`<div class="bfz-tags">${e.tags.map((l) => t`<span class="bfz-tag">${l}</span>`)}</div>` : i}
+        ${e.tags.length ? t`<div class="bfz-tags">${e.tags.map((l) => t`<span class="bfz-tag">${l}</span>`)}</div>` : o}
 
         ${e.steps.length ? t`<div class="bfz-block">
-              <h4 class="bfz-block__title">${o}</h4>
+              <h4 class="bfz-block__title">${c}</h4>
               <ol class="bfz-steps">${e.steps.map((l) => t`<li>${l}</li>`)}</ol>
-            </div>` : i}
+            </div>` : o}
 
         ${e.tips.length ? t`<div class="bfz-block">
               <h4 class="bfz-block__title">${n}</h4>
               <ul class="bfz-tips">${e.tips.map((l) => t`<li>${l}</li>`)}</ul>
-            </div>` : i}
+            </div>` : o}
 
-        ${e.warning ? t`<div class="bfz-warn"><span>⚠︎</span><span>${e.warning}</span></div>` : i}
+        ${e.warning ? t`<div class="bfz-warn"><span aria-hidden="true">⚠︎</span><span>${e.warning}</span></div>` : o}
 
         ${e.link ? t`<a class="fs-btn" href=${e.link} target="_blank" rel="noopener noreferrer">
-              ${d("اقرئي المزيد", "Read more")}
-            </a>` : i}
+              ${s("اقرئي المزيد", "Read more")}
+            </a>` : o}
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, a = q(e, "bfz_"), s = a.animate && !V(), r = this.zones, o = f(e.bfz_face_image), n = f(e.bfz_title), l = f(e.bfz_desc), h = K(e), b = Q(e), k = m(e.bfz_pulse, !0) && s, S = Math.max(600, g(e.bfz_pulse_speed, 2200)), C = m(e.bfz_reverse, !1), I = m(e.bfz_show_names, !1), L = F(e), u = this.resolveActive(r), T = m(e.bfz_show_notice, !0), D = f(e.bfz_notice) || d("المعلومات المعروضة توعوية ولا تُعد تشخيصًا طبيًا.", "The information shown is educational and is not a medical diagnosis.");
-    if (!r.length)
+    const e = this.config || {}, a = X(e, "bfz_"), r = a.animate && !B(), i = this.zones, c = p(e.bfz_face_image), n = p(e.bfz_title), l = p(e.bfz_desc), g = te(e), f = ae(e), v = h(e.bfz_pulse, !0) && r, z = Math.max(600, u(e.bfz_pulse_speed, 2200)), L = h(e.bfz_reverse, !1), A = h(e.bfz_show_names, !1), D = re(e), b = this.resolveActive(i), j = h(e.bfz_show_notice, !0), E = p(e.bfz_notice) || s("المعلومات المعروضة توعوية ولا تُعد تشخيصًا طبيًا.", "The information shown is educational and is not a medical diagnosis."), P = (b == null ? void 0 : b.id) ?? "", k = this.showCoach && !b;
+    if (!i.length)
       return t`<div class="fs-empty" role="status">
-        ${d("أضيفي مناطق الوجه من إعدادات العنصر لعرض الخريطة التفاعلية.", "Add face zones in the element settings to show the interactive map.")}
+        ${s("أضيفي مناطق الوجه من إعدادات العنصر لعرض الخريطة التفاعلية.", "Add face zones in the element settings to show the interactive map.")}
       </div>`;
-    const A = b === "sheet" && !!u;
+    const M = f === "sheet" && !!b;
     return t`
       <section
-        class=${v({ "fs-section": !0, "fs-animate": s })}
-        style=${$({
-      ...X(a),
-      "--bfz-aspect": L,
-      "--bfz-pulse-speed": `${S}ms`
+        class=${x({ "fs-section": !0, "fs-animate": r })}
+        style=${C({
+      ...F(a),
+      "--bfz-aspect": D,
+      "--bfz-pulse-speed": `${z}ms`
     })}
-        aria-label=${n || d("خريطة مناطق الوجه والعناية", "Face care zone map")}
+        aria-label=${n || s("خريطة مناطق الوجه والعناية", "Face care zone map")}
       >
         <div class="fs-container">
           ${n || l ? t`<div class="fs-header">
-                ${n ? t`<h2 class="fs-title">${n}</h2>` : i}
-                ${l ? t`<p class="fs-desc">${l}</p>` : i}
-              </div>` : i}
+                ${n ? t`<h2 class="fs-title">${n}</h2>` : o}
+                ${l ? t`<p class="fs-desc">${l}</p>` : o}
+              </div>` : o}
 
           <div
-            class=${v({
+            class=${x({
       "bfz-layout": !0,
-      "bfz-layout--reverse": C,
-      "bfz-layout--sheet": b === "sheet"
+      "bfz-layout--reverse": L,
+      "bfz-layout--sheet": f === "sheet"
     })}
           >
-            <div class="bfz-stage">
-              ${o ? t`<img class="bfz-stage__img" src=${o} alt="" loading="lazy" decoding="async" />` : t`<div class="bfz-stage__empty">${d("أضيفي صورة وجه من الإعدادات", "Add a face image in settings")}</div>`}
-              ${r.map((M, N) => this.renderDot(M, h, k, N, I))}
+            <div class="bfz-stage-wrap">
+              <div class="bfz-stage">
+                ${c ? t`<img class="bfz-stage__img" src=${c} alt="" loading="lazy" decoding="async" />` : t`<div class="bfz-stage__missing" role="img" aria-label=${s("صورة وجه غير متوفرة", "Face image not available")}>
+                      <span class="bfz-stage__missing-icon" aria-hidden="true">👤</span>
+                      <p>${s("أضيفي صورة وجه من الإعدادات", "Add a face image in settings")}</p>
+                    </div>`}
+                ${i.map(
+      (Y, H) => this.renderDot(Y, g, v, H, A, k && r, P)
+    )}
+              </div>
+
+              ${k ? t`<div class="bfz-coach" role="status">
+                    <p class="bfz-coach__text">${s("اضغطي على منطقة في الخريطة", "Tap a zone on the map")}</p>
+                    <button type="button" class="bfz-coach__dismiss" aria-label=${s("إخفاء", "Dismiss")} @click=${() => this.dismissCoach()}>✕</button>
+                  </div>` : o}
             </div>
 
-            ${b === "sheet" ? A ? t`
-                    <button class="bfz-sheet-backdrop" aria-label=${d("إغلاق", "Close")} @click=${() => this.activeId = ""}></button>
-                    ${this.renderDetail(u, b)}
-                  ` : i : this.renderDetail(u, b)}
+            ${f === "sheet" ? t`
+                  ${M ? t`<button
+                        class="bfz-sheet-backdrop"
+                        aria-label=${s("إغلاق", "Close")}
+                        @click=${() => this.activeId = "__none__"}
+                      ></button>` : o}
+                  ${this.renderDetail(b, f)}
+                ` : this.renderDetail(b, f)}
           </div>
 
-          ${T ? t`<p class="bfz-notice">${D}</p>` : i}
+          ${j ? t`<p class="bfz-notice">${E}</p>` : o}
         </div>
       </section>
     `;
   }
 };
-_.styles = [Y, B];
-let p = _;
-w([
-  E({ type: Object })
-], p.prototype, "config");
-w([
-  H()
-], p.prototype, "activeId");
-typeof p < "u" && p.registerSallaComponent("salla-beauty-face-zone-map");
+w.styles = [G, J];
+let m = w;
+$([
+  R({ type: Object })
+], m.prototype, "config");
+$([
+  T()
+], m.prototype, "activeId");
+$([
+  T()
+], m.prototype, "showCoach");
+typeof m < "u" && m.registerSallaComponent("salla-beauty-face-zone-map");
 export {
-  p as default
+  m as default
 };

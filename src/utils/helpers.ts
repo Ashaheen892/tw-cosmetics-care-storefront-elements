@@ -1,4 +1,8 @@
-import { localizedString, type LocaleValue } from './localizedString.js';
+import {
+  getPageLocale,
+  localizedString,
+  type LocaleValue,
+} from './localizedString.js';
 
 export type ConfigValue = Record<string, unknown> | null | undefined;
 
@@ -201,12 +205,9 @@ export function t(
     const localized = localizedString(value, '');
     if (localized) return localized;
   }
-  const locale = (
-    typeof document !== 'undefined'
-      ? document.documentElement.lang?.split(/[-_]/)[0]
-      : 'ar'
-  )?.toLowerCase();
-  if (locale === 'en') return en;
+  // Prefer merchant-provided value; chrome fallbacks follow storefront locale
+  // (Salla.lang → html lang → ar), same as the reference bundle.
+  if (getPageLocale() === 'en') return en;
   return fallbackAr || ar;
 }
 

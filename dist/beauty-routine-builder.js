@@ -1,11 +1,13 @@
-import { css as z, LitElement as S, html as n, nothing as c } from "lit";
-import { property as E, state as k } from "lit/decorators.js";
-import { classMap as _ } from "lit/directives/class-map.js";
-import { styleMap as C } from "lit/directives/style-map.js";
-import { n as L, l, b as M, e as A, h as O, g as x, s as q, t as o, r as j, p as K, i as N, a as Q } from "./sharedStyles-cRSiglXC.js";
-const D = z`
+import { css as w, LitElement as E, html as n, nothing as c } from "lit";
+import { property as I, state as g } from "lit/decorators.js";
+import { classMap as v } from "lit/directives/class-map.js";
+import { styleMap as x } from "lit/directives/style-map.js";
+import { n as S, l as b, b as z, e as L, h as C, g as k, s as M, t as o, i as R, r as q, p as K, a as N } from "./sharedStyles--LaFqDVC.js";
+const A = w`
   :host {
+    display: block;
     direction: inherit;
+    width: 100%;
   }
 
   .brb-shell {
@@ -28,26 +30,63 @@ const D = z`
     position: relative;
     z-index: 1;
     display: grid;
-    gap: 1.4rem;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+    padding: 1.15rem;
+    box-sizing: border-box;
   }
 
-  .brb-quiz {
+  .brb-inner:has(.brb-results) {
+    max-width: 880px;
+  }
+
+  .brb-progress {
     display: grid;
-    gap: 1rem;
-    padding: 1.15rem;
+    gap: 0.45rem;
+  }
+
+  .brb-progress__bar {
+    height: 6px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    overflow: hidden;
+  }
+
+  .brb-progress__bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+    );
+    transition: width 0.25s ease;
+  }
+
+  .brb-progress__text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .brb-question {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.15rem 1.2rem;
     border-radius: var(--section-radius, 16px);
     background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, #fbf5f8));
     border: 1px solid var(--border-color, #f2dde7);
+    box-shadow: 0 8px 24px rgba(194, 82, 127, 0.06);
   }
 
-  .brb-q {
-    display: grid;
-    gap: 0.5rem;
-  }
-
-  .brb-q__label {
-    font-weight: 700;
-    font-size: 0.92rem;
+  .brb-question__title {
+    margin: 0;
+    font-size: 1.12rem;
+    font-weight: 800;
+    line-height: 1.35;
     color: var(--text-color, #33232e);
   }
 
@@ -58,26 +97,44 @@ const D = z`
   }
 
   .brb-chip {
-    min-height: 42px;
-    padding: 0.5rem 1rem;
+    min-height: 44px;
+    padding: 0.55rem 1.05rem;
     border-radius: 999px;
     border: 1px solid var(--border-color, #f2dde7);
     background: var(--card-bg, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .brb-chip:hover {
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 45%, var(--border-color, #f2dde7));
   }
 
   .brb-chip[aria-pressed='true'] {
     background: var(--accent-color, #c2527f);
     border-color: var(--accent-color, #c2527f);
     color: #fff;
+    transform: translateY(-1px);
   }
 
-  .brb-routine {
+  .brb-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .brb-nav .fs-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .brb-results {
     display: grid;
     gap: 0.9rem;
   }
@@ -93,8 +150,19 @@ const D = z`
   .brb-routine__title {
     margin: 0;
     font-size: 1.05rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text-color, #33232e);
+  }
+
+  .brb-routine__count {
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .brb-results__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
   }
 
   .brb-timeline {
@@ -168,23 +236,6 @@ const D = z`
     font-size: 0.8rem;
   }
 
-  .brb-summary {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.9rem 1.1rem;
-    border-radius: var(--section-radius, 16px);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 25%, var(--border-color, #f2dde7));
-  }
-
-  .brb-summary__total {
-    font-weight: 800;
-    color: var(--text-color, #33232e);
-  }
-
   .brb-card--sharp {
     --card-radius: 4px;
   }
@@ -205,11 +256,12 @@ const D = z`
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .brb-chip {
+    .brb-chip,
+    .brb-progress__bar span {
       transition: none;
     }
   }
-`, P = [
+`, D = [
   {
     key: "skin",
     labelKey: "brb_q_skin_label",
@@ -260,113 +312,164 @@ const D = z`
     ]
   }
 ], y = { quick: 1, basic: 2, complete: 3 };
-function R() {
-  var a, e;
-  return ((e = typeof document < "u" ? (a = document.documentElement.lang) == null ? void 0 : a.split(/[-_]/)[0] : "ar") == null ? void 0 : e.toLowerCase()) === "en";
+function O() {
+  var i, e;
+  return ((e = typeof document < "u" ? (i = document.documentElement.lang) == null ? void 0 : i.split(/[-_]/)[0] : "ar") == null ? void 0 : e.toLowerCase()) === "en";
 }
-function U(a) {
-  const e = R();
-  return P.map((r) => {
-    const t = l(a[r.labelKey]) || (e ? r.labelEn : r.labelAr), s = r.options.map((i) => ({
-      value: i.value,
-      label: e ? i.en : i.ar
+function Q(i) {
+  const e = O();
+  return D.map((t) => {
+    const r = b(i[t.labelKey]) || (e ? t.labelEn : t.labelAr), s = t.options.map((a) => ({
+      value: a.value,
+      label: e ? a.en : a.ar
     }));
-    return { key: r.key, label: t, options: s };
+    return { key: t.key, label: r, options: s };
   });
 }
-function u(a, e) {
-  const r = a[e] ?? a[`brb_steps.${e}`];
-  return x(r, "").toLowerCase().trim();
+function u(i, e) {
+  const t = i[e] ?? i[`brb_steps.${e}`];
+  return k(t, "").toLowerCase().trim();
 }
-function H(a) {
-  return L(a).map((e, r) => {
-    const t = l(e.step_name) || "";
+function j(i) {
+  return S(i).map((e, t) => {
+    const r = b(e.step_name) || "";
     return {
-      id: `step-${r}`,
-      step_name: t,
-      step_desc: l(e.step_desc),
-      order: O(e.order, r + 1),
+      id: `step-${t}`,
+      step_name: r,
+      step_desc: b(e.step_desc),
+      order: C(e.order, t + 1),
       level: u(e, "level") || "quick",
       skin: u(e, "skin"),
       concern: u(e, "concern"),
       time: u(e, "time"),
-      image: A(e.image),
-      name: t,
-      link: M(e.link ?? e["brb_steps.link"])
+      image: L(e.image),
+      name: r,
+      link: z(e.link ?? e["brb_steps.link"])
     };
   }).filter((e) => e.step_name || e.step_desc);
 }
-function I(a, e) {
-  return !a || !e || a === "both" || e === "both" ? !0 : a === e;
+function B(i, e) {
+  return !i || !e || i === "both" || e === "both" ? !0 : i === e;
 }
-function V(a, e) {
-  const r = e.routine ? y[e.routine] ?? 3 : 3;
-  return a.filter((t) => {
-    const s = (y[t.level] ?? 1) <= r, i = !e.skin || !t.skin || t.skin === e.skin, d = !e.concern || !t.concern || t.concern === e.concern, p = I(t.time, e.time);
-    return s && i && d && p;
-  }).sort((t, s) => t.order - s.order);
+function H(i, e) {
+  const t = e.routine ? y[e.routine] ?? 3 : 3;
+  return i.filter((r) => {
+    const s = (y[r.level] ?? 1) <= t, a = !e.skin || !r.skin || r.skin === e.skin, l = !e.concern || !r.concern || r.concern === e.concern, p = B(r.time, e.time);
+    return s && a && l && p;
+  }).sort((r, s) => r.order - s.order);
 }
-var F = Object.defineProperty, g = (a, e, r, t) => {
-  for (var s = void 0, i = a.length - 1, d; i >= 0; i--)
-    (d = a[i]) && (s = d(e, r, s) || s);
-  return s && F(e, r, s), s;
+var P = Object.defineProperty, h = (i, e, t, r) => {
+  for (var s = void 0, a = i.length - 1, l; a >= 0; a--)
+    (l = i[a]) && (s = l(e, t, s) || s);
+  return s && P(e, t, s), s;
 };
-const f = class f extends S {
+const f = class f extends E {
   constructor() {
-    super(...arguments), this.config = {}, this.answers = {}, this.steps = [], this.boundLangHandler = () => this.requestUpdate();
+    super(...arguments), this.config = {}, this.answers = {}, this.steps = [], this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate(), this.boundKeyHandler = (e) => this.onKeyDown(e);
   }
   connectedCallback() {
-    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.load();
+    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.addEventListener("keydown", this.boundKeyHandler), this.load();
   }
   disconnectedCallback() {
-    window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
+    window.removeEventListener("language-changed", this.boundLangHandler), this.removeEventListener("keydown", this.boundKeyHandler), super.disconnectedCallback();
   }
   updated(e) {
     e.has("config") && this.load();
   }
   load() {
     var e;
-    this.steps = H((e = this.config) == null ? void 0 : e.brb_steps);
+    this.steps = j((e = this.config) == null ? void 0 : e.brb_steps);
+  }
+  get questions() {
+    return Q(this.config || {});
+  }
+  get onResults() {
+    return this.stepIndex >= this.questions.length;
   }
   get routine() {
-    return V(this.steps, this.answers);
+    return H(this.steps, this.answers);
   }
-  pick(e, r) {
-    const t = { ...this.answers };
-    t[e] === r ? delete t[e] : t[e] = r, this.answers = t;
+  label(e, t, r) {
+    var s;
+    return b((s = this.config) == null ? void 0 : s[e]) || o(t, r);
+  }
+  pick(e, t) {
+    this.answers = { ...this.answers, [e]: t };
+  }
+  goNext() {
+    const e = this.questions.length;
+    this.stepIndex < e && (this.stepIndex += 1);
+  }
+  goBack() {
+    this.stepIndex > 0 && (this.stepIndex -= 1);
   }
   reset() {
-    this.answers = {};
+    this.answers = {}, this.stepIndex = 0;
+  }
+  onKeyDown(e) {
+    const t = e.target;
+    if (t != null && t.closest("button, a, input, textarea, select")) return;
+    const r = this.questions[this.stepIndex], s = r ? !!this.answers[r.key] : !1;
+    e.key === "Enter" && !this.onResults && s && (e.preventDefault(), this.goNext()), e.key === "Backspace" && this.stepIndex > 0 && !this.onResults && (e.preventDefault(), this.goBack());
+  }
+  renderProgress(e) {
+    const t = Math.min(this.stepIndex + 1, e), r = e ? Math.round(Math.min(this.stepIndex, e) / e * 100) : 0;
+    return n`
+      <div class="brb-progress" aria-hidden="true">
+        <div class="brb-progress__bar"><span style=${x({ width: `${r}%` })}></span></div>
+        <span class="brb-progress__text">
+          ${this.onResults ? o("النتيجة", "Result") : o(`السؤال ${t} من ${e}`, `Question ${t} of ${e}`)}
+        </span>
+      </div>
+    `;
   }
   renderQuestion(e) {
     return n`
-      <div class="brb-q">
-        <span class="brb-q__label">${e.label}</span>
+      <div class="brb-question">
+        <h3 class="brb-question__title">${e.label}</h3>
         <div class="brb-chips" role="group" aria-label=${e.label}>
-          ${e.options.map((r) => {
-      const t = this.answers[e.key] === r.value;
+          ${e.options.map((t) => {
+      const r = this.answers[e.key] === t.value;
       return n`<button
               type="button"
               class="brb-chip"
-              aria-pressed=${t ? "true" : "false"}
-              @click=${() => this.pick(e.key, r.value)}
+              aria-pressed=${r ? "true" : "false"}
+              @click=${() => this.pick(e.key, t.value)}
             >
-              ${r.label}
+              ${t.label}
             </button>`;
     })}
         </div>
       </div>
     `;
   }
-  renderStep(e, r, t) {
+  renderNav(e) {
+    const t = this.label("brb_back_btn", "السابق", "Back"), r = this.label("brb_next_btn", "التالي", "Next"), s = this.label("brb_see_btn", "عرض الروتين", "See routine"), a = this.stepIndex === this.questions.length - 1;
+    return n`
+      <div class="brb-nav">
+        ${this.stepIndex > 0 ? n`<button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
+              ${t}
+            </button>` : n`<span></span>`}
+        <button
+          type="button"
+          class="fs-btn fs-tap"
+          ?disabled=${!e}
+          @click=${() => this.goNext()}
+        >
+          ${a ? s : r}
+        </button>
+      </div>
+    `;
+  }
+  renderStep(e, t, r) {
     return n`
       <div class="brb-step" role="listitem">
-        <span class="brb-step__num" aria-hidden="true">${r + 1}</span>
+        <span class="brb-step__num" aria-hidden="true">${t + 1}</span>
         ${e.image ? n`<img class="brb-step__thumb" src=${e.image} alt="" loading="lazy" decoding="async" />` : n`<span class="brb-step__thumb" aria-hidden="true"></span>`}
         <div class="brb-step__body">
           <h4 class="brb-step__name">${e.step_name || e.name || o("خطوة", "Step")}</h4>
           ${e.step_desc ? n`<p class="brb-step__desc">${e.step_desc}</p>` : c}
-          ${t && e.link ? n`<div class="brb-step__actions">
+          ${r && e.link ? n`<div class="brb-step__actions">
                 <a class="fs-btn fs-btn--ghost" href=${e.link} target="_blank" rel="noopener noreferrer">
                   ${o("التفاصيل", "Details")}
                 </a>
@@ -375,51 +478,61 @@ const f = class f extends S {
       </div>
     `;
   }
+  renderResults() {
+    const e = this.config || {}, t = this.routine, r = R(e.brb_show_link, !0), s = b(e.brb_result_title) || o("روتينك المقترح", "Your suggested routine");
+    return n`
+      <div class="brb-results" aria-live="polite">
+        <div class="brb-routine__head">
+          <h3 class="brb-routine__title">
+            ${s}
+            ${t.length ? n`<span class="brb-routine__count"> · ${t.length} ${o("خطوات", "steps")}</span>` : c}
+          </h3>
+        </div>
+
+        ${t.length ? n`<div class="brb-timeline" role="list">
+              ${t.map((a, l) => this.renderStep(a, l, r))}
+            </div>` : n`<p class="fs-empty">${o("لا توجد خطوات مطابقة لاختياراتك", "No steps match your choices")}</p>`}
+
+        <div class="brb-results__actions">
+          <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
+            ${this.label("brb_back_btn", "تعديل الإجابات", "Edit answers")}
+          </button>
+          <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
+            ${b(e.brb_reset_btn) || o("إعادة الاختيار", "Start over")}
+          </button>
+        </div>
+      </div>
+    `;
+  }
   render() {
-    const e = this.config || {}, r = j(e, "brb_"), t = r.animate && !K(), s = l(e.brb_title), i = l(e.brb_desc), d = U(e), p = this.routine, $ = N(e.brb_show_link, !0), h = x(e.brb_card_shape, "soft"), v = l(e.brb_bg_image);
+    const e = this.config || {}, t = q(e, "brb_"), r = t.animate && !K(), s = b(e.brb_title), a = b(e.brb_desc), l = this.questions, p = l[this.stepIndex], $ = p ? !!this.answers[p.key] : !1, m = k(e.brb_card_shape, "soft"), _ = b(e.brb_bg_image);
     return this.steps.length ? n`
       <section
-        class=${_({ "fs-section": !0, "fs-animate": t })}
-        style=${C(Q(r))}
+        class=${v({ "fs-section": !0, "fs-animate": r })}
+        style=${x(N(t))}
         aria-label=${s || o("منشئ روتين العناية", "Beauty routine builder")}
+        tabindex="0"
       >
         <div class="fs-container">
-          ${s || i ? n`<div class="fs-header">
+          ${s || a ? n`<div class="fs-header">
                 ${s ? n`<h2 class="fs-title">${s}</h2>` : c}
-                ${i ? n`<p class="fs-desc">${i}</p>` : c}
+                ${a ? n`<p class="fs-desc">${a}</p>` : c}
               </div>` : c}
 
           <div
-            class=${_({
+            class=${v({
       "brb-shell": !0,
-      "brb-card--sharp": h === "sharp",
-      "brb-card--pill": h === "pill"
+      "brb-card--sharp": m === "sharp",
+      "brb-card--pill": m === "pill"
     })}
           >
-            ${v ? n`<img class="brb-shell__bg" src=${v} alt="" loading="lazy" decoding="async" />` : c}
+            ${_ ? n`<img class="brb-shell__bg" src=${_} alt="" loading="lazy" decoding="async" />` : c}
             <div class="brb-inner">
-              <div class="brb-quiz">
-                ${d.map((m) => this.renderQuestion(m))}
-              </div>
-
-              <div class="brb-routine">
-                <div class="brb-routine__head">
-                  <h3 class="brb-routine__title">
-                    ${l(e.brb_result_title) || o("روتينك المقترح", "Your suggested routine")}
-                  </h3>
-                  <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.reset}>
-                    ${l(e.brb_reset_btn) || o("إعادة الاختيار", "Start over")}
-                  </button>
-                </div>
-
-                ${p.length ? n`<div class="brb-timeline" role="list">
-                      ${p.map((m, w) => this.renderStep(m, w, $))}
-                    </div>` : n`<p class="fs-empty">${o("لا توجد خطوات مطابقة لاختياراتك", "No steps match your choices")}</p>`}
-
-                ${p.length ? n`<div class="brb-summary">
-                      <span class="brb-summary__total">${p.length} ${o("خطوات", "steps")}</span>
-                    </div>` : c}
-              </div>
+              ${this.renderProgress(l.length)}
+              ${this.onResults ? this.renderResults() : n`
+                    ${p ? this.renderQuestion(p) : c}
+                    ${this.renderNav($)}
+                  `}
             </div>
           </div>
         </div>
@@ -429,18 +542,21 @@ const f = class f extends S {
       </div>`;
   }
 };
-f.styles = [q, D];
-let b = f;
-g([
-  E({ type: Object })
-], b.prototype, "config");
-g([
-  k()
-], b.prototype, "answers");
-g([
-  k()
-], b.prototype, "steps");
-typeof b < "u" && b.registerSallaComponent("salla-beauty-routine-builder");
+f.styles = [M, A];
+let d = f;
+h([
+  I({ type: Object })
+], d.prototype, "config");
+h([
+  g()
+], d.prototype, "answers");
+h([
+  g()
+], d.prototype, "steps");
+h([
+  g()
+], d.prototype, "stepIndex");
+typeof d < "u" && d.registerSallaComponent("salla-beauty-routine-builder");
 export {
-  b as default
+  d as default
 };

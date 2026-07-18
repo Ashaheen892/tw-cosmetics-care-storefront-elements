@@ -141,16 +141,26 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
     const c = this.config || {};
     const open = parseDateInput(this.openDate);
     if (!open || this.pao <= 0) {
-      return html`<div class="bpa-result">
-        <p class="bpa-notice">${t('اختاري مدة الاستخدام وتاريخ الفتح لعرض النتيجة.', 'Choose the period and open date to see the result.')}</p>
+      return html`<div class="bpa-hero bpa-hero--empty" role="status">
+        <div class="bpa-hero__placeholder">
+          <span class="bpa-hero__placeholder-icon" aria-hidden="true">◷</span>
+          <p>
+            ${t(
+              'اختاري مدة الاستخدام بعد الفتح وتاريخ فتح العبوة لعرض النتيجة فورًا.',
+              'Choose the period after opening and the open date to see the result instantly.'
+            )}
+          </p>
+        </div>
       </div>`;
     }
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (open.getTime() > today.getTime()) {
-      return html`<div class="bpa-result">
-        <div class="bpa-error">${t('تاريخ الفتح في المستقبل. اختاري تاريخًا صحيحًا.', 'The open date is in the future. Please pick a valid date.')}</div>
+      return html`<div class="bpa-hero bpa-hero--empty" role="alert">
+        <div class="bpa-error">
+          ${t('تاريخ الفتح في المستقبل. اختاري تاريخًا صحيحًا.', 'The open date is in the future. Please pick a valid date.')}
+        </div>
       </div>`;
     }
 
@@ -158,46 +168,72 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
     const result = computeExpiry(open, this.pao, warnDays);
     const fmt = resolveDateFormat(c);
     const color = this.stateColor(result.state);
-    const r = 80;
+    const r = 92;
     const circ = 2 * Math.PI * r;
-    const ratio = result.state === 'expired' ? 1 : result.elapsedRatio;
-    const offset = circ * (1 - ratio);
-    const enableCalendar = isTruthy(c.bpa_enable_calendar, false);
+    const remainingRatio =
+      result.state === 'expired'
+        ? 0
+        : Math.max(0, Math.min(1, result.daysRemaining / Math.max(1, result.totalDays)));
+    const offset = circ * (1 - remainingRatio);
+    const enableCalendar = isTruthy(c.bpa_enable_calendar, true);
     const storageTips = localizedString(c.bpa_storage_tips as string);
     const stopSignals = localizedString(c.bpa_stop_signals as string);
     const calTitle = t('انتهاء صلاحية منتج التجميل', 'Beauty product expiry');
+    const daysAbs = Math.abs(result.daysRemaining);
 
-    return html`<div class="bpa-result" style=${styleMap({ '--bpa-color': color })}>
-      <div class="bpa-dial" role="img" aria-label=${this.stateLabel(result.state, Math.max(0, result.daysRemaining))}>
-        <svg viewBox="0 0 190 190">
-          <circle class="bpa-dial__track" cx="95" cy="95" r=${r}></circle>
+    return html`<div
+      class="bpa-hero bpa-hero--${result.state}"
+      style=${styleMap({ '--bpa-color': color })}
+    >
+      <div
+        class="bpa-dial"
+        role="img"
+        aria-label=${this.stateLabel(result.state, Math.max(0, result.daysRemaining))}
+      >
+        <svg viewBox="0 0 210 210" aria-hidden="true">
+          <circle class="bpa-dial__track" cx="105" cy="105" r=${r}></circle>
           <circle
             class="bpa-dial__value"
-            cx="95" cy="95" r=${r}
+            cx="105"
+            cy="105"
+            r=${r}
             style=${styleMap({ strokeDasharray: `${circ}`, strokeDashoffset: `${offset}` })}
           ></circle>
         </svg>
         <div class="bpa-dial__center">
-          <div>
-            <div class="bpa-dial__days">${Math.abs(result.daysRemaining)}</div>
-            <div class="bpa-dial__unit">${result.daysRemaining >= 0 ? t('يوم متبقٍ', 'days left') : t('يوم مضى', 'days over')}</div>
+          <div class="bpa-dial__days">${daysAbs}</div>
+          <div class="bpa-dial__unit">
+            ${result.daysRemaining >= 0 ? t('يوم متبقٍ', 'days left') : t('يوم مضى', 'days over')}
           </div>
         </div>
       </div>
 
-      <span class="bpa-state">${this.stateLabel(result.state, Math.max(0, result.daysRemaining))}</span>
+      <span class="bpa-state bpa-state--${result.state}">${this.stateLabel(result.state, Math.max(0, result.daysRemaining))}</span>
 
       <div class="bpa-dates">
-        <div class="bpa-date-cell"><span>${t('تاريخ الفتح', 'Opened')}</span><b>${formatDate(open, fmt, this.locale)}</b></div>
-        <div class="bpa-date-cell"><span>${t('المدة', 'Period')}</span><b>${t(`${this.pao} شهرًا`, `${this.pao} months`)}</b></div>
-        <div class="bpa-date-cell"><span>${t('ينتهي تقريبًا', 'Approx. end')}</span><b>${formatDate(result.expiry, fmt, this.locale)}</b></div>
+        <div class="bpa-date-cell">
+          <span>${t('تاريخ الفتح', 'Opened')}</span>
+          <b>${formatDate(open, fmt, this.locale)}</b>
+        </div>
+        <div class="bpa-date-cell">
+          <span>${t('المدة', 'Period')}</span>
+          <b>${t(`${this.pao} شهرًا`, `${this.pao} months`)}</b>
+        </div>
+        <div class="bpa-date-cell">
+          <span>${t('ينتهي تقريبًا', 'Approx. end')}</span>
+          <b>${formatDate(result.expiry, fmt, this.locale)}</b>
+        </div>
       </div>
 
-      ${storageTips
-        ? html`<div class="bpa-tips"><h4>${t('نصائح الحفظ', 'Storage tips')}</h4><p>${storageTips}</p></div>`
-        : nothing}
-      ${stopSignals
-        ? html`<div class="bpa-tips"><h4>${t('متى تتوقفين عن الاستخدام', 'When to stop using')}</h4><p>${stopSignals}</p></div>`
+      ${storageTips || stopSignals
+        ? html`<div class="bpa-tips-grid">
+            ${storageTips
+              ? html`<div class="bpa-tips"><h4>${t('نصائح الحفظ', 'Storage tips')}</h4><p>${storageTips}</p></div>`
+              : nothing}
+            ${stopSignals
+              ? html`<div class="bpa-tips"><h4>${t('متى تتوقفين', 'When to stop')}</h4><p>${stopSignals}</p></div>`
+              : nothing}
+          </div>`
         : nothing}
 
       <div class="bpa-result-actions">
@@ -217,6 +253,8 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
     const c = this.config || {};
     if (!isTruthy(c.bpa_enable_storage, true)) return nothing;
     const fmt = resolveDateFormat(c);
+    const warnDays = Math.max(1, toNumber(c.bpa_warn_days, 30));
+
     return html`<div class="bpa-saved">
       <div class="bpa-saved__head">
         <h3 class="bpa-saved__title">${t('عبواتي المحفوظة', 'My saved products')}</h3>
@@ -226,37 +264,62 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
       </div>
       <p class="bpa-saved__note">${t('البيانات محفوظة على جهازك فقط ولا تُرسل إلى أي خادم.', 'Data is stored on your device only and never sent to any server.')}</p>
       ${this.records.length
-        ? this.records.map((rec) => {
-            const open = parseDateInput(rec.open);
-            const warnDays = Math.max(1, toNumber(c.bpa_warn_days, 30));
-            const res = open ? computeExpiry(open, rec.pao, warnDays) : null;
-            const color = res ? this.stateColor(res.state) : 'var(--muted-color)';
-            return html`<div class="bpa-record">
-              <span class="bpa-record__dot" style=${styleMap({ background: color })}></span>
-              <div class="bpa-record__info">
-                ${this.editingId === rec.id
-                  ? html`<input
-                      class="bpa-record__edit"
-                      .value=${rec.name}
-                      aria-label=${t('اسم العبوة', 'Product name')}
-                      @change=${(e: Event) => {
-                        this.renameRecord(rec.id, (e.target as HTMLInputElement).value);
-                        this.editingId = '';
-                      }}
-                    />`
-                  : html`<div class="bpa-record__name">${rec.name}</div>`}
-                <div class="bpa-record__meta">
-                  ${res && open
-                    ? t(`ينتهي ${formatDate(res.expiry, fmt, this.locale)}`, `Ends ${formatDate(res.expiry, fmt, this.locale)}`)
-                    : ''}
-                  ${rec.note ? html` · ${rec.note}` : nothing}
+        ? html`<div class="bpa-records">
+            ${this.records.map((rec) => {
+              const open = parseDateInput(rec.open);
+              const res = open ? computeExpiry(open, rec.pao, warnDays) : null;
+              const color = res ? this.stateColor(res.state) : 'var(--muted-color)';
+              const stateClass = res?.state ?? 'unknown';
+              const daysLabel = res
+                ? res.daysRemaining >= 0
+                  ? t(`${res.daysRemaining} يوم`, `${res.daysRemaining} days`)
+                  : t(`منتهٍ ${Math.abs(res.daysRemaining)} يوم`, `Expired ${Math.abs(res.daysRemaining)}d ago`)
+                : '';
+              return html`<article
+                class="bpa-record bpa-record--${stateClass}"
+                style=${styleMap({ '--rec-color': color })}
+              >
+                <div class="bpa-record__status" aria-hidden="true">
+                  <span class="bpa-record__ring"></span>
+                  ${res ? html`<span class="bpa-record__days">${Math.abs(res.daysRemaining)}</span>` : nothing}
                 </div>
-              </div>
-              <button type="button" class="bpa-icon-btn" aria-label=${t('تعديل الاسم', 'Rename')} @click=${() => (this.editingId = this.editingId === rec.id ? '' : rec.id)}>✎</button>
-              <button type="button" class="bpa-icon-btn" aria-label=${t('حذف', 'Delete')} @click=${() => this.deleteRecord(rec.id)}>🗑</button>
-            </div>`;
-          })
-        : html`<p class="bpa-saved__note">${t('لا توجد عبوات محفوظة بعد.', 'No saved products yet.')}</p>`}
+                <div class="bpa-record__body">
+                  ${this.editingId === rec.id
+                    ? html`<input
+                        class="bpa-record__edit"
+                        .value=${rec.name}
+                        aria-label=${t('اسم العبوة', 'Product name')}
+                        @change=${(e: Event) => {
+                          this.renameRecord(rec.id, (e.target as HTMLInputElement).value);
+                          this.editingId = '';
+                        }}
+                      />`
+                    : html`<div class="bpa-record__name">${rec.name}</div>`}
+                  <div class="bpa-record__meta">
+                    ${res && open
+                      ? html`<span class="bpa-record__pill bpa-record__pill--${stateClass}">
+                          ${res.state === 'expired'
+                            ? t('منتهٍ', 'Expired')
+                            : res.state === 'warn'
+                              ? t('قرب الانتهاء', 'Ending soon')
+                              : t('صالح', 'Good')}
+                        </span>`
+                      : nothing}
+                    ${daysLabel ? html`<span>${daysLabel}</span>` : nothing}
+                    ${res && open
+                      ? html`<span>· ${t('ينتهي', 'Ends')} ${formatDate(res.expiry, fmt, this.locale)}</span>`
+                      : nothing}
+                  </div>
+                  ${rec.note ? html`<p class="bpa-record__note">${rec.note}</p>` : nothing}
+                </div>
+                <div class="bpa-record__actions">
+                  <button type="button" class="bpa-icon-btn" aria-label=${t('تعديل الاسم', 'Rename')} @click=${() => (this.editingId = this.editingId === rec.id ? '' : rec.id)}>✎</button>
+                  <button type="button" class="bpa-icon-btn" aria-label=${t('حذف', 'Delete')} @click=${() => this.deleteRecord(rec.id)}>🗑</button>
+                </div>
+              </article>`;
+            })}
+          </div>`
+        : html`<div class="bpa-saved__empty">${t('لا توجد عبوات محفوظة بعد.', 'No saved products yet.')}</div>`}
     </div>`;
   }
 
@@ -274,7 +337,7 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
         'النتيجة تقديرية وتعتمد على تاريخ الفتح والمدة المكتوبة على العبوة. اتبعي تعليمات الشركة المصنّعة وتوقّفي عن الاستخدام عند تغيّر الرائحة أو اللون أو القوام.',
         'The result is approximate and based on the open date and the period printed on the packaging. Follow the manufacturer instructions and stop using if the smell, color or texture changes.'
       );
-    const showCategories = (inputMode === 'category' || categories.length > 0) && categories.length > 0;
+    const showCategories = inputMode === 'category' && categories.length > 0;
 
     return html`
       <section
@@ -290,76 +353,112 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
               </div>`
             : nothing}
 
-          <div class="bpa-grid">
-            <div class="bpa-form">
-              ${showCategories
-                ? html`<div class="bpa-field">
-                    <label for="bpa-cat">${t('فئة المستحضر', 'Product category')}</label>
-                    <select
-                      id="bpa-cat"
-                      class="bpa-select"
-                      @change=${(e: Event) => {
-                        const id = (e.target as HTMLSelectElement).value;
-                        const cat = categories.find((x) => x.id === id);
-                        this.onCategory(id, cat?.paoMonths ?? 0);
-                      }}
-                    >
-                      <option value="">${t('اختياري — اختاري الفئة', 'Optional — choose a category')}</option>
-                      ${categories.map((cat) => html`<option value=${cat.id} ?selected=${cat.id === this.catId}>${cat.name}${cat.paoMonths ? ` (${cat.paoMonths}${this.locale === 'en' ? 'M' : ' شهر'})` : ''}</option>`)}
-                    </select>
-                  </div>`
-                : nothing}
+          <div class="bpa-shell">
+            <aside class="bpa-form-card">
+              <h3 class="bpa-form-card__title">${t('احسبي المدة', 'Calculate the period')}</h3>
+              <p class="bpa-form-card__hint">
+                ${t(
+                  'اختاري الفئة أو المدة، ثم حدّدي تاريخ فتح العبوة.',
+                  'Pick a category or period, then set the open date.'
+                )}
+              </p>
 
-              <div class="bpa-field">
-                <label>${t('مدة الاستخدام بعد الفتح', 'Period after opening')}</label>
-                ${paoOptions.length
-                  ? html`<div class="bpa-pao-chips">
-                      ${paoOptions.map(
-                        (opt) => html`<button
-                          type="button"
-                          class="bpa-pao-chip ${this.pao === opt.months ? 'is-active' : ''}"
-                          aria-pressed=${this.pao === opt.months ? 'true' : 'false'}
-                          @click=${() => (this.pao = opt.months)}
-                        >${paoOptionLabel(opt, this.locale)}</button>`
-                      )}
+              <div class="bpa-form">
+                ${showCategories
+                  ? html`<div class="bpa-field">
+                      <label>${t('فئة المستحضر', 'Product category')}</label>
+                      <div class="bpa-cat-chips" role="group" aria-label=${t('فئات المستحضرات', 'Product categories')}>
+                        ${categories.map((cat) => {
+                          const active = cat.id === this.catId;
+                          const isSicon = cat.icon.startsWith('sicon-');
+                          return html`<button
+                            type="button"
+                            class=${`bpa-cat-chip${active ? ' is-active' : ''}`}
+                            aria-pressed=${active ? 'true' : 'false'}
+                            @click=${() => this.onCategory(cat.id, cat.paoMonths)}
+                          >
+                            ${cat.icon
+                              ? html`<span class="bpa-cat-chip__icon" aria-hidden="true">
+                                  ${isSicon ? html`<span class=${cat.icon}></span>` : cat.icon}
+                                </span>`
+                              : nothing}
+                            <span>${cat.name}</span>
+                            ${cat.paoMonths
+                              ? html`<span class="bpa-cat-chip__months"
+                                  >${this.locale === 'en' ? `${cat.paoMonths}M` : `${cat.paoMonths} شهر`}</span
+                                >`
+                              : nothing}
+                          </button>`;
+                        })}
+                      </div>
                     </div>`
-                  : html`<input
-                      class="bpa-input"
-                      type="number"
-                      min="1"
-                      max="60"
-                      .value=${this.pao ? String(this.pao) : ''}
-                      placeholder=${t('عدد الأشهر', 'Number of months')}
-                      @input=${(e: Event) => (this.pao = Math.max(0, toNumber((e.target as HTMLInputElement).value, 0)))}
-                    />`}
+                  : nothing}
+
+                <div class="bpa-field">
+                  <label>${t('مدة الاستخدام بعد الفتح', 'Period after opening')}</label>
+                  ${paoOptions.length
+                    ? html`<div class="bpa-pao-chips" role="group" aria-label=${t('مدد الاستخدام', 'Use periods')}>
+                        ${paoOptions.map(
+                          (opt) => html`<button
+                            type="button"
+                            class=${`bpa-pao-chip${this.pao === opt.months ? ' is-active' : ''}`}
+                            aria-pressed=${this.pao === opt.months ? 'true' : 'false'}
+                            @click=${() => (this.pao = opt.months)}
+                          >
+                            ${paoOptionLabel(opt, this.locale)}
+                          </button>`
+                        )}
+                      </div>`
+                    : html`<input
+                        class="bpa-input"
+                        type="number"
+                        min="1"
+                        max="60"
+                        .value=${this.pao ? String(this.pao) : ''}
+                        placeholder=${t('عدد الأشهر', 'Number of months')}
+                        @input=${(e: Event) =>
+                          (this.pao = Math.max(0, toNumber((e.target as HTMLInputElement).value, 0)))}
+                      />`}
+                </div>
+
+                <div class="bpa-field">
+                  <label for="bpa-open">${t('تاريخ فتح العبوة', 'Open date')}</label>
+                  <input
+                    id="bpa-open"
+                    class="bpa-input"
+                    type="date"
+                    max=${toInputValue(new Date())}
+                    .value=${this.openDate}
+                    @input=${(e: Event) => (this.openDate = (e.target as HTMLInputElement).value)}
+                  />
+                </div>
+
+                ${isTruthy(c.bpa_enable_name, true)
+                  ? html`<div class="bpa-field">
+                      <label for="bpa-name">${t('اسم العبوة (اختياري)', 'Product name (optional)')}</label>
+                      <input
+                        id="bpa-name"
+                        class="bpa-input"
+                        .value=${this.recName}
+                        placeholder=${t('مثال: سيروم فيتامين C', 'e.g. Vitamin C serum')}
+                        @input=${(e: Event) => (this.recName = (e.target as HTMLInputElement).value)}
+                      />
+                    </div>`
+                  : nothing}
+
+                ${isTruthy(c.bpa_enable_note, false)
+                  ? html`<div class="bpa-field">
+                      <label for="bpa-note">${t('ملاحظة (اختياري)', 'Note (optional)')}</label>
+                      <input
+                        id="bpa-note"
+                        class="bpa-input"
+                        .value=${this.note}
+                        @input=${(e: Event) => (this.note = (e.target as HTMLInputElement).value)}
+                      />
+                    </div>`
+                  : nothing}
               </div>
-
-              <div class="bpa-field">
-                <label for="bpa-open">${t('تاريخ فتح العبوة', 'Open date')}</label>
-                <input
-                  id="bpa-open"
-                  class="bpa-input"
-                  type="date"
-                  max=${toInputValue(new Date())}
-                  .value=${this.openDate}
-                  @input=${(e: Event) => (this.openDate = (e.target as HTMLInputElement).value)}
-                />
-              </div>
-
-              ${isTruthy(c.bpa_enable_name, true)
-                ? html`<div class="bpa-field">
-                    <label for="bpa-name">${t('اسم العبوة (اختياري)', 'Product name (optional)')}</label>
-                    <input id="bpa-name" class="bpa-input" .value=${this.recName} @input=${(e: Event) => (this.recName = (e.target as HTMLInputElement).value)} />
-                  </div>`
-                : nothing}
-
-              ${isTruthy(c.bpa_enable_note, false)
-                ? html`<div class="bpa-field">
-                    <label for="bpa-note">${t('ملاحظة (اختياري)', 'Note (optional)')}</label>
-                    <input id="bpa-note" class="bpa-input" .value=${this.note} @input=${(e: Event) => (this.note = (e.target as HTMLInputElement).value)} />
-                  </div>`
-                : nothing}
-            </div>
+            </aside>
 
             ${this.renderResult()}
           </div>

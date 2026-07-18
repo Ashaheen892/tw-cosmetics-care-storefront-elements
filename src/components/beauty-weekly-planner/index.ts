@@ -3,6 +3,7 @@ import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import {
+  getRadioValue,
   isTruthy,
   prefersReducedMotion,
   readSectionTheme,
@@ -14,6 +15,7 @@ import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
   buildSchedule,
+  emptyDayLabel,
   frequencyLabel,
   parseSteps,
   resolveStartDay,
@@ -28,6 +30,7 @@ export default class BeautyWeeklyPlanner extends LitElement {
 
   @state() private view: PlannerView = 'week';
 
+  private viewSynced = false;
   private boundLangHandler = () => this.requestUpdate();
 
   static styles = [sharedSectionCss, componentStyles];
@@ -43,7 +46,15 @@ export default class BeautyWeeklyPlanner extends LitElement {
   }
 
   updated(changed: Map<string, unknown>): void {
-    if (changed.has('config')) this.view = resolveView(this.config || {});
+    if (!changed.has('config')) return;
+    const nextDefault = getRadioValue(this.config?.bwp_view_default, 'week');
+    const prev = changed.get('config') as Record<string, unknown> | undefined;
+    const prevDefault = prev ? getRadioValue(prev.bwp_view_default, 'week') : undefined;
+    // Sync only on first load or when merchant changes the default — keep shopper toggle
+    if (!this.viewSynced || prevDefault !== nextDefault) {
+      this.view = resolveView(this.config || {});
+      this.viewSynced = true;
+    }
   }
 
   private get steps(): PlannerStep[] {
@@ -71,11 +82,12 @@ export default class BeautyWeeklyPlanner extends LitElement {
   }
 
   private renderSlot(label: string, steps: PlannerStep[]) {
-    if (!steps.length) return nothing;
     return html`
       <div class="bwp-slot">
         <span class="bwp-slot__label">${label}</span>
-        <div class="bwp-chips">${steps.map((s) => this.renderChip(s))}</div>
+        ${steps.length
+          ? html`<div class="bwp-chips">${steps.map((s) => this.renderChip(s))}</div>`
+          : html`<span class="bwp-slot--empty">${t('لا خطوات', 'No steps')}</span>`}
       </div>
     `;
   }
@@ -148,8 +160,9 @@ export default class BeautyWeeklyPlanner extends LitElement {
         'خطة إرشادية؛ عدّليها حسب توصية أخصائي بشرتك.',
         'A guiding plan; adjust it to your skincare specialist’s advice.'
       );
-    const amLabel = t('ص', 'AM');
-    const pmLabel = t('م', 'PM');
+    const amLabel = t('صباحًا', 'Morning');
+    const pmLabel = t('مساءً', 'Evening');
+    const bothLabel = t('صباحًا ومساءً', 'Morning & evening');
 
     return html`
       <section
@@ -168,24 +181,24 @@ export default class BeautyWeeklyPlanner extends LitElement {
           ${showToggle ? this.renderToggle() : nothing}
 
           <div class="bwp-grid-scroll">
-            <div class="bwp-grid" role="list">
+            <div class=${classMap({ 'bwp-grid': true, [`bwp-grid--${this.view}`]: true })} role="list">
               ${days.map((dayName, i) => {
                 const cell = schedule[i];
                 const hasContent = cell.am.length > 0 || cell.pm.length > 0;
                 return html`
-                  <div class="bwp-day" role="listitem">
+                  <div class=${classMap({ 'bwp-day': true, 'is-empty': !hasContent })} role="listitem">
                     <div class="bwp-day__head">${dayName}</div>
                     <div class="bwp-day__body">
                       ${hasContent
                         ? this.view === 'week'
-                          ? html`
+                          ? html`<div class="bwp-slots bwp-slots--split">
                               ${this.renderSlot(amLabel, cell.am)}
                               ${this.renderSlot(pmLabel, cell.pm)}
-                            `
+                            </div>`
                           : html`<div class="bwp-chips">
                               ${[...cell.am, ...cell.pm].map((s) => this.renderChip(s))}
                             </div>`
-                        : html`<span class="bwp-day__empty">—</span>`}
+                        : html`<span class="bwp-day__empty">${emptyDayLabel()}</span>`}
                     </div>
                   </div>
                 `;
@@ -198,11 +211,7 @@ export default class BeautyWeeklyPlanner extends LitElement {
                 ${steps.map((step) => {
                   const isSicon = step.icon.startsWith('sicon-');
                   const slotText =
-                    step.slot === 'am'
-                      ? amLabel
-                      : step.slot === 'pm'
-                        ? pmLabel
-                        : t('ص/م', 'AM/PM');
+                    step.slot === 'am' ? amLabel : step.slot === 'pm' ? pmLabel : bothLabel;
                   return html`
                     <div
                       class="bwp-legend__item"

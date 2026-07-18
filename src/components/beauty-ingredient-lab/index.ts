@@ -163,25 +163,28 @@ export default class BeautyIngredientLab extends LitElement {
               : nothing}
 
             ${textures.length
-              ? html`<div class="bil-toolbar" role="group" aria-label=${t('فلترة حسب القوام', 'Filter by texture')}>
-                  <button
-                    type="button"
-                    class="bil-filter"
-                    aria-pressed=${this.activeTexture === '' ? 'true' : 'false'}
-                    @click=${() => this.setTexture('')}
-                  >
-                    ${t('الكل', 'All')}
-                  </button>
-                  ${textures.map(
-                    (tex) => html`<button
+              ? html`<div class="bil-filter-wrap">
+                  <span class="bil-filter__label">${t('القوام', 'Texture')}</span>
+                  <div class="bil-segment" role="group" aria-label=${t('فلترة حسب القوام', 'Filter by texture')}>
+                    <button
                       type="button"
-                      class="bil-filter"
-                      aria-pressed=${this.activeTexture === tex.value ? 'true' : 'false'}
-                      @click=${() => this.setTexture(tex.value)}
+                      class="bil-segment__btn"
+                      aria-pressed=${this.activeTexture === '' ? 'true' : 'false'}
+                      @click=${() => this.setTexture('')}
                     >
-                      ${tex.label}
-                    </button>`
-                  )}
+                      ${t('الكل', 'All')}
+                    </button>
+                    ${textures.map(
+                      (tex) => html`<button
+                        type="button"
+                        class="bil-segment__btn"
+                        aria-pressed=${this.activeTexture === tex.value ? 'true' : 'false'}
+                        @click=${() => this.setTexture(tex.value)}
+                      >
+                        ${tex.label}
+                      </button>`
+                    )}
+                  </div>
                 </div>`
               : nothing}
 
@@ -204,7 +207,6 @@ export default class BeautyIngredientLab extends LitElement {
                   ${ingredient.texture
                     ? html`<span class="bil-card__texture">${textureLabel(ingredient.texture)}</span>`
                     : nothing}
-                  ${ingredient.desc ? html`<p class="bil-card__desc">${ingredient.desc}</p>` : nothing}
                 </button>`;
               })}
             </div>

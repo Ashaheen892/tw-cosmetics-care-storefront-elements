@@ -20,11 +20,16 @@ export const componentStyles = css`
     }
   }
 
+  .bfz-stage-wrap {
+    position: relative;
+    max-width: 520px;
+    margin-inline: auto;
+    width: 100%;
+  }
+
   .bfz-stage {
     position: relative;
     width: 100%;
-    max-width: 520px;
-    margin-inline: auto;
     aspect-ratio: var(--bfz-aspect, 3 / 4);
     border-radius: var(--section-radius, 16px);
     overflow: hidden;
@@ -41,15 +46,39 @@ export const componentStyles = css`
     display: block;
   }
 
-  .bfz-stage__empty {
+  .bfz-stage__empty,
+  .bfz-stage__missing {
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 1.5rem;
     color: var(--muted-color, #8f7a86);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    background: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--border-color, #f2dde7) 25%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--border-color, #f2dde7) 25%, var(--card-bg, #fff)) 10px,
+      color-mix(in srgb, var(--border-color, #f2dde7) 12%, var(--card-bg, #fff)) 10px,
+      color-mix(in srgb, var(--border-color, #f2dde7) 12%, var(--card-bg, #fff)) 20px
+    );
+  }
+
+  .bfz-stage__missing p {
+    margin: 0;
+    max-width: 14rem;
+    font-weight: 600;
+  }
+
+  .bfz-stage__missing-icon {
+    font-size: 2.5rem;
+    opacity: 0.35;
+    margin-bottom: 0.5rem;
+    line-height: 1;
   }
 
   .bfz-dot {
@@ -296,16 +325,105 @@ export const componentStyles = css`
     line-height: 1.6;
   }
 
-  .bfz-placeholder {
-    color: var(--muted-color, #8f7a86);
-    font-size: 0.9rem;
-    text-align: center;
-    padding: 1rem;
+  .bfz-dot.is-coach-pulse {
+    animation: bfz-coach-dot 1.8s ease-in-out infinite;
   }
 
-  /* Bottom sheet on mobile */
+  @keyframes bfz-coach-dot {
+    0%, 100% { box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28), 0 0 0 0 color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 45%, transparent); }
+    50% { box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28), 0 0 0 8px color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 0%, transparent); }
+  }
+
+  .bfz-coach {
+    position: absolute;
+    inset-inline: 0;
+    bottom: -0.35rem;
+    transform: translateY(100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 12px;
+    background: var(--text-color, #33232e);
+    color: #fff;
+    font-size: 0.84rem;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(20, 14, 12, 0.22);
+    z-index: 5;
+    animation: bfz-coach-in 0.35s ease;
+  }
+
+  .bfz-coach__text {
+    margin: 0;
+  }
+
+  .bfz-coach__dismiss {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: color-mix(in srgb, #fff 18%, transparent);
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.75rem;
+  }
+
+  @keyframes bfz-coach-in {
+    from { opacity: 0; transform: translateY(calc(100% + 6px)); }
+    to { opacity: 1; transform: translateY(100%); }
+  }
+
+  .bfz-panel--empty {
+    min-height: 10rem;
+    display: grid;
+    place-items: center;
+  }
+
+  .bfz-empty-state {
+    text-align: center;
+    padding: 1.25rem 1rem;
+    max-width: 20rem;
+    margin-inline: auto;
+  }
+
+  .bfz-empty-state__icon {
+    display: block;
+    font-size: 2rem;
+    color: var(--accent-color, #c2527f);
+    opacity: 0.5;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  .bfz-empty-state__title {
+    margin: 0 0 0.4rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-color, #33232e);
+  }
+
+  .bfz-empty-state__text {
+    margin: 0;
+    font-size: 0.86rem;
+    color: var(--muted-color, #8f7a86);
+    line-height: 1.6;
+  }
+
+  .bfz-layout--sheet .bfz-sheet-close {
+    display: grid;
+  }
+
+  /* Bottom sheet on mobile; desktop keeps inline panel + empty state */
   @media (max-width: 859px) {
-    .bfz-layout--sheet .bfz-panel {
+    .bfz-layout--sheet .bfz-panel--empty {
+      display: none;
+    }
+
+    .bfz-layout--sheet .bfz-panel:not(.bfz-panel--empty) {
       position: fixed;
       inset-inline: 0;
       bottom: 0;
@@ -316,6 +434,7 @@ export const componentStyles = css`
       box-shadow: 0 -12px 40px rgba(20, 14, 12, 0.28);
       animation: bfz-sheet-up 0.28s ease;
     }
+
     .bfz-sheet-backdrop {
       position: fixed;
       inset: 0;
@@ -330,18 +449,11 @@ export const componentStyles = css`
     to { transform: translateY(0); }
   }
 
-  .bfz-sheet-close {
-    display: none;
-  }
-  @media (max-width: 859px) {
-    .bfz-layout--sheet .bfz-sheet-close {
-      display: grid;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .bfz-dot,
     .bfz-dot__pulse,
+    .bfz-dot.is-coach-pulse,
+    .bfz-coach,
     .bfz-panel {
       animation: none !important;
       transition: none !important;

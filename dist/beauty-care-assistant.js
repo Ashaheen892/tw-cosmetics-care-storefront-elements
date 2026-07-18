@@ -1,9 +1,9 @@
-import { css as S, LitElement as z, nothing as c, html as a } from "lit";
-import { property as q, state as f } from "lit/decorators.js";
-import { classMap as x } from "lit/directives/class-map.js";
-import { styleMap as y } from "lit/directives/style-map.js";
-import { n as _, l as s, e as $, g as C, b as L, s as K, t as n, r as j, p as M, a as B } from "./sharedStyles-cRSiglXC.js";
-const Q = S`
+import { css as C, LitElement as L, nothing as d, html as s } from "lit";
+import { property as T, state as _ } from "lit/decorators.js";
+import { classMap as $ } from "lit/directives/class-map.js";
+import { styleMap as k } from "lit/directives/style-map.js";
+import { n as q, l as c, e as S, g as j, b as D, s as R, t as i, r as B, p as E, a as H } from "./sharedStyles--LaFqDVC.js";
+const Q = C`
   :host {
     direction: inherit;
   }
@@ -52,7 +52,7 @@ const Q = S`
     color: var(--text-color, #33232e);
   }
 
-  .bca-topbar__hint {
+  .bca-trail__hint {
     font-size: 0.76rem;
     color: var(--muted-color, #8f7a86);
   }
@@ -61,6 +61,11 @@ const Q = S`
     padding: 1.1rem;
     display: grid;
     gap: 1rem;
+  }
+
+  .bca-progress-wrap {
+    display: grid;
+    gap: 0.35rem;
   }
 
   .bca-progress {
@@ -73,8 +78,85 @@ const Q = S`
   .bca-progress > span {
     display: block;
     height: 100%;
-    background: var(--accent-color, #c2527f);
-    transition: width 0.4s ease;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+    );
+    transition: width 0.35s ease;
+  }
+
+  .bca-progress__label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .bca-trail {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .bca-trail__list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    min-width: min-content;
+  }
+
+  .bca-trail__item {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  .bca-trail__item--current .bca-trail__sep {
+    display: none;
+  }
+
+  .bca-trail__chip {
+    display: inline-flex;
+    align-items: center;
+    max-width: 9rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color, #f2dde7);
+    background: var(--card-bg, #fff);
+    color: var(--text-color, #33232e);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  button.bca-trail__chip:hover {
+    border-color: var(--accent-color, #c2527f);
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
+  }
+
+  .bca-trail__chip--current {
+    border-color: var(--accent-color, #c2527f);
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
+    color: var(--accent-color, #c2527f);
+    cursor: default;
+    max-width: 11rem;
+  }
+
+  .bca-trail__sep {
+    margin-inline: 0.25rem;
+    color: var(--muted-color, #8f7a86);
+    font-size: 0.85rem;
+    user-select: none;
   }
 
   .bca-bubble {
@@ -86,6 +168,13 @@ const Q = S`
     font-size: 1rem;
     line-height: 1.6;
     border-start-start-radius: 4px;
+  }
+
+  .bca-question-img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 14px;
   }
 
   .bca-answers {
@@ -132,13 +221,35 @@ const Q = S`
 
   .bca-result {
     display: grid;
-    gap: 0.9rem;
+    gap: 0.75rem;
+    padding: 1.1rem 1.15rem;
+    border-radius: calc(var(--section-radius, 18px) * 0.85);
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--accent-color, #c2527f) 14%, var(--card-bg, #fff)),
+      var(--card-bg, #fff)
+    );
+    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 28%, var(--border-color, #f2dde7));
+    box-shadow: 0 10px 28px rgba(194, 82, 127, 0.1);
+  }
+
+  .bca-result__badge {
+    width: 2.4rem;
+    height: 2.4rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent-color, #c2527f);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
   }
 
   .bca-result__title {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     font-weight: 800;
+    line-height: 1.3;
     color: var(--text-color, #33232e);
   }
 
@@ -146,6 +257,14 @@ const Q = S`
     margin: 0;
     color: var(--muted-color, #8f7a86);
     line-height: 1.65;
+    font-size: 0.95rem;
+  }
+
+  .bca-result__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.15rem;
   }
 
   /* —— Style: expert (avatar-forward) —— */
@@ -191,7 +310,8 @@ const Q = S`
 
   @media (prefers-reduced-motion: reduce) {
     .bca-answer,
-    .bca-progress > span {
+    .bca-progress > span,
+    .bca-trail__chip {
       transition: none;
     }
   }
@@ -200,57 +320,91 @@ const Q = S`
     .bca-bubble {
       max-width: 100%;
     }
+    .bca-result__title {
+      font-size: 1.2rem;
+    }
   }
 `;
-function R(r, t) {
-  return r.trim().toLowerCase().replace(/\s+/g, "-") || t;
+function O(a, t) {
+  return a.trim().toLowerCase().replace(/\s+/g, "-") || t;
 }
-function E(r, t) {
-  return _(r).map((e, o) => ({
-    id: `${t}-a${o}`,
-    label: s(e.label),
-    image: $(e.image),
-    next: s(e.next).trim(),
-    result_title: s(e.result_title),
-    result_desc: s(e.result_desc),
-    link: L(e.link),
-    link_text: s(e.link_text)
+function P(a, t) {
+  return q(a).map((e, r) => ({
+    id: `${t}-a${r}`,
+    label: c(e.label),
+    image: S(e.image),
+    next: c(e.next).trim(),
+    result_title: c(e.result_title),
+    result_desc: c(e.result_desc),
+    link: D(e.link),
+    link_text: c(e.link_text)
   })).filter((e) => e.label || e.result_title || e.link);
 }
-function H(r) {
-  return _(r).map((t, e) => {
-    const o = R(s(t.q_key), `q${e + 1}`);
+function A(a) {
+  return q(a).map((t, e) => {
+    const r = O(c(t.q_key), `q${e + 1}`);
     return {
-      key: o,
-      text: s(t.q_text),
-      image: $(t.q_image),
-      answers: E(t.answers, o)
+      key: r,
+      text: c(t.q_text),
+      image: S(t.q_image),
+      answers: P(t.answers, r)
     };
   }).filter((t) => t.text || t.answers.length);
 }
-function I(r, t) {
-  var o;
-  const e = s(r.bca_start_key).trim().toLowerCase().replace(/\s+/g, "-");
-  return e && t.some((i) => i.key === e) ? e : ((o = t[0]) == null ? void 0 : o.key) ?? "";
+function I(a, t) {
+  var r;
+  const e = c(a.bca_start_key).trim().toLowerCase().replace(/\s+/g, "-");
+  return e && t.some((n) => n.key === e) ? e : ((r = t[0]) == null ? void 0 : r.key) ?? "";
 }
-function O(r, t) {
-  return r.find((e) => e.key === t) ?? null;
+function K(a, t) {
+  return a.find((e) => e.key === t) ?? null;
 }
-function A(r, t) {
-  return r.next ? !t.some((e) => e.key === r.next) : !0;
+function z(a, t) {
+  return a.next ? !t.some((e) => e.key === a.next) : !0;
 }
-function P(r) {
-  const t = C(r.bca_style, "chat");
+function U(a) {
+  const t = j(a.bca_style, "chat");
   return t === "expert" || t === "mirror" || t === "cards" ? t : "chat";
 }
-var T = Object.defineProperty, p = (r, t, e, o) => {
-  for (var i = void 0, b = r.length - 1, d; b >= 0; b--)
-    (d = r[b]) && (i = d(t, e, i) || i);
-  return i && T(t, e, i), i;
+function Y(a, t) {
+  if (!t || !a.length) return 1;
+  const e = new Map(a.map((l) => [l.key, l]));
+  let r = 1;
+  function n(l, o, f) {
+    const m = e.get(l);
+    if (!m) {
+      r = Math.max(r, o);
+      return;
+    }
+    if (f.has(l)) {
+      r = Math.max(r, o);
+      return;
+    }
+    const h = new Set(f);
+    h.add(l);
+    let b = !1;
+    for (const p of m.answers)
+      z(p, a) ? (r = Math.max(r, o + 1), b = !0) : p.next && (b = !0, n(p.next, o + 1, h));
+    b || (r = Math.max(r, o));
+  }
+  return n(t, 1, /* @__PURE__ */ new Set()), Math.max(r, 1);
+}
+function G(a, t) {
+  return a.length + 1;
+}
+function J(a, t, e) {
+  if (t) return 100;
+  const r = a.length + 1, n = Math.max(e, r);
+  return Math.min(92, Math.round(r / n * 100));
+}
+var N = Object.defineProperty, g = (a, t, e, r) => {
+  for (var n = void 0, l = a.length - 1, o; l >= 0; l--)
+    (o = a[l]) && (n = o(t, e, n) || n);
+  return n && N(t, e, n), n;
 };
-const g = class g extends z {
+const v = class v extends L {
   constructor() {
-    super(...arguments), this.config = {}, this.currentKey = "", this.history = [], this.result = null, this.boundLangHandler = () => this.requestUpdate();
+    super(...arguments), this.config = {}, this.currentKey = "", this.trail = [], this.result = null, this.boundLangHandler = () => this.requestUpdate();
   }
   connectedCallback() {
     super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.restart();
@@ -263,58 +417,120 @@ const g = class g extends z {
   }
   get questions() {
     var t;
-    return H((t = this.config) == null ? void 0 : t.bca_questions);
+    return A((t = this.config) == null ? void 0 : t.bca_questions);
+  }
+  get startKey() {
+    return I(this.config || {}, this.questions);
+  }
+  get maxDepth() {
+    return Y(this.questions, this.startKey);
   }
   restart() {
-    const t = this.questions;
-    this.currentKey = I(this.config || {}, t), this.history = [], this.result = null;
+    this.currentKey = this.startKey, this.trail = [], this.result = null;
   }
   goBack() {
     if (this.result) {
       this.result = null;
       return;
     }
-    const t = [...this.history], e = t.pop();
-    e && (this.history = t, this.currentKey = e);
+    const t = [...this.trail], e = t.pop();
+    e && (this.trail = t, this.currentKey = e.questionKey);
   }
-  chooseAnswer(t) {
-    const e = this.questions;
-    if (!A(t, e)) {
-      this.history = [...this.history, this.currentKey], this.currentKey = t.next, this.result = null;
+  jumpToStep(t) {
+    if (this.result && (this.result = null), t < 0) {
+      this.trail = [], this.currentKey = this.startKey;
       return;
     }
-    this.result = t;
+    const e = this.trail.slice(0, t + 1), r = e[e.length - 1];
+    r && (this.trail = e.slice(0, -1), this.currentKey = r.questionKey);
+  }
+  chooseAnswer(t) {
+    const e = this.questions, r = K(e, this.currentKey);
+    if (r) {
+      if (!z(t, e)) {
+        this.trail = [
+          ...this.trail,
+          {
+            questionKey: this.currentKey,
+            questionText: r.text,
+            answerLabel: t.label || i("اختيار", "Choice")
+          }
+        ], this.currentKey = t.next, this.result = null;
+        return;
+      }
+      this.trail = [
+        ...this.trail,
+        {
+          questionKey: this.currentKey,
+          questionText: r.text,
+          answerLabel: t.label || i("اختيار", "Choice")
+        }
+      ], this.result = t;
+    }
+  }
+  renderTrail() {
+    return !this.trail.length && !this.result ? d : s`
+      <nav class="bca-trail" aria-label=${i("مسار إجاباتك", "Your answer path")}>
+        <ol class="bca-trail__list">
+          ${this.trail.map(
+      (t, e) => s`
+              <li class="bca-trail__item">
+                <button
+                  type="button"
+                  class="bca-trail__chip"
+                  title=${t.questionText}
+                  @click=${() => this.jumpToStep(e)}
+                >
+                  <span class="bca-trail__answer">${t.answerLabel}</span>
+                </button>
+                <span class="bca-trail__sep" aria-hidden="true">›</span>
+              </li>
+            `
+    )}
+          ${this.result ? s`<li class="bca-trail__item bca-trail__item--current" aria-current="step">
+                <span class="bca-trail__chip bca-trail__chip--current">
+                  ${this.result.result_title || i("النتيجة", "Result")}
+                </span>
+              </li>` : s`<li class="bca-trail__item bca-trail__item--current" aria-current="step">
+                <span class="bca-trail__chip bca-trail__chip--current">
+                  ${i("السؤال الحالي", "Current question")}
+                </span>
+              </li>`}
+        </ol>
+      </nav>
+    `;
   }
   renderResult(t) {
     const e = this.config || {};
-    return a`
+    return s`
       <div class="bca-result" aria-live="polite">
-        ${t.result_title ? a`<h3 class="bca-result__title">${t.result_title}</h3>` : c}
-        ${t.result_desc ? a`<p class="bca-result__desc">${t.result_desc}</p>` : c}
-        ${t.link ? a`<div class="fs-actions">
-              <a class="fs-btn" href=${t.link}>
-                ${t.link_text || s(e.bca_result_btn) || n("انتقلي إلى النتيجة", "Go to result")}
+        <div class="bca-result__badge" aria-hidden="true">✦</div>
+        ${t.result_title ? s`<h3 class="bca-result__title">${t.result_title}</h3>` : s`<h3 class="bca-result__title">${i("إليكِ توصيتنا", "Here is our recommendation")}</h3>`}
+        ${t.result_desc ? s`<p class="bca-result__desc">${t.result_desc}</p>` : d}
+        ${t.link ? s`<div class="bca-result__actions">
+              <a class="fs-btn fs-tap" href=${t.link}>
+                ${t.link_text || c(e.bca_result_btn) || i("انتقلي إلى النتيجة", "Go to result")}
               </a>
-            </div>` : c}
+            </div>` : d}
         <div class="bca-nav">
-          <button type="button" class="fs-btn fs-btn--ghost" @click=${this.goBack}>
-            ${n("رجوع", "Back")}
+          <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.goBack}>
+            ${i("تعديل آخر إجابة", "Edit last answer")}
           </button>
-          <button type="button" class="fs-btn fs-btn--ghost" @click=${this.restart}>
-            ${s(e.bca_restart_btn) || n("إعادة البدء", "Start over")}
+          <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.restart}>
+            ${c(e.bca_restart_btn) || i("إعادة البدء", "Start over")}
           </button>
         </div>
       </div>
     `;
   }
   renderQuestion(t) {
-    return a`
-      <div class="bca-answers" role="group" aria-label=${t.text || n("الخيارات", "Options")}>
+    return s`
+      <div class="bca-answers" role="group" aria-label=${t.text || i("الخيارات", "Options")}>
         ${t.answers.map(
-      (e) => a`
-            <button type="button" class="bca-answer" @click=${() => this.chooseAnswer(e)}>
-              ${e.image ? a`<img class="bca-answer__icon" src=${e.image} alt="" loading="lazy" />` : c}
-              <span>${e.label || n("اختيار", "Choice")}</span>
+      (e) => s`
+            <button type="button" class="bca-answer fs-tap" @click=${() => this.chooseAnswer(e)}>
+              ${e.image ? s`<img class="bca-answer__icon" src=${e.image} alt="" loading="lazy" />` : d}
+              <span>${e.label || i("اختيار", "Choice")}</span>
             </button>
           `
     )}
@@ -322,56 +538,68 @@ const g = class g extends z {
     `;
   }
   render() {
-    const t = this.config || {}, e = j(t, "bca_"), o = e.animate && !M(), i = this.questions, b = P(t), d = s(t.bca_title), h = s(t.bca_desc), k = s(t.bca_assistant_name) || n("خبيرة الجمال", "Beauty expert"), m = s(t.bca_avatar);
-    if (!i.length)
-      return a`<div class="fs-empty" role="status">
-        ${n("أضيفي أسئلة المساعد من إعدادات العنصر", "Add assistant questions in the element settings")}
+    const t = this.config || {}, e = B(t, "bca_"), r = e.animate && !E(), n = this.questions, l = U(t), o = c(t.bca_title), f = c(t.bca_desc), m = c(t.bca_assistant_name) || i("خبيرة الجمال", "Beauty expert"), h = c(t.bca_avatar);
+    if (!n.length)
+      return s`<div class="fs-empty" role="status">
+        ${i("أضيفي أسئلة المساعد من إعدادات العنصر", "Add assistant questions in the element settings")}
       </div>`;
-    const u = O(i, this.currentKey) || i[0], w = this.history.length + (this.result ? 1 : 0), v = Math.min(100, Math.round((w + 1) / (i.length + 1) * 100));
-    return a`
+    const b = K(n, this.currentKey) || n[0], p = !!this.result, x = G(this.trail, p), M = this.maxDepth, y = J(this.trail, p, M), w = p ? i("اكتملت الرحلة", "Journey complete") : i(`الخطوة ${x}`, `Step ${x}`);
+    return s`
       <section
-        class=${x({ "fs-section": !0, "fs-animate": o })}
-        style=${y(B(e))}
-        aria-label=${d || n("مساعد اختيار منتجات الجمال", "Beauty care assistant")}
+        class=${$({ "fs-section": !0, "fs-animate": r })}
+        style=${k(H(e))}
+        aria-label=${o || i("مساعد اختيار منتجات الجمال", "Beauty care assistant")}
       >
         <div class="fs-container">
-          ${d || h ? a`<div class="fs-header">
-                ${d ? a`<h2 class="fs-title">${d}</h2>` : c}
-                ${h ? a`<p class="fs-desc">${h}</p>` : c}
-              </div>` : c}
+          ${o || f ? s`<div class="fs-header">
+                ${o ? s`<h2 class="fs-title">${o}</h2>` : d}
+                ${f ? s`<p class="fs-desc">${f}</p>` : d}
+              </div>` : d}
 
-          <div class=${x({ [`bca--${b}`]: !0 })}>
+          <div class=${$({ [`bca--${l}`]: !0 })}>
             <div class="bca-shell">
               <div class="bca-topbar">
-                ${m ? a`<img class="bca-avatar" src=${m} alt="" loading="lazy" />` : a`<span class="bca-avatar" aria-hidden="true">✦</span>`}
+                ${h ? s`<img class="bca-avatar" src=${h} alt="" loading="lazy" />` : s`<span class="bca-avatar" aria-hidden="true">✦</span>`}
                 <div class="bca-topbar__meta">
-                  <span class="bca-topbar__name">${k}</span>
-                  <span class="bca-topbar__hint">${n("سأساعدك في اختيار الأنسب لكِ", "I will help you choose")}</span>
+                  <span class="bca-topbar__name">${m}</span>
+                  <span class="bca-trail__hint">${i("سأساعدك في اختيار الأنسب لكِ", "I will help you choose")}</span>
                 </div>
               </div>
 
               <div class="bca-body">
-                <div class="bca-progress" role="progressbar" aria-valuenow=${v} aria-valuemin="0" aria-valuemax="100">
-                  <span style=${y({ width: `${v}%` })}></span>
+                <div class="bca-progress-wrap">
+                  <div
+                    class="bca-progress"
+                    role="progressbar"
+                    aria-valuenow=${y}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-label=${w}
+                  >
+                    <span style=${k({ width: `${y}%` })}></span>
+                  </div>
+                  <span class="bca-progress__label">${w}</span>
                 </div>
 
-                ${this.result ? this.renderResult(this.result) : a`
-                      ${u.image ? a`<img
-                            src=${u.image}
+                ${this.renderTrail()}
+
+                ${this.result ? this.renderResult(this.result) : s`
+                      ${b.image ? s`<img
+                            class="bca-question-img"
+                            src=${b.image}
                             alt=""
                             loading="lazy"
-                            style="width:100%;max-height:200px;object-fit:cover;border-radius:14px"
-                          />` : c}
-                      <div class="bca-bubble">${u.text || n("اختاري أحد الخيارات", "Choose an option")}</div>
-                      ${this.renderQuestion(u)}
-                      ${this.history.length ? a`<div class="bca-nav">
-                            <button type="button" class="fs-btn fs-btn--ghost" @click=${this.goBack}>
-                              ${n("رجوع", "Back")}
+                          />` : d}
+                      <div class="bca-bubble">${b.text || i("اختاري أحد الخيارات", "Choose an option")}</div>
+                      ${this.renderQuestion(b)}
+                      ${this.trail.length ? s`<div class="bca-nav">
+                            <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.goBack}>
+                              ${i("رجوع", "Back")}
                             </button>
-                            <button type="button" class="fs-btn fs-btn--ghost" @click=${this.restart}>
-                              ${s(t.bca_restart_btn) || n("إعادة البدء", "Start over")}
+                            <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.restart}>
+                              ${c(t.bca_restart_btn) || i("إعادة البدء", "Start over")}
                             </button>
-                          </div>` : c}
+                          </div>` : d}
                     `}
               </div>
             </div>
@@ -381,21 +609,21 @@ const g = class g extends z {
     `;
   }
 };
-g.styles = [K, Q];
-let l = g;
-p([
-  q({ type: Object })
-], l.prototype, "config");
-p([
-  f()
-], l.prototype, "currentKey");
-p([
-  f()
-], l.prototype, "history");
-p([
-  f()
-], l.prototype, "result");
-typeof l < "u" && l.registerSallaComponent("salla-beauty-care-assistant");
+v.styles = [R, Q];
+let u = v;
+g([
+  T({ type: Object })
+], u.prototype, "config");
+g([
+  _()
+], u.prototype, "currentKey");
+g([
+  _()
+], u.prototype, "trail");
+g([
+  _()
+], u.prototype, "result");
+typeof u < "u" && u.registerSallaComponent("salla-beauty-care-assistant");
 export {
-  l as default
+  u as default
 };

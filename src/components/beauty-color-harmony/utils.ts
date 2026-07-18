@@ -1,22 +1,36 @@
-import { isTruthy, normalizeCollection } from '../../utils/helpers.js';
+import { isTruthy, normalizeCollection, t } from '../../utils/helpers.js';
 import { localizedString, type LocaleValue } from '../../utils/localizedString.js';
 import type { HarmonyColor, HarmonyType, Hsl, ZoneMap } from './types.js';
 
 const FALLBACK_HEX = '#cccccc';
+
+/** Extract a hex-like string from Salla color field shapes. */
+function readHexRaw(raw: unknown): string {
+  if (typeof raw === 'string') return raw.trim();
+  if (typeof raw === 'number' && Number.isFinite(raw)) return String(raw);
+  if (raw && typeof raw === 'object') {
+    const obj = raw as Record<string, unknown>;
+    for (const key of ['hex', 'value', 'color', 'code']) {
+      const v = obj[key];
+      if (typeof v === 'string' && v.trim()) return v.trim();
+    }
+  }
+  return '';
+}
 
 /** Parse merchant color rows into HarmonyColor objects (id, name, hex). */
 export function parseColors(raw: unknown): HarmonyColor[] {
   return normalizeCollection(raw)
     .map((row, i) => {
       const name = localizedString(row.name as LocaleValue);
-      const hex = normalizeHex(String(row.hex ?? '').trim());
+      const hex = normalizeHex(readHexRaw(row.hex ?? row.color));
       return {
-        id: String(row.color_id ?? '').trim() || `color-${i + 1}`,
+        id: String(row.color_id ?? row.id ?? '').trim() || `color-${i + 1}`,
         name,
         hex,
       } satisfies HarmonyColor;
     })
-    .filter((color) => color.name || color.hex);
+    .filter((color) => Boolean(color.name || color.hex));
 }
 
 /** Normalize a user hex string to a 6-digit `#rrggbb`, else fallback. */
@@ -137,6 +151,28 @@ export function mapToZones(harmony: string[], baseHex: string): ZoneMap {
       l: Math.min(92, Math.round(base.l + (100 - base.l) * 0.4)),
     });
   return { lips, eyes, cheeks };
+}
+
+/** Plain-language harmony button label. */
+export function harmonyPlainLabel(type: HarmonyType): string {
+  const map: Record<HarmonyType, [string, string]> = {
+    complementary: ['ألوان متعاكسة', 'Opposite colors'],
+    analogous: ['ألوان متقاربة', 'Neighboring colors'],
+    triadic: ['ثلاثة ألوان متوازنة', 'Three balanced colors'],
+  };
+  const [ar, en] = map[type];
+  return t(ar, en);
+}
+
+/** Short helper text under each harmony type chip. */
+export function harmonyHint(type: HarmonyType): string {
+  const map: Record<HarmonyType, [string, string]> = {
+    complementary: ['تباين جريء', 'Bold contrast'],
+    analogous: ['انسجام ناعم', 'Soft blend'],
+    triadic: ['توازن حيوي', 'Vibrant balance'],
+  };
+  const [ar, en] = map[type];
+  return t(ar, en);
 }
 
 /** Enabled harmony types in a fixed order, honoring bch_show_* booleans. */

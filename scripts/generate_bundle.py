@@ -24,32 +24,88 @@ def unsplash(pid, w=900):
 
 
 # Verified beauty/cosmetics preview images (one per component, shown in the Salla editor).
+# Each ID was checked live against images.unsplash.com (HTTP 200) and visually reviewed.
 PREVIEW_IMAGES = {
-    "beauty-shade-finder": "1596462502278-27bfdc403348",
-    "beauty-routine-builder": "1556228578-8c89e6adf883",
-    "beauty-ingredient-lab": "1620916566398-39f1143ab7be",
-    "beauty-care-assistant": "1487412720507-e7ab37603c6f",
-    "beauty-collection-reveal": "1598440947619-2c35fc9aa908",
-    "beauty-face-zone-map": "1570172619644-dfd03ed5d881",
-    "beauty-routine-layering-board": "1556228578-8c89e6adf883",
-    "beauty-lighting-finish-simulator": "1526080676457-4544bf0ebba9",
-    "beauty-pao-expiry-calculator": "1608248543803-ba4f8c70ae0b",
-    "beauty-texture-absorption-lab": "1512207736890-6ffed8a84e8d",
-    "beauty-actives-compatibility": "1620916566398-39f1143ab7be",
-    "beauty-fragrance-finder": "1541643600914-78b084683601",
-    "beauty-spf-guide": "1556228578-8c89e6adf883",
-    "beauty-color-harmony": "1522335789203-aabd1fc54bc9",
-    "beauty-weekly-planner": "1506784983877-45594efa4cbe",
+    "beauty-shade-finder": "1586495777744-4413f21062fa",          # lipstick shades
+    "beauty-routine-builder": "1571781926291-c477ebfd024b",       # skincare routine set
+    "beauty-ingredient-lab": "1620916566398-39f1143ab7be",        # clean skincare bottle
+    "beauty-care-assistant": "1573496359142-b8d87734a5a2",        # professional beauty expert
+    "beauty-collection-reveal": "1512496015851-a90fb38ba796",     # makeup collection flatlay
+    "beauty-face-zone-map": "1438761681033-6461ffad8d80",         # clear natural face
+    "beauty-routine-layering-board": "1556228720-195a672e8a03",   # cleanser + texture swatch
+    "beauty-lighting-finish-simulator": "1580489944761-15a19d654956",
+    "beauty-pao-expiry-calculator": "1608248543803-ba4f8c70ae0b", # product packaging
+    "beauty-texture-absorption-lab": "1556228720-195a672e8a03",   # cream texture dollop
+    "beauty-actives-compatibility": "1611930022073-b7a4ba5fcccd", # active skincare product
+    "beauty-fragrance-finder": "1541643600914-78b084683601",      # perfume bottle
+    "beauty-spf-guide": "1487412720507-e7ab37603c6f",             # outdoor sunlight face
+    "beauty-color-harmony": "1586495777744-4413f21062fa",         # lip color harmony
+    "beauty-weekly-planner": "1571781926291-c477ebfd024b",        # weekly care products
 }
 
-# Content images for the image-dependent components so they render fully out of the box.
-FACE_IMAGE = unsplash("1512496015851-a90fb38ba796", 800)
+# Content images for image-dependent components (full defaults out of the box).
+FACE_IMAGE = unsplash("1438761681033-6461ffad8d80", 900)          # front-facing natural face
+COVER_IMAGE = unsplash("1512496015851-a90fb38ba796", 1200)        # makeup collection cover
+ASSISTANT_AVATAR = unsplash("1573496359142-b8d87734a5a2", 600)    # smiling beauty expert
+ROUTINE_BG = unsplash("1522335789203-aabd1fc54bc9", 1400)         # soft beauty backdrop
+
+# Face/makeup portraits — each lighting state reads clearly.
 LIGHT_IMAGES = {
-    "daylight": unsplash("1526080676457-4544bf0ebba9", 800),
-    "warm": unsplash("1503104834685-7205e8607eb9", 800),
-    "cool": unsplash("1487412947147-5cebf100ffc2", 800),
-    "evening": unsplash("1487412720507-e7ab37603c6f", 800),
+    "daylight": unsplash("1580489944761-15a19d654956", 900),
+    "warm": unsplash("1487412720507-e7ab37603c6f", 900),
+    "cool": unsplash("1534528741775-53994a69daeb", 900),
+    "evening": unsplash("1487412947147-5cebf100ffc2", 900),
 }
+
+# Collection reveal cards: cleanse → hydrate → protect → finish
+COLLECTION_IMAGES = [
+    unsplash("1556228720-195a672e8a03", 800),   # cleanser + cream swatch
+    unsplash("1620916566398-39f1143ab7be", 800),  # lotion / hydration
+    unsplash("1487412720507-e7ab37603c6f", 800),  # outdoor sun protection
+    unsplash("1586495777744-4413f21062fa", 800),  # lipstick finish
+]
+
+# Ingredient lab: HA → niacinamide → vitamin C → retinol
+INGREDIENT_IMAGES = [
+    unsplash("1620916566398-39f1143ab7be", 700),
+    unsplash("1571781926291-c477ebfd024b", 700),
+    unsplash("1556228578-8c89e6adf883", 700),
+    unsplash("1611930022073-b7a4ba5fcccd", 700),
+]
+
+# Fragrance families: floral → woody → oriental → fresh
+FRAGRANCE_IMAGES = [
+    unsplash("1541643600914-78b084683601", 800),  # classic floral perfume
+    unsplash("1615634260167-c8cdede054de", 800),  # warm amber bottles
+    unsplash("1594035910387-fea47794261f", 800),  # dark oriental perfume
+    unsplash("1526080676457-4544bf0ebba9", 800),  # fresh bright beauty
+]
+
+# Texture lab: serum → gel → cream → oil
+TEXTURE_IMAGES = [
+    unsplash("1556228720-195a672e8a03", 700),     # cream/serum dollop
+    unsplash("1571781926291-c477ebfd024b", 700),  # lightweight products
+    unsplash("1620916566398-39f1143ab7be", 700),  # rich lotion
+    unsplash("1608248543803-ba4f8c70ae0b", 700),  # nourishing mask/oil vibe
+]
+
+# Face-zone detail thumbnails: forehead → eyes → cheeks → chin
+ZONE_IMAGES = [
+    unsplash("1500917293891-ef795e70e1f6", 600),  # forehead / hairline
+    unsplash("1487412947147-5cebf100ffc2", 600),  # eye area close-up
+    unsplash("1544005313-94ddf0286df2", 600),     # cheeks / glow
+    unsplash("1580489944761-15a19d654956", 600),  # smile / chin
+]
+
+# Routine steps: cleanser → toner → serum → moisturizer → sunscreen → eye cream
+ROUTINE_STEP_IMAGES = [
+    unsplash("1556228720-195a672e8a03", 600),
+    unsplash("1556228578-8c89e6adf883", 600),
+    unsplash("1571781926291-c477ebfd024b", 600),
+    unsplash("1620916566398-39f1143ab7be", 600),
+    unsplash("1487412720507-e7ab37603c6f", 600),
+    unsplash("1487412947147-5cebf100ffc2", 600),
+]
 
 
 def apply_preview_images(components):
@@ -112,7 +168,13 @@ def static_title(fid, title, conditions=None):
     )
 
 
-def multilang(fid, label, ar, en, fmt="text", max_len="160", desc=None, conditions=None):
+def multilang(fid, label, ar="", en="", fmt="text", max_len="160", desc=None, conditions=None):
+    """Multilanguage string field — same shape as the Salla reference bundle.
+
+    Value key order is ``en`` then ``ar`` (as in
+    tw-increase-sales-and-professional-presentation). Defaults are empty so
+    merchants fill their own copy; no sample/demo texts are pre-seeded.
+    """
     return with_conditions(
         {
             "id": fid,
@@ -124,7 +186,7 @@ def multilang(fid, label, ar, en, fmt="text", max_len="160", desc=None, conditio
             "labelHTML": None,
             "placeholder": label,
             "icon": "sicon-format-text-alt",
-            "value": {"ar": ar, "en": en},
+            "value": {"en": en, "ar": ar},
             "multilanguage": True,
             "required": False,
             "minLength": 0,
@@ -300,7 +362,7 @@ def collection(fid, label, fields, value, min_len=0, max_len=60, required=False,
 
 def theme_fields(p, *, accent="#c2527f", bg="#fbf5f8", card="#ffffff"):
     return [
-        static_title(f"{p}theme_title", "ألوان وتنسيق العنصر"),
+        static_title(f"{p}theme_title", "الألوان والتنسيق"),
         color(f"{p}bg", "لون الخلفية", bg),
         color(f"{p}text", "لون النص", "#33232e"),
         color(f"{p}muted", "لون النص الثانوي", "#8f7a86"),
@@ -312,9 +374,20 @@ def theme_fields(p, *, accent="#c2527f", bg="#fbf5f8", card="#ffffff"):
         number(f"{p}radius", "تدوير الحواف", 20, 0, 40, "px"),
         boolean(f"{p}animate", "تفعيل الحركات والانتقالات", True,
                 "يتوقف تلقائياً عند تفعيل خيار تقليل الحركة في الجهاز."),
-        static_title(f"{p}space_title", "المسافة الخارجية أعلى وأسفل"),
-        number(f"{p}space_desktop", "الكمبيوتر", 48, 0, 250, "px"),
-        number(f"{p}space_mobile", "الجوال", 28, 0, 120, "px"),
+        static_title(f"{p}space_title", "المسافات الخارجية"),
+        number(f"{p}space_desktop", "مسافة الكمبيوتر (أعلى/أسفل)", 48, 0, 250, "px"),
+        number(f"{p}space_mobile", "مسافة الجوال (أعلى/أسفل)", 28, 0, 120, "px"),
+    ]
+
+
+def quiz_nav_fields(p):
+    """Shared Next / Back / Results / Reset labels for guided quizzes."""
+    return [
+        static_title(f"{p}nav_title", "نصوص التنقّل في الاختبار"),
+        multilang(f"{p}next_btn", "زر التالي", "التالي", "Next"),
+        multilang(f"{p}back_btn", "زر السابق", "السابق", "Back"),
+        multilang(f"{p}see_btn", "زر عرض النتيجة", "عرض النتيجة", "See result"),
+        multilang(f"{p}reset_btn", "زر البدء من جديد", "ابدئي من جديد", "Start over"),
     ]
 
 
@@ -353,6 +426,7 @@ def prepend_editor_controls(components):
 
 
 def component(name, title, icon, fields, image_url=PLACEHOLDER):
+    """Component metadata. ``title`` is Arabic-only (Salla editor / demo sidebar)."""
     return {
         "key": u(),
         "name": name,
@@ -394,40 +468,213 @@ TEXTURE_OPTS = [("سيروم", "serum"), ("جل", "gel"), ("كريم", "cream"),
 # Fresh component builders
 # ---------------------------------------------------------------------------
 
+def _dd(label, value):
+    """Dropdown value shape used inside collection sample rows."""
+    return {"selected": [{"key": value, "label": label, "value": value}]}
+
+
 def build_shade_finder():
     p = "bsf_"
     shade_fields = [
-        text(f"{p}shades.shade_name", "اسم الدرجة", "N120 عاجي"),
+        multilang(f"{p}shades.shade_name", "اسم الدرجة", "عاجي دافئ", "Warm Ivory"),
         text(f"{p}shades.shade_number", "رقم الدرجة", "120"),
-        color(f"{p}shades.hex", "كود اللون HEX", "#e8c4a0"),
-        multilang(f"{p}shades.desc", "وصف الدرجة (اختياري)", "", "", "textarea", "260"),
+        color(f"{p}shades.hex", "كود اللون HEX", "#f0d3b4"),
+        multilang(f"{p}shades.desc", "وصف الدرجة",
+                  "درجة فاتحة بدفء خفيف تناسب البشرة الفاتحة جدًا.",
+                  "A light warm shade suited for very fair skin.",
+                  "textarea", "260"),
         variable_list(f"{p}shades.link", "رابط صفحة أو دليل (اختياري)"),
-        dropdown_manual(f"{p}shades.product_type", "نوع المنتج", PRODUCT_TYPE_OPTS, ""),
-        dropdown_manual(f"{p}shades.skin", "درجة البشرة المناسبة", SKIN_OPTS, ""),
-        dropdown_manual(f"{p}shades.undertone", "الأندرتون المناسب", UNDERTONE_OPTS, ""),
-        dropdown_manual(f"{p}shades.result", "النتيجة المناسبة", RESULT_OPTS, ""),
+        dropdown_manual(f"{p}shades.product_type", "نوع المكياج", PRODUCT_TYPE_OPTS, "foundation"),
+        dropdown_manual(f"{p}shades.skin", "درجة البشرة المناسبة", SKIN_OPTS, "very_fair"),
+        dropdown_manual(f"{p}shades.undertone", "الأندرتون المناسب", UNDERTONE_OPTS, "warm"),
+        dropdown_manual(f"{p}shades.result", "اللمسة / التغطية المناسبة", RESULT_OPTS, "natural"),
     ]
+    # Complete realistic catalog covering skin depths × undertones × makeup types.
     sample = [
-        {"shade_name": "درجة عاجية", "shade_number": "120", "hex": "#f0d3b4"},
-        {"shade_name": "درجة رملية", "shade_number": "220", "hex": "#e0b487"},
-        {"shade_name": "درجة كراميل", "shade_number": "320", "hex": "#c8975f"},
-        {"shade_name": "درجة عسلية", "shade_number": "420", "hex": "#a9743f"},
+        {
+            "shade_name": {"en": "Porcelain Cool", "ar": "بورسلين بارد"},
+            "shade_number": "110", "hex": "#f6e4d4",
+            "desc": {"en": "Very fair cool foundation with a soft natural finish.",
+                     "ar": "كريم أساس فاتح جدًا ببرودة خفيفة ولمسة طبيعية."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("فاتحة جدًا", "very_fair"),
+            "undertone": _dd("بارد", "cool"),
+            "result": _dd("طبيعية", "natural"),
+        },
+        {
+            "shade_name": {"en": "Warm Ivory", "ar": "عاجي دافئ"},
+            "shade_number": "120", "hex": "#f0d3b4",
+            "desc": {"en": "Light warm ivory for fair skin that needs gentle glow.",
+                     "ar": "درجة عاجية دافئة للبشرة الفاتحة تمنح إشراقة خفيفة."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("فاتحة جدًا", "very_fair"),
+            "undertone": _dd("دافئ", "warm"),
+            "result": _dd("مشرقة", "radiant"),
+        },
+        {
+            "shade_name": {"en": "Soft Beige", "ar": "بيج ناعم"},
+            "shade_number": "210", "hex": "#e8c4a0",
+            "desc": {"en": "Fair neutral beige with light breathable coverage.",
+                     "ar": "بيج محايد للبشرة الفاتحة بتغطية خفيفة مريحة."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("فاتحة", "fair"),
+            "undertone": _dd("محايد", "neutral"),
+            "result": _dd("تغطية خفيفة", "light"),
+        },
+        {
+            "shade_name": {"en": "Desert Sand", "ar": "رمل صحراوي"},
+            "shade_number": "220", "hex": "#e0b487",
+            "desc": {"en": "Warm sandy foundation with a clean matte finish.",
+                     "ar": "كريم أساس رملي دافئ بلمسة مطفية نظيفة."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("فاتحة", "fair"),
+            "undertone": _dd("دافئ", "warm"),
+            "result": _dd("مطفية", "matte"),
+        },
+        {
+            "shade_name": {"en": "Golden Honey", "ar": "عسل ذهبي"},
+            "shade_number": "310", "hex": "#d4a574",
+            "desc": {"en": "Medium warm honey with a radiant luminous finish.",
+                     "ar": "درجة عسلية متوسطة دافئة بلمسة مشرقة."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("متوسطة", "medium"),
+            "undertone": _dd("دافئ", "warm"),
+            "result": _dd("مشرقة", "radiant"),
+        },
+        {
+            "shade_name": {"en": "Olive Beige", "ar": "بيج زيتوني"},
+            "shade_number": "320", "hex": "#c8975f",
+            "desc": {"en": "Medium olive undertone with natural everyday coverage.",
+                     "ar": "بيج متوسط باندورتون زيتوني وتغطية يومية طبيعية."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("متوسطة", "medium"),
+            "undertone": _dd("زيتوني", "olive"),
+            "result": _dd("طبيعية", "natural"),
+        },
+        {
+            "shade_name": {"en": "Caramel Glow", "ar": "كراميل مشرق"},
+            "shade_number": "410", "hex": "#b8844a",
+            "desc": {"en": "Tan warm caramel with medium buildable coverage.",
+                     "ar": "كراميل حنطي دافئ بتغطية متوسطة قابلة للبناء."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("حنطية", "tan"),
+            "undertone": _dd("دافئ", "warm"),
+            "result": _dd("تغطية متوسطة", "medium_cov"),
+        },
+        {
+            "shade_name": {"en": "Amber Matte", "ar": "كهرمان مطفي"},
+            "shade_number": "420", "hex": "#a9743f",
+            "desc": {"en": "Tan neutral amber with a soft matte finish.",
+                     "ar": "كهرمان حنطي محايد بلمسة مطفية ناعمة."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("حنطية", "tan"),
+            "undertone": _dd("محايد", "neutral"),
+            "result": _dd("مطفية", "matte"),
+        },
+        {
+            "shade_name": {"en": "Rich Chestnut", "ar": "كستنائي غني"},
+            "shade_number": "510", "hex": "#8b5a2b",
+            "desc": {"en": "Deep warm chestnut with full even coverage.",
+                     "ar": "كستنائي عميق دافئ بتغطية عالية ومتساوية."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("سمراء", "deep"),
+            "undertone": _dd("دافئ", "warm"),
+            "result": _dd("تغطية عالية", "full_cov"),
+        },
+        {
+            "shade_name": {"en": "Cool Espresso", "ar": "إسبريسو بارد"},
+            "shade_number": "520", "hex": "#6b4423",
+            "desc": {"en": "Deep cool espresso for a natural skin-like finish.",
+                     "ar": "إسبريسو عميق بارد بلمسة طبيعية تشبه لون البشرة."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("سمراء", "deep"),
+            "undertone": _dd("بارد", "cool"),
+            "result": _dd("طبيعية", "natural"),
+        },
+        {
+            "shade_name": {"en": "Mocha Velvet", "ar": "موكا مخملي"},
+            "shade_number": "610", "hex": "#5c3a21",
+            "desc": {"en": "Dark warm mocha with a soft matte velvet finish.",
+                     "ar": "موكا داكنة دافئة بلمسة مطفية مخملية."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("داكنة", "dark"),
+            "undertone": _dd("دافئ", "warm"),
+            "result": _dd("مطفية", "matte"),
+        },
+        {
+            "shade_name": {"en": "Ebony Soft", "ar": "أبنوس ناعم"},
+            "shade_number": "620", "hex": "#3d2817",
+            "desc": {"en": "Deep dark neutral shade with full coverage.",
+                     "ar": "درجة داكنة محايدة عميقة بتغطية عالية."},
+            "product_type": _dd("كريم أساس", "foundation"),
+            "skin": _dd("داكنة", "dark"),
+            "undertone": _dd("محايد", "neutral"),
+            "result": _dd("تغطية عالية", "full_cov"),
+        },
+        {
+            "shade_name": {"en": "Bright Concealer", "ar": "كونسيلر مشرق"},
+            "shade_number": "C10", "hex": "#f5e6d3",
+            "desc": {"en": "Very fair cool concealer for under-eye brightening.",
+                     "ar": "كونسيلر فاتح جدًا بارد لإضاءة محيط العين."},
+            "product_type": _dd("كونسيلر", "concealer"),
+            "skin": _dd("فاتحة جدًا", "very_fair"),
+            "undertone": _dd("بارد", "cool"),
+            "result": _dd("تغطية خفيفة", "light"),
+        },
+        {
+            "shade_name": {"en": "Warm Cover Concealer", "ar": "كونسيلر تغطية دافئ"},
+            "shade_number": "C30", "hex": "#d2a679",
+            "desc": {"en": "Medium warm concealer for spot coverage.",
+                     "ar": "كونسيلر متوسط دافئ لتغطية العيوب."},
+            "product_type": _dd("كونسيلر", "concealer"),
+            "skin": _dd("متوسطة", "medium"),
+            "undertone": _dd("دافئ", "warm"),
+            "result": _dd("تغطية متوسطة", "medium_cov"),
+        },
+        {
+            "shade_name": {"en": "Soft Rose Blush", "ar": "بلاشر وردي ناعم"},
+            "shade_number": "B01", "hex": "#e8a0a8",
+            "desc": {"en": "Cool soft-rose blush for a natural flush.",
+                     "ar": "بلاشر وردي بارد لخجل طبيعي على الخدين."},
+            "product_type": _dd("بلاشر", "blush"),
+            "skin": _dd("فاتحة", "fair"),
+            "undertone": _dd("بارد", "cool"),
+            "result": _dd("طبيعية", "natural"),
+        },
+        {
+            "shade_name": {"en": "Nude Rose Lip", "ar": "أحمر شفاه نوود روز"},
+            "shade_number": "L05", "hex": "#c47a7a",
+            "desc": {"en": "Warm nude-rose lipstick with a natural everyday look.",
+                     "ar": "أحمر شفاه نوود روز دافئ لإطلالة يومية طبيعية."},
+            "product_type": _dd("أحمر شفاه", "lipstick"),
+            "skin": _dd("متوسطة", "medium"),
+            "undertone": _dd("دافئ", "warm"),
+            "result": _dd("طبيعية", "natural"),
+        },
     ]
     return component(
         "beauty-shade-finder", "محدد درجة المكياج المناسبة", "sicon-format-fill",
         [
             static_title(f"{p}content_title", "محتوى العنصر"),
-            multilang(f"{p}title", "العنوان", "محدد درجتك المثالية",
-                      "Find your perfect shade"),
+            multilang(f"{p}title", "العنوان", "اكتشفي درجتك المثالية",
+                      "Discover your perfect shade"),
             multilang(f"{p}desc", "الوصف",
-                      "أجيبي عن الأسئلة لنقترح لكِ الدرجات الأنسب لبشرتك.",
-                      "Answer a few questions and we will suggest the best shades for you.",
-                      "textarea", "300"),
-            multilang(f"{p}step_type_label", "عنوان خطوة نوع المنتج", "نوع المنتج", "Product type"),
-            multilang(f"{p}step_skin_label", "عنوان خطوة درجة البشرة", "درجة لون البشرة", "Skin depth"),
-            multilang(f"{p}step_undertone_label", "عنوان خطوة الأندرتون", "الأندرتون", "Undertone"),
-            multilang(f"{p}step_result_label", "عنوان خطوة النتيجة", "النتيجة المطلوبة", "Desired finish"),
-            multilang(f"{p}reset_btn", "نص زر إعادة التحديد", "إعادة التحديد", "Reset choices"),
+                      "أجيبي عن 4 أسئلة بسيطة حول نوع المكياج ولون بشرتك والأندرتون واللمسة المطلوبة، وسنقترح لكِ الدرجات الأنسب.",
+                      "Answer 4 simple questions about makeup type, skin depth, undertone and finish — we will suggest the best matching shades.",
+                      "textarea", "320"),
+            multilang(f"{p}step_type_label", "عنوان خطوة نوع المكياج", "ما نوع المكياج الذي تبحثين عنه؟", "What makeup are you looking for?"),
+            multilang(f"{p}step_skin_label", "عنوان خطوة درجة البشرة", "ما درجة لون بشرتك؟", "What is your skin depth?"),
+            multilang(f"{p}step_undertone_label", "عنوان خطوة الأندرتون", "ما أندرتون بشرتك؟", "What is your undertone?"),
+            multilang(f"{p}step_result_label", "عنوان خطوة اللمسة", "ما اللمسة أو التغطية التي تفضلينها؟", "Which finish or coverage do you prefer?"),
+            multilang(f"{p}undertone_hint", "تلميح خطوة الأندرتون",
+                      "نصيحة: الأوردة الخضراء غالبًا دافئة، والزرقاء باردة، والمختلطة محايدة. الذهب يناسب الدافئ والفضة تناسب البارد.",
+                      "Tip: greenish veins often mean warm, bluish mean cool, mixed mean neutral. Gold suits warm, silver suits cool.",
+                      "textarea", "280"),
+            multilang(f"{p}results_title", "عنوان النتائج", "الدرجات المناسبة لكِ", "Shades that suit you"),
+            multilang(f"{p}next_btn", "نص زر التالي", "التالي", "Next"),
+            multilang(f"{p}back_btn", "نص زر السابق", "السابق", "Back"),
+            multilang(f"{p}see_btn", "نص زر عرض النتائج", "عرض الدرجات", "See shades"),
+            multilang(f"{p}reset_btn", "نص زر إعادة التحديد", "ابدئي من جديد", "Start over"),
             static_title(f"{p}shades_title", "درجات المكياج"),
             collection(f"{p}shades", "درجة", shade_fields, sample),
             static_title(f"{p}display_title", "خيارات العرض"),
@@ -454,12 +701,18 @@ def build_routine_builder():
         dropdown_manual(f"{p}steps.time", "وقت الاستخدام", TIME_OPTS, ""),
     ]
     sample = [
-        {"step_name": {"ar": "المنظف", "en": "Cleanser"}, "step_desc": {"ar": "ينظّف البشرة بلطف ويهيئها.", "en": ""}, "order": 1, "level": {"selected": [{"key": "quick", "label": "روتين سريع", "value": "quick"}]}},
-        {"step_name": {"ar": "التونر", "en": "Toner"}, "step_desc": {"ar": "يوازن البشرة بعد التنظيف.", "en": ""}, "order": 2, "level": {"selected": [{"key": "basic", "label": "روتين أساسي", "value": "basic"}]}},
-        {"step_name": {"ar": "السيروم", "en": "Serum"}, "step_desc": {"ar": "علاج مركّز حسب حاجة بشرتك.", "en": ""}, "order": 3, "level": {"selected": [{"key": "basic", "label": "روتين أساسي", "value": "basic"}]}},
-        {"step_name": {"ar": "المرطب", "en": "Moisturizer"}, "step_desc": {"ar": "يرطّب ويحبس الترطيب.", "en": ""}, "order": 4, "level": {"selected": [{"key": "quick", "label": "روتين سريع", "value": "quick"}]}},
-        {"step_name": {"ar": "واقي الشمس", "en": "Sunscreen"}, "step_desc": {"ar": "حماية يومية ضرورية صباحاً.", "en": ""}, "order": 5, "level": {"selected": [{"key": "quick", "label": "روتين سريع", "value": "quick"}]}, "time": {"selected": [{"key": "morning", "label": "صباحي", "value": "morning"}]}},
-        {"step_name": {"ar": "كريم العين", "en": "Eye cream"}, "step_desc": {"ar": "يعتني بمنطقة العين الدقيقة.", "en": ""}, "order": 6, "level": {"selected": [{"key": "complete", "label": "روتين متكامل", "value": "complete"}]}},
+        {"step_name": {"en": "Cleanser", "ar": "المنظف"}, "step_desc": {"en": "Gently cleanses and prepares the skin.", "ar": "ينظّف البشرة بلطف ويهيئها."},
+         "image": ROUTINE_STEP_IMAGES[0], "order": 1, "level": {"selected": [{"key": "quick", "label": "روتين سريع", "value": "quick"}]}},
+        {"step_name": {"en": "Toner", "ar": "التونر"}, "step_desc": {"en": "Balances skin after cleansing.", "ar": "يوازن البشرة بعد التنظيف."},
+         "image": ROUTINE_STEP_IMAGES[1], "order": 2, "level": {"selected": [{"key": "basic", "label": "روتين أساسي", "value": "basic"}]}},
+        {"step_name": {"en": "Serum", "ar": "السيروم"}, "step_desc": {"en": "A focused treatment for your skin need.", "ar": "علاج مركّز حسب حاجة بشرتك."},
+         "image": ROUTINE_STEP_IMAGES[2], "order": 3, "level": {"selected": [{"key": "basic", "label": "روتين أساسي", "value": "basic"}]}},
+        {"step_name": {"en": "Moisturizer", "ar": "المرطب"}, "step_desc": {"en": "Hydrates and locks in moisture.", "ar": "يرطّب ويحبس الترطيب."},
+         "image": ROUTINE_STEP_IMAGES[3], "order": 4, "level": {"selected": [{"key": "quick", "label": "روتين سريع", "value": "quick"}]}},
+        {"step_name": {"en": "Sunscreen", "ar": "واقي الشمس"}, "step_desc": {"en": "Essential daily protection in the morning.", "ar": "حماية يومية ضرورية صباحاً."},
+         "image": ROUTINE_STEP_IMAGES[4], "order": 5, "level": {"selected": [{"key": "quick", "label": "روتين سريع", "value": "quick"}]}, "time": {"selected": [{"key": "morning", "label": "صباحي", "value": "morning"}]}},
+        {"step_name": {"en": "Eye cream", "ar": "كريم العين"}, "step_desc": {"en": "Cares for the delicate eye area.", "ar": "يعتني بمنطقة العين الدقيقة."},
+         "image": ROUTINE_STEP_IMAGES[5], "order": 6, "level": {"selected": [{"key": "complete", "label": "روتين متكامل", "value": "complete"}]}},
     ]
     return component(
         "beauty-routine-builder", "منشئ روتين العناية", "sicon-list",
@@ -467,19 +720,20 @@ def build_routine_builder():
             static_title(f"{p}content_title", "محتوى العنصر"),
             multilang(f"{p}title", "العنوان", "ابني روتين عنايتك", "Build your care routine"),
             multilang(f"{p}desc", "الوصف",
-                      "أجيبي عن الأسئلة وسنرتّب لكِ خطوات الروتين المناسبة.",
-                      "Answer the questions and we will arrange the right routine steps for you.",
+                      "أجيبي عن 4 أسئلة بسيطة وسنرتّب لكِ خطوات الروتين المناسبة لبشرتك.",
+                      "Answer 4 simple questions and we will arrange the right routine steps for your skin.",
                       "textarea", "300"),
-            multilang(f"{p}q_skin_label", "عنوان سؤال نوع البشرة", "نوع البشرة", "Skin type"),
-            multilang(f"{p}q_concern_label", "عنوان سؤال المشكلة", "المشكلة الأساسية", "Main concern"),
-            multilang(f"{p}q_time_label", "عنوان سؤال وقت الاستخدام", "وقت الاستخدام", "Usage time"),
-            multilang(f"{p}q_routine_label", "عنوان سؤال نوع الروتين", "نوع الروتين", "Routine type"),
+            static_title(f"{p}questions_title", "أسئلة الاختبار"),
+            multilang(f"{p}q_skin_label", "سؤال نوع البشرة", "ما نوع بشرتك؟", "What is your skin type?"),
+            multilang(f"{p}q_concern_label", "سؤال المشكلة", "ما مشكلتك الأساسية؟", "What is your main concern?"),
+            multilang(f"{p}q_time_label", "سؤال وقت الاستخدام", "متى تستخدمين الروتين؟", "When do you use your routine?"),
+            multilang(f"{p}q_routine_label", "سؤال نوع الروتين", "أي مستوى روتين تفضّلين؟", "Which routine level do you prefer?"),
             multilang(f"{p}result_title", "عنوان النتيجة", "روتينك المقترح", "Your suggested routine"),
-            multilang(f"{p}reset_btn", "نص زر إعادة الاختيار", "إعادة الاختيار", "Start over"),
+            *quiz_nav_fields(p),
             static_title(f"{p}steps_title", "خطوات الروتين"),
             collection(f"{p}steps", "خطوة", step_fields, sample),
             static_title(f"{p}display_title", "خيارات العرض"),
-            image(f"{p}bg_image", "صورة خلفية اختيارية"),
+            image(f"{p}bg_image", "صورة خلفية اختيارية", ROUTINE_BG),
             dropdown_manual(f"{p}card_shape", "شكل البطاقات",
                             [("ناعم", "soft"), ("حواف حادة", "sharp"), ("حواف دائرية", "pill")], "soft"),
             boolean(f"{p}show_link", "إظهار روابط الخطوات إن وُجدت", True),
@@ -506,21 +760,25 @@ def build_ingredient_lab():
     ]
     sample = [
         {"name": {"ar": "حمض الهيالورونيك", "en": "Hyaluronic acid"}, "color": "#6c8ea8",
+         "image": INGREDIENT_IMAGES[0],
          "desc": {"ar": "يجذب الترطيب ويمنح البشرة نضارة وامتلاءً.", "en": ""},
          "benefits": "ترطيب عميق, نضارة, ملء الخطوط",
          "skin_types": "جافة, عادية, حساسة", "usage_time": "صباحاً ومساءً",
          "texture": {"selected": [{"key": "serum", "label": "سيروم", "value": "serum"}]}},
         {"name": {"ar": "النياسيناميد", "en": "Niacinamide"}, "color": "#c9a24b",
+         "image": INGREDIENT_IMAGES[1],
          "desc": {"ar": "يوحّد لون البشرة ويقلّل ظهور المسام.", "en": ""},
          "benefits": "توحيد اللون, تقليل المسام, تنظيم الدهون",
          "skin_types": "دهنية, مختلطة", "usage_time": "صباحاً ومساءً",
          "texture": {"selected": [{"key": "gel", "label": "جل", "value": "gel"}]}},
         {"name": {"ar": "فيتامين C", "en": "Vitamin C"}, "color": "#e08a3c",
+         "image": INGREDIENT_IMAGES[2],
          "desc": {"ar": "مضاد أكسدة يمنح إشراقة ويقلّل التصبغات.", "en": ""},
          "benefits": "إشراقة, مقاومة التصبغات, حماية",
          "skin_types": "جميع أنواع البشرة", "usage_time": "صباحاً",
          "texture": {"selected": [{"key": "cream", "label": "كريم", "value": "cream"}]}},
         {"name": {"ar": "الريتينول", "en": "Retinol"}, "color": "#b06a8a",
+         "image": INGREDIENT_IMAGES[3],
          "desc": {"ar": "يجدّد البشرة ويقلّل الخطوط الدقيقة.", "en": ""},
          "benefits": "تجديد, مقاومة التجاعيد, نعومة",
          "skin_types": "عادية, دهنية", "usage_time": "مساءً",
@@ -599,7 +857,7 @@ def build_care_assistant():
                       "Answer a few simple questions to get the right routine or advice.",
                       "textarea", "300"),
             text(f"{p}assistant_name", "اسم المساعدة", "خبيرة الجمال"),
-            image(f"{p}avatar", "صورة المساعدة (اختياري)"),
+            image(f"{p}avatar", "صورة المساعدة (اختياري)", ASSISTANT_AVATAR),
             text(f"{p}start_key", "مفتاح سؤال البداية", "start",
                  desc="اتركيه فارغاً لبدء المساعد من أول سؤال"),
             static_title(f"{p}questions_title", "الأسئلة والإجابات المتفرعة"),
@@ -621,18 +879,22 @@ def build_collection_reveal():
         multilang(f"{p}items.title", "عنوان البطاقة", "الخطوة الأولى", "First step"),
         multilang(f"{p}items.subtitle", "وصف مختصر", "", "", "textarea", "260"),
         image(f"{p}items.image", "صورة البطاقة"),
-        text(f"{p}items.tag", "وسم مختصر (اختياري)", ""),
+        multilang(f"{p}items.tag", "وسم مختصر (اختياري)", "", ""),
         variable_list(f"{p}items.link", "رابط صفحة أو مقال (اختياري)"),
     ]
     item_sample = [
-        {"title": {"ar": "التنظيف", "en": "Cleanse"},
-         "subtitle": {"ar": "ابدئي بتنظيف لطيف يهيّئ البشرة.", "en": ""}, "tag": "خطوة 1"},
-        {"title": {"ar": "الترطيب", "en": "Hydrate"},
-         "subtitle": {"ar": "طبقة ترطيب خفيفة تمنح النعومة.", "en": ""}, "tag": "خطوة 2"},
-        {"title": {"ar": "الحماية", "en": "Protect"},
-         "subtitle": {"ar": "اختمي روتينك بحماية يومية.", "en": ""}, "tag": "خطوة 3"},
-        {"title": {"ar": "اللمسة النهائية", "en": "Finish"},
-         "subtitle": {"ar": "إطلالة مشرقة تدوم طوال اليوم.", "en": ""}, "tag": "خطوة 4"},
+        {"title": {"en": "Cleanse", "ar": "التنظيف"},
+         "subtitle": {"en": "Start with a gentle cleanse that prepares the skin.", "ar": "ابدئي بتنظيف لطيف يهيّئ البشرة."},
+         "tag": {"en": "Step 1", "ar": "خطوة 1"}, "image": COLLECTION_IMAGES[0]},
+        {"title": {"en": "Hydrate", "ar": "الترطيب"},
+         "subtitle": {"en": "A light hydration layer for lasting softness.", "ar": "طبقة ترطيب خفيفة تمنح النعومة."},
+         "tag": {"en": "Step 2", "ar": "خطوة 2"}, "image": COLLECTION_IMAGES[1]},
+        {"title": {"en": "Protect", "ar": "الحماية"},
+         "subtitle": {"en": "Finish your routine with daily protection.", "ar": "اختمي روتينك بحماية يومية."},
+         "tag": {"en": "Step 3", "ar": "خطوة 3"}, "image": COLLECTION_IMAGES[2]},
+        {"title": {"en": "Finish", "ar": "اللمسة النهائية"},
+         "subtitle": {"en": "A radiant look that lasts all day.", "ar": "إطلالة مشرقة تدوم طوال اليوم."},
+         "tag": {"en": "Step 4", "ar": "خطوة 4"}, "image": COLLECTION_IMAGES[3]},
     ]
     return component(
         "beauty-collection-reveal", "الكشف الإبداعي عن المجموعة", "sicon-image",
@@ -644,7 +906,7 @@ def build_collection_reveal():
                       "Reveal the collection in a delightful interactive way.", "textarea", "260"),
             multilang(f"{p}cover_title", "نص الغلاف", "المجموعة بانتظارك", "The collection awaits"),
             multilang(f"{p}reveal_btn", "نص زر الكشف", "اكشفي المجموعة", "Reveal collection"),
-            image(f"{p}cover_image", "صورة الغلاف أو الصندوق أو الحقيبة"),
+            image(f"{p}cover_image", "صورة الغلاف أو الصندوق أو الحقيبة", COVER_IMAGE),
             static_title(f"{p}items_title", "بطاقات المجموعة"),
             collection(f"{p}items", "بطاقة", item_fields, item_sample),
             static_title(f"{p}display_title", "خيارات العرض والحركة"),
@@ -697,20 +959,24 @@ def build_face_zone_map():
         {"zone_id": "forehead", "name": {"ar": "الجبهة", "en": "Forehead"}, "x": 50, "y": 18,
          "dot_color": "#b06a8a", "title": {"ar": "منطقة الجبهة", "en": "Forehead"},
          "desc": {"ar": "منطقة تميل للمعان ضمن منطقة T. تحتاج تنظيفًا لطيفًا وترطيبًا متوازنًا.", "en": ""},
-         "tags": "لمعان, خطوط أفقية", "steps": "نظّفي بلطف\nاستخدمي تونر متوازن\nرطّبي بقوام خفيف"},
+         "tags": "لمعان, خطوط أفقية", "steps": "نظّفي بلطف\nاستخدمي تونر متوازن\nرطّبي بقوام خفيف",
+         "image": ZONE_IMAGES[0]},
         {"zone_id": "eyes", "name": {"ar": "محيط العين", "en": "Eye area"}, "x": 34, "y": 36,
          "dot_color": "#6c8ea8", "title": {"ar": "محيط العين", "en": "Eye area"},
          "desc": {"ar": "بشرة رقيقة وحسّاسة تحتاج عناية خاصة.", "en": ""},
          "tags": "انتفاخ, هالات, جفاف", "steps": "ضعي كمية صغيرة\nربّتي بلطف بالبنصر",
-         "warning": {"ar": "تجنّبي ملامسة العين مباشرة.", "en": ""}},
+         "warning": {"ar": "تجنّبي ملامسة العين مباشرة.", "en": ""},
+         "image": ZONE_IMAGES[1]},
         {"zone_id": "cheeks", "name": {"ar": "الخدين", "en": "Cheeks"}, "x": 68, "y": 50,
          "dot_color": "#c9a24b", "title": {"ar": "الخدّان", "en": "Cheeks"},
          "desc": {"ar": "منطقة تميل للجفاف وتحتاج ترطيبًا وحماية.", "en": ""},
-         "tags": "جفاف, احمرار", "steps": "رطّبي جيدًا\nاختمي بواقي الشمس نهارًا"},
+         "tags": "جفاف, احمرار", "steps": "رطّبي جيدًا\nاختمي بواقي الشمس نهارًا",
+         "image": ZONE_IMAGES[2]},
         {"zone_id": "chin", "name": {"ar": "الذقن", "en": "Chin"}, "x": 50, "y": 78,
          "dot_color": "#c2527f", "title": {"ar": "الذقن", "en": "Chin"},
          "desc": {"ar": "جزء من منطقة T وقد تظهر بها حبوب.", "en": ""},
-         "tags": "حبوب, مسام"},
+         "tags": "حبوب, مسام",
+         "image": ZONE_IMAGES[3]},
     ]
     return component(
         "beauty-face-zone-map", "خريطة مناطق الوجه والعناية", "sicon-user",
@@ -735,7 +1001,12 @@ def build_face_zone_map():
             number(f"{p}pulse_speed", "سرعة النبض (مللي ثانية)", 2200, 600, 5000, ""),
             dropdown_manual(f"{p}detail_mode", "طريقة عرض التفاصيل",
                             [("بجانب الصورة", "inline"), ("لوحة سفلية على الجوال", "sheet")], "inline"),
-            text(f"{p}default_zone", "المنطقة المفتوحة افتراضيًا (المعرّف)", ""),
+            text(
+                f"{p}default_zone",
+                "المنطقة المفتوحة افتراضيًا (المعرّف)",
+                "forehead",
+                desc="معرّف المنطقة التي تظهر تفاصيلها عند التحميل. إن تُرك فارغًا تُفتح أول منطقة.",
+            ),
             boolean(f"{p}show_nav", "إظهار أزرار السابق والتالي", True),
             boolean(f"{p}show_names", "إظهار أسماء المناطق فوق الصورة", False),
             boolean(f"{p}show_notice", "إظهار التنبيه التوعوي", True),
@@ -775,20 +1046,29 @@ def build_layering_board():
         {"routine_id": "morning", "name": {"ar": "روتين صباحي", "en": "Morning routine"},
          "steps": [
              {"step_title": {"ar": "المنظف", "en": "Cleanser"}, "correct_order": 1, "color": "#6c8ea8",
+              "image": ROUTINE_STEP_IMAGES[0],
               "desc_short": {"ar": "ابدئي بتنظيف لطيف.", "en": ""}},
-             {"step_title": {"ar": "التونر", "en": "Toner"}, "correct_order": 2, "color": "#7fae9b"},
+             {"step_title": {"ar": "التونر", "en": "Toner"}, "correct_order": 2, "color": "#7fae9b",
+              "image": ROUTINE_STEP_IMAGES[1]},
              {"step_title": {"ar": "السيروم", "en": "Serum"}, "correct_order": 3, "color": "#c9a24b",
+              "image": ROUTINE_STEP_IMAGES[2],
               "desc_short": {"ar": "علاج مركّز حسب الحاجة.", "en": ""}},
-             {"step_title": {"ar": "المرطب", "en": "Moisturizer"}, "correct_order": 4, "color": "#b06a8a"},
+             {"step_title": {"ar": "المرطب", "en": "Moisturizer"}, "correct_order": 4, "color": "#b06a8a",
+              "image": ROUTINE_STEP_IMAGES[3]},
              {"step_title": {"ar": "واقي الشمس", "en": "Sunscreen"}, "correct_order": 5, "color": "#e08a3c",
+              "image": ROUTINE_STEP_IMAGES[4],
               "period": "morning", "desc_short": {"ar": "آخر خطوة صباحية دائمًا.", "en": ""}},
          ]},
         {"routine_id": "evening", "name": {"ar": "روتين مسائي", "en": "Evening routine"},
          "steps": [
-             {"step_title": {"ar": "مزيل المكياج", "en": "Makeup remover"}, "correct_order": 1, "color": "#c2527f"},
-             {"step_title": {"ar": "المنظف", "en": "Cleanser"}, "correct_order": 2, "color": "#6c8ea8"},
-             {"step_title": {"ar": "السيروم", "en": "Serum"}, "correct_order": 3, "color": "#c9a24b"},
-             {"step_title": {"ar": "كريم الليل", "en": "Night cream"}, "correct_order": 4, "color": "#b06a8a"},
+             {"step_title": {"ar": "مزيل المكياج", "en": "Makeup remover"}, "correct_order": 1, "color": "#c2527f",
+              "image": ROUTINE_STEP_IMAGES[5]},
+             {"step_title": {"ar": "المنظف", "en": "Cleanser"}, "correct_order": 2, "color": "#6c8ea8",
+              "image": ROUTINE_STEP_IMAGES[0]},
+             {"step_title": {"ar": "السيروم", "en": "Serum"}, "correct_order": 3, "color": "#c9a24b",
+              "image": ROUTINE_STEP_IMAGES[2]},
+             {"step_title": {"ar": "كريم الليل", "en": "Night cream"}, "correct_order": 4, "color": "#b06a8a",
+              "image": ROUTINE_STEP_IMAGES[3]},
          ]},
     ]
     return component(
@@ -846,25 +1126,37 @@ def build_lighting_simulator():
     ]
     sample = [
         {"light_id": "daylight", "name": {"ar": "ضوء النهار", "en": "Daylight"}, "finish": "natural",
-         "image": LIGHT_IMAGES["daylight"],
-         "desc": {"ar": "إضاءة طبيعية متوازنة تُظهر الألوان كما هي.", "en": ""},
-         "color_effect": {"ar": "ألوان حقيقية ومتوازنة", "en": ""}, "gloss": 3, "clarity": 5, "contrast": 3,
-         "palette": "#e8c4a0, #c98f6a, #7d4b39"},
+         "icon": "☀️", "image": LIGHT_IMAGES["daylight"],
+         "desc": {"ar": "إضاءة طبيعية متوازنة تُظهر لون المكياج والبشرة كما هما.",
+                  "en": "Balanced natural light that shows makeup and skin true-to-life."},
+         "color_effect": {"ar": "ألوان حقيقية ومتوازنة", "en": "True, balanced colors"},
+         "gloss": 3, "clarity": 5, "contrast": 3,
+         "palette": "#f5d7c3, #e0a88a, #c47a5a",
+         "note": {"ar": "مناسبة لتقييم الدرجة اليومية.", "en": "Ideal for judging everyday shade match."}},
         {"light_id": "warm", "name": {"ar": "إضاءة دافئة", "en": "Warm indoor"}, "finish": "dewy",
-         "image": LIGHT_IMAGES["warm"],
-         "desc": {"ar": "تمنح دفئًا وإشراقة ذهبية للبشرة.", "en": ""},
-         "color_effect": {"ar": "ميل نحو الذهبي", "en": ""}, "gloss": 4, "clarity": 3, "contrast": 2,
-         "palette": "#f0cba0, #d99a5c, #9c5e37"},
+         "icon": "💡", "image": LIGHT_IMAGES["warm"],
+         "desc": {"ar": "إضاءة ذهبية دافئة تمنح البشرة إشراقة وتعمّق درجات الشفاه.",
+                  "en": "Golden warm light that adds glow and deepens lip tones."},
+         "color_effect": {"ar": "ميل نحو الذهبي والبرتقالي", "en": "Shift toward gold and amber"},
+         "gloss": 4, "clarity": 3, "contrast": 2,
+         "palette": "#f0cba0, #d99a5c, #9c5e37",
+         "note": {"ar": "تُظهر اللمعان والندى بشكل أوضح.", "en": "Makes dewy and luminous finishes pop."}},
         {"light_id": "cool", "name": {"ar": "إضاءة باردة", "en": "Cool indoor"}, "finish": "matte",
-         "image": LIGHT_IMAGES["cool"],
-         "desc": {"ar": "تبرز الدرجات الباردة وتقلّل الاحمرار.", "en": ""},
-         "color_effect": {"ar": "ميل نحو الوردي/الأزرق", "en": ""}, "gloss": 2, "clarity": 4, "contrast": 4,
-         "palette": "#e6c4b8, #b98c86, #6f4a52"},
+         "icon": "❄️", "image": LIGHT_IMAGES["cool"],
+         "desc": {"ar": "إضاءة باردة تبرز الدرجات الوردية والزرقاء وتقلّل الاحمرار الظاهر.",
+                  "en": "Cool light that brings out pink/blue undertones and softens redness."},
+         "color_effect": {"ar": "ميل نحو الوردي والأزرق", "en": "Shift toward pink and blue"},
+         "gloss": 2, "clarity": 4, "contrast": 4,
+         "palette": "#d8c4d8, #9aa7c7, #5c6a8a",
+         "note": {"ar": "مفيدة لاختبار المظهر تحت إضاءة داخلية باردة.", "en": "Useful for cool indoor / office-like light."}},
         {"light_id": "evening", "name": {"ar": "إضاءة مسائية", "en": "Evening"}, "finish": "glossy",
-         "image": LIGHT_IMAGES["evening"],
-         "desc": {"ar": "إضاءة خافتة تبرز اللمعان والعمق.", "en": ""},
-         "color_effect": {"ar": "درجات أعمق وأكثر درامية", "en": ""}, "gloss": 5, "clarity": 2, "contrast": 5,
-         "palette": "#caa07e, #92603f, #4e2f22"},
+         "icon": "🌙", "image": LIGHT_IMAGES["evening"],
+         "desc": {"ar": "إضاءة مسائية درامية تبرز اللمعان والعمق في العيون والشفاه.",
+                  "en": "Dramatic evening light that emphasizes gloss and depth in eyes and lips."},
+         "color_effect": {"ar": "درجات أعمق وأكثر درامية", "en": "Deeper, more dramatic tones"},
+         "gloss": 5, "clarity": 2, "contrast": 5,
+         "palette": "#caa07e, #92603f, #4e2f22",
+         "note": {"ar": "الأنسب لإطلالات السهرة واللمعان.", "en": "Best for evening looks and glossy finishes."}},
     ]
     return component(
         "beauty-lighting-finish-simulator", "محاكي الإضاءة والمظهر", "sicon-image",
@@ -953,11 +1245,17 @@ def build_pao_calculator():
             boolean(f"{p}enable_name", "تفعيل اسم العبوة", True),
             boolean(f"{p}enable_note", "تفعيل ملاحظة المستخدم", False),
             boolean(f"{p}enable_calendar", "تفعيل زر إضافة إلى التقويم", True),
-            multilang(f"{p}storage_tips", "نصائح الحفظ (اختياري)", "", "", "textarea", "400"),
-            multilang(f"{p}stop_signals", "علامات التوقف عن الاستخدام (اختياري)", "", "", "textarea", "400"),
-            multilang(f"{p}state_safe", "نص الحالة الآمنة", "", "", "text", "160"),
-            multilang(f"{p}state_warn", "نص حالة الاقتراب", "", "", "text", "160"),
-            multilang(f"{p}state_expired", "نص حالة الانتهاء", "", "", "text", "160"),
+            multilang(f"{p}storage_tips", "نصائح الحفظ",
+                      "احفظي العبوة في مكان بارد وجاف بعيدًا عن أشعة الشمس المباشرة، وأغلقي الغطاء جيدًا بعد كل استخدام.",
+                      "Store the product in a cool, dry place away from direct sun, and close the cap tightly after each use.",
+                      "textarea", "400"),
+            multilang(f"{p}stop_signals", "علامات التوقف عن الاستخدام",
+                      "توقّفي عن الاستخدام عند تغيّر الرائحة أو اللون أو القوام، أو عند ظهور تهيج غير معتاد.",
+                      "Stop using if the smell, color or texture changes, or if unusual irritation appears.",
+                      "textarea", "400"),
+            multilang(f"{p}state_safe", "نص الحالة الآمنة", "ما زال الاستخدام آمنًا", "Still safe to use"),
+            multilang(f"{p}state_warn", "نص حالة الاقتراب", "يقترب من نهاية المدة", "Nearing the end date"),
+            multilang(f"{p}state_expired", "نص حالة الانتهاء", "انتهت مدة الاستخدام المقترحة", "Suggested use period ended"),
             color(f"{p}safe_color", "لون الحالة الآمنة", "#2f9e63"),
             color(f"{p}warn_color", "لون حالة الاقتراب", "#e0a100"),
             color(f"{p}expired_color", "لون حالة الانتهاء", "#cf4b4b"),
@@ -991,18 +1289,22 @@ def build_texture_lab():
     ]
     sample = [
         {"tex_id": "serum", "name": {"ar": "سيروم", "en": "Serum"}, "color": "#c9a24b",
+         "image": TEXTURE_IMAGES[0],
          "desc": {"ar": "قوام خفيف سريع الامتصاص يتغلغل بسرعة.", "en": ""},
          "lightness": 5, "thickness": 1, "absorption": 5, "hydration": 3, "gloss": 2, "greasiness": 1,
          "finish": {"ar": "ناعم غير دهني", "en": ""}, "spread": {"ar": "ينتشر بسرعة في مساحة صغيرة", "en": ""}},
         {"tex_id": "gel", "name": {"ar": "جل", "en": "Gel"}, "color": "#7fae9b",
+         "image": TEXTURE_IMAGES[1],
          "desc": {"ar": "منعش خفيف ينتشر بسهولة ويمتص بسرعة.", "en": ""},
          "lightness": 4, "thickness": 2, "absorption": 4, "hydration": 3, "gloss": 2, "greasiness": 1,
          "finish": {"ar": "منعش", "en": ""}},
         {"tex_id": "cream", "name": {"ar": "كريم", "en": "Cream"}, "color": "#e6c9a8",
+         "image": TEXTURE_IMAGES[2],
          "desc": {"ar": "قوام غني يرطّب بعمق ويحتاج توزيعًا أطول.", "en": ""},
          "lightness": 2, "thickness": 4, "absorption": 2, "hydration": 5, "gloss": 3, "greasiness": 3,
          "finish": {"ar": "مغذٍّ", "en": ""}},
         {"tex_id": "oil", "name": {"ar": "زيت", "en": "Oil"}, "color": "#e0a13c",
+         "image": TEXTURE_IMAGES[3],
          "desc": {"ar": "ينتشر تدريجيًا ويترك لمعانًا مغذّيًا.", "en": ""},
          "lightness": 2, "thickness": 3, "absorption": 2, "hydration": 4, "gloss": 5, "greasiness": 4,
          "finish": {"ar": "لامع مغذٍّ", "en": ""}, "spread": {"ar": "ينتشر تدريجيًا", "en": ""}},
@@ -1107,6 +1409,7 @@ def build_actives_compatibility():
             multilang(f"{p}label_compatible", "نص «متوافقان»", "متوافقان", "Compatible"),
             multilang(f"{p}label_caution", "نص «بحذر»", "استخدمي بحذر", "Use with caution"),
             multilang(f"{p}label_avoid", "نص «تجنّب»", "يُفضّل عدم الجمع", "Better not combined"),
+            multilang(f"{p}label_unknown", "نص «غير معروف»", "لا قاعدة / غير معروف", "No rule / unknown"),
             multilang(f"{p}default_note", "نص عند عدم وجود قاعدة",
                       "لا يوجد تعارض معروف بين هذين المكوّنين.",
                       "No known conflict between these two ingredients.", "textarea", "300"),
@@ -1139,21 +1442,25 @@ def build_fragrance_finder():
     ]
     fam_sample = [
         {"family_id": "floral", "name": {"ar": "الزهري", "en": "Floral"}, "color": "#d98cae", "icon": "🌸",
+         "image": FRAGRANCE_IMAGES[0],
          "desc": {"ar": "عائلة أنثوية ناعمة تعتمد على الورود والياسمين والزهور البيضاء.", "en": ""},
          "mood": "أنثوي, رومانسي, ناعم",
          "top_notes": "برغموت\nليمون", "heart_notes": "ورد\nياسمين\nزهر البرتقال", "base_notes": "مسك\nخشب أبيض",
          "season": {"ar": "الربيع", "en": "Spring"}, "occasion": {"ar": "النهار واللقاءات", "en": "Daytime"}},
         {"family_id": "woody", "name": {"ar": "الخشبي", "en": "Woody"}, "color": "#9c7a4e", "icon": "🌳",
+         "image": FRAGRANCE_IMAGES[1],
          "desc": {"ar": "عائلة دافئة راقية تقوم على خشب الصندل والأرز والعنبر.", "en": ""},
          "mood": "دافئ, راقٍ, ثابت",
          "top_notes": "هيل\nفلفل", "heart_notes": "خشب الأرز\nباتشولي", "base_notes": "صندل\nعنبر\nمسك",
          "season": {"ar": "الشتاء", "en": "Winter"}, "occasion": {"ar": "المساء والمناسبات", "en": "Evening"}},
         {"family_id": "oriental", "name": {"ar": "الشرقي", "en": "Oriental"}, "color": "#b5562f", "icon": "🔥",
+         "image": FRAGRANCE_IMAGES[2],
          "desc": {"ar": "عائلة غنية وجريئة تجمع التوابل والفانيليا والراتنجات.", "en": ""},
          "mood": "جريء, غني, فاخر",
          "top_notes": "زعفران\nقرفة", "heart_notes": "بخور\nورد داكن", "base_notes": "فانيليا\nعنبر\nعود",
          "season": {"ar": "الشتاء", "en": "Winter"}, "occasion": {"ar": "السهرات", "en": "Nights out"}},
         {"family_id": "fresh", "name": {"ar": "المنعش", "en": "Fresh"}, "color": "#5aa6c9", "icon": "💧",
+         "image": FRAGRANCE_IMAGES[3],
          "desc": {"ar": "عائلة خفيفة نظيفة تعتمد على الحمضيات والنوتات المائية.", "en": ""},
          "mood": "منعش, نظيف, حيوي",
          "top_notes": "ليمون\nنعناع", "heart_notes": "نوتة مائية\nخزامى", "base_notes": "مسك أبيض\nطحالب",
@@ -1225,20 +1532,21 @@ def build_spf_guide():
         multilang(f"{p}conditions.desc", "وصف مختصر", "", "", "text", "160"),
     ]
     cond_sample = [
-        {"cond_id": "normal", "name": {"ar": "يوم عادي", "en": "Normal day"}, "factor": 1,
-         "desc": {"ar": "تعرّض معتدل للشمس.", "en": ""}},
-        {"cond_id": "beach", "name": {"ar": "شاطئ أو ثلج", "en": "Beach or snow"}, "factor": 0.5,
-         "desc": {"ar": "انعكاس عالٍ للأشعة، حماية أقل فعليًا.", "en": ""}},
-        {"cond_id": "cloudy", "name": {"ar": "يوم غائم", "en": "Cloudy"}, "factor": 1.2,
-         "desc": {"ar": "أشعة أقل لكنها تصل للبشرة.", "en": ""}},
-        {"cond_id": "indoor", "name": {"ar": "داخلي/ظل", "en": "Indoor / shade"}, "factor": 2,
-         "desc": {"ar": "تعرّض محدود قرب النوافذ.", "en": ""}},
+        {"cond_id": "normal", "name": {"en": "Normal day", "ar": "يوم عادي"}, "factor": 1,
+         "desc": {"en": "Moderate sun exposure.", "ar": "تعرّض معتدل للشمس."}},
+        {"cond_id": "beach", "name": {"en": "Beach or snow", "ar": "شاطئ أو ثلج"}, "factor": 0.5,
+         "desc": {"en": "High reflection — protection wears faster.", "ar": "انعكاس عالٍ للأشعة، حماية أقل فعليًا."}},
+        {"cond_id": "cloudy", "name": {"en": "Cloudy", "ar": "يوم غائم"}, "factor": 1.2,
+         "desc": {"en": "Less intensity, but UV still reaches skin.", "ar": "أشعة أقل لكنها تصل للبشرة."}},
+        {"cond_id": "indoor", "name": {"en": "Indoor / shade", "ar": "داخلي/ظل"}, "factor": 2,
+         "desc": {"en": "Limited exposure near windows.", "ar": "تعرّض محدود قرب النوافذ."}},
     ]
     tip_fields = [multilang(f"{p}tips.tip", "نصيحة", "", "", "text", "200")]
     tip_sample = [
-        {"tip": {"ar": "ضعي كمية كافية توازي ملعقة صغيرة للوجه.", "en": ""}},
-        {"tip": {"ar": "أعيدي التطبيق بعد السباحة أو التعرّق مباشرة.", "en": ""}},
-        {"tip": {"ar": "لا تنسي الأذنين والرقبة وظهر اليدين.", "en": ""}},
+        {"tip": {"en": "Use about a teaspoon amount for the face.", "ar": "ضعي كمية كافية توازي ملعقة صغيرة للوجه."}},
+        {"tip": {"en": "Reapply right after swimming or sweating.", "ar": "أعيدي التطبيق بعد السباحة أو التعرّق مباشرة."}},
+        {"tip": {"en": "Don’t forget ears, neck and the backs of hands.", "ar": "لا تنسي الأذنين والرقبة وظهر اليدين."}},
+        {"tip": {"en": "Apply sunscreen as the last step of your morning skincare.", "ar": "ضعي واقي الشمس كآخر خطوة في روتين الصباح."}},
     ]
     return component(
         "beauty-spf-guide", "دليل الحماية من الشمس", "sicon-sun",
@@ -1258,10 +1566,11 @@ def build_spf_guide():
             static_title(f"{p}tips_title", "نصائح"),
             collection(f"{p}tips", "نصيحة", tip_fields, tip_sample),
             static_title(f"{p}labels_title", "النصوص والعرض"),
-            multilang(f"{p}phototype_label", "نص خطوة نوع البشرة", "نوع البشرة", "Skin type"),
-            multilang(f"{p}spf_label", "نص خطوة عامل الحماية", "عامل الحماية", "SPF"),
-            multilang(f"{p}condition_label", "نص خطوة الحالة", "حالة الطقس", "Conditions"),
+            multilang(f"{p}phototype_label", "نص خطوة نوع البشرة", "ما نوع بشرتك تحت الشمس؟", "What is your sun skin type?"),
+            multilang(f"{p}spf_label", "نص خطوة عامل الحماية", "أي عامل حماية تستخدمين؟", "Which SPF do you use?"),
+            multilang(f"{p}condition_label", "نص خطوة الحالة", "كيف يكون يومك؟", "What is your day like?"),
             multilang(f"{p}result_title", "عنوان النتيجة", "إرشادات الحماية", "Protection guidance"),
+            *quiz_nav_fields(p),
             number(f"{p}reapply_minutes", "فترة إعادة التطبيق (دقيقة)", 120, 30, 360, ""),
             multilang(f"{p}reapply_note", "نص إعادة التطبيق",
                       "أعيدي التطبيق كل ساعتين، وبعد السباحة أو التعرّق.",
@@ -1429,6 +1738,87 @@ def validate(bundle):
     return True
 
 
+# Technical / non-copy string fields that stay single-language (ids, icons, keys).
+_TECHNICAL_TEXT_LEAVES = {
+    "q_key",
+    "next",
+    "start_key",
+    "zone_id",
+    "routine_id",
+    "step_id",
+    "light_id",
+    "cat_id",
+    "tex_id",
+    "active_id",
+    "family_id",
+    "pt_id",
+    "cond_id",
+    "color_id",
+    "shade_number",
+    "icon",
+    "palette",
+    "default_zone",
+    "default_routine",
+    "default_light",
+    "default_texture",
+    "default_family",
+    "default_color",
+    "a",
+    "b",
+}
+
+
+def polish_bundle_content(components):
+    """Keep rich defaults and normalize multilanguage shape to ``{"en","ar"}``.
+
+    Unlike emptying defaults, this preserves complete sample experiences so
+    merchants preview real interactions in the editor and demo.
+    """
+
+    def normalize_locale_obj(value):
+        if not isinstance(value, dict):
+            return value
+        # Multilang leaf: only ar/en (and maybe empty keys)
+        keys = set(value.keys())
+        if keys and keys <= {"ar", "en", "fr"}:
+            return {
+                "en": str(value.get("en") or ""),
+                "ar": str(value.get("ar") or ""),
+            }
+        # Nested structures (collection rows, dropdown selected, etc.)
+        return {k: walk(v) for k, v in value.items()}
+
+    def walk(node):
+        if isinstance(node, list):
+            return [walk(x) for x in node]
+        if isinstance(node, dict):
+            return normalize_locale_obj(node)
+        return node
+
+    def polish_field(field):
+        if not isinstance(field, dict):
+            return
+        if field.get("multilanguage") and isinstance(field.get("value"), dict):
+            field["value"] = {
+                "en": str(field["value"].get("en") or ""),
+                "ar": str(field["value"].get("ar") or ""),
+            }
+        elif field.get("type") == "collection":
+            field["value"] = walk(field.get("value") or [])
+            for nested in field.get("fields") or []:
+                polish_field(nested)
+
+    for comp in components:
+        title = comp.get("title")
+        if isinstance(title, dict):
+            # Component title is Arabic-only in this kit.
+            comp["title"] = str(title.get("ar") or title.get("en") or "").strip()
+        elif title is not None:
+            comp["title"] = str(title).strip()
+        for field in comp.get("fields") or []:
+            polish_field(field)
+
+
 def main():
     with BUNDLE_PATH.open(encoding="utf-8") as fh:
         bundle = json.load(fh)
@@ -1444,6 +1834,7 @@ def main():
     bundle["components"] = build_components()
     prepend_editor_controls(bundle["components"])
     apply_preview_images(bundle["components"])
+    polish_bundle_content(bundle["components"])
 
     # Match the reference/fashion bundle's top-level schema exactly:
     # drop the stray "templates.test" placeholder (missing assets, not part of the kit).

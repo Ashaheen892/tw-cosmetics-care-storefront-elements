@@ -3,25 +3,60 @@ import { css } from 'lit';
 export const componentStyles = css`
   .bac-picker {
     display: grid;
-    gap: 1.25rem;
+    gap: 0;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: var(--section-radius, 16px);
+    border: 1px solid var(--border-color, #f2dde7);
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 18%, var(--card-bg, #fff));
   }
 
-  .bac-row {
+  .bac-slot {
     display: grid;
-    gap: 0.6rem;
+    gap: 0.55rem;
+    padding: 0.65rem 0;
   }
 
-  .bac-row__label {
+  .bac-slot__label {
     margin: 0;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .bac-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.15rem 0;
+  }
+
+  .bac-divider__line {
+    flex: 1;
+    height: 1px;
+    background: var(--border-color, #f2dde7);
+  }
+
+  .bac-divider__icon {
+    flex: 0 0 auto;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #f2dde7);
+    color: var(--muted-color, #8f7a86);
+    font-size: 0.75rem;
+    font-weight: 800;
   }
 
   .bac-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.45rem;
   }
 
   .bac-chip {
@@ -65,83 +100,152 @@ export const componentStyles = css`
     background: var(--swatch, var(--accent-color, #c2527f));
   }
 
-  .bac-result {
-    margin-top: 1.5rem;
-    padding: 1.15rem 1.15rem 1.25rem;
-    border-inline-start: 5px solid var(--verdict-color, var(--accent-color, #c2527f));
+  /* —— Verdict card —— */
+  .bac-verdict {
+    padding: 1.35rem 1.25rem 1.4rem;
+    border-radius: var(--section-radius, 16px);
+    border: 2px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 35%, transparent);
+    background: linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 14%, var(--card-bg, #fff)) 0%,
+      var(--card-bg, #fff) 55%
+    );
+    box-shadow: 0 12px 32px color-mix(in srgb, var(--verdict-color, #000) 12%, transparent);
+    text-align: center;
   }
 
-  .bac-result__head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.65rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .bac-result__title {
-    margin: 0;
-    font-size: 1.05rem;
+  .bac-verdict__title {
+    margin: 0 0 0.35rem;
+    font-size: 0.95rem;
     font-weight: 800;
     color: var(--text-color, #33232e);
+    text-align: center;
+  }
+
+  .bac-verdict__hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+  }
+
+  .bac-verdict__icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--verdict-color, var(--accent-color, #c2527f));
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--verdict-color, #000) 35%, transparent);
+  }
+
+  .bac-verdict__badge {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 18%, var(--card-bg, #fff));
+    color: var(--verdict-color, var(--accent-color, #c2527f));
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+
+  .bac-verdict--unknown .bac-verdict__icon {
+    background: color-mix(in srgb, var(--verdict-color, #6b7280) 85%, var(--card-bg, #fff));
+    border: 2px dashed color-mix(in srgb, var(--verdict-color, #6b7280) 60%, transparent);
+    color: var(--verdict-color, #6b7280);
+    box-shadow: none;
   }
 
   .bac-pair {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem 0.55rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .bac-pair__pill {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    flex-wrap: wrap;
-    color: var(--muted-color, #8f7a86);
-    font-size: 0.86rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+    font-size: 0.84rem;
     font-weight: 700;
+    color: var(--text-color, #33232e);
   }
 
   .bac-pair__dot {
-    width: 0.7rem;
-    height: 0.7rem;
+    width: 0.65rem;
+    height: 0.65rem;
     border-radius: 50%;
     display: inline-block;
     border: 1px solid color-mix(in srgb, #000 12%, transparent);
+    flex: 0 0 auto;
   }
 
-  .bac-pair__sep {
+  .bac-pair__vs {
     color: var(--muted-color, #8f7a86);
-  }
-
-  .bac-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.75rem;
-    border-radius: 999px;
-    background: var(--verdict-color, var(--accent-color, #c2527f));
-    color: #fff;
-    font-size: 0.82rem;
     font-weight: 800;
-    line-height: 1.2;
-  }
-
-  .bac-badge__icon {
     font-size: 0.9rem;
-    line-height: 1;
   }
 
-  .bac-note {
+  .bac-verdict__note {
     margin: 0;
     color: var(--text-color, #33232e);
     font-size: 0.94rem;
-    line-height: 1.7;
+    line-height: 1.65;
+    text-align: start;
+  }
+
+  .bac-tip {
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+    margin-top: 0.9rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 10%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 22%, transparent);
+    text-align: start;
+  }
+
+  .bac-tip__label {
+    flex: 0 0 auto;
+    font-weight: 800;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--verdict-color, var(--accent-color, #c2527f));
+    padding-top: 0.15rem;
+  }
+
+  .bac-tip__text {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: var(--text-color, #33232e);
+    font-weight: 600;
   }
 
   .bac-timing {
     display: flex;
     gap: 0.55rem;
     align-items: flex-start;
-    margin-top: 0.85rem;
+    margin-top: 0.75rem;
     padding: 0.65rem 0.8rem;
     border-radius: 12px;
     background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
     border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 22%, transparent);
+    text-align: start;
   }
 
   .bac-timing__label {
@@ -167,9 +271,7 @@ export const componentStyles = css`
   }
 
   @media (max-width: 639px) {
-    .bac-result__head {
-      gap: 0.5rem;
-    }
+    .bac-tip,
     .bac-timing {
       flex-direction: column;
       gap: 0.3rem;

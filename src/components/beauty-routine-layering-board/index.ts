@@ -199,7 +199,9 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
       ${steps.map((step, i) => {
         const expanded = this.expandedId === step.id;
         return html`<div class="brl-step" style=${styleMap(step.color ? { '--step-color': step.color } : {})}>
-          ${this.renderMarker(step, i + 1)}
+          ${step.image
+            ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />`
+            : this.renderMarker(step, i + 1)}
           <div class="brl-step__body">
             <h3 class="brl-step__title">
               ${step.title}
@@ -255,19 +257,26 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
           data-step=${id}
           style=${styleMap(step.color ? { '--step-color': step.color } : {})}
         >
-          ${enableDrag
+          ${!this.revealed
             ? html`<div class="brl-handles">
-                <button
-                  type="button"
-                  class="brl-handle brl-handle--drag"
-                  aria-label=${t('اسحبي لإعادة الترتيب', 'Drag to reorder')}
-                  @pointerdown=${(e: PointerEvent) => this.onPointerDown(e, id)}
-                >⠿</button>
+                ${enableDrag
+                  ? html`<button
+                      type="button"
+                      class="brl-handle brl-handle--drag"
+                      aria-label=${t('اسحبي لإعادة الترتيب', 'Drag to reorder')}
+                      @pointerdown=${(e: PointerEvent) => this.onPointerDown(e, id)}
+                    >
+                      <span class="brl-handle__grip" aria-hidden="true">⠿</span>
+                      <span class="brl-handle__label">${t('اسحبي', 'Drag')}</span>
+                    </button>`
+                  : nothing}
                 <button type="button" class="brl-handle" ?disabled=${i === 0} aria-label=${t('نقل لأعلى', 'Move up')} @click=${() => this.moveStep(i, -1)}>▲</button>
                 <button type="button" class="brl-handle" ?disabled=${i === order.length - 1} aria-label=${t('نقل لأسفل', 'Move down')} @click=${() => this.moveStep(i, 1)}>▼</button>
               </div>`
             : nothing}
-          ${this.renderMarker(step, i + 1)}
+          ${step.image
+            ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />`
+            : this.renderMarker(step, i + 1)}
           <div class="brl-step__body">
             <h3 class="brl-step__title">
               ${step.title}
@@ -354,6 +363,12 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
           ${mode === 'quiz'
             ? html`<div class="brl-toolbar">
                 <p class="brl-hint">${t('رتّبي الخطوات بالسحب أو بالأسهم ثم تحققي.', 'Order the steps by dragging or with arrows, then check.')}</p>
+                ${isTruthy(c.brl_enable_drag, true)
+                  ? html`<p class="brl-drag-tip">
+                      <span class="brl-drag-tip__icon" aria-hidden="true">⠿</span>
+                      ${t('على الجوال: اضغطي على المقبض واسحبي', 'On mobile: press the handle and drag')}
+                    </p>`
+                  : nothing}
               </div>`
             : nothing}
 
@@ -361,7 +376,8 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
 
           ${mode === 'quiz' && this.checked
             ? html`<div class=${classMap({ 'brl-feedback': true, 'brl-feedback--win': win, 'brl-feedback--retry': !win })} role="status">
-                ${win ? successMsg : retryMsg}
+                <span class="brl-feedback__icon" aria-hidden="true">${win ? '✓' : '↻'}</span>
+                <span class="brl-feedback__msg">${win ? successMsg : retryMsg}</span>
                 <span class="brl-feedback__score">
                   ${(() => {
                     const correct = sortedByCorrect(routine.steps).map((s) => s.id);

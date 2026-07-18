@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>معاينة العناصر — بدون محرر</title>
+    <style>
+      :root {
+        --page-bg: #f7f1ec;
+        --ink: #3a2a2f;
+        --muted: #7a646c;
+        --card: #fffdfb;
+        --line: rgba(90, 60, 70, 0.12);
+        --accent: #c2527f;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background:
+          radial-gradient(1200px 500px at 10% -10%, rgba(194, 82, 127, 0.12), transparent 55%),
+          radial-gradient(900px 420px at 100% 0%, rgba(214, 168, 120, 0.16), transparent 50%),
+          var(--page-bg);
+        color: var(--ink);
+        font-family: "Segoe UI", Tahoma, "Noto Sans Arabic", sans-serif;
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.85rem 1.25rem;
+        backdrop-filter: blur(10px);
+        background: rgba(247, 241, 236, 0.88);
+        border-bottom: 1px solid var(--line);
+      }
+      .topbar h1 {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 800;
+      }
+      .topbar p {
+        margin: 0.15rem 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        max-width: 58%;
+        justify-content: flex-end;
+      }
+      .nav a {
+        text-decoration: none;
+        color: var(--ink);
+        font-size: 0.72rem;
+        padding: 0.35rem 0.55rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        white-space: nowrap;
+      }
+      .nav a:hover { border-color: var(--accent); color: var(--accent); }
+      .stage {
+        width: min(1600px, 100%);
+        margin: 0 auto;
+        padding: 1.25rem;
+      }
+      .card {
+        margin: 0 0 2rem;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 18px 40px rgba(70, 40, 50, 0.06);
+      }
+      .card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.9rem 1.15rem;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(180deg, #fff, #fbf6f2);
+      }
+      .card-head h2 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 800;
+      }
+      .card-head code {
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+      .frame {
+        width: 1600px;
+        max-width: 100%;
+        min-height: 1200px;
+        margin: 0 auto;
+        padding: 1.25rem;
+        background: #fff;
+      }
+      .frame[data-component] {
+        display: block;
+      }
+      .solo .card { display: none; }
+      .solo .card.is-solo { display: block; }
+      .solo .topbar .nav { display: none; }
+      .solo .stage { padding-top: 0.5rem; }
+      .solo .card-head { display: none; }
+      .solo .frame {
+        min-height: 1200px;
+        height: 1200px;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>معاينة عناصر التجميل والعناية</h1>
+        <p>وضع عرض نظيف بدون محرر الإعدادات — مناسب للقطات والـ GIF</p>
+      </div>
+      <nav class="nav" id="nav"></nav>
+    </header>
+    <main class="stage" id="stage"></main>
+    <script type="module">
+      const COMPONENTS = [
+        ['beauty-shade-finder', 'محدد درجة المكياج المناسبة'],
+        ['beauty-routine-builder', 'منشئ روتين العناية'],
+        ['beauty-ingredient-lab', 'مختبر المكونات والقوام'],
+        ['beauty-care-assistant', 'مساعد اختيار منتجات الجمال'],
+        ['beauty-collection-reveal', 'الكشف الإبداعي عن المجموعة'],
+        ['beauty-face-zone-map', 'خريطة مناطق الوجه والعناية'],
+        ['beauty-routine-layering-board', 'ترتيب طبقات روتين العناية'],
+        ['beauty-lighting-finish-simulator', 'محاكي الإضاءة والمظهر'],
+        ['beauty-pao-expiry-calculator', 'حاسبة مدة الاستخدام بعد الفتح'],
+        ['beauty-texture-absorption-lab', 'مختبر القوام والامتصاص'],
+        ['beauty-actives-compatibility', 'مدقّق توافق المكوّنات الفعّالة'],
+        ['beauty-fragrance-finder', 'محدد عائلة العطر'],
+        ['beauty-spf-guide', 'دليل الحماية من الشمس'],
+        ['beauty-color-harmony', 'عجلة تناسق ألوان المكياج'],
+        ['beauty-weekly-planner', 'مخطّط الروتين الأسبوعي'],
+      ];
+
+      function buildDefaults(raw) {
+        const data = {};
+        if (!raw?.fields) return data;
+        for (const field of raw.fields) {
+          if (!field?.id || field.type === 'static') continue;
+          if (String(field.id).startsWith('static-')) continue;
+          if (field.type === 'collection') {
+            data[field.id] = Array.isArray(field.value) ? field.value : [];
+            continue;
+          }
+          if (field.format === 'dropdown-list' && Array.isArray(field.selected) && field.selected[0]) {
+            const pick = field.selected[0];
+            data[field.id] =
+              pick && typeof pick === 'object'
+                ? pick.value ?? pick.key ?? pick
+                : pick;
+            continue;
+          }
+          if (typeof field.value !== 'undefined') data[field.id] = field.value;
+        }
+        return data;
+      }
+
+      const params = new URLSearchParams(location.search);
+      const only = params.get('component');
+      if (only) document.body.classList.add('solo');
+
+      const bundle = await fetch('/twilight-bundle.json').then((r) => r.json());
+      const byName = Object.fromEntries((bundle.components || []).map((c) => [c.name, c]));
+
+      const nav = document.getElementById('nav');
+      const stage = document.getElementById('stage');
+
+      for (const [name, title] of COMPONENTS) {
+        if (only && only !== name) continue;
+        const a = document.createElement('a');
+        a.href = `#${name}`;
+        a.textContent = title;
+        nav.appendChild(a);
+
+        const card = document.createElement('section');
+        card.className = 'card' + (only === name ? ' is-solo' : '');
+        card.id = name;
+        card.innerHTML = `
+          <div class="card-head">
+            <h2>${title}</h2>
+            <code>${name}</code>
+          </div>
+          <div class="frame" data-component="${name}"></div>
+        `;
+        stage.appendChild(card);
+
+        await import(`/src/components/${name}/index.ts`);
+        const tag = `salla-${name}`;
+        const el = document.createElement(tag);
+        el.config = buildDefaults(byName[name]);
+        card.querySelector('.frame').appendChild(el);
+      }
+    </script>
+  </body>
+</html>

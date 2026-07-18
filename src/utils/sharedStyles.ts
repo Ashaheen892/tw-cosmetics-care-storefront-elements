@@ -8,6 +8,10 @@ export const sharedSectionCss = css`
   :host {
     display: block;
     overflow-x: clip;
+    --fs-success: #2f9e63;
+    --fs-caution: #e0a100;
+    --fs-danger: #cf4b4b;
+    --fs-unknown: #8f7a86;
   }
 
   .fs-section {
@@ -152,11 +156,116 @@ export const sharedSectionCss = css`
   }
 
   .fs-empty {
-    padding: 2rem 1rem;
+    display: grid;
+    place-items: center;
+    gap: 0.55rem;
+    padding: 2.4rem 1.25rem;
     text-align: center;
     color: var(--muted-color, #8f7a86);
-    border: 1px dashed var(--border-color, #f2dde7);
-    border-radius: var(--section-radius, 16px);
+    border: 1px dashed color-mix(in srgb, var(--accent-color, #c2527f) 28%, var(--border-color, #f2dde7));
+    border-radius: var(--section-radius, 20px);
+    background:
+      radial-gradient(
+        80% 80% at 50% 0%,
+        color-mix(in srgb, var(--accent-color, #c2527f) 7%, transparent),
+        transparent 70%
+      ),
+      color-mix(in srgb, var(--card-bg, #fff) 70%, var(--section-bg, #fbf5f8));
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .fs-coach {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 9%, #fff);
+    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 22%, var(--border-color, #f2dde7));
+    color: var(--text-color, #33232e);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .fs-coach__mark {
+    flex: 0 0 auto;
+    width: 1.55rem;
+    height: 1.55rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--accent-color, #c2527f);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .fs-progress {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .fs-progress__bar {
+    height: 6px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 75%, #fff);
+    overflow: hidden;
+  }
+
+  .fs-progress__bar > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 65%, #5a2f4d)
+    );
+    transition: width 0.28s ease;
+  }
+
+  .fs-progress__label {
+    font-size: 0.8rem;
+    font-weight: 650;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .fs-stage {
+    position: relative;
+    border-radius: var(--section-radius, 20px);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #f2dde7);
+    box-shadow: 0 12px 32px rgba(120, 44, 82, 0.08);
+    overflow: hidden;
+  }
+
+  .fs-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 1.7rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, #fff);
+    color: var(--accent-color, #c2527f);
+  }
+
+  .fs-pill--success {
+    background: color-mix(in srgb, var(--fs-success) 14%, #fff);
+    color: var(--fs-success);
+  }
+
+  .fs-pill--caution {
+    background: color-mix(in srgb, var(--fs-caution) 16%, #fff);
+    color: #9a6d00;
+  }
+
+  .fs-pill--danger {
+    background: color-mix(in srgb, var(--fs-danger) 14%, #fff);
+    color: var(--fs-danger);
   }
 
   .fs-meter {
@@ -170,7 +279,11 @@ export const sharedSectionCss = css`
   .fs-meter > span {
     display: block;
     height: 100%;
-    background: var(--accent-color, #c2527f);
+    background: linear-gradient(
+      90deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 60%, #5a2f4d)
+    );
     border-radius: inherit;
     transition: width 0.45s ease;
   }
@@ -557,6 +670,85 @@ export const sharedSectionCss = css`
     .fs-empty {
       padding: 1.35rem 0.85rem;
       font-size: 0.88rem;
+    }
+
+    /* Compact primary CTAs on phone */
+    .fs-btn {
+      min-height: 36px;
+      padding: 0.4rem 1.05rem;
+      font-size: 0.86rem;
+      gap: 0.35rem;
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color, #c2527f) 20%, transparent);
+    }
+
+    .fs-btn:hover {
+      box-shadow: 0 6px 14px color-mix(in srgb, var(--accent-color, #c2527f) 26%, transparent);
+    }
+
+    .fs-tap {
+      min-height: 36px;
+      min-width: 36px;
+    }
+
+    .fs-actions {
+      gap: 0.4rem;
+    }
+
+    /*
+     * Shrink choice chips / options / toggles across all beauty tools.
+     * !important beats per-component min-heights (styles load after shared).
+     * Excludes icon-only nav handles and visual sample pickers.
+     */
+    button[class*='chip']:not([class*='icon']):not([class*='nav']),
+    button[class*='option'],
+    button[class*='segment'],
+    button[class*='toggle'],
+    button[class*='answer'],
+    button[class*='finish'],
+    button[role='tab'],
+    button.bch-color,
+    button.bch-type,
+    button.bta-play__cta,
+    button.bil-segment__btn,
+    button.brl-step__toggle,
+    button.bcr-cover__btn,
+    a.fs-btn {
+      min-height: 34px !important;
+      padding-top: 0.35rem !important;
+      padding-bottom: 0.35rem !important;
+      font-size: 0.82rem !important;
+    }
+
+    /* Form controls that read as large tap targets */
+    input.bpa-input,
+    select.bpa-select,
+    .bpa-input,
+    .bpa-select {
+      min-height: 38px !important;
+      padding: 0.45rem 0.7rem !important;
+      font-size: 0.88rem !important;
+    }
+
+    /* Multi-line option cards stay readable but smaller */
+    button.bch-type,
+    button.bsg-option:not([class*='compact']) {
+      min-height: 46px !important;
+      padding: 0.5rem 0.75rem !important;
+      font-size: 0.84rem !important;
+    }
+
+    /* Chip leading icons / swatches scale with compact chips */
+    button[class*='chip'] [class*='swatch'],
+    button[class*='chip'] [class*='icon'] {
+      width: 1.65rem !important;
+      height: 1.65rem !important;
+      font-size: 0.8rem !important;
+    }
+
+    button.bca-answer [class*='icon'],
+    button.bca-answer img {
+      width: 1.75rem !important;
+      height: 1.75rem !important;
     }
 
     .fs-product-card__body {

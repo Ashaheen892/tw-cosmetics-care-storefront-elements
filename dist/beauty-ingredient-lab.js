@@ -1,9 +1,9 @@
-import { css as S, LitElement as C, nothing as s, html as r } from "lit";
+import { css as S, LitElement as C, nothing as i, html as r } from "lit";
 import { property as I, state as _ } from "lit/decorators.js";
 import { classMap as L } from "lit/directives/class-map.js";
 import { styleMap as f } from "lit/directives/style-map.js";
-import { n as E, b as j, g as M, l as d, d as v, e as U, s as B, t as o, r as H, p as O, i as x, a as P } from "./sharedStyles-cRSiglXC.js";
-const R = S`
+import { n as E, b as j, g as M, l as d, d as v, e as P, m as U, s as B, t as o, r as H, p as O, i as x, a as R } from "./sharedStyles--LaFqDVC.js";
+const A = S`
   :host {
     direction: inherit;
   }
@@ -34,10 +34,10 @@ const R = S`
     border-radius: 50%;
     background: radial-gradient(
       circle at 30% 30%,
-      color-mix(in srgb, var(--accent-color, #c2527f) 40%, #fff),
+      color-mix(in srgb, var(--accent-color, #c2527f) 28%, #fff),
       transparent 70%
     );
-    opacity: 0.5;
+    opacity: 0.28;
     animation: bil-float 9s ease-in-out infinite;
   }
 
@@ -51,35 +51,52 @@ const R = S`
     }
   }
 
-  .bil-toolbar {
+  .bil-filter-wrap {
     position: relative;
     z-index: 1;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 0.45rem;
     margin-bottom: 1rem;
   }
 
-  .bil-filter {
-    min-height: 40px;
-    padding: 0.45rem 0.95rem;
-    border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--card-bg, #fff) 70%, transparent);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-    color: var(--text-color, #33232e);
-    font: inherit;
-    font-weight: 600;
-    font-size: 0.83rem;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  .bil-filter__label {
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--muted-color, #8f7a86);
   }
 
-  .bil-filter[aria-pressed='true'] {
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
-    color: #fff;
+  .bil-segment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    padding: 0.22rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+    border: 1px solid var(--border-color, #f2dde7);
+  }
+
+  .bil-segment__btn {
+    flex: 1 1 auto;
+    min-height: 40px;
+    min-width: 3.5rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--muted-color, #8f7a86);
+    font: inherit;
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .bil-segment__btn[aria-pressed='true'] {
+    background: var(--card-bg, #fff);
+    color: var(--accent-color, #c2527f);
+    box-shadow: 0 2px 10px rgba(43, 33, 28, 0.1);
   }
 
   .bil-grid {
@@ -92,27 +109,24 @@ const R = S`
 
   .bil-card {
     display: grid;
-    gap: 0.5rem;
-    padding: 0.95rem;
-    border-radius: 18px;
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
-    background: color-mix(in srgb, var(--card-bg, #fff) 78%, transparent);
-    -webkit-backdrop-filter: blur(9px);
-    backdrop-filter: blur(9px);
-    box-shadow: 0 8px 24px rgba(43, 33, 28, 0.07);
+    gap: 0.45rem;
+    padding: 0.85rem;
+    border-radius: 16px;
+    border: 1px solid var(--border-color, #f2dde7);
+    background: var(--card-bg, #fff);
     cursor: pointer;
     text-align: start;
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .bil-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 38px rgba(43, 33, 28, 0.13);
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 35%, var(--border-color, #f2dde7));
   }
 
   .bil-card[aria-pressed='true'] {
     border-color: var(--accent-color, #c2527f);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, #c2527f) 30%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, #c2527f) 28%, transparent);
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 5%, var(--card-bg, #fff));
   }
 
   .bil-card__badge {
@@ -157,10 +171,34 @@ const R = S`
     margin-top: 1rem;
     display: grid;
     gap: 0.9rem;
-    padding: 1.1rem;
+    padding: 1.25rem;
     border-radius: 18px;
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 2px solid var(--accent-color, #c2527f);
+    box-shadow:
+      0 12px 32px rgba(43, 33, 28, 0.1),
+      inset 0 1px 0 color-mix(in srgb, var(--accent-color, #c2527f) 8%, transparent);
+  }
+
+  .bil-detail::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 1rem;
+    bottom: 1rem;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+    background: linear-gradient(
+      180deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 45%, #5a2f4d)
+    );
+  }
+
+  [dir='rtl'] .bil-detail::before {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    border-radius: 4px 0 0 4px;
   }
 
   .bil-detail__head {
@@ -243,11 +281,8 @@ const R = S`
       animation: none;
     }
     .bil-card,
-    .bil-filter {
+    .bil-segment__btn {
       transition: none;
-    }
-    .bil-card:hover {
-      transform: none;
     }
   }
 `, $ = [
@@ -261,25 +296,24 @@ const R = S`
   { value: "spray", ar: "رذاذ", en: "Spray" }
 ];
 function y() {
-  var a, e;
-  return ((e = typeof document < "u" ? (a = document.documentElement.lang) == null ? void 0 : a.split(/[-_]/)[0] : "ar") == null ? void 0 : e.toLowerCase()) === "en";
+  return U() === "en";
 }
-function Y(a) {
-  const e = $.find((t) => t.value === a);
-  return e ? y() ? e.en : e.ar : a;
+function D(s) {
+  const e = $.find((t) => t.value === s);
+  return e ? y() ? e.en : e.ar : s;
 }
-function A(a) {
-  const e = new Set(a.map((t) => t.texture).filter(Boolean));
+function F(s) {
+  const e = new Set(s.map((t) => t.texture).filter(Boolean));
   return $.filter((t) => e.has(t.value)).map((t) => ({
     value: t.value,
     label: y() ? t.en : t.ar
   }));
 }
-function D(a) {
-  return E(a).map((e, t) => ({
+function Y(s) {
+  return E(s).map((e, t) => ({
     id: `ingredient-${t}`,
     name: d(e.name),
-    image: U(e.image),
+    image: P(e.image),
     color: d(e.color) || "#c2527f",
     desc: d(e.desc),
     benefits: v(e.benefits),
@@ -290,15 +324,15 @@ function D(a) {
     link: j(e.link ?? e["bil_ingredients.link"])
   })).filter((e) => e.name || e.desc || e.image);
 }
-function F(a, e) {
-  return e ? a.filter((t) => t.texture === e) : a;
+function q(s, e) {
+  return e ? s.filter((t) => t.texture === e) : s;
 }
-var q = Object.defineProperty, u = (a, e, t, n) => {
-  for (var l = void 0, c = a.length - 1, p; c >= 0; c--)
-    (p = a[c]) && (l = p(e, t, l) || l);
-  return l && q(e, t, l), l;
+var G = Object.defineProperty, m = (s, e, t, n) => {
+  for (var l = void 0, c = s.length - 1, p; c >= 0; c--)
+    (p = s[c]) && (l = p(e, t, l) || l);
+  return l && G(e, t, l), l;
 };
-const m = class m extends C {
+const u = class u extends C {
   constructor() {
     super(...arguments), this.config = {}, this.activeTexture = "", this.selectedId = "", this.boundLangHandler = () => this.requestUpdate();
   }
@@ -313,10 +347,10 @@ const m = class m extends C {
   }
   get ingredients() {
     var e;
-    return D((e = this.config) == null ? void 0 : e.bil_ingredients);
+    return Y((e = this.config) == null ? void 0 : e.bil_ingredients);
   }
   get filtered() {
-    return F(this.ingredients, this.activeTexture);
+    return q(this.ingredients, this.activeTexture);
   }
   ensureSelection() {
     var t;
@@ -341,14 +375,14 @@ const m = class m extends C {
               </span>`}
           <h3 class="bil-detail__title">${e.name || o("مكوّن", "Ingredient")}</h3>
         </div>
-        ${e.desc ? r`<p class="bil-card__desc" style="-webkit-line-clamp:unset">${e.desc}</p>` : s}
+        ${e.desc ? r`<p class="bil-card__desc" style="-webkit-line-clamp:unset">${e.desc}</p>` : i}
 
         ${e.benefits.length ? r`<div>
               <p class="bil-meta__row"><b>${o("الفوائد", "Benefits")}</b></p>
               <div class="bil-chips">
                 ${e.benefits.map((n) => r`<span class="bil-chip">${n}</span>`)}
               </div>
-            </div>` : s}
+            </div>` : i}
 
         <div class="bil-meta">
           ${e.skin_types.length ? r`<div class="bil-meta__row">
@@ -356,29 +390,29 @@ const m = class m extends C {
                 <div class="bil-chips" style="margin-top:0.35rem">
                   ${e.skin_types.map((n) => r`<span class="bil-chip">${n}</span>`)}
                 </div>
-              </div>` : s}
-          ${e.usage_time ? r`<p class="bil-meta__row"><b>${o("وقت الاستخدام", "Usage time")}:</b> ${e.usage_time}</p>` : s}
+              </div>` : i}
+          ${e.usage_time ? r`<p class="bil-meta__row"><b>${o("وقت الاستخدام", "Usage time")}:</b> ${e.usage_time}</p>` : i}
         </div>
 
-        ${e.note ? r`<div class="bil-note">${e.note}</div>` : s}
+        ${e.note ? r`<div class="bil-note">${e.note}</div>` : i}
 
-        ${e.link && t ? r`<a class="bil-link" href=${e.link}>${o("اعرفي المزيد", "Learn more")}</a>` : s}
+        ${e.link && t ? r`<a class="bil-link" href=${e.link}>${o("اعرفي المزيد", "Learn more")}</a>` : i}
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, t = H(e, "bil_"), n = t.animate && !O(), l = d(e.bil_title), c = d(e.bil_desc), p = this.ingredients, k = this.filtered, g = A(p), h = this.selected, w = x(e.bil_show_link, !0), z = x(e.bil_bubbles, !0) && n;
+    const e = this.config || {}, t = H(e, "bil_"), n = t.animate && !O(), l = d(e.bil_title), c = d(e.bil_desc), p = this.ingredients, k = this.filtered, g = F(p), h = this.selected, w = x(e.bil_show_link, !0), z = x(e.bil_bubbles, !0) && n;
     return p.length ? r`
       <section
         class=${L({ "fs-section": !0, "fs-animate": n })}
-        style=${f(P(t))}
+        style=${f(R(t))}
         aria-label=${l || o("مختبر المكونات والقوام", "Ingredient & texture lab")}
       >
         <div class="fs-container">
           ${l || c ? r`<div class="fs-header">
-                ${l ? r`<h2 class="fs-title">${l}</h2>` : s}
-                ${c ? r`<p class="fs-desc">${c}</p>` : s}
-              </div>` : s}
+                ${l ? r`<h2 class="fs-title">${l}</h2>` : i}
+                ${c ? r`<p class="fs-desc">${c}</p>` : i}
+              </div>` : i}
 
           <div class="bil-stage">
             ${z ? r`<div class="bil-bubbles" aria-hidden="true">
@@ -386,50 +420,52 @@ const m = class m extends C {
                   <span class="bil-bubble" style="width:44px;height:44px;inset-inline-end:14%;top:24%;animation-delay:1.5s"></span>
                   <span class="bil-bubble" style="width:90px;height:90px;inset-inline-end:6%;bottom:10%;animation-delay:0.8s"></span>
                   <span class="bil-bubble" style="width:36px;height:36px;inset-inline-start:22%;bottom:16%;animation-delay:2.2s"></span>
-                </div>` : s}
+                </div>` : i}
 
-            ${g.length ? r`<div class="bil-toolbar" role="group" aria-label=${o("فلترة حسب القوام", "Filter by texture")}>
-                  <button
-                    type="button"
-                    class="bil-filter"
-                    aria-pressed=${this.activeTexture === "" ? "true" : "false"}
-                    @click=${() => this.setTexture("")}
-                  >
-                    ${o("الكل", "All")}
-                  </button>
-                  ${g.map(
-      (i) => r`<button
+            ${g.length ? r`<div class="bil-filter-wrap">
+                  <span class="bil-filter__label">${o("القوام", "Texture")}</span>
+                  <div class="bil-segment" role="group" aria-label=${o("فلترة حسب القوام", "Filter by texture")}>
+                    <button
                       type="button"
-                      class="bil-filter"
-                      aria-pressed=${this.activeTexture === i.value ? "true" : "false"}
-                      @click=${() => this.setTexture(i.value)}
+                      class="bil-segment__btn"
+                      aria-pressed=${this.activeTexture === "" ? "true" : "false"}
+                      @click=${() => this.setTexture("")}
                     >
-                      ${i.label}
-                    </button>`
+                      ${o("الكل", "All")}
+                    </button>
+                    ${g.map(
+      (a) => r`<button
+                        type="button"
+                        class="bil-segment__btn"
+                        aria-pressed=${this.activeTexture === a.value ? "true" : "false"}
+                        @click=${() => this.setTexture(a.value)}
+                      >
+                        ${a.label}
+                      </button>`
     )}
-                </div>` : s}
+                  </div>
+                </div>` : i}
 
             <div class="bil-grid" role="list">
-              ${k.map((i) => {
-      const T = i.id === this.selectedId;
+              ${k.map((a) => {
+      const T = a.id === this.selectedId;
       return r`<button
                   type="button"
                   class="bil-card"
                   role="listitem"
                   aria-pressed=${T ? "true" : "false"}
-                  @click=${() => this.select(i)}
+                  @click=${() => this.select(a)}
                 >
-                  ${i.image ? r`<img class="bil-card__badge" src=${i.image} alt="" loading="lazy" />` : r`<span class="bil-card__badge" style=${f({ background: i.color })} aria-hidden="true">
-                        ${(i.name || "•").slice(0, 1)}
+                  ${a.image ? r`<img class="bil-card__badge" src=${a.image} alt="" loading="lazy" />` : r`<span class="bil-card__badge" style=${f({ background: a.color })} aria-hidden="true">
+                        ${(a.name || "•").slice(0, 1)}
                       </span>`}
-                  <h3 class="bil-card__name">${i.name || o("مكوّن", "Ingredient")}</h3>
-                  ${i.texture ? r`<span class="bil-card__texture">${Y(i.texture)}</span>` : s}
-                  ${i.desc ? r`<p class="bil-card__desc">${i.desc}</p>` : s}
+                  <h3 class="bil-card__name">${a.name || o("مكوّن", "Ingredient")}</h3>
+                  ${a.texture ? r`<span class="bil-card__texture">${D(a.texture)}</span>` : i}
                 </button>`;
     })}
             </div>
 
-            ${h ? this.renderDetail(h, w) : s}
+            ${h ? this.renderDetail(h, w) : i}
           </div>
         </div>
       </section>
@@ -438,15 +474,15 @@ const m = class m extends C {
       </div>`;
   }
 };
-m.styles = [B, R];
-let b = m;
-u([
+u.styles = [B, A];
+let b = u;
+m([
   I({ type: Object })
 ], b.prototype, "config");
-u([
+m([
   _()
 ], b.prototype, "activeTexture");
-u([
+m([
   _()
 ], b.prototype, "selectedId");
 typeof b < "u" && b.registerSallaComponent("salla-beauty-ingredient-lab");

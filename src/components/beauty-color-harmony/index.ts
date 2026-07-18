@@ -15,16 +15,12 @@ import { componentStyles } from './styles.js';
 import {
   buildHarmony,
   enabledHarmonies,
+  harmonyPlainLabel,
+  harmonyHint,
   mapToZones,
   parseColors,
 } from './utils.js';
 import type { HarmonyColor, HarmonyType } from './types.js';
-
-const HARMONY_LABELS: Record<HarmonyType, { ar: string; en: string }> = {
-  complementary: { ar: 'متتام', en: 'Complementary' },
-  analogous: { ar: 'متجاور', en: 'Analogous' },
-  triadic: { ar: 'ثلاثي', en: 'Triadic' },
-};
 
 export default class BeautyColorHarmony extends LitElement {
   @property({ type: Object })
@@ -112,26 +108,29 @@ export default class BeautyColorHarmony extends LitElement {
   }
 
   private renderTypes(types: HarmonyType[], active: HarmonyType) {
-    if (types.length < 2) return nothing;
+    if (!types.length) return nothing;
     const c = this.config || {};
     const groupLabel =
       localizedString(c.bch_harmony_label as string) ||
-      t('نوع التناسق', 'Harmony type');
+      t('2) اختاري نوع التناسق', '2) Choose harmony style');
     return html`
       <div class="bch-group">
         <p class="bch-group__label">${groupLabel}</p>
         <div class="bch-types" role="group" aria-label=${groupLabel}>
           ${types.map((type) => {
             const selected = active === type;
-            const label = t(HARMONY_LABELS[type].ar, HARMONY_LABELS[type].en);
+            const label = harmonyPlainLabel(type);
+            const hint = harmonyHint(type);
             return html`
               <button
                 type="button"
                 class="bch-type"
                 aria-pressed=${selected ? 'true' : 'false'}
+                aria-describedby=${hint ? `bch-hint-${type}` : nothing}
                 @click=${() => this.selectHarmony(type)}
               >
-                ${label}
+                <span class="bch-type__label">${label}</span>
+                ${hint ? html`<span class="bch-type__hint" id=${`bch-hint-${type}`}>${hint}</span>` : nothing}
               </button>
             `;
           })}
@@ -246,16 +245,23 @@ export default class BeautyColorHarmony extends LitElement {
             : nothing}
 
           <div class="bch-wrap">
-            <div class="bch-group">
-              <p class="bch-group__label">${t('لون الأساس', 'Base color')}</p>
-              ${this.renderColors(colors, activeColor)}
+            <div class="bch-controls">
+              <div class="bch-group">
+                <p class="bch-group__label">${t('1) اختاري لون الأساس', '1) Choose a base color')}</p>
+                ${this.renderColors(colors, activeColor)}
+              </div>
+              ${this.renderTypes(types, activeType)}
             </div>
 
-            ${this.renderTypes(types, activeType)}
-
             <div class="bch-result">
-              ${this.renderStrip(harmony, showHex)}
-              ${this.renderZones(zones, showHex)}
+              <div class="bch-preview">
+                <p class="bch-preview__label">${t('لوحة التناسق', 'Harmony palette')}</p>
+                ${this.renderStrip(harmony, showHex)}
+              </div>
+              <div class="bch-zones-wrap">
+                <p class="bch-preview__label">${t('توزيع على الوجه', 'Face placement')}</p>
+                ${this.renderZones(zones, showHex)}
+              </div>
             </div>
 
             ${showNotice ? html`<p class="bch-notice">${notice}</p>` : nothing}

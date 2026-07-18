@@ -1,81 +1,140 @@
 # Cosmetics & Care Storefront Elements
 
-عناصر واجهة تفاعلية (Twilight Bundles) لمتاجر مستحضرات التجميل والعناية على منصة سلة.
-عشرة عناصر مستقلة، كل عنصر بفكرة وتصميم وتجربة تفاعلية مختلفة، بدعم كامل للعربية واتجاه RTL،
-وقابلة للتخصيص بالكامل من إعدادات التاجر، دون أي خدمات خارجية أو ذكاء اصطناعي.
+This kit provides custom Twilight components for cosmetics and beauty-care stores on Salla's e-commerce platform. It includes a pre-configured build setup and development environment to help you get started quickly.
 
-## العناصر العشرة
+## Getting Started
 
-| Tag (`salla-*`) | المجلد | الوصف |
-| --- | --- | --- |
-| `salla-beauty-shade-finder` | `beauty-shade-finder` | محدد درجة المكياج المناسبة عبر عينات ألوان تفاعلية |
-| `salla-beauty-routine-builder` | `beauty-routine-builder` | منشئ روتين العناية عبر أسئلة متتابعة ينتج خطوات مرتبة |
-| `salla-makeup-look-builder` | `makeup-look-builder` | منشئ إطلالة المكياج خطوة بخطوة مع ملخص وسعر إجمالي |
-| `salla-beauty-ingredient-lab` | `beauty-ingredient-lab` | مختبر المكونات الفعّالة والقوام ببطاقات زجاجية |
-| `salla-beauty-product-swipe` | `beauty-product-swipe` | سحب واكتشاف المنتجات (Like / Skip) مع نتيجة مقترحة |
-| `salla-beauty-comparison-arena` | `beauty-comparison-arena` | ساحة مقارنة بصرية بين منتجين أو ثلاثة |
-| `salla-beauty-care-assistant` | `beauty-care-assistant` | مساعد تفاعلي بنظام أسئلة متفرعة (شجرة قرار) |
-| `salla-beauty-routine-duel` | `beauty-routine-duel` | مواجهة اختيارات متقابلة تنتهي بنتيجة |
-| `salla-beauty-collection-reveal` | `beauty-collection-reveal` | كشف إبداعي عن المجموعة بستة أوضاع (حقيبة/صندوق/أدراج/بتلات/ستارة/منصة) |
-| `salla-virtual-beauty-boutique` | `virtual-beauty-boutique` | متجر جمال افتراضي بنقاط تفاعلية على صورة مشهد |
+1. Clone this repository
+2. Run `pnpm install` to install dependencies
+3. Run `pnpm run dev` to start the development server
+4. Run `pnpm run build` to build your components for production
 
-تُسجَّل كل العناصر تلقائياً عبر `sallaTransformPlugin` باسم `salla-<اسم-المجلد>`.
-
-## البنية
+## Project Structure
 
 ```
 src/
-  components/<name>/
-    index.ts     # مكوّن LitElement (export default) — يقرأ الإعدادات من config
-    styles.ts    # أنماط CSS الخاصة بالعنصر
-    types.ts     # أنواع TypeScript
-    utils.ts     # منطق تحليل الإعدادات وربط المنتجات
-  utils/          # أدوات مشتركة (Salla API، بطاقة المنتج، الترجمة، الأنماط، إلخ)
-scripts/
-  generate_bundle.py           # يولّد twilight-bundle.json
-  capture-element-screenshots.mjs
-twilight-bundle.json           # إعدادات جميع العناصر (المصدر النهائي المعتمد)
+  components/
+    your-component-name/
+      index.ts        # Main component file
+      styles.ts       # Component styles (optional)
+      types.ts        # Component types (optional)
+      utils.ts        # Component helpers (optional)
+  utils/
+    localizedString.ts
+    helpers.ts
+    sharedStyles.ts
+
+dist/                 # Built component files
+twilight-bundle.json  # Component settings schema for the Salla editor
+vite.config.ts
+tsconfig.json
+package.json
 ```
 
-## الأدوات المشتركة (`src/utils`)
+## Components
 
-- `sallaApi.ts` — استدعاءات Salla SDK بصمت (منتجات، تفاصيل، سلة، قائمة أمنيات).
-- `productResolver.ts` — تحويل قيم منتقي المنتجات إلى بطاقات جاهزة مع جلب التفاصيل الناقصة.
-- `productCard.ts` — بطاقة منتج موحّدة (صورة، خصم، سعر، تقييم، أمنيات، إضافة للسلة).
-- `productPicker.ts` — قراءة مصادر المنتجات/التصنيفات وبناء خصائص `salla-products-slider`.
-- `helpers.ts` — قراءة الثيم، الترجمة `t()`، الألوان، الأسعار، عملة المتجر، وغيرها.
-- `localizedString.ts` — قراءة النصوص متعددة اللغات حسب لغة الصفحة.
-- `sharedStyles.ts` — هيكل القسم المشترك ونقاط الكسر واحترام `prefers-reduced-motion`.
+| Folder | Description |
+| --- | --- |
+| `beauty-shade-finder` | Interactive shade quiz |
+| `beauty-routine-builder` | Care routine builder |
+| `beauty-ingredient-lab` | Active ingredients explorer |
+| `beauty-care-assistant` | Branching care assistant |
+| `beauty-collection-reveal` | Collection reveal experience |
+| `beauty-face-zone-map` | Interactive face care map |
+| `beauty-routine-layering-board` | Drag-and-drop routine layering |
+| `beauty-lighting-finish-simulator` | Lighting & finish simulator |
+| `beauty-pao-expiry-calculator` | PAO / expiry calculator |
+| `beauty-texture-absorption-lab` | Texture & absorption lab |
+| `beauty-actives-compatibility` | Actives compatibility checker |
+| `beauty-fragrance-finder` | Fragrance family finder |
+| `beauty-spf-guide` | SPF guide |
+| `beauty-color-harmony` | Color harmony tool |
+| `beauty-weekly-planner` | Weekly care planner |
 
-## التطوير والبناء
+Each component is registered automatically as `salla-<folder-name>`.
+
+## Built-in Plugins
+
+This starter kit includes three Vite plugins that handle the build process:
+
+### 1. Transform Plugin (`sallaTransformPlugin`)
+
+* Transforms component files to ensure proper naming and registration
+* Matches components in `src/components/*/index.ts`
+* To disable: Remove from `vite.config.ts` plugins array
+
+### 2. Build Plugin (`sallaBuildPlugin`)
+
+* Handles component bundling and output
+* Creates individual files for each component in `dist/`
+* Configures external dependencies (lit libraries)
+
+### 3. Demo Plugin (`sallaDemoPlugin`)
+
+* Provides a development environment for testing components
+* Creates a demo page with your components
+* Configures hot module reloading
+
+## Component Management
+
+### Creating New Components
 
 ```bash
-pnpm install
-pnpm dev        # بيئة معاينة مع بيانات افتراضية من twilight-bundle.json
-pnpm build      # ينتج ملفات dist/ لكل عنصر
-pnpm typecheck  # فحص TypeScript
+pnpm tw-create-component <component-name>
 ```
 
-## توليد إعدادات العناصر
-
-`twilight-bundle.json` هو المصدر المعتمد وهو موجود في المستودع جاهزاً. لإعادة توليده:
+Or run without arguments for interactive mode:
 
 ```bash
-python3 scripts/generate_bundle.py
+pnpm tw-create-component
 ```
 
-خمسة عناصر (`makeup-look-builder`، `beauty-product-swipe`، `beauty-comparison-arena`،
-`beauty-routine-duel`، `virtual-beauty-boutique`) تشترك في نفس كود المشروع المرجعي للأزياء،
-لذا يقرأ المولّد مخطط حقولها من الحزمة الشقيقة `tw-fashion-style-storefront-elements`
-ويكيّف نصوصها للتجميل. باقي العناصر تُبنى داخل المولّد مباشرةً. (إعادة التوليد اختيارية فقط.)
+### Deleting Components
 
-## ملاحظات تقنية
+```bash
+pnpm tw-delete-component <component-name>
+```
 
-- دعم كامل لـ RTL/LTR باستخدام CSS Logical Properties.
-- تنظيف مستمعي الأحداث في `disconnectedCallback` واحترام تقليل الحركة.
-- حالات فارغة واضحة عند غياب المنتجات أو الصور، دون كسر العنصر.
-- الأسعار والصور وروابط المنتجات تأتي من Salla SDK عبر منتقي المنتجات.
-- لا توجد مكتبات خارجية سوى `lit`.
+## Component Requirements
+
+Each component should:
+
+1. Be a class that extends `LitElement`
+2. Export the class as default
+3. Be placed in its own directory under `src/components/`
+4. Have an `index.ts` as the entry point
+
+Example:
+
+```ts
+import { css, html, LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
+
+export default class MyComponent extends LitElement {
+  @property({ type: Object })
+  config?: {
+    name: string;
+  };
+
+  static styles = css`/* your styles */`;
+
+  render() {
+    return html`<div>Hello ${this.config?.name || 'World'}!</div>`;
+  }
+}
+```
+
+## Building for Production
+
+Run `pnpm run build` to create production-ready bundles in the `dist/` directory. Each component will have its own file named after the component (e.g., `beauty-shade-finder.js`).
+
+## Development
+
+Run `pnpm run dev` to start the development server. This will:
+
+1. Create a demo page with all your components
+2. Enable hot module reloading
+3. Provide a development environment for testing
 
 ## License
 

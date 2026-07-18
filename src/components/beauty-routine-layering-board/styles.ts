@@ -54,6 +54,26 @@ export const componentStyles = css`
     color: var(--muted-color, #8f7a86);
     font-size: 0.84rem;
     margin: 0;
+    flex: 1 1 100%;
+  }
+
+  .brl-drag-tip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff));
+    border: 1px dashed color-mix(in srgb, var(--accent-color, #c2527f) 35%, var(--border-color, #f2dde7));
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent-color, #c2527f);
+  }
+
+  .brl-drag-tip__icon {
+    font-size: 1rem;
+    line-height: 1;
   }
 
   .brl-board {
@@ -106,6 +126,16 @@ export const componentStyles = css`
     color: #fff;
     font-weight: 800;
     font-size: 0.95rem;
+  }
+
+  .brl-step__thumb {
+    flex: 0 0 auto;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-self: center;
+    object-fit: cover;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--step-color, var(--accent-color, #c2527f)) 12%, #fff);
   }
 
   .brl-step__marker .brl-icon { font-size: 1.05rem; }
@@ -199,8 +229,43 @@ export const componentStyles = css`
     touch-action: none;
   }
   .brl-handle:disabled { opacity: 0.35; cursor: not-allowed; }
-  .brl-handle--drag { cursor: grab; }
+
+  .brl-handle--drag {
+    width: auto;
+    min-width: 2.6rem;
+    height: auto;
+    min-height: 2.75rem;
+    padding: 0.35rem 0.45rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    cursor: grab;
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 35%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
+    color: var(--accent-color, #c2527f);
+  }
+
   .brl-handle--drag:active { cursor: grabbing; }
+
+  .brl-handle__grip {
+    font-size: 1rem;
+    line-height: 1;
+    animation: brl-grip-nudge 2.4s ease-in-out infinite;
+  }
+
+  .brl-handle__label {
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  @keyframes brl-grip-nudge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+  }
 
   .brl-step__result {
     flex: 0 0 auto;
@@ -216,8 +281,14 @@ export const componentStyles = css`
   .brl-step__result--ok { background: color-mix(in srgb, var(--success-color, #2f9e63) 18%, #fff); color: var(--success-color, #2f9e63); }
   .brl-step__result--bad { background: color-mix(in srgb, var(--error-color, #cf4b4b) 16%, #fff); color: var(--error-color, #cf4b4b); }
 
-  .brl-step.is-ok { border-inline-start-color: var(--success-color, #2f9e63); }
-  .brl-step.is-bad { border-inline-start-color: var(--error-color, #cf4b4b); }
+  .brl-step.is-ok {
+    border-inline-start-color: var(--success-color, #2f9e63);
+    background: color-mix(in srgb, var(--success-color, #2f9e63) 6%, var(--card-bg, #fff));
+  }
+  .brl-step.is-bad {
+    border-inline-start-color: var(--error-color, #cf4b4b);
+    background: color-mix(in srgb, var(--error-color, #cf4b4b) 5%, var(--card-bg, #fff));
+  }
 
   /* Shape: layers — subtle stacked depth */
   .brl-board--layers .brl-step { backdrop-filter: none; }
@@ -252,15 +323,52 @@ export const componentStyles = css`
 
   .brl-feedback {
     margin-top: 1.1rem;
-    padding: 0.9rem 1rem;
+    padding: 1rem 1.1rem;
     border-radius: 14px;
     text-align: center;
     font-weight: 700;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 2px solid var(--border-color, #f2dde7);
+    display: grid;
+    gap: 0.35rem;
+    justify-items: center;
   }
-  .brl-feedback--win { background: color-mix(in srgb, var(--success-color, #2f9e63) 12%, var(--card-bg, #fff)); color: var(--success-color, #2f9e63); }
-  .brl-feedback--retry { background: color-mix(in srgb, var(--error-color, #cf4b4b) 10%, var(--card-bg, #fff)); color: var(--error-color, #cf4b4b); }
-  .brl-feedback__score { display: block; margin-top: 0.25rem; font-size: 0.85rem; color: var(--muted-color, #8f7a86); font-weight: 600; }
+
+  .brl-feedback__icon {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+
+  .brl-feedback__msg {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .brl-feedback--win {
+    background: color-mix(in srgb, var(--success-color, #2f9e63) 12%, var(--card-bg, #fff));
+    border-color: color-mix(in srgb, var(--success-color, #2f9e63) 45%, var(--border-color, #f2dde7));
+    color: var(--success-color, #2f9e63);
+  }
+
+  .brl-feedback--win .brl-feedback__icon {
+    background: color-mix(in srgb, var(--success-color, #2f9e63) 20%, #fff);
+  }
+
+  .brl-feedback--retry {
+    background: color-mix(in srgb, var(--error-color, #cf4b4b) 10%, var(--card-bg, #fff));
+    border-color: color-mix(in srgb, var(--error-color, #cf4b4b) 40%, var(--border-color, #f2dde7));
+    color: var(--error-color, #cf4b4b);
+  }
+
+  .brl-feedback--retry .brl-feedback__icon {
+    background: color-mix(in srgb, var(--error-color, #cf4b4b) 18%, #fff);
+  }
+
+  .brl-feedback__score { display: block; font-size: 0.85rem; color: var(--muted-color, #8f7a86); font-weight: 600; }
 
   .brl-actions {
     display: flex;
@@ -289,5 +397,6 @@ export const componentStyles = css`
 
   @media (prefers-reduced-motion: reduce) {
     .brl-step { transition: none !important; }
+    .brl-handle__grip { animation: none; }
   }
 `;

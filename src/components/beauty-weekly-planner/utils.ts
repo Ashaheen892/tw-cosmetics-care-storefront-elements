@@ -95,6 +95,11 @@ export function weekdayNames(startDay: StartDay): string[] {
   });
 }
 
+/** Soft label for days with no scheduled steps. */
+export function emptyDayLabel(): string {
+  return t('راحة', 'Rest');
+}
+
 /** Human-readable, localized frequency label. */
 export function frequencyLabel(freq: Frequency): string {
   switch (freq) {

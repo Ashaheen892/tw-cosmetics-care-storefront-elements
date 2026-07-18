@@ -1,91 +1,258 @@
-import { css as O, LitElement as P, html as d, nothing as l } from "lit";
-import { property as V, state as v } from "lit/decorators.js";
-import { styleMap as w } from "lit/directives/style-map.js";
-import { g as C, n as L, h as f, l as b, s as U, k as j, j as F, m as Y, t as s, i as _, r as G, a as H } from "./sharedStyles-cRSiglXC.js";
-const B = O`
-  .bpa-grid {
+import { css as P, LitElement as V, html as c, nothing as l } from "lit";
+import { property as U, state as v } from "lit/decorators.js";
+import { styleMap as $ } from "lit/directives/style-map.js";
+import { g as I, n as C, h as u, l as g, s as F, j, m as Y, k as G, t as r, i as x, r as H, a as B } from "./sharedStyles--LaFqDVC.js";
+const W = P`
+  .bpa-shell {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.35rem;
     align-items: start;
+    max-width: 1080px;
+    margin-inline: auto;
   }
 
-  @media (min-width: 820px) {
-    .bpa-grid {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-      gap: 2rem;
+  @media (min-width: 900px) {
+    .bpa-shell {
+      grid-template-columns: minmax(260px, 0.92fr) minmax(0, 1.18fr);
+      gap: 1.75rem;
     }
   }
 
-  .bpa-form {
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
-    border-radius: var(--section-radius, 16px);
+  /* —— Form card —— */
+  .bpa-form-card {
+    min-width: 0;
     padding: 1.15rem 1.15rem 1.25rem;
-    display: grid;
-    gap: 0.9rem;
+    border-radius: var(--section-radius, 20px);
+    background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, #fbf5f8));
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
-  .bpa-field { display: grid; gap: 0.35rem; }
-  .bpa-field label { font-size: 0.82rem; font-weight: 700; color: var(--text-color, #33232e); }
+  .bpa-form-card__title {
+    margin: 0 0 0.25rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-color, #33232e);
+  }
+
+  .bpa-form-card__hint {
+    margin: 0 0 1rem;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .bpa-form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .bpa-field {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .bpa-field label {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--text-color, #33232e);
+  }
 
   .bpa-input,
   .bpa-select {
     width: 100%;
-    padding: 0.6rem 0.7rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color, #f2dde7);
+    min-height: 46px;
+    padding: 0.65rem 0.8rem;
+    border-radius: 14px;
+    border: 1.5px solid var(--border-color, #f2dde7);
     background: var(--card-bg, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
     box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .bpa-pao-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .bpa-input:focus,
+  .bpa-select:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 55%, var(--border-color, #f2dde7));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, #c2527f) 18%, transparent);
+  }
+
+  .bpa-cat-chips,
+  .bpa-pao-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .bpa-cat-chip,
   .bpa-pao-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 44px;
     padding: 0.45rem 0.85rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #f2dde7);
     background: var(--card-bg, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
     font-weight: 700;
     font-size: 0.82rem;
     cursor: pointer;
+    transition:
+      transform 0.15s ease,
+      border-color 0.2s ease,
+      background 0.2s ease,
+      box-shadow 0.2s ease;
   }
+
+  .bpa-cat-chip:hover,
+  .bpa-pao-chip:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
+  }
+
+  .bpa-cat-chip.is-active,
   .bpa-pao-chip.is-active {
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
+    background: linear-gradient(
+      135deg,
+      var(--accent-color, #c2527f),
+      color-mix(in srgb, var(--accent-color, #c2527f) 65%, #5a2f4d)
+    );
+    border-color: transparent;
     color: #fff;
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--accent-color, #c2527f) 28%, transparent);
+  }
+
+  .bpa-cat-chip__icon {
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+
+  .bpa-cat-chip__months {
+    font-size: 0.7rem;
+    font-weight: 700;
+    opacity: 0.85;
+  }
+
+  /* —— Result hero —— */
+  .bpa-hero {
+    min-width: 0;
+    background: var(--card-bg, #fff);
+    border: 1.5px solid color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 28%, var(--border-color, #f2dde7));
+    border-radius: var(--section-radius, 20px);
+    padding: 1.45rem 1.25rem 1.35rem;
+    text-align: center;
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 12%, transparent),
+      0 16px 36px rgba(120, 44, 82, 0.09);
+  }
+
+  .bpa-hero--safe {
+    background: linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--bpa-color, #2f9e63) 14%, var(--card-bg, #fff)) 0%,
+      var(--card-bg, #fff) 58%
+    );
+  }
+
+  .bpa-hero--warn {
+    background: linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--bpa-color, #e0a100) 16%, var(--card-bg, #fff)) 0%,
+      var(--card-bg, #fff) 58%
+    );
+  }
+
+  .bpa-hero--expired {
+    background: linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--bpa-color, #cf4b4b) 16%, var(--card-bg, #fff)) 0%,
+      var(--card-bg, #fff) 58%
+    );
+  }
+
+  .bpa-hero--empty {
+    border-style: dashed;
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 22%, var(--border-color, #f2dde7));
+    box-shadow: none;
+    background:
+      radial-gradient(
+        80% 70% at 50% 0%,
+        color-mix(in srgb, var(--accent-color, #c2527f) 8%, transparent),
+        transparent 70%
+      ),
+      color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
+  }
+
+  .bpa-hero__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 2.4rem 1rem;
+    color: var(--muted-color, #8f7a86);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .bpa-hero__placeholder p {
+    margin: 0;
+    max-width: 22rem;
+  }
+
+  .bpa-hero__placeholder-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 1.55rem;
+    color: var(--accent-color, #c2527f);
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
+    border: 1px dashed color-mix(in srgb, var(--accent-color, #c2527f) 40%, transparent);
   }
 
   .bpa-error {
-    padding: 0.6rem 0.8rem;
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--bpa-expired, #cf4b4b) 12%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--bpa-expired, #cf4b4b) 40%, transparent);
-    color: color-mix(in srgb, var(--bpa-expired, #cf4b4b) 75%, #000);
-    font-size: 0.84rem;
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, #cf4b4b 12%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, #cf4b4b 35%, transparent);
+    color: color-mix(in srgb, #cf4b4b 80%, #000);
+    font-size: 0.88rem;
     font-weight: 600;
-  }
-
-  /* result */
-  .bpa-result {
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
-    border-radius: var(--section-radius, 16px);
-    padding: 1.25rem;
-    text-align: center;
+    line-height: 1.55;
   }
 
   .bpa-dial {
     position: relative;
-    width: 190px;
-    height: 190px;
-    margin: 0 auto 1rem;
+    width: min(230px, 68vw);
+    height: min(230px, 68vw);
+    margin: 0.15rem auto 1.15rem;
   }
-  .bpa-dial svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-  .bpa-dial__track { fill: none; stroke: color-mix(in srgb, var(--border-color, #f2dde7) 70%, transparent); stroke-width: 12; }
-  .bpa-dial__value { fill: none; stroke: var(--bpa-color, var(--accent-color, #c2527f)); stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease, stroke 0.3s ease; }
+
+  .bpa-dial svg {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+  }
+
+  .bpa-dial__track {
+    fill: none;
+    stroke: color-mix(in srgb, var(--border-color, #f2dde7) 75%, transparent);
+    stroke-width: 13;
+  }
+
+  .bpa-dial__value {
+    fill: none;
+    stroke: var(--bpa-color, var(--accent-color, #c2527f));
+    stroke-width: 13;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.65s ease, stroke 0.3s ease;
+  }
+
   .bpa-dial__center {
     position: absolute;
     inset: 0;
@@ -93,219 +260,403 @@ const B = O`
     place-items: center;
     text-align: center;
   }
-  .bpa-dial__days { font-size: 1.9rem; font-weight: 800; line-height: 1; color: var(--text-color, #33232e); }
-  .bpa-dial__unit { font-size: 0.78rem; color: var(--muted-color, #8f7a86); margin-top: 0.2rem; }
+
+  .bpa-dial__days {
+    font-size: clamp(2.35rem, 8vw, 3.1rem);
+    font-weight: 800;
+    line-height: 1;
+    color: var(--bpa-color, var(--text-color, #33232e));
+    letter-spacing: -0.02em;
+  }
+
+  .bpa-dial__unit {
+    font-size: 0.84rem;
+    color: var(--muted-color, #8f7a86);
+    margin-top: 0.3rem;
+    font-weight: 700;
+  }
 
   .bpa-state {
     display: inline-block;
-    padding: 0.3rem 0.9rem;
+    padding: 0.45rem 1.1rem;
     border-radius: 999px;
     font-weight: 800;
-    font-size: 0.85rem;
-    margin-bottom: 0.85rem;
-    background: color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 15%, var(--card-bg, #fff));
+    font-size: 0.9rem;
+    margin-bottom: 1.1rem;
+    background: color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 16%, var(--card-bg, #fff));
     color: var(--bpa-color, var(--accent-color, #c2527f));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 22%, transparent);
   }
 
   .bpa-dates {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    margin: 0.5rem 0 1rem;
+    gap: 0.55rem;
+    margin: 0 0 1.05rem;
+    text-align: start;
   }
+
   .bpa-date-cell {
-    padding: 0.6rem 0.4rem;
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 30%, var(--card-bg, #fff));
+    padding: 0.75rem 0.65rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 6%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--bpa-color, var(--border-color, #f2dde7)) 18%, var(--border-color, #f2dde7));
   }
-  .bpa-date-cell span { display: block; font-size: 0.72rem; color: var(--muted-color, #8f7a86); margin-bottom: 0.2rem; }
-  .bpa-date-cell b { font-size: 0.82rem; color: var(--text-color, #33232e); }
+
+  .bpa-date-cell span {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--muted-color, #8f7a86);
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+  }
+
+  .bpa-date-cell b {
+    font-size: 0.84rem;
+    color: var(--text-color, #33232e);
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .bpa-tips-grid {
+    display: grid;
+    gap: 0.55rem;
+    margin-bottom: 0.9rem;
+    text-align: start;
+  }
+
+  @media (min-width: 560px) {
+    .bpa-tips-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 
   .bpa-tips {
-    text-align: start;
-    margin: 0.75rem 0;
-    padding: 0.75rem 0.85rem;
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 6%, var(--card-bg, #fff));
-    font-size: 0.85rem;
+    padding: 0.8rem 0.9rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--accent-color, #c2527f) 7%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 14%, var(--border-color, #f2dde7));
+    font-size: 0.84rem;
     line-height: 1.6;
     color: var(--text-color, #33232e);
   }
-  .bpa-tips h4 { margin: 0 0 0.3rem; font-size: 0.8rem; }
-  .bpa-tips p { margin: 0; color: var(--muted-color, #8f7a86); white-space: pre-line; }
 
-  .bpa-result-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 0.5rem; }
+  .bpa-tips h4 {
+    margin: 0 0 0.35rem;
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: var(--accent-color, #c2527f);
+  }
+
+  .bpa-tips p {
+    margin: 0;
+    color: var(--muted-color, #8f7a86);
+    white-space: pre-line;
+  }
+
+  .bpa-result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    justify-content: center;
+    margin-top: 0.15rem;
+  }
 
   .bpa-notice {
-    margin-top: 1rem;
-    font-size: 0.78rem;
+    max-width: 1080px;
+    margin: 1.25rem auto 0;
+    font-size: 0.8rem;
     color: var(--muted-color, #8f7a86);
-    line-height: 1.6;
+    line-height: 1.65;
     text-align: center;
   }
 
-  /* saved records */
-  .bpa-saved { margin-top: 1.5rem; }
-  .bpa-saved__head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.6rem; }
-  .bpa-saved__title { margin: 0; font-size: 0.95rem; font-weight: 800; }
-  .bpa-saved__note { font-size: 0.74rem; color: var(--muted-color, #8f7a86); margin: 0 0 0.6rem; }
+  /* —— Saved records —— */
+  .bpa-saved {
+    max-width: 1080px;
+    margin: 1.6rem auto 0;
+    padding: 1.15rem;
+    border-radius: var(--section-radius, 20px);
+    background: var(--card-bg, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    box-shadow: 0 10px 28px rgba(120, 44, 82, 0.05);
+  }
+
+  .bpa-saved__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .bpa-saved__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 800;
+  }
+
+  .bpa-saved__note {
+    font-size: 0.76rem;
+    color: var(--muted-color, #8f7a86);
+    margin: 0 0 0.9rem;
+    line-height: 1.55;
+  }
+
+  .bpa-saved__empty {
+    padding: 1.4rem 1rem;
+    text-align: center;
+    border-radius: 14px;
+    border: 1px dashed color-mix(in srgb, var(--accent-color, #c2527f) 25%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
+    color: var(--muted-color, #8f7a86);
+    font-size: 0.88rem;
+  }
+
+  .bpa-records {
+    display: grid;
+    gap: 0.65rem;
+  }
 
   .bpa-record {
     display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.6rem 0.7rem;
-    border: 1px solid var(--border-color, #f2dde7);
-    border-radius: 12px;
-    margin-bottom: 0.5rem;
-    background: var(--card-bg, #fff);
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 0.9rem 0.95rem;
+    border: 1px solid color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 32%, var(--border-color, #f2dde7));
+    border-inline-start: 4px solid var(--rec-color, var(--border-color, #f2dde7));
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--rec-color, transparent) 4%, var(--card-bg, #fff));
+    box-shadow: 0 4px 14px rgba(43, 33, 28, 0.04);
   }
-  .bpa-record__dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; flex: 0 0 auto; }
-  .bpa-record__info { flex: 1 1 auto; min-width: 0; }
-  .bpa-record__name { font-weight: 700; font-size: 0.86rem; color: var(--text-color, #33232e); }
-  .bpa-record__meta { font-size: 0.74rem; color: var(--muted-color, #8f7a86); }
-  .bpa-record__edit {
+
+  .bpa-record__status {
+    position: relative;
+    flex: 0 0 auto;
+    width: 2.9rem;
+    height: 2.9rem;
+    display: grid;
+    place-items: center;
+  }
+
+  .bpa-record__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 32%, transparent);
+    background: color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 12%, var(--card-bg, #fff));
+  }
+
+  .bpa-record__days {
+    position: relative;
+    font-size: 0.74rem;
+    font-weight: 800;
+    color: var(--rec-color, var(--text-color, #33232e));
+    line-height: 1;
+  }
+
+  .bpa-record__body {
     flex: 1 1 auto;
-    padding: 0.35rem 0.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--border-color, #f2dde7);
-    font: inherit;
+    min-width: 0;
   }
+
+  .bpa-record__name {
+    font-weight: 800;
+    font-size: 0.92rem;
+    color: var(--text-color, #33232e);
+    margin-bottom: 0.3rem;
+  }
+
+  .bpa-record__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.5rem;
+    font-size: 0.74rem;
+    color: var(--muted-color, #8f7a86);
+  }
+
+  .bpa-record__pill {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    background: color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 16%, var(--card-bg, #fff));
+    color: var(--rec-color, var(--text-color, #33232e));
+  }
+
+  .bpa-record__note {
+    margin: 0.4rem 0 0;
+    font-size: 0.76rem;
+    color: var(--muted-color, #8f7a86);
+    line-height: 1.45;
+  }
+
+  .bpa-record__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 0 0 auto;
+  }
+
+  .bpa-record__edit {
+    width: 100%;
+    min-height: 40px;
+    padding: 0.4rem 0.55rem;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color, #f2dde7);
+    font: inherit;
+    box-sizing: border-box;
+  }
+
   .bpa-icon-btn {
-    width: 32px; height: 32px;
-    display: grid; place-items: center;
-    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
     border: 1px solid var(--border-color, #f2dde7);
     background: var(--card-bg, #fff);
     color: var(--muted-color, #8f7a86);
     cursor: pointer;
     flex: 0 0 auto;
+    transition: color 0.15s ease, border-color 0.15s ease;
   }
-  .bpa-icon-btn:hover { color: var(--accent-color, #c2527f); }
+
+  .bpa-icon-btn:hover {
+    color: var(--accent-color, #c2527f);
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
+  }
 
   @media (max-width: 639px) {
-    .bpa-dial { width: 160px; height: 160px; }
-    .bpa-dates { grid-template-columns: 1fr; }
+    .bpa-dates {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bpa-dial__value { transition: none !important; }
+    .bpa-dial__value,
+    .bpa-cat-chip,
+    .bpa-pao-chip {
+      transition: none !important;
+    }
   }
-`, k = 864e5;
-function q(r, e) {
-  const t = new Date(r.getTime()), a = t.getDate();
-  t.setDate(1), t.setMonth(t.getMonth() + e);
-  const i = new Date(t.getFullYear(), t.getMonth() + 1, 0).getDate();
-  return t.setDate(Math.min(a, i)), t;
+`, y = 864e5;
+function q(i, e) {
+  const a = new Date(i.getTime()), n = a.getDate();
+  a.setDate(1), a.setMonth(a.getMonth() + e);
+  const t = new Date(a.getFullYear(), a.getMonth() + 1, 0).getDate();
+  return a.setDate(Math.min(n, t)), a;
 }
-function z(r) {
-  const e = new Date(r.getTime());
+function L(i) {
+  const e = new Date(i.getTime());
   return e.setHours(0, 0, 0, 0), e;
 }
-function S(r) {
-  if (!r) return null;
-  const e = r.split("-").map(Number);
-  if (e.length !== 3 || e.some((n) => !Number.isFinite(n))) return null;
-  const [t, a, i] = e, o = new Date(t, a - 1, i);
-  return Number.isNaN(o.getTime()) ? null : z(o);
+function R(i) {
+  if (!i) return null;
+  const e = i.split("-").map(Number);
+  if (e.length !== 3 || e.some((s) => !Number.isFinite(s))) return null;
+  const [a, n, t] = e, o = new Date(a, n - 1, t);
+  return Number.isNaN(o.getTime()) ? null : L(o);
 }
-function M(r) {
-  const e = (t) => String(t).padStart(2, "0");
-  return `${r.getFullYear()}-${e(r.getMonth() + 1)}-${e(r.getDate())}`;
+function w(i) {
+  const e = (a) => String(a).padStart(2, "0");
+  return `${i.getFullYear()}-${e(i.getMonth() + 1)}-${e(i.getDate())}`;
 }
-function N(r, e, t) {
-  const a = z(/* @__PURE__ */ new Date()), i = q(r, e), o = Math.max(1, Math.round((i.getTime() - r.getTime()) / k)), n = Math.round((i.getTime() - a.getTime()) / k), u = Math.round((a.getTime() - r.getTime()) / k), m = Math.max(0, Math.min(1, u / o));
-  let h = "safe";
-  return n <= 0 ? h = "expired" : n <= t && (h = "warn"), { expiry: i, daysRemaining: n, totalDays: o, elapsedRatio: m, state: h };
+function z(i, e, a) {
+  const n = L(/* @__PURE__ */ new Date()), t = q(i, e), o = Math.max(1, Math.round((t.getTime() - i.getTime()) / y)), s = Math.round((t.getTime() - n.getTime()) / y), h = Math.round((n.getTime() - i.getTime()) / y), m = Math.max(0, Math.min(1, h / o));
+  let b = "safe";
+  return s <= 0 ? b = "expired" : s <= a && (b = "warn"), { expiry: t, daysRemaining: s, totalDays: o, elapsedRatio: m, state: b };
 }
-function D(r, e, t) {
-  const a = (i) => String(i).padStart(2, "0");
-  if (e === "short") return `${a(r.getDate())}/${a(r.getMonth() + 1)}/${r.getFullYear()}`;
-  if (e === "iso") return M(r);
+function S(i, e, a) {
+  const n = (t) => String(t).padStart(2, "0");
+  if (e === "short") return `${n(i.getDate())}/${n(i.getMonth() + 1)}/${i.getFullYear()}`;
+  if (e === "iso") return w(i);
   try {
-    return new Intl.DateTimeFormat(t === "en" ? "en-GB" : "ar", {
+    return new Intl.DateTimeFormat(a === "en" ? "en-GB" : "ar", {
       day: "numeric",
       month: "long",
       year: "numeric"
-    }).format(r);
+    }).format(i);
   } catch {
-    return M(r);
+    return w(i);
   }
 }
-function K(r) {
-  return L(r).map((e, t) => ({
-    id: String(e.cat_id ?? "").trim() || `cat-${t + 1}`,
-    name: b(e.name),
+function K(i) {
+  return C(i).map((e, a) => ({
+    id: String(e.cat_id ?? "").trim() || `cat-${a + 1}`,
+    name: g(e.name),
     icon: String(e.icon ?? "").trim(),
-    paoMonths: Math.max(0, f(e.pao_months, 0))
+    paoMonths: Math.max(0, u(e.pao_months, 0))
   })).filter((e) => e.name);
 }
-function W(r) {
-  return L(r).map((t) => ({
-    months: Math.max(1, f(t.months, 0)),
-    label: b(t.label)
-  })).filter((t) => t.months > 0);
+function J(i) {
+  return C(i).map((a) => ({
+    months: Math.max(1, u(a.months, 0)),
+    label: g(a.label)
+  })).filter((a) => a.months > 0);
 }
-function J(r) {
-  return C(r.bpa_input_mode, "direct") === "category" ? "category" : "direct";
+function Q(i) {
+  return I(i.bpa_input_mode, "direct") === "category" ? "category" : "direct";
 }
-function I(r) {
-  const e = C(r.bpa_date_format, "long");
+function E(i) {
+  const e = I(i.bpa_date_format, "long");
   return ["long", "short", "iso"].includes(e) ? e : "long";
 }
-function Q(r, e) {
-  return r.label ? r.label : e === "en" ? `${r.months} months` : `${r.months} شهرًا`;
+function X(i, e) {
+  return i.label ? i.label : e === "en" ? `${i.months} months` : `${i.months} شهرًا`;
 }
-function X(r, e) {
-  const t = (o) => String(o).padStart(2, "0"), a = (o) => `${o.getFullYear()}${t(o.getMonth() + 1)}${t(o.getDate())}`, i = new Date(e.getTime() + k);
+function Z(i, e) {
+  const a = (o) => String(o).padStart(2, "0"), n = (o) => `${o.getFullYear()}${a(o.getMonth() + 1)}${a(o.getDate())}`, t = new Date(e.getTime() + y);
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//beauty-pao-calculator//EN",
     "BEGIN:VEVENT",
     `UID:${Date.now()}@beauty-pao`,
-    `DTSTART;VALUE=DATE:${a(e)}`,
-    `DTEND;VALUE=DATE:${a(i)}`,
-    `SUMMARY:${r.replace(/\r?\n/g, " ")}`,
+    `DTSTART;VALUE=DATE:${n(e)}`,
+    `DTEND;VALUE=DATE:${n(t)}`,
+    `SUMMARY:${i.replace(/\r?\n/g, " ")}`,
     "END:VEVENT",
     "END:VCALENDAR"
   ].join(`\r
 `);
 }
-var Z = Object.defineProperty, g = (r, e, t, a) => {
-  for (var i = void 0, o = r.length - 1, n; o >= 0; o--)
-    (n = r[o]) && (i = n(e, t, i) || i);
-  return i && Z(e, t, i), i;
+var ee = Object.defineProperty, f = (i, e, a, n) => {
+  for (var t = void 0, o = i.length - 1, s; o >= 0; o--)
+    (s = i[o]) && (t = s(e, a, t) || t);
+  return t && ee(e, a, t), t;
 };
-const E = "tw-beauty-pao-records", R = class R extends P {
+const N = "tw-beauty-pao-records", T = class T extends V {
   constructor() {
     super(...arguments), this.config = {}, this.catId = "", this.pao = 0, this.openDate = "", this.recName = "", this.note = "", this.records = [], this.editingId = "", this.boundLangHandler = () => this.requestUpdate();
   }
   connectedCallback() {
-    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.records = j(E, []), this.openDate = M(/* @__PURE__ */ new Date());
+    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.records = j(N, []), this.openDate = w(/* @__PURE__ */ new Date());
   }
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
   updated(e) {
-    var t;
-    e.has("config") && !this.pao && (this.pao = Math.max(0, f((t = this.config) == null ? void 0 : t.bpa_default_pao, 0)));
+    var a;
+    e.has("config") && !this.pao && (this.pao = Math.max(0, u((a = this.config) == null ? void 0 : a.bpa_default_pao, 0)));
   }
   get locale() {
-    return F() === "en" ? "en" : "ar";
+    return Y() === "en" ? "en" : "ar";
   }
   persist() {
-    Y(E, this.records);
+    G(N, this.records);
   }
-  onCategory(e, t) {
-    this.catId = e, t > 0 && (this.pao = t);
+  onCategory(e, a) {
+    this.catId = e, a > 0 && (this.pao = a);
   }
   saveRecord() {
-    var i;
-    if (!S(this.openDate) || this.pao <= 0) return;
-    const t = Math.max(1, f((i = this.config) == null ? void 0 : i.bpa_max_records, 12));
-    if (this.records.length >= t) return;
-    const a = {
+    var t;
+    if (!R(this.openDate) || this.pao <= 0) return;
+    const a = Math.max(1, u((t = this.config) == null ? void 0 : t.bpa_max_records, 12));
+    if (this.records.length >= a) return;
+    const n = {
       id: `rec-${Date.now()}`,
       name: this.recName.trim() || (this.locale === "en" ? "Product" : "منتج"),
       category: this.catId,
@@ -313,190 +664,265 @@ const E = "tw-beauty-pao-records", R = class R extends P {
       pao: this.pao,
       note: this.note.trim()
     };
-    this.records = [a, ...this.records], this.persist(), this.recName = "", this.note = "";
+    this.records = [n, ...this.records], this.persist(), this.recName = "", this.note = "";
   }
   deleteRecord(e) {
-    this.records = this.records.filter((t) => t.id !== e), this.persist();
+    this.records = this.records.filter((a) => a.id !== e), this.persist();
   }
   clearRecords() {
     this.records = [], this.persist();
   }
-  renameRecord(e, t) {
-    this.records = this.records.map((a) => a.id === e ? { ...a, name: t.trim() || a.name } : a), this.persist();
+  renameRecord(e, a) {
+    this.records = this.records.map((n) => n.id === e ? { ...n, name: a.trim() || n.name } : n), this.persist();
   }
-  downloadIcs(e, t) {
-    const a = X(e, t), i = new Blob([a], { type: "text/calendar;charset=utf-8" }), o = URL.createObjectURL(i), n = document.createElement("a");
-    n.href = o, n.download = "beauty-pao.ics", document.body.appendChild(n), n.click(), document.body.removeChild(n), setTimeout(() => URL.revokeObjectURL(o), 1e3);
+  downloadIcs(e, a) {
+    const n = Z(e, a), t = new Blob([n], { type: "text/calendar;charset=utf-8" }), o = URL.createObjectURL(t), s = document.createElement("a");
+    s.href = o, s.download = "beauty-pao.ics", document.body.appendChild(s), s.click(), document.body.removeChild(s), setTimeout(() => URL.revokeObjectURL(o), 1e3);
   }
   stateColor(e) {
-    const t = this.config || {};
-    return String(e === "expired" ? t.bpa_expired_color ?? "#cf4b4b" : e === "warn" ? t.bpa_warn_color ?? "#e0a100" : t.bpa_safe_color ?? "#2f9e63");
-  }
-  stateLabel(e, t) {
     const a = this.config || {};
-    return e === "expired" ? b(a.bpa_state_expired) || s("انتهت المدة التقريبية", "Approximate period ended") : e === "warn" ? b(a.bpa_state_warn) || s(`قرب الانتهاء — باقٍ ${t} يومًا`, `Ending soon — ${t} days left`) : b(a.bpa_state_safe) || s(`صالح للاستخدام — باقٍ ${t} يومًا`, `Good to use — ${t} days left`);
+    return String(e === "expired" ? a.bpa_expired_color ?? "#cf4b4b" : e === "warn" ? a.bpa_warn_color ?? "#e0a100" : a.bpa_safe_color ?? "#2f9e63");
+  }
+  stateLabel(e, a) {
+    const n = this.config || {};
+    return e === "expired" ? g(n.bpa_state_expired) || r("انتهت المدة التقريبية", "Approximate period ended") : e === "warn" ? g(n.bpa_state_warn) || r(`قرب الانتهاء — باقٍ ${a} يومًا`, `Ending soon — ${a} days left`) : g(n.bpa_state_safe) || r(`صالح للاستخدام — باقٍ ${a} يومًا`, `Good to use — ${a} days left`);
   }
   renderResult() {
-    const e = this.config || {}, t = S(this.openDate);
-    if (!t || this.pao <= 0)
-      return d`<div class="bpa-result">
-        <p class="bpa-notice">${s("اختاري مدة الاستخدام وتاريخ الفتح لعرض النتيجة.", "Choose the period and open date to see the result.")}</p>
+    const e = this.config || {}, a = R(this.openDate);
+    if (!a || this.pao <= 0)
+      return c`<div class="bpa-hero bpa-hero--empty" role="status">
+        <div class="bpa-hero__placeholder">
+          <span class="bpa-hero__placeholder-icon" aria-hidden="true">◷</span>
+          <p>
+            ${r(
+        "اختاري مدة الاستخدام بعد الفتح وتاريخ فتح العبوة لعرض النتيجة فورًا.",
+        "Choose the period after opening and the open date to see the result instantly."
+      )}
+          </p>
+        </div>
       </div>`;
-    const a = /* @__PURE__ */ new Date();
-    if (a.setHours(0, 0, 0, 0), t.getTime() > a.getTime())
-      return d`<div class="bpa-result">
-        <div class="bpa-error">${s("تاريخ الفتح في المستقبل. اختاري تاريخًا صحيحًا.", "The open date is in the future. Please pick a valid date.")}</div>
+    const n = /* @__PURE__ */ new Date();
+    if (n.setHours(0, 0, 0, 0), a.getTime() > n.getTime())
+      return c`<div class="bpa-hero bpa-hero--empty" role="alert">
+        <div class="bpa-error">
+          ${r("تاريخ الفتح في المستقبل. اختاري تاريخًا صحيحًا.", "The open date is in the future. Please pick a valid date.")}
+        </div>
       </div>`;
-    const i = Math.max(1, f(e.bpa_warn_days, 30)), o = N(t, this.pao, i), n = I(e), u = this.stateColor(o.state), m = 80, h = 2 * Math.PI * m, c = o.state === "expired" ? 1 : o.elapsedRatio, x = h * (1 - c), $ = _(e.bpa_enable_calendar, !1), y = b(e.bpa_storage_tips), T = b(e.bpa_stop_signals), A = s("انتهاء صلاحية منتج التجميل", "Beauty product expiry");
-    return d`<div class="bpa-result" style=${w({ "--bpa-color": u })}>
-      <div class="bpa-dial" role="img" aria-label=${this.stateLabel(o.state, Math.max(0, o.daysRemaining))}>
-        <svg viewBox="0 0 190 190">
-          <circle class="bpa-dial__track" cx="95" cy="95" r=${m}></circle>
+    const t = Math.max(1, u(e.bpa_warn_days, 30)), o = z(a, this.pao, t), s = E(e), h = this.stateColor(o.state), m = 92, b = 2 * Math.PI * m, d = o.state === "expired" ? 0 : Math.max(0, Math.min(1, o.daysRemaining / Math.max(1, o.totalDays))), _ = b * (1 - d), k = x(e.bpa_enable_calendar, !0), D = g(e.bpa_storage_tips), M = g(e.bpa_stop_signals), A = r("انتهاء صلاحية منتج التجميل", "Beauty product expiry"), O = Math.abs(o.daysRemaining);
+    return c`<div
+      class="bpa-hero bpa-hero--${o.state}"
+      style=${$({ "--bpa-color": h })}
+    >
+      <div
+        class="bpa-dial"
+        role="img"
+        aria-label=${this.stateLabel(o.state, Math.max(0, o.daysRemaining))}
+      >
+        <svg viewBox="0 0 210 210" aria-hidden="true">
+          <circle class="bpa-dial__track" cx="105" cy="105" r=${m}></circle>
           <circle
             class="bpa-dial__value"
-            cx="95" cy="95" r=${m}
-            style=${w({ strokeDasharray: `${h}`, strokeDashoffset: `${x}` })}
+            cx="105"
+            cy="105"
+            r=${m}
+            style=${$({ strokeDasharray: `${b}`, strokeDashoffset: `${_}` })}
           ></circle>
         </svg>
         <div class="bpa-dial__center">
-          <div>
-            <div class="bpa-dial__days">${Math.abs(o.daysRemaining)}</div>
-            <div class="bpa-dial__unit">${o.daysRemaining >= 0 ? s("يوم متبقٍ", "days left") : s("يوم مضى", "days over")}</div>
+          <div class="bpa-dial__days">${O}</div>
+          <div class="bpa-dial__unit">
+            ${o.daysRemaining >= 0 ? r("يوم متبقٍ", "days left") : r("يوم مضى", "days over")}
           </div>
         </div>
       </div>
 
-      <span class="bpa-state">${this.stateLabel(o.state, Math.max(0, o.daysRemaining))}</span>
+      <span class="bpa-state bpa-state--${o.state}">${this.stateLabel(o.state, Math.max(0, o.daysRemaining))}</span>
 
       <div class="bpa-dates">
-        <div class="bpa-date-cell"><span>${s("تاريخ الفتح", "Opened")}</span><b>${D(t, n, this.locale)}</b></div>
-        <div class="bpa-date-cell"><span>${s("المدة", "Period")}</span><b>${s(`${this.pao} شهرًا`, `${this.pao} months`)}</b></div>
-        <div class="bpa-date-cell"><span>${s("ينتهي تقريبًا", "Approx. end")}</span><b>${D(o.expiry, n, this.locale)}</b></div>
+        <div class="bpa-date-cell">
+          <span>${r("تاريخ الفتح", "Opened")}</span>
+          <b>${S(a, s, this.locale)}</b>
+        </div>
+        <div class="bpa-date-cell">
+          <span>${r("المدة", "Period")}</span>
+          <b>${r(`${this.pao} شهرًا`, `${this.pao} months`)}</b>
+        </div>
+        <div class="bpa-date-cell">
+          <span>${r("ينتهي تقريبًا", "Approx. end")}</span>
+          <b>${S(o.expiry, s, this.locale)}</b>
+        </div>
       </div>
 
-      ${y ? d`<div class="bpa-tips"><h4>${s("نصائح الحفظ", "Storage tips")}</h4><p>${y}</p></div>` : l}
-      ${T ? d`<div class="bpa-tips"><h4>${s("متى تتوقفين عن الاستخدام", "When to stop using")}</h4><p>${T}</p></div>` : l}
+      ${D || M ? c`<div class="bpa-tips-grid">
+            ${D ? c`<div class="bpa-tips"><h4>${r("نصائح الحفظ", "Storage tips")}</h4><p>${D}</p></div>` : l}
+            ${M ? c`<div class="bpa-tips"><h4>${r("متى تتوقفين", "When to stop")}</h4><p>${M}</p></div>` : l}
+          </div>` : l}
 
       <div class="bpa-result-actions">
-        ${$ ? d`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.downloadIcs(A, o.expiry)}>
-              ${s("إضافة إلى التقويم", "Add to calendar")}
+        ${k ? c`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.downloadIcs(A, o.expiry)}>
+              ${r("إضافة إلى التقويم", "Add to calendar")}
             </button>` : l}
-        ${_(e.bpa_enable_storage, !0) ? d`<button type="button" class="fs-btn" @click=${() => this.saveRecord()}>${s("حفظ هذه العبوة", "Save this product")}</button>` : l}
+        ${x(e.bpa_enable_storage, !0) ? c`<button type="button" class="fs-btn" @click=${() => this.saveRecord()}>${r("حفظ هذه العبوة", "Save this product")}</button>` : l}
       </div>
     </div>`;
   }
   renderSaved() {
     const e = this.config || {};
-    if (!_(e.bpa_enable_storage, !0)) return l;
-    const t = I(e);
-    return d`<div class="bpa-saved">
+    if (!x(e.bpa_enable_storage, !0)) return l;
+    const a = E(e), n = Math.max(1, u(e.bpa_warn_days, 30));
+    return c`<div class="bpa-saved">
       <div class="bpa-saved__head">
-        <h3 class="bpa-saved__title">${s("عبواتي المحفوظة", "My saved products")}</h3>
-        ${this.records.length ? d`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.clearRecords()}>${s("مسح الكل", "Clear all")}</button>` : l}
+        <h3 class="bpa-saved__title">${r("عبواتي المحفوظة", "My saved products")}</h3>
+        ${this.records.length ? c`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.clearRecords()}>${r("مسح الكل", "Clear all")}</button>` : l}
       </div>
-      <p class="bpa-saved__note">${s("البيانات محفوظة على جهازك فقط ولا تُرسل إلى أي خادم.", "Data is stored on your device only and never sent to any server.")}</p>
-      ${this.records.length ? this.records.map((a) => {
-      const i = S(a.open), o = Math.max(1, f(e.bpa_warn_days, 30)), n = i ? N(i, a.pao, o) : null, u = n ? this.stateColor(n.state) : "var(--muted-color)";
-      return d`<div class="bpa-record">
-              <span class="bpa-record__dot" style=${w({ background: u })}></span>
-              <div class="bpa-record__info">
-                ${this.editingId === a.id ? d`<input
-                      class="bpa-record__edit"
-                      .value=${a.name}
-                      aria-label=${s("اسم العبوة", "Product name")}
-                      @change=${(m) => {
-        this.renameRecord(a.id, m.target.value), this.editingId = "";
-      }}
-                    />` : d`<div class="bpa-record__name">${a.name}</div>`}
-                <div class="bpa-record__meta">
-                  ${n && i ? s(`ينتهي ${D(n.expiry, t, this.locale)}`, `Ends ${D(n.expiry, t, this.locale)}`) : ""}
-                  ${a.note ? d` · ${a.note}` : l}
+      <p class="bpa-saved__note">${r("البيانات محفوظة على جهازك فقط ولا تُرسل إلى أي خادم.", "Data is stored on your device only and never sent to any server.")}</p>
+      ${this.records.length ? c`<div class="bpa-records">
+            ${this.records.map((t) => {
+      const o = R(t.open), s = o ? z(o, t.pao, n) : null, h = s ? this.stateColor(s.state) : "var(--muted-color)", m = (s == null ? void 0 : s.state) ?? "unknown", b = s ? s.daysRemaining >= 0 ? r(`${s.daysRemaining} يوم`, `${s.daysRemaining} days`) : r(`منتهٍ ${Math.abs(s.daysRemaining)} يوم`, `Expired ${Math.abs(s.daysRemaining)}d ago`) : "";
+      return c`<article
+                class="bpa-record bpa-record--${m}"
+                style=${$({ "--rec-color": h })}
+              >
+                <div class="bpa-record__status" aria-hidden="true">
+                  <span class="bpa-record__ring"></span>
+                  ${s ? c`<span class="bpa-record__days">${Math.abs(s.daysRemaining)}</span>` : l}
                 </div>
-              </div>
-              <button type="button" class="bpa-icon-btn" aria-label=${s("تعديل الاسم", "Rename")} @click=${() => this.editingId = this.editingId === a.id ? "" : a.id}>✎</button>
-              <button type="button" class="bpa-icon-btn" aria-label=${s("حذف", "Delete")} @click=${() => this.deleteRecord(a.id)}>🗑</button>
-            </div>`;
-    }) : d`<p class="bpa-saved__note">${s("لا توجد عبوات محفوظة بعد.", "No saved products yet.")}</p>`}
+                <div class="bpa-record__body">
+                  ${this.editingId === t.id ? c`<input
+                        class="bpa-record__edit"
+                        .value=${t.name}
+                        aria-label=${r("اسم العبوة", "Product name")}
+                        @change=${(d) => {
+        this.renameRecord(t.id, d.target.value), this.editingId = "";
+      }}
+                      />` : c`<div class="bpa-record__name">${t.name}</div>`}
+                  <div class="bpa-record__meta">
+                    ${s && o ? c`<span class="bpa-record__pill bpa-record__pill--${m}">
+                          ${s.state === "expired" ? r("منتهٍ", "Expired") : s.state === "warn" ? r("قرب الانتهاء", "Ending soon") : r("صالح", "Good")}
+                        </span>` : l}
+                    ${b ? c`<span>${b}</span>` : l}
+                    ${s && o ? c`<span>· ${r("ينتهي", "Ends")} ${S(s.expiry, a, this.locale)}</span>` : l}
+                  </div>
+                  ${t.note ? c`<p class="bpa-record__note">${t.note}</p>` : l}
+                </div>
+                <div class="bpa-record__actions">
+                  <button type="button" class="bpa-icon-btn" aria-label=${r("تعديل الاسم", "Rename")} @click=${() => this.editingId = this.editingId === t.id ? "" : t.id}>✎</button>
+                  <button type="button" class="bpa-icon-btn" aria-label=${r("حذف", "Delete")} @click=${() => this.deleteRecord(t.id)}>🗑</button>
+                </div>
+              </article>`;
+    })}
+          </div>` : c`<div class="bpa-saved__empty">${r("لا توجد عبوات محفوظة بعد.", "No saved products yet.")}</div>`}
     </div>`;
   }
   render() {
-    const e = this.config || {}, t = G(e, "bpa_"), a = b(e.bpa_title), i = b(e.bpa_desc), o = J(e), n = K(e.bpa_categories), u = W(e.bpa_pao_options), m = b(e.bpa_notice) || s(
+    const e = this.config || {}, a = H(e, "bpa_"), n = g(e.bpa_title), t = g(e.bpa_desc), o = Q(e), s = K(e.bpa_categories), h = J(e.bpa_pao_options), m = g(e.bpa_notice) || r(
       "النتيجة تقديرية وتعتمد على تاريخ الفتح والمدة المكتوبة على العبوة. اتبعي تعليمات الشركة المصنّعة وتوقّفي عن الاستخدام عند تغيّر الرائحة أو اللون أو القوام.",
       "The result is approximate and based on the open date and the period printed on the packaging. Follow the manufacturer instructions and stop using if the smell, color or texture changes."
-    ), h = (o === "category" || n.length > 0) && n.length > 0;
-    return d`
+    ), b = o === "category" && s.length > 0;
+    return c`
       <section
         class="fs-section"
-        style=${w(H(t))}
-        aria-label=${a || s("حاسبة مدة الاستخدام بعد الفتح", "PAO & expiry calculator")}
+        style=${$(B(a))}
+        aria-label=${n || r("حاسبة مدة الاستخدام بعد الفتح", "PAO & expiry calculator")}
       >
         <div class="fs-container">
-          ${a || i ? d`<div class="fs-header">
-                ${a ? d`<h2 class="fs-title">${a}</h2>` : l}
-                ${i ? d`<p class="fs-desc">${i}</p>` : l}
+          ${n || t ? c`<div class="fs-header">
+                ${n ? c`<h2 class="fs-title">${n}</h2>` : l}
+                ${t ? c`<p class="fs-desc">${t}</p>` : l}
               </div>` : l}
 
-          <div class="bpa-grid">
-            <div class="bpa-form">
-              ${h ? d`<div class="bpa-field">
-                    <label for="bpa-cat">${s("فئة المستحضر", "Product category")}</label>
-                    <select
-                      id="bpa-cat"
-                      class="bpa-select"
-                      @change=${(c) => {
-      const x = c.target.value, $ = n.find((y) => y.id === x);
-      this.onCategory(x, ($ == null ? void 0 : $.paoMonths) ?? 0);
-    }}
-                    >
-                      <option value="">${s("اختياري — اختاري الفئة", "Optional — choose a category")}</option>
-                      ${n.map((c) => d`<option value=${c.id} ?selected=${c.id === this.catId}>${c.name}${c.paoMonths ? ` (${c.paoMonths}${this.locale === "en" ? "M" : " شهر"})` : ""}</option>`)}
-                    </select>
-                  </div>` : l}
-
-              <div class="bpa-field">
-                <label>${s("مدة الاستخدام بعد الفتح", "Period after opening")}</label>
-                ${u.length ? d`<div class="bpa-pao-chips">
-                      ${u.map(
-      (c) => d`<button
-                          type="button"
-                          class="bpa-pao-chip ${this.pao === c.months ? "is-active" : ""}"
-                          aria-pressed=${this.pao === c.months ? "true" : "false"}
-                          @click=${() => this.pao = c.months}
-                        >${Q(c, this.locale)}</button>`
+          <div class="bpa-shell">
+            <aside class="bpa-form-card">
+              <h3 class="bpa-form-card__title">${r("احسبي المدة", "Calculate the period")}</h3>
+              <p class="bpa-form-card__hint">
+                ${r(
+      "اختاري الفئة أو المدة، ثم حدّدي تاريخ فتح العبوة.",
+      "Pick a category or period, then set the open date."
     )}
-                    </div>` : d`<input
-                      class="bpa-input"
-                      type="number"
-                      min="1"
-                      max="60"
-                      .value=${this.pao ? String(this.pao) : ""}
-                      placeholder=${s("عدد الأشهر", "Number of months")}
-                      @input=${(c) => this.pao = Math.max(0, f(c.target.value, 0))}
-                    />`}
+              </p>
+
+              <div class="bpa-form">
+                ${b ? c`<div class="bpa-field">
+                      <label>${r("فئة المستحضر", "Product category")}</label>
+                      <div class="bpa-cat-chips" role="group" aria-label=${r("فئات المستحضرات", "Product categories")}>
+                        ${s.map((d) => {
+      const _ = d.id === this.catId, k = d.icon.startsWith("sicon-");
+      return c`<button
+                            type="button"
+                            class=${`bpa-cat-chip${_ ? " is-active" : ""}`}
+                            aria-pressed=${_ ? "true" : "false"}
+                            @click=${() => this.onCategory(d.id, d.paoMonths)}
+                          >
+                            ${d.icon ? c`<span class="bpa-cat-chip__icon" aria-hidden="true">
+                                  ${k ? c`<span class=${d.icon}></span>` : d.icon}
+                                </span>` : l}
+                            <span>${d.name}</span>
+                            ${d.paoMonths ? c`<span class="bpa-cat-chip__months"
+                                  >${this.locale === "en" ? `${d.paoMonths}M` : `${d.paoMonths} شهر`}</span
+                                >` : l}
+                          </button>`;
+    })}
+                      </div>
+                    </div>` : l}
+
+                <div class="bpa-field">
+                  <label>${r("مدة الاستخدام بعد الفتح", "Period after opening")}</label>
+                  ${h.length ? c`<div class="bpa-pao-chips" role="group" aria-label=${r("مدد الاستخدام", "Use periods")}>
+                        ${h.map(
+      (d) => c`<button
+                            type="button"
+                            class=${`bpa-pao-chip${this.pao === d.months ? " is-active" : ""}`}
+                            aria-pressed=${this.pao === d.months ? "true" : "false"}
+                            @click=${() => this.pao = d.months}
+                          >
+                            ${X(d, this.locale)}
+                          </button>`
+    )}
+                      </div>` : c`<input
+                        class="bpa-input"
+                        type="number"
+                        min="1"
+                        max="60"
+                        .value=${this.pao ? String(this.pao) : ""}
+                        placeholder=${r("عدد الأشهر", "Number of months")}
+                        @input=${(d) => this.pao = Math.max(0, u(d.target.value, 0))}
+                      />`}
+                </div>
+
+                <div class="bpa-field">
+                  <label for="bpa-open">${r("تاريخ فتح العبوة", "Open date")}</label>
+                  <input
+                    id="bpa-open"
+                    class="bpa-input"
+                    type="date"
+                    max=${w(/* @__PURE__ */ new Date())}
+                    .value=${this.openDate}
+                    @input=${(d) => this.openDate = d.target.value}
+                  />
+                </div>
+
+                ${x(e.bpa_enable_name, !0) ? c`<div class="bpa-field">
+                      <label for="bpa-name">${r("اسم العبوة (اختياري)", "Product name (optional)")}</label>
+                      <input
+                        id="bpa-name"
+                        class="bpa-input"
+                        .value=${this.recName}
+                        placeholder=${r("مثال: سيروم فيتامين C", "e.g. Vitamin C serum")}
+                        @input=${(d) => this.recName = d.target.value}
+                      />
+                    </div>` : l}
+
+                ${x(e.bpa_enable_note, !1) ? c`<div class="bpa-field">
+                      <label for="bpa-note">${r("ملاحظة (اختياري)", "Note (optional)")}</label>
+                      <input
+                        id="bpa-note"
+                        class="bpa-input"
+                        .value=${this.note}
+                        @input=${(d) => this.note = d.target.value}
+                      />
+                    </div>` : l}
               </div>
-
-              <div class="bpa-field">
-                <label for="bpa-open">${s("تاريخ فتح العبوة", "Open date")}</label>
-                <input
-                  id="bpa-open"
-                  class="bpa-input"
-                  type="date"
-                  max=${M(/* @__PURE__ */ new Date())}
-                  .value=${this.openDate}
-                  @input=${(c) => this.openDate = c.target.value}
-                />
-              </div>
-
-              ${_(e.bpa_enable_name, !0) ? d`<div class="bpa-field">
-                    <label for="bpa-name">${s("اسم العبوة (اختياري)", "Product name (optional)")}</label>
-                    <input id="bpa-name" class="bpa-input" .value=${this.recName} @input=${(c) => this.recName = c.target.value} />
-                  </div>` : l}
-
-              ${_(e.bpa_enable_note, !1) ? d`<div class="bpa-field">
-                    <label for="bpa-note">${s("ملاحظة (اختياري)", "Note (optional)")}</label>
-                    <input id="bpa-note" class="bpa-input" .value=${this.note} @input=${(c) => this.note = c.target.value} />
-                  </div>` : l}
-            </div>
+            </aside>
 
             ${this.renderResult()}
           </div>
@@ -509,30 +935,30 @@ const E = "tw-beauty-pao-records", R = class R extends P {
     `;
   }
 };
-R.styles = [U, B];
-let p = R;
-g([
-  V({ type: Object })
+T.styles = [F, W];
+let p = T;
+f([
+  U({ type: Object })
 ], p.prototype, "config");
-g([
+f([
   v()
 ], p.prototype, "catId");
-g([
+f([
   v()
 ], p.prototype, "pao");
-g([
+f([
   v()
 ], p.prototype, "openDate");
-g([
+f([
   v()
 ], p.prototype, "recName");
-g([
+f([
   v()
 ], p.prototype, "note");
-g([
+f([
   v()
 ], p.prototype, "records");
-g([
+f([
   v()
 ], p.prototype, "editingId");
 typeof p < "u" && p.registerSallaComponent("salla-beauty-pao-expiry-calculator");

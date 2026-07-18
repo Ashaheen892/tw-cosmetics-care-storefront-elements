@@ -1,12 +1,31 @@
-import { css as I, LitElement as A, nothing as u, html as c } from "lit";
-import { property as E, state as H } from "lit/decorators.js";
-import { classMap as j } from "lit/directives/class-map.js";
-import { styleMap as v } from "lit/directives/style-map.js";
-import { n as F, l as m, i as x, s as O, t as p, r as Z, p as B, a as N } from "./sharedStyles-cRSiglXC.js";
-const P = I`
+import { css as L, LitElement as I, nothing as b, html as i } from "lit";
+import { property as j, state as M } from "lit/decorators.js";
+import { classMap as E } from "lit/directives/class-map.js";
+import { styleMap as x } from "lit/directives/style-map.js";
+import { n as A, l as u, t as d, i as y, s as F, r as N, p as O, a as P } from "./sharedStyles--LaFqDVC.js";
+const Z = L`
+  :host {
+    display: block;
+    direction: inherit;
+    width: 100%;
+  }
+
   .bch-wrap {
     display: grid;
     gap: 1.5rem;
+    width: 100%;
+    max-width: 1040px;
+    margin-inline: auto;
+  }
+
+  .bch-controls {
+    display: grid;
+    gap: 1.15rem;
+    padding: 1.15rem 1.2rem;
+    border-radius: var(--section-radius, 20px);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #f2dde7);
+    box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
   .bch-group {
@@ -16,11 +35,10 @@ const P = I`
 
   .bch-group__label {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 800;
     letter-spacing: 0.01em;
     color: var(--muted-color, #8f7a86);
-    text-transform: uppercase;
   }
 
   /* —— base color chips —— */
@@ -34,13 +52,14 @@ const P = I`
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    padding: 0.4rem 0.7rem 0.4rem 0.4rem;
+    min-height: 44px;
+    padding: 0.4rem 0.85rem 0.4rem 0.4rem;
     border: 1px solid var(--border-color, #f2dde7);
     border-radius: 999px;
     background: var(--card-bg, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-weight: 700;
     line-height: 1.2;
     cursor: pointer;
@@ -57,8 +76,8 @@ const P = I`
   }
 
   .bch-color__swatch {
-    width: 1.7rem;
-    height: 1.7rem;
+    width: 1.75rem;
+    height: 1.75rem;
     border-radius: 50%;
     flex: 0 0 auto;
     border: 2px solid #fff;
@@ -72,22 +91,47 @@ const P = I`
 
   /* —— harmony type chips —— */
   .bch-types {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 0.5rem;
   }
 
+  @media (min-width: 640px) {
+    .bch-types {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
   .bch-type {
-    padding: 0.5rem 1rem;
+    display: grid;
+    gap: 0.2rem;
+    min-height: 64px;
+    padding: 0.7rem 0.9rem;
     border: 1px solid var(--border-color, #f2dde7);
-    border-radius: 999px;
-    background: var(--card-bg, #fff);
+    border-radius: calc(var(--section-radius, 16px) * 0.65);
+    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-weight: 700;
     cursor: pointer;
+    text-align: start;
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .bch-type__label {
+    line-height: 1.3;
+  }
+
+  .bch-type__hint {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+    line-height: 1.35;
+  }
+
+  .bch-type[aria-pressed='true'] .bch-type__hint {
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .bch-type:hover {
@@ -103,30 +147,70 @@ const P = I`
   /* —— result area —— */
   .bch-result {
     display: grid;
-    gap: 1.25rem;
+    gap: 1.15rem;
+  }
+
+  @media (min-width: 900px) {
+    .bch-result {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+
+  .bch-preview,
+  .bch-zones-wrap {
+    display: grid;
+    gap: 0.8rem;
+    min-width: 0;
+  }
+
+  .bch-preview {
+    padding: 1.2rem;
+    border-radius: calc(var(--section-radius, 16px) * 0.9);
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff)),
+      var(--card-bg, #fff)
+    );
+    border: 1px solid var(--border-color, #f2dde7);
+    box-shadow: 0 12px 32px rgba(43, 33, 28, 0.08);
+  }
+
+  .bch-zones-wrap {
+    padding: 1.2rem;
+    border-radius: calc(var(--section-radius, 16px) * 0.9);
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #f2dde7);
+  }
+
+  .bch-preview__label {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--muted-color, #8f7a86);
   }
 
   .bch-strip {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     gap: 0.75rem;
   }
 
   .bch-swatch {
-    flex: 1 1 100px;
-    min-width: 88px;
     display: grid;
-    gap: 0.4rem;
+    gap: 0.45rem;
     justify-items: center;
     text-align: center;
+    min-width: 0;
   }
 
   .bch-swatch__chip {
     width: 100%;
-    aspect-ratio: 3 / 2;
-    border-radius: calc(var(--section-radius, 16px) * 0.65);
+    aspect-ratio: 4 / 3;
+    border-radius: calc(var(--section-radius, 16px) * 0.55);
     border: 1px solid color-mix(in srgb, #000 8%, transparent);
-    box-shadow: 0 6px 16px rgba(20, 14, 12, 0.14);
+    box-shadow: 0 8px 20px rgba(20, 14, 12, 0.16);
     background: var(--swatch, #ccc);
   }
 
@@ -139,16 +223,15 @@ const P = I`
     font-variant-numeric: tabular-nums;
   }
 
-  /* —— zone mapping cards —— */
   .bch-zones {
     display: grid;
-    gap: 0.85rem;
+    gap: 0.75rem;
     grid-template-columns: 1fr;
   }
 
   @media (min-width: 640px) {
     .bch-zones {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
     }
   }
 
@@ -156,11 +239,10 @@ const P = I`
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    padding: 0.85rem;
-    background: var(--card-bg, #fff);
+    padding: 0.8rem;
+    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 60%, #fff);
     border: 1px solid var(--border-color, #f2dde7);
-    border-radius: calc(var(--section-radius, 16px) * 0.75);
-    box-shadow: 0 6px 18px rgba(43, 33, 28, 0.05);
+    border-radius: calc(var(--section-radius, 16px) * 0.7);
   }
 
   .bch-zone__swatch {
@@ -180,7 +262,7 @@ const P = I`
   }
 
   .bch-zone__label {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 800;
     color: var(--text-color, #33232e);
   }
@@ -196,7 +278,7 @@ const P = I`
   .bch-notice {
     margin: 0;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: var(--muted-color, #8f7a86);
     line-height: 1.6;
   }
@@ -207,90 +289,114 @@ const P = I`
       transition: none !important;
     }
   }
-`, R = "#cccccc";
-function q(a) {
-  return F(a).map((e, r) => {
-    const s = m(e.name), t = T(String(e.hex ?? "").trim());
+`, B = "#cccccc";
+function R(s) {
+  if (typeof s == "string") return s.trim();
+  if (typeof s == "number" && Number.isFinite(s)) return String(s);
+  if (s && typeof s == "object") {
+    const e = s;
+    for (const r of ["hex", "value", "color", "code"]) {
+      const t = e[r];
+      if (typeof t == "string" && t.trim()) return t.trim();
+    }
+  }
+  return "";
+}
+function q(s) {
+  return A(s).map((e, r) => {
+    const t = u(e.name), o = H(R(e.hex ?? e.color));
     return {
-      id: String(e.color_id ?? "").trim() || `color-${r + 1}`,
-      name: s,
-      hex: t
+      id: String(e.color_id ?? e.id ?? "").trim() || `color-${r + 1}`,
+      name: t,
+      hex: o
     };
-  }).filter((e) => e.name || e.hex);
+  }).filter((e) => !!(e.name || e.hex));
 }
-function T(a) {
-  const e = String(a || "").trim(), r = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.exec(e);
-  if (!r) return R;
-  let s = r[1].toLowerCase();
-  return s.length === 3 && (s = s.split("").map((t) => t + t).join("")), `#${s}`;
+function H(s) {
+  const e = String(s || "").trim(), r = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.exec(e);
+  if (!r) return B;
+  let t = r[1].toLowerCase();
+  return t.length === 3 && (t = t.split("").map((o) => o + o).join("")), `#${t}`;
 }
-function S(a) {
-  const e = T(a), r = parseInt(e.slice(1, 3), 16) / 255, s = parseInt(e.slice(3, 5), 16) / 255, t = parseInt(e.slice(5, 7), 16) / 255, o = Math.max(r, s, t), i = Math.min(r, s, t), n = o - i;
-  let l = 0;
-  n !== 0 && (o === r ? l = (s - t) / n % 6 : o === s ? l = (t - r) / n + 2 : l = (r - s) / n + 4, l *= 60, l < 0 && (l += 360));
-  const d = (o + i) / 2, b = n === 0 ? 0 : n / (1 - Math.abs(2 * d - 1));
+function T(s) {
+  const e = H(s), r = parseInt(e.slice(1, 3), 16) / 255, t = parseInt(e.slice(3, 5), 16) / 255, o = parseInt(e.slice(5, 7), 16) / 255, a = Math.max(r, t, o), l = Math.min(r, t, o), c = a - l;
+  let n = 0;
+  c !== 0 && (a === r ? n = (t - o) / c % 6 : a === t ? n = (o - r) / c + 2 : n = (r - t) / c + 4, n *= 60, n < 0 && (n += 360));
+  const h = (a + l) / 2, m = c === 0 ? 0 : c / (1 - Math.abs(2 * h - 1));
   return {
-    h: Math.round(l),
-    s: Math.round(b * 100),
-    l: Math.round(d * 100)
+    h: Math.round(n),
+    s: Math.round(m * 100),
+    l: Math.round(h * 100)
   };
 }
-function h(a) {
-  const e = (a.h % 360 + 360) % 360, r = k(a.s / 100), s = k(a.l / 100), t = (1 - Math.abs(2 * s - 1)) * r, o = t * (1 - Math.abs(e / 60 % 2 - 1)), i = s - t / 2;
-  let n = 0, l = 0, d = 0;
-  e < 60 ? [n, l, d] = [t, o, 0] : e < 120 ? [n, l, d] = [o, t, 0] : e < 180 ? [n, l, d] = [0, t, o] : e < 240 ? [n, l, d] = [0, o, t] : e < 300 ? [n, l, d] = [o, 0, t] : [n, l, d] = [t, 0, o];
-  const b = (g) => Math.round((g + i) * 255).toString(16).padStart(2, "0");
-  return `#${b(n)}${b(l)}${b(d)}`;
+function p(s) {
+  const e = (s.h % 360 + 360) % 360, r = C(s.s / 100), t = C(s.l / 100), o = (1 - Math.abs(2 * t - 1)) * r, a = o * (1 - Math.abs(e / 60 % 2 - 1)), l = t - o / 2;
+  let c = 0, n = 0, h = 0;
+  e < 60 ? [c, n, h] = [o, a, 0] : e < 120 ? [c, n, h] = [a, o, 0] : e < 180 ? [c, n, h] = [0, o, a] : e < 240 ? [c, n, h] = [0, a, o] : e < 300 ? [c, n, h] = [a, 0, o] : [c, n, h] = [o, 0, a];
+  const m = (g) => Math.round((g + l) * 255).toString(16).padStart(2, "0");
+  return `#${m(c)}${m(n)}${m(h)}`;
 }
-function k(a) {
-  return Math.min(1, Math.max(0, a));
+function C(s) {
+  return Math.min(1, Math.max(0, s));
 }
-function y(a, e) {
-  return { ...a, h: ((a.h + e) % 360 + 360) % 360 };
+function v(s, e) {
+  return { ...s, h: ((s.h + e) % 360 + 360) % 360 };
 }
-function K(a, e) {
-  const r = S(a);
+function K(s, e) {
+  const r = T(s);
   switch (e) {
     case "complementary":
-      return [h(r), h(y(r, 180))];
+      return [p(r), p(v(r, 180))];
     case "analogous":
       return [
-        h(y(r, -30)),
-        h(r),
-        h(y(r, 30))
+        p(v(r, -30)),
+        p(r),
+        p(v(r, 30))
       ];
     case "triadic":
       return [
-        h(r),
-        h(y(r, 120)),
-        h(y(r, 240))
+        p(r),
+        p(v(r, 120)),
+        p(v(r, 240))
       ];
     default:
-      return [h(r)];
+      return [p(r)];
   }
 }
-function U(a, e) {
-  const r = S(e), s = a[0] || h(r), t = a[1] || a[0] || h(r), o = a[2] || h({
+function U(s, e) {
+  const r = T(e), t = s[0] || p(r), o = s[1] || s[0] || p(r), a = s[2] || p({
     h: r.h,
     s: Math.round(r.s * 0.55),
     l: Math.min(92, Math.round(r.l + (100 - r.l) * 0.4))
   });
-  return { lips: s, eyes: t, cheeks: o };
+  return { lips: t, eyes: o, cheeks: a };
 }
-function X(a) {
+function V(s) {
+  const e = {
+    complementary: ["ألوان متعاكسة", "Opposite colors"],
+    analogous: ["ألوان متقاربة", "Neighboring colors"],
+    triadic: ["ثلاثة ألوان متوازنة", "Three balanced colors"]
+  }, [r, t] = e[s];
+  return d(r, t);
+}
+function X(s) {
+  const e = {
+    complementary: ["تباين جريء", "Bold contrast"],
+    analogous: ["انسجام ناعم", "Soft blend"],
+    triadic: ["توازن حيوي", "Vibrant balance"]
+  }, [r, t] = e[s];
+  return d(r, t);
+}
+function D(s) {
   const e = [];
-  return x(a.bch_show_complementary, !0) && e.push("complementary"), x(a.bch_show_analogous, !0) && e.push("analogous"), x(a.bch_show_triadic, !0) && e.push("triadic"), e;
+  return y(s.bch_show_complementary, !0) && e.push("complementary"), y(s.bch_show_analogous, !0) && e.push("analogous"), y(s.bch_show_triadic, !0) && e.push("triadic"), e;
 }
-var Y = Object.defineProperty, _ = (a, e, r, s) => {
-  for (var t = void 0, o = a.length - 1, i; o >= 0; o--)
-    (i = a[o]) && (t = i(e, r, t) || t);
-  return t && Y(e, r, t), t;
+var G = Object.defineProperty, _ = (s, e, r, t) => {
+  for (var o = void 0, a = s.length - 1, l; a >= 0; a--)
+    (l = s[a]) && (o = l(e, r, o) || o);
+  return o && G(e, r, o), o;
 };
-const M = {
-  complementary: { ar: "متتام", en: "Complementary" },
-  analogous: { ar: "متجاور", en: "Analogous" },
-  triadic: { ar: "ثلاثي", en: "Triadic" }
-}, w = class w extends A {
+const w = class w extends I {
   constructor() {
     super(...arguments), this.config = {}, this.selectedColorId = "", this.harmonyType = "", this.boundLangHandler = () => this.requestUpdate();
   }
@@ -308,16 +414,16 @@ const M = {
     return q((e = this.config) == null ? void 0 : e.bch_colors);
   }
   resolveColor(e) {
-    var s;
+    var t;
     if (!e.length) return null;
     if (this.selectedColorId) {
-      const t = e.find((o) => o.id === this.selectedColorId);
-      if (t) return t;
+      const o = e.find((a) => a.id === this.selectedColorId);
+      if (o) return o;
     }
-    const r = String(((s = this.config) == null ? void 0 : s.bch_default_color) ?? "").trim();
+    const r = String(((t = this.config) == null ? void 0 : t.bch_default_color) ?? "").trim();
     if (r) {
-      const t = e.find((o) => o.id === r);
-      if (t) return t;
+      const o = e.find((a) => a.id === r);
+      if (o) return o;
     }
     return e[0];
   }
@@ -331,21 +437,21 @@ const M = {
     this.harmonyType = e;
   }
   renderColors(e, r) {
-    return c`
-      <div class="bch-colors" role="group" aria-label=${p("اختاري لون الأساس", "Choose base color")}>
-        ${e.map((s) => {
-      const t = (r == null ? void 0 : r.id) === s.id, o = s.name || s.hex;
-      return c`
+    return i`
+      <div class="bch-colors" role="group" aria-label=${d("اختاري لون الأساس", "Choose base color")}>
+        ${e.map((t) => {
+      const o = (r == null ? void 0 : r.id) === t.id, a = t.name || t.hex;
+      return i`
             <button
               type="button"
               class="bch-color"
-              style=${v({ "--swatch": s.hex })}
-              aria-pressed=${t ? "true" : "false"}
-              aria-label=${`${o} ${s.hex}`}
-              @click=${() => this.selectColor(s.id)}
+              style=${x({ "--swatch": t.hex })}
+              aria-pressed=${o ? "true" : "false"}
+              aria-label=${`${a} ${t.hex}`}
+              @click=${() => this.selectColor(t.id)}
             >
               <span class="bch-color__swatch" aria-hidden="true"></span>
-              ${s.name ? c`<span class="bch-color__name">${s.name}</span>` : u}
+              ${t.name ? i`<span class="bch-color__name">${t.name}</span>` : b}
             </button>
           `;
     })}
@@ -353,22 +459,24 @@ const M = {
     `;
   }
   renderTypes(e, r) {
-    if (e.length < 2) return u;
-    const s = this.config || {}, t = m(s.bch_harmony_label) || p("نوع التناسق", "Harmony type");
-    return c`
+    if (!e.length) return b;
+    const t = this.config || {}, o = u(t.bch_harmony_label) || d("2) اختاري نوع التناسق", "2) Choose harmony style");
+    return i`
       <div class="bch-group">
-        <p class="bch-group__label">${t}</p>
-        <div class="bch-types" role="group" aria-label=${t}>
-          ${e.map((o) => {
-      const i = r === o, n = p(M[o].ar, M[o].en);
-      return c`
+        <p class="bch-group__label">${o}</p>
+        <div class="bch-types" role="group" aria-label=${o}>
+          ${e.map((a) => {
+      const l = r === a, c = V(a), n = X(a);
+      return i`
               <button
                 type="button"
                 class="bch-type"
-                aria-pressed=${i ? "true" : "false"}
-                @click=${() => this.selectHarmony(o)}
+                aria-pressed=${l ? "true" : "false"}
+                aria-describedby=${n ? `bch-hint-${a}` : b}
+                @click=${() => this.selectHarmony(a)}
               >
-                ${n}
+                <span class="bch-type__label">${c}</span>
+                ${n ? i`<span class="bch-type__hint" id=${`bch-hint-${a}`}>${n}</span>` : b}
               </button>
             `;
     })}
@@ -377,18 +485,18 @@ const M = {
     `;
   }
   renderStrip(e, r) {
-    return c`
+    return i`
       <div class="bch-strip">
         ${e.map(
-      (s) => c`
+      (t) => i`
             <div class="bch-swatch">
               <div
                 class="bch-swatch__chip"
-                style=${v({ "--swatch": s })}
+                style=${x({ "--swatch": t })}
                 role="img"
-                aria-label=${s}
+                aria-label=${t}
               ></div>
-              ${r ? c`<span class="bch-swatch__hex">${s}</span>` : u}
+              ${r ? i`<span class="bch-swatch__hex">${t}</span>` : b}
             </div>
           `
     )}
@@ -396,26 +504,26 @@ const M = {
     `;
   }
   renderZones(e, r) {
-    const s = this.config || {}, t = [
-      { key: "lips", label: m(s.bch_lips_label) || p("الشفاه", "Lips") },
-      { key: "eyes", label: m(s.bch_eyes_label) || p("العيون", "Eyes") },
-      { key: "cheeks", label: m(s.bch_cheeks_label) || p("الخدود", "Cheeks") }
+    const t = this.config || {}, o = [
+      { key: "lips", label: u(t.bch_lips_label) || d("الشفاه", "Lips") },
+      { key: "eyes", label: u(t.bch_eyes_label) || d("العيون", "Eyes") },
+      { key: "cheeks", label: u(t.bch_cheeks_label) || d("الخدود", "Cheeks") }
     ];
-    return c`
+    return i`
       <div class="bch-zones">
-        ${t.map((o) => {
-      const i = e[o.key];
-      return c`
+        ${o.map((a) => {
+      const l = e[a.key];
+      return i`
             <div class="bch-zone">
               <span
                 class="bch-zone__swatch"
-                style=${v({ "--swatch": i })}
+                style=${x({ "--swatch": l })}
                 role="img"
-                aria-label=${`${o.label} ${i}`}
+                aria-label=${`${a.label} ${l}`}
               ></span>
               <div class="bch-zone__body">
-                <span class="bch-zone__label">${o.label}</span>
-                ${r ? c`<span class="bch-zone__hex">${i}</span>` : u}
+                <span class="bch-zone__label">${a.label}</span>
+                ${r ? i`<span class="bch-zone__hex">${l}</span>` : b}
               </div>
             </div>
           `;
@@ -424,68 +532,75 @@ const M = {
     `;
   }
   render() {
-    const e = this.config || {}, r = Z(e, "bch_"), s = r.animate && !B(), t = this.colors, o = m(e.bch_title), i = m(e.bch_desc), n = x(e.bch_show_hex, !0), l = x(e.bch_show_notice, !0), d = m(e.bch_notice) || p(
+    const e = this.config || {}, r = N(e, "bch_"), t = r.animate && !O(), o = this.colors, a = u(e.bch_title), l = u(e.bch_desc), c = y(e.bch_show_hex, !0), n = y(e.bch_show_notice, !0), h = u(e.bch_notice) || d(
       "اقتراحات الألوان إرشادية لمساعدتك على التنسيق.",
       "Color suggestions are guidance to help you coordinate."
     );
-    if (!t.length)
-      return c`<div class="fs-empty" role="status">
-        ${p(
+    if (!o.length)
+      return i`<div class="fs-empty" role="status">
+        ${d(
         "أضيفي درجات ألوان من إعدادات العنصر.",
         "Add color shades in the element settings."
       )}
       </div>`;
-    const b = X(e);
-    if (!b.length)
-      return c`<div class="fs-empty" role="status">
-        ${p(
+    const m = D(e);
+    if (!m.length)
+      return i`<div class="fs-empty" role="status">
+        ${d(
         "فعّلي نوع تناسق واحدًا على الأقل من الإعدادات.",
         "Enable at least one harmony type in the settings."
       )}
       </div>`;
-    const g = this.resolveColor(t), $ = this.resolveHarmony(b), z = (g == null ? void 0 : g.hex) ?? t[0].hex, C = K(z, $), L = U(C, z);
-    return c`
+    const g = this.resolveColor(o), $ = this.resolveHarmony(m), z = (g == null ? void 0 : g.hex) ?? o[0].hex, k = K(z, $), S = U(k, z);
+    return i`
       <section
-        class=${j({ "fs-section": !0, "fs-animate": s })}
-        style=${v(N(r))}
-        aria-label=${o || p("عجلة تناسق ألوان المكياج", "Makeup color harmony wheel")}
+        class=${E({ "fs-section": !0, "fs-animate": t })}
+        style=${x(P(r))}
+        aria-label=${a || d("عجلة تناسق ألوان المكياج", "Makeup color harmony wheel")}
       >
         <div class="fs-container">
-          ${o || i ? c`<div class="fs-header">
-                ${o ? c`<h2 class="fs-title">${o}</h2>` : u}
-                ${i ? c`<p class="fs-desc">${i}</p>` : u}
-              </div>` : u}
+          ${a || l ? i`<div class="fs-header">
+                ${a ? i`<h2 class="fs-title">${a}</h2>` : b}
+                ${l ? i`<p class="fs-desc">${l}</p>` : b}
+              </div>` : b}
 
           <div class="bch-wrap">
-            <div class="bch-group">
-              <p class="bch-group__label">${p("لون الأساس", "Base color")}</p>
-              ${this.renderColors(t, g)}
+            <div class="bch-controls">
+              <div class="bch-group">
+                <p class="bch-group__label">${d("1) اختاري لون الأساس", "1) Choose a base color")}</p>
+                ${this.renderColors(o, g)}
+              </div>
+              ${this.renderTypes(m, $)}
             </div>
-
-            ${this.renderTypes(b, $)}
 
             <div class="bch-result">
-              ${this.renderStrip(C, n)}
-              ${this.renderZones(L, n)}
+              <div class="bch-preview">
+                <p class="bch-preview__label">${d("لوحة التناسق", "Harmony palette")}</p>
+                ${this.renderStrip(k, c)}
+              </div>
+              <div class="bch-zones-wrap">
+                <p class="bch-preview__label">${d("توزيع على الوجه", "Face placement")}</p>
+                ${this.renderZones(S, c)}
+              </div>
             </div>
 
-            ${l ? c`<p class="bch-notice">${d}</p>` : u}
+            ${n ? i`<p class="bch-notice">${h}</p>` : b}
           </div>
         </div>
       </section>
     `;
   }
 };
-w.styles = [O, P];
+w.styles = [F, Z];
 let f = w;
 _([
-  E({ type: Object })
+  j({ type: Object })
 ], f.prototype, "config");
 _([
-  H()
+  M()
 ], f.prototype, "selectedColorId");
 _([
-  H()
+  M()
 ], f.prototype, "harmonyType");
 typeof f < "u" && f.registerSallaComponent("salla-beauty-color-harmony");
 export {

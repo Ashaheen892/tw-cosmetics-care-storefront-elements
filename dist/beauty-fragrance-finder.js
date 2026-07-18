@@ -1,88 +1,121 @@
-import { css as L, LitElement as S, nothing as n, html as t } from "lit";
-import { property as C, state as I } from "lit/decorators.js";
-import { classMap as x } from "lit/directives/class-map.js";
-import { styleMap as h } from "lit/directives/style-map.js";
-import { n as T, l, b as j, e as A, d as P, g as M, s as H, t as s, i as y, r as N, p as O, a as D } from "./sharedStyles-cRSiglXC.js";
-const E = L`
-  .bff-layout {
+import { css as L, LitElement as I, nothing as s, html as a } from "lit";
+import { property as R, state as z } from "lit/decorators.js";
+import { classMap as h } from "lit/directives/class-map.js";
+import { styleMap as g } from "lit/directives/style-map.js";
+import { n as C, l as f, b as A, e as E, d as j, g as F, s as H, p as w, t as c, i as S, r as N, a as P } from "./sharedStyles--LaFqDVC.js";
+const M = L`
+  .bff-shell {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.35rem;
     align-items: start;
+    max-width: 1080px;
+    margin-inline: auto;
   }
 
-  @media (min-width: 860px) {
-    .bff-layout {
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-      gap: 2rem;
+  @media (min-width: 900px) {
+    .bff-shell {
+      grid-template-columns: minmax(240px, 0.85fr) minmax(0, 1.35fr);
+      gap: 1.75rem;
     }
   }
 
-  /* —— Selector —— */
+  /* —— Family selector —— */
   .bff-selector {
     min-width: 0;
+    padding: 1rem 1rem 1.1rem;
+    border-radius: var(--section-radius, 20px);
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
+  }
+
+  .bff-selector__label {
+    margin: 0 0 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--muted-color, #8f7a86);
   }
 
   .bff-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .bff-chips--grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: 900px) {
+    .bff-chips--grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .bff-chips--list {
-    flex-direction: column;
-    flex-wrap: nowrap;
+    grid-template-columns: 1fr;
   }
 
   .bff-chip {
-    display: inline-flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 0.55rem;
-    min-height: 44px;
-    padding: 0.5rem 0.9rem 0.5rem 0.6rem;
-    padding-inline: 0.6rem 0.9rem;
-    border: 1px solid var(--border-color, #f2dde7);
-    border-radius: 999px;
+    gap: 0.65rem;
+    min-height: 52px;
+    padding: 0.55rem 0.7rem;
+    border: 1.5px solid var(--border-color, #f2dde7);
+    border-radius: calc(var(--section-radius, 20px) * 0.65);
     background: var(--card-bg, #fff);
     color: var(--text-color, #33232e);
     font: inherit;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.25;
     cursor: pointer;
     text-align: start;
-    box-shadow: 0 3px 10px rgba(43, 33, 28, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-
-  .bff-chips--list .bff-chip {
-    width: 100%;
-    justify-content: flex-start;
-    border-radius: calc(var(--section-radius, 16px) * 0.7);
+    box-shadow: 0 2px 8px rgba(43, 33, 28, 0.04);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease;
   }
 
   .bff-chip:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(43, 33, 28, 0.1);
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 45%, var(--border-color, #f2dde7));
+    box-shadow: 0 8px 18px rgba(43, 33, 28, 0.08);
   }
 
   .bff-chip.is-active {
     border-color: var(--fam-color, var(--accent-color, #c2527f));
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 30%, transparent),
-      0 8px 18px rgba(43, 33, 28, 0.12);
+    background: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 8%, var(--card-bg, #fff));
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 22%, transparent),
+      0 10px 22px rgba(43, 33, 28, 0.1);
   }
 
   .bff-chip__swatch {
     flex: 0 0 auto;
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 2.15rem;
+    height: 2.15rem;
     display: grid;
     place-items: center;
     border-radius: 50%;
     background: var(--fam-color, var(--accent-color, #c2527f));
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1;
-    box-shadow: inset 0 0 0 2px color-mix(in srgb, #fff 45%, transparent);
+    box-shadow:
+      inset 0 0 0 2px color-mix(in srgb, #fff 40%, transparent),
+      0 4px 10px color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 35%, transparent);
+  }
+
+  .bff-chip__meta {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
   }
 
   .bff-chip__name {
@@ -91,45 +124,86 @@ const E = L`
     text-overflow: ellipsis;
   }
 
-  .bff-chips--list .bff-chip__name {
-    white-space: normal;
+  .bff-chip__hint {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--muted-color, #8f7a86);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  /* —— Wheel layout: radial arrangement —— */
+  .bff-chip__dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--muted-color, #8f7a86) 55%, transparent);
+  }
+
+  .bff-chip.is-active .bff-chip__dot {
+    background: var(--fam-color, var(--accent-color, #c2527f));
+    box-shadow: none;
+  }
+
+  /* —— Wheel layout —— */
   .bff-chips--wheel {
-    position: relative;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 0;
+    padding: 0.35rem 0 0.5rem;
+  }
+
+  .bff-chips--wheel .bff-chip {
+    display: inline-flex;
+    grid-template-columns: none;
+    border-radius: 999px;
+    padding: 0.45rem 0.85rem 0.45rem 0.5rem;
+    padding-inline: 0.5rem 0.85rem;
+  }
+
+  .bff-chips--wheel .bff-chip__meta,
+  .bff-chips--wheel .bff-chip__hint,
+  .bff-chips--wheel .bff-chip__dot {
+    display: none;
+  }
+
+  .bff-chips--wheel .bff-chip__name {
+    display: inline;
   }
 
   @media (min-width: 560px) {
     .bff-chips--wheel {
-      min-height: 320px;
+      position: relative;
+      min-height: 300px;
       border-radius: 50%;
     }
+
     .bff-chips--wheel .bff-chip {
       position: absolute;
       top: 50%;
       inset-inline-start: 50%;
       transform: translate(-50%, -50%)
-        rotate(var(--i-angle, 0deg)) translate(var(--wheel-r, 130px))
+        rotate(var(--i-angle, 0deg)) translate(var(--wheel-r, 120px))
         rotate(calc(-1 * var(--i-angle, 0deg)));
     }
+
     .bff-chips--wheel .bff-chip:hover {
       transform: translate(-50%, -50%)
-        rotate(var(--i-angle, 0deg)) translate(var(--wheel-r, 130px))
-        rotate(calc(-1 * var(--i-angle, 0deg))) scale(1.06);
+        rotate(var(--i-angle, 0deg)) translate(var(--wheel-r, 120px))
+        rotate(calc(-1 * var(--i-angle, 0deg))) scale(1.05);
     }
+
     .bff-wheel-core {
+      display: grid;
       position: absolute;
       top: 50%;
       inset-inline-start: 50%;
       transform: translate(-50%, -50%);
-      width: 5.5rem;
-      height: 5.5rem;
-      display: grid;
+      width: 5.25rem;
+      height: 5.25rem;
       place-items: center;
       text-align: center;
       border-radius: 50%;
@@ -147,43 +221,59 @@ const E = L`
     display: none;
   }
 
-  /* —— Detail panel —— */
-  .bff-panel {
-    padding: 1.15rem 1.15rem 1.25rem;
+  /* —— Story panel —— */
+  .bff-story {
     min-width: 0;
+    padding: 1.15rem;
+    border-radius: var(--section-radius, 20px);
+    background: var(--card-bg, #fff);
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 28%, var(--border-color, #f2dde7));
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 12%, transparent),
+      0 16px 36px rgba(120, 44, 82, 0.09);
   }
 
-  .bff-panel__head {
+  .bff-hero {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.1rem;
+  }
+
+  @media (min-width: 640px) {
+    .bff-hero--media {
+      grid-template-columns: minmax(0, 1.1fr) minmax(160px, 0.75fr);
+      align-items: stretch;
+    }
+  }
+
+  .bff-hero__body {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    padding: 0.15rem 0.1rem 0;
+  }
+
+  .bff-hero__top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 0.75rem;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.55rem;
   }
 
-  .bff-panel__title {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--text-color, #33232e);
-    min-width: 0;
-  }
-
-  .bff-panel__badge {
-    flex: 0 0 auto;
-    width: 1.9rem;
-    height: 1.9rem;
-    display: grid;
+  .bff-hero__icon {
+    display: inline-grid;
     place-items: center;
+    width: 2.65rem;
+    height: 2.65rem;
     border-radius: 50%;
     background: var(--fam-color, var(--accent-color, #c2527f));
     color: #fff;
-    font-size: 1rem;
-    line-height: 1;
-    box-shadow: inset 0 0 0 2px color-mix(in srgb, #fff 45%, transparent);
+    font-size: 1.2rem;
+    box-shadow:
+      inset 0 0 0 2px color-mix(in srgb, #fff 40%, transparent),
+      0 8px 18px color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 35%, transparent);
   }
 
   .bff-nav {
@@ -199,47 +289,89 @@ const E = L`
     place-items: center;
     border-radius: 50%;
     border: 1px solid var(--border-color, #f2dde7);
-    background: var(--card-bg, #fff);
+    background: color-mix(in srgb, var(--card-bg, #fff) 70%, var(--section-bg, #fbf5f8));
     color: var(--accent-color, #c2527f);
-    font-size: 1rem;
+    font-size: 1.05rem;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease;
   }
+
   .bff-nav__btn:hover {
     background: color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff));
+    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
   }
 
-  .bff-panel__img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 0.9rem;
-    display: block;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 40%, var(--card-bg, #fff));
+  .bff-hero__title {
+    margin: 0 0 0.4rem;
+    font-size: clamp(1.35rem, 3.2vw, 1.75rem);
+    font-weight: 800;
+    color: var(--text-color, #33232e);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
 
-  .bff-panel__desc {
-    margin: 0 0 0.9rem;
+  .bff-hero__desc {
+    margin: 0 0 0.8rem;
     color: var(--muted-color, #8f7a86);
     line-height: 1.7;
-    font-size: 0.92rem;
+    font-size: 0.93rem;
   }
 
   .bff-mood {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-bottom: 1rem;
   }
 
   .bff-mood__tag {
     font-size: 0.74rem;
     font-weight: 700;
-    padding: 0.2rem 0.6rem;
+    padding: 0.28rem 0.7rem;
     border-radius: 999px;
     background: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 14%, var(--card-bg, #fff));
-    color: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 80%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 78%, var(--text-color, #33232e));
+  }
+
+  .bff-hero__media {
+    position: relative;
+    min-width: 0;
+    border-radius: calc(var(--section-radius, 20px) * 0.7);
+    overflow: hidden;
+    background:
+      linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 28%, transparent),
+        transparent 55%
+      ),
+      color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+    aspect-ratio: 4 / 5;
+    max-height: 280px;
+  }
+
+  @media (max-width: 639px) {
+    .bff-hero__media {
+      aspect-ratio: 16 / 10;
+      max-height: 220px;
+    }
+  }
+
+  .bff-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .bff-hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 45%,
+      color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 22%, transparent)
+    );
+    pointer-events: none;
   }
 
   /* —— Notes pyramid —— */
@@ -247,29 +379,57 @@ const E = L`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    gap: 0.45rem;
+    margin: 0 0 1.1rem;
+    padding: 1rem 0.85rem 1.05rem;
+    border-radius: calc(var(--section-radius, 20px) * 0.7);
+    background:
+      radial-gradient(
+        90% 80% at 50% 0%,
+        color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 10%, transparent),
+        transparent 70%
+      ),
+      color-mix(in srgb, var(--section-bg, #fbf5f8) 65%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 18%, var(--border-color, #f2dde7));
+  }
+
+  .bff-pyramid__intro {
+    margin: 0 0 0.55rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--muted-color, #8f7a86);
+    text-align: center;
   }
 
   .bff-tier {
     width: 100%;
-    border-radius: 12px;
-    padding: 0.7rem 0.9rem;
+    border-radius: 14px;
+    padding: 0.75rem 0.9rem;
     background: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) var(--tier-tint, 10%), var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 30%, transparent);
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 28%, transparent);
     box-sizing: border-box;
     text-align: center;
-    transition: width 0.35s ease;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.45s ease, transform 0.45s ease, width 0.35s ease;
+  }
+
+  .bff-tier.is-visible,
+  .bff-tier.is-instant {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .bff-tier--top {
-    width: 62%;
+    width: 58%;
     --tier-tint: 8%;
   }
+
   .bff-tier--heart {
-    width: 82%;
+    width: 78%;
     --tier-tint: 14%;
   }
+
   .bff-tier--base {
     width: 100%;
     --tier-tint: 20%;
@@ -279,26 +439,36 @@ const E = L`
     display: block;
     font-size: 0.72rem;
     font-weight: 800;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
     color: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 85%, var(--text-color, #33232e));
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.4rem;
   }
 
   .bff-tier__notes {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.3rem 0.4rem;
+    gap: 0.35rem;
   }
 
   .bff-note {
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-color, #33232e);
-    background: color-mix(in srgb, var(--card-bg, #fff) 78%, transparent);
-    padding: 0.15rem 0.55rem;
+    background: color-mix(in srgb, var(--card-bg, #fff) 82%, transparent);
+    padding: 0.22rem 0.65rem;
     border-radius: 999px;
     line-height: 1.4;
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    transition-delay: calc(var(--note-i, 0) * 80ms);
+  }
+
+  .bff-note.is-visible,
+  .bff-note.is-instant {
+    opacity: 1;
+    transform: scale(1);
   }
 
   .bff-tier__empty {
@@ -314,11 +484,11 @@ const E = L`
     }
   }
 
-  /* —— Facts rows —— */
+  /* —— Facts —— */
   .bff-facts {
     display: grid;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    gap: 0.55rem;
+    margin-bottom: 0.25rem;
   }
 
   @media (min-width: 480px) {
@@ -330,11 +500,11 @@ const E = L`
   .bff-fact {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
-    padding: 0.6rem 0.75rem;
-    border-radius: 10px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 22%, var(--card-bg, #fff));
-    border: 1px solid var(--border-color, #f2dde7);
+    gap: 0.2rem;
+    padding: 0.75rem 0.85rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 7%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 18%, var(--border-color, #f2dde7));
   }
 
   .bff-fact__label {
@@ -344,8 +514,8 @@ const E = L`
   }
 
   .bff-fact__value {
-    font-size: 0.88rem;
-    font-weight: 700;
+    font-size: 0.92rem;
+    font-weight: 800;
     color: var(--text-color, #33232e);
   }
 
@@ -353,229 +523,303 @@ const E = L`
     display: flex;
     flex-wrap: wrap;
     gap: 0.55rem;
+    margin-top: 1rem;
   }
 
   .bff-notice {
-    margin-top: 1.25rem;
+    max-width: 1080px;
+    margin: 1.25rem auto 0;
     text-align: center;
     font-size: 0.8rem;
     color: var(--muted-color, #8f7a86);
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .bff-chip,
     .bff-tier,
+    .bff-note,
     .bff-nav__btn {
       transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
     }
   }
-`, R = ["wheel", "grid", "list"];
-function w(d) {
-  const e = l(d, "");
-  return e ? e.split(/\r?\n|،|;|,/).map((a) => a.trim()).filter(Boolean) : [];
+`, Y = ["wheel", "grid", "list"];
+function $(d) {
+  const e = f(d, "");
+  return e ? e.split(/\r?\n|،|;|,/).map((r) => r.trim()).filter(Boolean) : [];
 }
-function U(d) {
-  return T(d).map((e, a) => {
-    const o = l(e.name);
+function O(d) {
+  return C(d).map((e, r) => {
+    const t = f(e.name);
     return {
-      id: String(e.family_id ?? "").trim() || `family-${a + 1}`,
-      name: o,
+      id: String(e.family_id ?? "").trim() || `family-${r + 1}`,
+      name: t,
       color: String(e.color ?? "").trim(),
       icon: String(e.icon ?? "").trim(),
-      desc: l(e.desc),
-      mood: P(e.mood),
-      top: w(e.top_notes),
-      heart: w(e.heart_notes),
-      base: w(e.base_notes),
-      season: l(e.season),
-      occasion: l(e.occasion),
-      image: A(e.image),
-      link: j(e.link)
+      desc: f(e.desc),
+      mood: j(e.mood),
+      top: $(e.top_notes),
+      heart: $(e.heart_notes),
+      base: $(e.base_notes),
+      season: f(e.season),
+      occasion: f(e.occasion),
+      image: E(e.image),
+      link: A(e.link)
     };
   }).filter((e) => e.name || e.desc);
 }
-function W(d) {
-  const e = M(d.bff_layout, "grid");
-  return R.includes(e) ? e : "grid";
+function q(d) {
+  const e = F(d.bff_layout, "grid");
+  return Y.includes(e) ? e : "grid";
 }
-var Y = Object.defineProperty, k = (d, e, a, o) => {
-  for (var r = void 0, i = d.length - 1, c; i >= 0; i--)
-    (c = d[i]) && (r = c(e, a, r) || r);
-  return r && Y(e, a, r), r;
+var D = Object.defineProperty, y = (d, e, r, t) => {
+  for (var i = void 0, o = d.length - 1, n; o >= 0; o--)
+    (n = d[o]) && (i = n(e, r, i) || i);
+  return i && D(e, r, i), i;
 };
-const $ = class $ extends S {
+const U = [0, 400, 800], k = class k extends I {
   constructor() {
-    super(...arguments), this.config = {}, this.activeId = "", this.boundLangHandler = () => this.requestUpdate();
+    super(...arguments), this.config = {}, this.activeId = "", this.revealStep = 0, this.boundLangHandler = () => this.requestUpdate(), this.revealTimers = [], this.lastRevealFamilyId = "";
   }
   connectedCallback() {
     super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler);
   }
   disconnectedCallback() {
-    window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
+    this.clearRevealTimers(), window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
   updated(e) {
-    e.has("config") && (this.activeId = "");
+    var t;
+    e.has("config") && (this.activeId = "", this.revealStep = 0, this.lastRevealFamilyId = "");
+    const r = ((t = this.resolveActive(this.families)) == null ? void 0 : t.id) ?? "";
+    r && r !== this.lastRevealFamilyId && (this.lastRevealFamilyId = r, this.startRevealSequence());
+  }
+  clearRevealTimers() {
+    this.revealTimers.forEach((e) => window.clearTimeout(e)), this.revealTimers = [];
+  }
+  startRevealSequence() {
+    if (this.clearRevealTimers(), w()) {
+      this.revealStep = 3;
+      return;
+    }
+    this.revealStep = 0, U.forEach((r, t) => {
+      const i = window.setTimeout(() => {
+        this.revealStep = t + 1;
+      }, r);
+      this.revealTimers.push(i);
+    });
   }
   get families() {
     var e;
-    return U((e = this.config) == null ? void 0 : e.bff_families);
+    return O((e = this.config) == null ? void 0 : e.bff_families);
   }
   resolveActive(e) {
-    var o;
+    var t;
     if (!e.length) return null;
     if (this.activeId) {
-      const r = e.find((i) => i.id === this.activeId);
-      if (r) return r;
+      const i = e.find((o) => o.id === this.activeId);
+      if (i) return i;
     }
-    const a = String(((o = this.config) == null ? void 0 : o.bff_default_family) ?? "").trim();
-    if (a) {
-      const r = e.find((i) => i.id === a);
-      if (r) return r;
+    const r = String(((t = this.config) == null ? void 0 : t.bff_default_family) ?? "").trim();
+    if (r) {
+      const i = e.find((o) => o.id === r);
+      if (i) return i;
     }
     return e[0];
   }
   select(e) {
-    this.activeId = e;
+    e !== this.activeId && (this.activeId = e);
   }
-  step(e, a) {
-    var c;
+  step(e, r) {
+    var n;
     if (!e.length) return;
-    const o = this.resolveActive(e), i = ((o ? e.findIndex((f) => f.id === o.id) : -1) + a + e.length) % e.length;
-    this.activeId = ((c = e[i]) == null ? void 0 : c.id) ?? "";
+    const t = this.resolveActive(e), o = ((t ? e.findIndex((l) => l.id === t.id) : -1) + r + e.length) % e.length;
+    this.activeId = ((n = e[o]) == null ? void 0 : n.id) ?? "";
   }
-  renderChip(e, a, o, r) {
-    var p;
-    const i = ((p = this.resolveActive(this.families)) == null ? void 0 : p.id) === e.id, c = e.icon.startsWith("sicon-"), f = e.color ? { "--fam-color": e.color } : {};
-    return a === "wheel" && (f["--i-angle"] = `${360 / Math.max(r, 1) * o}deg`), t`
+  chipHint(e) {
+    return e.season || e.mood[0] || "";
+  }
+  renderChip(e, r, t, i) {
+    var m;
+    const o = ((m = this.resolveActive(this.families)) == null ? void 0 : m.id) === e.id, n = e.icon.startsWith("sicon-"), l = this.chipHint(e), p = e.color ? { "--fam-color": e.color } : {};
+    return r === "wheel" && (p["--i-angle"] = `${360 / Math.max(i, 1) * t}deg`), a`
       <button
         type="button"
-        class=${x({ "bff-chip": !0, "is-active": i })}
-        style=${h(f)}
-        aria-pressed=${i ? "true" : "false"}
+        class=${h({ "bff-chip": !0, "is-active": o })}
+        style=${g(p)}
+        aria-pressed=${o ? "true" : "false"}
         aria-controls="bff-detail"
         title=${e.name}
         @click=${() => this.select(e.id)}
       >
-        <span class="bff-chip__swatch">
-          ${e.icon ? c ? t`<span class=${e.icon}></span>` : t`<span>${e.icon}</span>` : n}
+        <span class="bff-chip__swatch" aria-hidden="true">
+          ${e.icon ? n ? a`<span class=${e.icon}></span>` : a`<span>${e.icon}</span>` : s}
         </span>
-        <span class="bff-chip__name">${e.name}</span>
+        <span class="bff-chip__meta">
+          <span class="bff-chip__name">${e.name}</span>
+          ${l && r !== "wheel" ? a`<span class="bff-chip__hint">${l}</span>` : s}
+        </span>
+        ${r !== "wheel" ? a`<span class="bff-chip__dot" aria-hidden="true"></span>` : s}
       </button>
     `;
   }
-  renderTier(e, a, o) {
-    return t`
-      <div class=${`bff-tier bff-tier--${e}`}>
-        <span class="bff-tier__label">${a}</span>
-        ${o.length ? t`<div class="bff-tier__notes">
-              ${o.map((r) => t`<span class="bff-note">${r}</span>`)}
-            </div>` : t`<span class="bff-tier__empty">${s("—", "—")}</span>`}
+  renderTier(e, r, t, i) {
+    const o = this.revealStep >= i, n = w();
+    return a`
+      <div
+        class=${h({
+      "bff-tier": !0,
+      [`bff-tier--${e}`]: !0,
+      "is-visible": o,
+      "is-instant": n
+    })}
+        role="listitem"
+        aria-hidden=${o ? "false" : "true"}
+      >
+        <span class="bff-tier__label">${r}</span>
+        ${t.length ? a`<div class="bff-tier__notes">
+              ${t.map(
+      (l, p) => a`
+                  <span
+                    class=${h({ "bff-note": !0, "is-visible": o, "is-instant": n })}
+                    style=${g(n ? {} : { "--note-i": String(p) })}
+                    >${l}</span
+                  >
+                `
+    )}
+            </div>` : a`<span class="bff-tier__empty">${c("—", "—")}</span>`}
       </div>
     `;
   }
-  renderDetail(e, a) {
-    const o = this.config || {}, r = a.length > 1, i = y(o.bff_show_pyramid, !0), c = e.icon.startsWith("sicon-"), f = l(o.bff_pyramid_top_label) || s("المقدمة", "Top"), p = l(o.bff_pyramid_heart_label) || s("القلب", "Heart"), g = l(o.bff_pyramid_base_label) || s("الأساس", "Base"), m = l(o.bff_season_label) || s("أفضل موسم", "Best season"), v = l(o.bff_occasion_label) || s("المناسبة", "Occasion"), u = e.top.length || e.heart.length || e.base.length, _ = e.color ? { "--fam-color": e.color } : {};
-    return t`
-      <div class="fs-card bff-panel" id="bff-detail" role="region" aria-live="polite" style=${h(_)}>
-        <div class="bff-panel__head">
-          <h3 class="bff-panel__title">
-            ${e.icon ? t`<span class="bff-panel__badge">${c ? t`<span class=${e.icon}></span>` : e.icon}</span>` : n}
-            <span>${e.name}</span>
-          </h3>
-          ${r ? t`<div class="bff-nav">
-                <button type="button" class="bff-nav__btn" aria-label=${s("السابق", "Previous")} @click=${() => this.step(a, -1)}>‹</button>
-                <button type="button" class="bff-nav__btn" aria-label=${s("التالي", "Next")} @click=${() => this.step(a, 1)}>›</button>
-              </div>` : n}
+  renderDetail(e, r) {
+    const t = this.config || {}, i = r.length > 1, o = S(t.bff_show_pyramid, !0), n = e.icon.startsWith("sicon-"), l = f(t.bff_pyramid_top_label) || c("المقدمة", "Top"), p = f(t.bff_pyramid_heart_label) || c("القلب", "Heart"), m = f(t.bff_pyramid_base_label) || c("الأساس", "Base"), v = f(t.bff_season_label) || c("أنسب موسم", "Best season"), u = f(t.bff_occasion_label) || c("أنسب مناسبة", "Occasion"), x = e.top.length || e.heart.length || e.base.length, _ = e.color ? { "--fam-color": e.color } : {};
+    return a`
+      <article class="bff-story" id="bff-detail" role="region" aria-live="polite" style=${g(_)}>
+        <div class=${h({ "bff-hero": !0, "bff-hero--media": !!e.image })}>
+          <div class="bff-hero__body">
+            <div class="bff-hero__top">
+              ${e.icon ? a`<span class="bff-hero__icon" aria-hidden="true">
+                    ${n ? a`<span class=${e.icon}></span>` : e.icon}
+                  </span>` : a`<span class="bff-hero__icon" aria-hidden="true">✦</span>`}
+
+              ${i ? a`<div class="bff-nav">
+                    <button
+                      type="button"
+                      class="bff-nav__btn"
+                      aria-label=${c("السابق", "Previous")}
+                      @click=${() => this.step(r, -1)}
+                    >
+                      ‹
+                    </button>
+                    <button
+                      type="button"
+                      class="bff-nav__btn"
+                      aria-label=${c("التالي", "Next")}
+                      @click=${() => this.step(r, 1)}
+                    >
+                      ›
+                    </button>
+                  </div>` : s}
+            </div>
+
+            <h3 class="bff-hero__title">${e.name}</h3>
+            ${e.desc ? a`<p class="bff-hero__desc">${e.desc}</p>` : s}
+            ${e.mood.length ? a`<div class="bff-mood">
+                  ${e.mood.map((T) => a`<span class="bff-mood__tag">${T}</span>`)}
+                </div>` : s}
+          </div>
+
+          ${e.image ? a`<div class="bff-hero__media">
+                <img src=${e.image} alt="" loading="lazy" decoding="async" />
+              </div>` : s}
         </div>
 
-        ${e.image ? t`<img class="bff-panel__img" src=${e.image} alt="" loading="lazy" decoding="async" />` : n}
-        ${e.desc ? t`<p class="bff-panel__desc">${e.desc}</p>` : n}
+        ${o && x ? a`<div class="bff-pyramid" role="list" aria-label=${c("هرم النوتات", "Notes pyramid")}>
+              <p class="bff-pyramid__intro">${c("تتكشّف النوتات تدريجيًا…", "Notes unfold gradually…")}</p>
+              ${this.renderTier("top", l, e.top, 1)}
+              ${this.renderTier("heart", p, e.heart, 2)}
+              ${this.renderTier("base", m, e.base, 3)}
+            </div>` : s}
 
-        ${e.mood.length ? t`<div class="bff-mood">
-              ${e.mood.map((z) => t`<span class="bff-mood__tag">${z}</span>`)}
-            </div>` : n}
-
-        ${i && u ? t`<div class="bff-pyramid" role="list">
-              ${this.renderTier("top", f, e.top)}
-              ${this.renderTier("heart", p, e.heart)}
-              ${this.renderTier("base", g, e.base)}
-            </div>` : n}
-
-        ${e.season || e.occasion ? t`<div class="bff-facts">
-              ${e.season ? t`<div class="bff-fact">
-                    <span class="bff-fact__label">${m}</span>
-                    <span class="bff-fact__value">${e.season}</span>
-                  </div>` : n}
-              ${e.occasion ? t`<div class="bff-fact">
+        ${e.season || e.occasion ? a`<div class="bff-facts">
+              ${e.season ? a`<div class="bff-fact">
                     <span class="bff-fact__label">${v}</span>
+                    <span class="bff-fact__value">${e.season}</span>
+                  </div>` : s}
+              ${e.occasion ? a`<div class="bff-fact">
+                    <span class="bff-fact__label">${u}</span>
                     <span class="bff-fact__value">${e.occasion}</span>
-                  </div>` : n}
-            </div>` : n}
+                  </div>` : s}
+            </div>` : s}
 
-        ${e.link ? t`<div class="bff-panel__actions">
+        ${e.link ? a`<div class="bff-panel__actions">
               <a class="fs-btn fs-btn--ghost" href=${e.link} target="_blank" rel="noopener noreferrer">
-                ${s("اقرئي المزيد", "Read more")}
+                ${c("اقرئي المزيد", "Read more")}
               </a>
-            </div>` : n}
-      </div>
+            </div>` : s}
+      </article>
     `;
   }
   render() {
-    const e = this.config || {}, a = N(e, "bff_"), o = a.animate && !O(), r = this.families, i = l(e.bff_title), c = l(e.bff_desc), f = W(e), p = y(e.bff_show_notice, !0), g = l(e.bff_notice) || s(
+    const e = this.config || {}, r = N(e, "bff_"), t = r.animate && !w(), i = this.families, o = f(e.bff_title), n = f(e.bff_desc), l = q(e), p = S(e.bff_show_notice, !0), m = f(e.bff_notice) || c(
       "اختيار العطر تجربة شخصية؛ هذه العائلات دليل استكشافي لمساعدتك على تحديد ما يناسب ذوقك.",
       "Choosing a fragrance is personal; these families are an exploratory guide to help you find what suits your taste."
     );
-    if (!r.length)
-      return t`<div class="fs-empty" role="status">
-        ${s("أضيفي عائلات عطرية من إعدادات العنصر.", "Add fragrance families in the element settings.")}
+    if (!i.length)
+      return a`<div class="fs-empty" role="status">
+        ${c("أضيفي عائلات عطرية من إعدادات العنصر.", "Add fragrance families in the element settings.")}
       </div>`;
-    const m = this.resolveActive(r), v = r.length;
-    return t`
+    const v = this.resolveActive(i), u = i.length;
+    return a`
       <section
-        class=${x({ "fs-section": !0, "fs-animate": o })}
-        style=${h(D(a))}
-        aria-label=${i || s("محدد عائلة العطر", "Fragrance family finder")}
+        class=${h({ "fs-section": !0, "fs-animate": t })}
+        style=${g(P(r))}
+        aria-label=${o || c("محدد عائلة العطر", "Fragrance family finder")}
       >
         <div class="fs-container">
-          ${i || c ? t`<div class="fs-header">
-                ${i ? t`<h2 class="fs-title">${i}</h2>` : n}
-                ${c ? t`<p class="fs-desc">${c}</p>` : n}
-              </div>` : n}
+          ${o || n ? a`<div class="fs-header">
+                ${o ? a`<h2 class="fs-title">${o}</h2>` : s}
+                ${n ? a`<p class="fs-desc">${n}</p>` : s}
+              </div>` : s}
 
-          <div class="bff-layout">
-            <div class="bff-selector">
+          <div class="bff-shell">
+            <aside class="bff-selector">
+              <p class="bff-selector__label">${c("اختاري عائلة عطرية", "Pick a fragrance family")}</p>
               <div
-                class=${x({
+                class=${h({
       "bff-chips": !0,
-      [`bff-chips--${f}`]: !0
+      [`bff-chips--${l}`]: !0
     })}
                 role="group"
-                aria-label=${s("عائلات العطر", "Fragrance families")}
-                style=${h(f === "wheel" ? { "--wheel-r": "130px" } : {})}
+                aria-label=${c("عائلات العطر", "Fragrance families")}
+                style=${g(l === "wheel" ? { "--wheel-r": "120px" } : {})}
               >
-                ${f === "wheel" ? t`<div class="bff-wheel-core">${s("اختاري عائلة", "Pick a family")}</div>` : n}
-                ${r.map((u, _) => this.renderChip(u, f, _, v))}
+                ${l === "wheel" ? a`<div class="bff-wheel-core">${c("عائلات", "Families")}</div>` : s}
+                ${i.map((x, _) => this.renderChip(x, l, _, u))}
               </div>
-            </div>
+            </aside>
 
-            ${m ? this.renderDetail(m, r) : n}
+            ${v ? this.renderDetail(v, i) : s}
           </div>
 
-          ${p ? t`<p class="bff-notice">${g}</p>` : n}
+          ${p ? a`<p class="bff-notice">${m}</p>` : s}
         </div>
       </section>
     `;
   }
 };
-$.styles = [H, E];
-let b = $;
-k([
-  C({ type: Object })
+k.styles = [H, M];
+let b = k;
+y([
+  R({ type: Object })
 ], b.prototype, "config");
-k([
-  I()
+y([
+  z()
 ], b.prototype, "activeId");
+y([
+  z()
+], b.prototype, "revealStep");
 typeof b < "u" && b.registerSallaComponent("salla-beauty-fragrance-finder");
 export {
   b as default
