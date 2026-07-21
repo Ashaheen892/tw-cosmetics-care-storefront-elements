@@ -4,11 +4,11 @@
         "en": "Cosmetics & Care Storefront Elements"
     },
     "description": {
-        "ar": "عناصر تفاعلية لمتاجر مستحضرات التجميل والعناية: محدد الدرجات، منشئ الروتين، مختبر المكونات، مساعد الاختيار والمزيد.",
-        "en": "Interactive elements for cosmetics & beauty-care stores: shade finder, routine builder, ingredient lab, care assistant and more."
+        "ar": null,
+        "en": null
     },
     "author_email": "sajispprt@gmail.com",
-    "support_url": "",
+    "support_url": "https://saji-tech.com/",
     "repository": "https://github.com/Ashaheen892/tw-cosmetics-care-storefront-elements",
     "components": [
         {
