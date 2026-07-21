@@ -10,6 +10,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
+import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { parseFamilies, resolveLayout } from './utils.js';
@@ -344,6 +345,7 @@ export default class BeautyFragranceFinder extends LitElement {
           </div>
 
           ${showNotice ? html`<p class="bff-notice">${notice}</p>` : nothing}
+          ${renderCommerceOutcome({ config: c, prefix: 'bff_', ready: Boolean(active), selection: active })}
         </div>
       </section>
     `;

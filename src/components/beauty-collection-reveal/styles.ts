@@ -9,15 +9,14 @@ export const componentStyles = css`
     position: relative;
     border-radius: var(--section-radius, 18px);
     overflow: hidden;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 6%, var(--section-bg, #fbf5f8));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, var(--section-bg, #fbf5f8));
     border: 1px solid var(--border-color, #f2dde7);
     min-height: 260px;
   }
 
-  /* Closed: compact centered hero (mid-frame, not full card stack height) */
+  /* Closed: full container width, mid-frame height */
   .bcr-scene:not(.is-open) {
-    width: min(100%, 720px);
-    margin-inline: auto;
+    width: 100%;
     aspect-ratio: 16 / 10;
     max-height: min(42vh, 380px);
   }
@@ -108,8 +107,8 @@ export const componentStyles = css`
   .bcr-cover__btn {
     min-height: 48px;
     padding: 0.65rem 1.75rem;
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
+    border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     font-size: 0.95rem;
     font-weight: 800;
@@ -118,8 +117,8 @@ export const componentStyles = css`
 
   .bcr-cover__btn:hover,
   .bcr-cover__btn:focus-visible {
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 88%, #fff);
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 88%, #fff);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 88%, #fff);
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 88%, #fff);
     color: #fff;
   }
 
@@ -251,7 +250,7 @@ export const componentStyles = css`
     width: 100%;
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, #f2ece8);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, #f2ece8);
   }
 
   .bcr-card__img {
@@ -271,7 +270,7 @@ export const componentStyles = css`
     font-weight: 700;
     line-height: 1.4;
     color: #fff;
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 
@@ -312,8 +311,8 @@ export const componentStyles = css`
     gap: 0.35rem;
     padding: 0.45rem 0.9rem;
     border-radius: 999px;
-    border: 1px solid var(--accent-color, #c2527f);
-    color: var(--accent-color, #c2527f);
+    border: 1px solid var(--accent-color, var(--fs-store-primary));
+    color: var(--accent-color, var(--fs-store-primary));
     background: transparent;
     font-size: 0.82rem;
     font-weight: 600;
@@ -323,7 +322,7 @@ export const componentStyles = css`
 
   .bcr-card__link:hover,
   .bcr-card__link:focus-visible {
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     color: #fff;
   }
 
@@ -339,7 +338,7 @@ export const componentStyles = css`
   .bcr-count::before {
     content: '✦';
     margin-inline-end: 0.35rem;
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
     opacity: 0.75;
   }
 

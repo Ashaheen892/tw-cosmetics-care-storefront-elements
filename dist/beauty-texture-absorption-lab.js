@@ -1,9 +1,9 @@
-import { css as T, LitElement as E, nothing as d, html as i } from "lit";
+import { css as T, LitElement as E, nothing as p, html as i } from "lit";
 import { property as R, state as x } from "lit/decorators.js";
 import { classMap as w } from "lit/directives/class-map.js";
 import { styleMap as f } from "lit/directives/style-map.js";
-import { n as F, l as b, e as L, g as I, f as z, h as P, s as M, m as B, p as S, i as u, t as c, r as j, a as H } from "./sharedStyles--LaFqDVC.js";
-const X = T`
+import { n as B, l as b, e as F, g as I, h as z, j as O, s as L, o as M, p as S, i as u, t as c, r as j, a as H, b as X } from "./sharedStyles-BgfDOkwJ.js";
+const D = T`
   .bta-samples {
     display: flex;
     flex-wrap: wrap;
@@ -29,14 +29,14 @@ const X = T`
   .bta-sample__blob {
     width: 3.4rem;
     height: 3.4rem;
-    background: var(--sample-color, var(--accent-color, #c2527f));
+    background: var(--sample-color, var(--accent-color, var(--fs-store-primary)));
     box-shadow: inset 0 -6px 10px rgba(0, 0, 0, 0.15), 0 6px 14px rgba(43, 33, 28, 0.18);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
   .bta-sample:hover .bta-sample__blob { transform: scale(1.08); }
   .bta-sample.is-active .bta-sample__blob {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 40%, transparent), 0 8px 18px rgba(43, 33, 28, 0.22);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sample-color, var(--accent-color, var(--fs-store-primary))) 40%, transparent), 0 8px 18px rgba(43, 33, 28, 0.22);
   }
 
   .bta-sample__name { font-size: 0.78rem; font-weight: 700; color: var(--text-color, #33232e); text-align: center; }
@@ -79,7 +79,7 @@ const X = T`
     width: 30%;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: var(--sample-color, var(--accent-color, #c2527f));
+    background: var(--sample-color, var(--accent-color, var(--fs-store-primary)));
     box-shadow: inset 0 -8px 14px rgba(0, 0, 0, 0.16);
     transform: scale(calc(0.5 + var(--spread, 0) * 1.9));
     opacity: calc(1 - var(--spread, 0) * 0.55);
@@ -109,13 +109,13 @@ const X = T`
     padding: 0.55rem 1.25rem;
     border: none;
     border-radius: 999px;
-    background: var(--sample-color, var(--accent-color, #c2527f));
+    background: var(--sample-color, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     font: inherit;
     font-size: 0.88rem;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 8px 22px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 45%, transparent);
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--sample-color, var(--accent-color, var(--fs-store-primary))) 45%, transparent);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     white-space: nowrap;
   }
@@ -128,7 +128,7 @@ const X = T`
   .bta-play__cta:hover,
   .bta-play__cta:focus-visible {
     transform: translateX(-50%) scale(1.02);
-    box-shadow: 0 10px 26px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 55%, transparent);
+    box-shadow: 0 10px 26px color-mix(in srgb, var(--sample-color, var(--accent-color, var(--fs-store-primary))) 55%, transparent);
   }
 
   [dir='rtl'] .bta-play__cta:hover,
@@ -154,22 +154,22 @@ const X = T`
   .bta-indicators { display: grid; gap: 0.55rem; }
 
   .bta-indicators .fs-meter {
-    --meter-fill: var(--meter-color, var(--accent-color, #c2527f));
+    --meter-fill: var(--meter-color, var(--accent-color, var(--fs-store-primary)));
   }
 
   .bta-indicators .fs-meter > span {
-    background: var(--meter-fill, var(--accent-color, #c2527f));
+    background: var(--meter-fill, var(--accent-color, var(--fs-store-primary)));
   }
 
   .bta-ind { display: grid; grid-template-columns: 7.5rem 1fr auto; align-items: center; gap: 0.6rem; font-size: 0.8rem; }
   .bta-ind__label { color: var(--muted-color, #8f7a86); font-weight: 700; }
-  .bta-ind__val { color: var(--meter-color, var(--accent-color, #c2527f)); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .bta-ind__val { color: var(--meter-color, var(--accent-color, var(--fs-store-primary))); font-weight: 800; font-variant-numeric: tabular-nums; }
 
   .bta-dots { display: inline-flex; gap: 0.28rem; }
   .bta-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; background: color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent); }
-  .bta-dot.is-on { background: var(--meter-color, var(--accent-color, #c2527f)); }
-  .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--meter-color, var(--accent-color, #c2527f)); }
-  .bta-circle.is-on { background: var(--meter-color, var(--accent-color, #c2527f)); }
+  .bta-dot.is-on { background: var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
+  .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
+  .bta-circle.is-on { background: var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
 
   .bta-gauge {
     --p: 0;
@@ -177,7 +177,7 @@ const X = T`
     height: 1.5rem;
     border-radius: 3rem 3rem 0 0;
     background:
-      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, #c2527f)) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
+      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, var(--fs-store-primary))) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
   }
 
   .bta-facts { display: grid; gap: 0.4rem; font-size: 0.84rem; }
@@ -221,13 +221,13 @@ const X = T`
   @media (prefers-reduced-motion: reduce) {
     .bta-smear, .bta-sample__blob, .bta-play__cta { transition: none !important; }
   }
-`, D = ["drops", "circles", "swatches", "slides", "blobs", "bubbles"], N = ["bars", "dots", "circles", "semicircle"], _ = (l) => z(P(l, 0), 0, 5);
-function G(l) {
-  return F(l).map((e, s) => ({
-    id: String(e.tex_id ?? "").trim() || `texture-${s + 1}`,
-    name: b(e.name) || `${s + 1}`,
+`, N = ["drops", "circles", "swatches", "slides", "blobs", "bubbles"], G = ["bars", "dots", "circles", "semicircle"], _ = (l) => z(O(l, 0), 0, 5);
+function U(l) {
+  return B(l).map((e, r) => ({
+    id: String(e.id ?? e.tex_id ?? "").trim() || `texture-${r + 1}`,
+    name: b(e.name) || `${r + 1}`,
     icon: String(e.icon ?? "").trim(),
-    image: L(e.image),
+    image: F(e.image),
     color: String(e.color ?? "").trim() || "#c9a24b",
     desc: b(e.desc),
     lightness: _(e.lightness),
@@ -245,7 +245,7 @@ function G(l) {
     note: b(e.note)
   })).filter((e) => e.name || e.desc);
 }
-function U(l, e) {
+function W(l, e) {
   return [
     ["lightness", ["الخفة", "Lightness"], l.lightness],
     ["thickness", ["السماكة", "Thickness"], l.thickness],
@@ -253,29 +253,29 @@ function U(l, e) {
     ["hydration", ["الترطيب", "Hydration"], l.hydration],
     ["gloss", ["اللمعان", "Gloss"], l.gloss],
     ["greasiness", ["الإحساس الدهني", "Greasiness"], l.greasiness]
-  ].filter(([, , a]) => a > 0).map(([a, [t, r], n]) => ({ key: a, label: e === "en" ? r : t, value: n }));
+  ].filter(([, , a]) => a > 0).map(([a, [t, s], n]) => ({ key: a, label: e === "en" ? s : t, value: n }));
 }
-function W(l) {
+function q(l) {
   const e = I(l.bta_sample_shape, "drops");
-  return D.includes(e) ? e : "drops";
+  return N.includes(e) ? e : "drops";
 }
 function C(l) {
   const e = I(l.bta_indicator_type, "bars");
-  return N.includes(e) ? e : "bars";
+  return G.includes(e) ? e : "bars";
 }
-var q = Object.defineProperty, y = (l, e, s, a) => {
-  for (var t = void 0, r = l.length - 1, n; r >= 0; r--)
-    (n = l[r]) && (t = n(e, s, t) || t);
-  return t && q(e, s, t), t;
+var V = Object.defineProperty, y = (l, e, r, a) => {
+  for (var t = void 0, s = l.length - 1, n; s >= 0; s--)
+    (n = l[s]) && (t = n(e, r, t) || t);
+  return t && V(e, r, t), t;
 };
 const k = class k extends E {
   constructor() {
     super(...arguments), this.config = {}, this.selId = "", this.cmpA = "", this.cmpB = "", this.spread = 0, this.compareOpen = !1, this.boundLangHandler = () => this.requestUpdate(), this.onPlayPointer = (e) => {
       var n;
-      const s = e.currentTarget;
-      (n = s.setPointerCapture) == null || n.call(s, e.pointerId);
-      const a = s.getBoundingClientRect(), r = getComputedStyle(this).direction === "rtl" ? (a.right - e.clientX) / a.width : (e.clientX - a.left) / a.width;
-      this.spread = z(Number(r.toFixed(2)), 0, 1);
+      const r = e.currentTarget;
+      (n = r.setPointerCapture) == null || n.call(r, e.pointerId);
+      const a = r.getBoundingClientRect(), s = getComputedStyle(this).direction === "rtl" ? (a.right - e.clientX) / a.width : (e.clientX - a.left) / a.width;
+      this.spread = z(Number(s.toFixed(2)), 0, 1);
     };
   }
   connectedCallback() {
@@ -288,16 +288,16 @@ const k = class k extends E {
     e.has("config") && (this.selId = "", this.cmpA = "", this.cmpB = "", this.spread = 0);
   }
   get locale() {
-    return B() === "en" ? "en" : "ar";
+    return M() === "en" ? "en" : "ar";
   }
   get textures() {
     var e;
-    return G((e = this.config) == null ? void 0 : e.bta_textures);
+    return U((e = this.config) == null ? void 0 : e.bta_textures);
   }
   active(e) {
     var a;
-    const s = String(((a = this.config) == null ? void 0 : a.bta_default_texture) ?? "").trim();
-    return e.find((t) => t.id === this.selId) || e.find((t) => t.id === s) || e[0];
+    const r = String(((a = this.config) == null ? void 0 : a.bta_default_texture) ?? "").trim();
+    return e.find((t) => t.id === this.selId) || e.find((t) => t.id === r) || e[0];
   }
   motionDisabled() {
     var e;
@@ -316,38 +316,38 @@ const k = class k extends E {
   toggleSpread() {
     this.spread = this.spread > 0.5 ? 0 : 1;
   }
-  renderIndicators(e, s, a) {
-    const t = U(e, this.locale);
+  renderIndicators(e, r, a) {
+    const t = W(e, this.locale);
     return t.length ? i`<div class="bta-indicators" style=${f({ "--meter-color": e.color })}>
-      ${t.map((r) => {
-      const n = r.value / 5 * 100;
-      let p;
-      return s === "dots" || s === "circles" ? p = i`<span class="bta-dots">
+      ${t.map((s) => {
+      const n = s.value / 5 * 100;
+      let m;
+      return r === "dots" || r === "circles" ? m = i`<span class="bta-dots">
             ${[1, 2, 3, 4, 5].map(
-        (h) => i`<span class=${w({ [s === "dots" ? "bta-dot" : "bta-circle"]: !0, "is-on": h <= r.value })}></span>`
+        (h) => i`<span class=${w({ [r === "dots" ? "bta-dot" : "bta-circle"]: !0, "is-on": h <= s.value })}></span>`
       )}
-          </span>` : s === "semicircle" ? p = i`<span class="bta-gauge" style=${f({ "--p": String(r.value / 5) })}></span>` : p = i`<span class="fs-meter"><span style=${f({ width: `${n}%` })}></span></span>`, i`<div class="bta-ind">
-          <span class="bta-ind__label">${r.label}</span>
-          ${p}
-          <span class=${w({ "bta-ind__val": !0, "is-higher": !!(a != null && a[r.key]) })}>${r.value}/5</span>
+          </span>` : r === "semicircle" ? m = i`<span class="bta-gauge" style=${f({ "--p": String(s.value / 5) })}></span>` : m = i`<span class="fs-meter"><span style=${f({ width: `${n}%` })}></span></span>`, i`<div class="bta-ind">
+          <span class="bta-ind__label">${s.label}</span>
+          ${m}
+          <span class=${w({ "bta-ind__val": !0, "is-higher": !!(a != null && a[s.key]) })}>${s.value}/5</span>
         </div>`;
     })}
-    </div>` : d;
+    </div>` : p;
   }
   renderFacts(e) {
-    const s = [
+    const r = [
       [c("اللمسة النهائية", "Finish"), e.finish],
       [c("طريقة التوزيع", "Application"), e.spread],
       [c("الكمية", "Amount"), e.amount],
       [c("التوقيت", "When"), e.timing],
       [c("الاستخدام المناسب", "Best for"), e.usage]
     ].filter(([, a]) => !!a);
-    return s.length ? i`<div class="bta-facts">
-      ${s.map(([a, t]) => i`<div class="bta-fact"><b>${a}:</b><span>${t}</span></div>`)}
-    </div>` : d;
+    return r.length ? i`<div class="bta-facts">
+      ${r.map(([a, t]) => i`<div class="bta-fact"><b>${a}:</b><span>${t}</span></div>`)}
+    </div>` : p;
   }
   renderExplore(e) {
-    const s = this.config || {}, a = this.active(e), t = C(s), r = u(s.bta_show_indicators, !0), n = u(s.bta_enable_spread, !0), p = u(s.bta_show_images, !0), h = u(s.bta_show_tips, !0), m = u(s.bta_show_notes, !0), o = this.motionDisabled() ? 0 : Math.max(0, P(s.bta_spread_speed, 500));
+    const r = this.config || {}, a = this.active(e), t = C(r), s = u(r.bta_show_indicators, !0), n = u(r.bta_enable_spread, !0), m = u(r.bta_show_images, !0), h = u(r.bta_show_tips, !0), d = u(r.bta_show_notes, !0), o = this.motionDisabled() ? 0 : Math.max(0, O(r.bta_spread_speed, 500));
     return i`<div class="bta-stage" style=${f({ "--sample-color": a.color, "--meter-color": a.color })}>
       <div
         class="bta-play"
@@ -357,80 +357,80 @@ const k = class k extends E {
       v.buttons && this.onPlayPointer(v);
     } : void 0}
       >
-        ${p && a.image ? i`<img class="bta-play__img" src=${a.image} alt=${a.name} loading="lazy" decoding="async" />` : i`<span class="bta-smear"></span>`}
+        ${m && a.image ? i`<img class="bta-play__img" src=${a.image} alt=${a.name} loading="lazy" decoding="async" />` : i`<span class="bta-smear"></span>`}
         ${n ? i`<button type="button" class="bta-play__cta" @click=${() => this.toggleSpread()}>
               <span class="bta-play__cta-icon" aria-hidden="true">${this.spread > 0.5 ? "↺" : "▶"}</span>
               ${this.spread > 0.5 ? c("إعادة", "Reset") : c("طبّقي القوام", "Apply texture")}
-            </button>` : d}
-        ${n && !a.image ? i`<span class="bta-play__hint">${c("اسحبي داخل المساحة لرؤية الانتشار", "Drag inside the area to see it spread")}</span>` : d}
+            </button>` : p}
+        ${n && !a.image ? i`<span class="bta-play__hint">${c("اسحبي داخل المساحة لرؤية الانتشار", "Drag inside the area to see it spread")}</span>` : p}
       </div>
 
       <div class="bta-details">
         <h3 class="bta-details__name">${a.name}</h3>
-        ${a.desc ? i`<p class="bta-details__desc">${a.desc}</p>` : d}
-        ${r ? this.renderIndicators(a, t) : d}
+        ${a.desc ? i`<p class="bta-details__desc">${a.desc}</p>` : p}
+        ${s ? this.renderIndicators(a, t) : p}
         ${this.renderFacts(a)}
-        ${h && a.tips ? i`<p class="bta-details__desc">💡 ${a.tips}</p>` : d}
-        ${m && a.note ? i`<p class="bta-note">★ ${a.note}</p>` : d}
+        ${h && a.tips ? i`<p class="bta-details__desc">💡 ${a.tips}</p>` : p}
+        ${d && a.note ? i`<p class="bta-note">★ ${a.note}</p>` : p}
       </div>
     </div>`;
   }
   renderCompare(e) {
-    const s = this.config || {}, a = C(s), t = e.find((o) => o.id === this.cmpA) || e[0], r = e.find((o) => o.id === this.cmpB) || e[1] || e[0], n = ["lightness", "thickness", "absorption", "hydration", "gloss", "greasiness"], p = {}, h = {};
+    const r = this.config || {}, a = C(r), t = e.find((o) => o.id === this.cmpA) || e[0], s = e.find((o) => o.id === this.cmpB) || e[1] || e[0], n = ["lightness", "thickness", "absorption", "hydration", "gloss", "greasiness"], m = {}, h = {};
     for (const o of n)
-      t[o] > r[o] ? p[o] = !0 : r[o] > t[o] && (h[o] = !0);
-    const m = (o, v, A, O) => i`
+      t[o] > s[o] ? m[o] = !0 : s[o] > t[o] && (h[o] = !0);
+    const d = (o, v, P, A) => i`
       <div>
-        <label style="font-size:0.76rem;font-weight:700;color:var(--muted-color);display:block;margin-bottom:0.25rem">${O}</label>
-        <select id=${o} @change=${($) => A($.target.value)}>
+        <label style="font-size:0.76rem;font-weight:700;color:var(--muted-color);display:block;margin-bottom:0.25rem">${A}</label>
+        <select id=${o} @change=${($) => P($.target.value)}>
           ${e.map(($) => i`<option value=${$.id} ?selected=${$.id === (v == null ? void 0 : v.id)}>${$.name}</option>`)}
         </select>
       </div>
     `;
     return i`
       <div class="bta-compare__picks">
-        ${m("bta-a", t, (o) => this.cmpA = o, c("القوام الأول", "First texture"))}
-        ${m("bta-b", r, (o) => this.cmpB = o, c("القوام الثاني", "Second texture"))}
+        ${d("bta-a", t, (o) => this.cmpA = o, c("القوام الأول", "First texture"))}
+        ${d("bta-b", s, (o) => this.cmpB = o, c("القوام الثاني", "Second texture"))}
       </div>
       <div class="bta-compare">
         <div class="bta-compare__col" style=${f({ "--sample-color": t.color, "--meter-color": t.color })}>
           <h3 class="bta-details__name">${t.name}</h3>
-          ${this.renderIndicators(t, a, p)}
+          ${this.renderIndicators(t, a, m)}
           ${this.renderFacts(t)}
         </div>
-        <div class="bta-compare__col" style=${f({ "--sample-color": r.color, "--meter-color": r.color })}>
-          <h3 class="bta-details__name">${r.name}</h3>
-          ${this.renderIndicators(r, a, h)}
-          ${this.renderFacts(r)}
+        <div class="bta-compare__col" style=${f({ "--sample-color": s.color, "--meter-color": s.color })}>
+          <h3 class="bta-details__name">${s.name}</h3>
+          ${this.renderIndicators(s, a, h)}
+          ${this.renderFacts(s)}
         </div>
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, s = j(e, "bta_"), a = s.animate && !S(), t = this.textures, r = b(e.bta_title), n = b(e.bta_desc), p = W(e), h = u(e.bta_enable_compare, !0) && t.length >= 2, m = t.length ? this.active(t) : null;
+    const e = this.config || {}, r = j(e, "bta_"), a = r.animate && !S(), t = this.textures, s = b(e.bta_title), n = b(e.bta_desc), m = q(e), h = u(e.bta_enable_compare, !0) && t.length >= 2, d = t.length ? this.active(t) : null;
     return t.length ? i`
       <section
         class=${w({ "fs-section": !0, "fs-animate": a })}
         style=${f({
-      ...H(s),
+      ...H(r),
       "--bta-area": String(e.bta_area_color ?? ""),
       "--success-color": "#2f9e63"
     })}
-        aria-label=${r || c("مختبر القوام والامتصاص", "Texture & absorption lab")}
+        aria-label=${s || c("مختبر القوام والامتصاص", "Texture & absorption lab")}
       >
         <div class="fs-container">
-          ${r || n ? i`<div class="fs-header">
-                ${r ? i`<h2 class="fs-title">${r}</h2>` : d}
-                ${n ? i`<p class="fs-desc">${n}</p>` : d}
-              </div>` : d}
+          ${s || n ? i`<div class="fs-header">
+                ${s ? i`<h2 class="fs-title">${s}</h2>` : p}
+                ${n ? i`<p class="fs-desc">${n}</p>` : p}
+              </div>` : p}
 
-          <div class=${w({ "bta-samples": !0, [`bta-samples--${p}`]: !0 })} role="tablist">
+          <div class=${w({ "bta-samples": !0, [`bta-samples--${m}`]: !0 })} role="tablist">
             ${t.map(
       (o) => i`<button
                 type="button"
                 role="tab"
-                class=${w({ "bta-sample": !0, "is-active": o.id === (m == null ? void 0 : m.id) && !this.compareOpen })}
-                aria-selected=${o.id === (m == null ? void 0 : m.id) ? "true" : "false"}
+                class=${w({ "bta-sample": !0, "is-active": o.id === (d == null ? void 0 : d.id) && !this.compareOpen })}
+                aria-selected=${o.id === (d == null ? void 0 : d.id) ? "true" : "false"}
                 style=${f({ "--sample-color": o.color })}
                 @click=${() => {
         this.compareOpen = !1, this.select(o.id);
@@ -455,7 +455,8 @@ const k = class k extends E {
                   class=${this.compareOpen ? "fs-btn" : "fs-btn fs-btn--ghost"}
                   @click=${() => this.compareOpen = !0}
                 >${c("مقارنة قوامين", "Compare two")}</button>
-              </div>` : d}
+              </div>` : p}
+          ${X({ config: e, prefix: "bta_", ready: !!d, selection: d })}
         </div>
       </section>
     ` : i`<div class="fs-empty" role="status">
@@ -463,7 +464,7 @@ const k = class k extends E {
       </div>`;
   }
 };
-k.styles = [M, X];
+k.styles = [L, D];
 let g = k;
 y([
   R({ type: Object })

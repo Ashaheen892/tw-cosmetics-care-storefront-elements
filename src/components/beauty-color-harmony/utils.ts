@@ -25,7 +25,7 @@ export function parseColors(raw: unknown): HarmonyColor[] {
       const name = localizedString(row.name as LocaleValue);
       const hex = normalizeHex(readHexRaw(row.hex ?? row.color));
       return {
-        id: String(row.color_id ?? row.id ?? '').trim() || `color-${i + 1}`,
+        id: String(row.id ?? row.color_id ?? row.id ?? '').trim() || `color-${i + 1}`,
         name,
         hex,
       } satisfies HarmonyColor;

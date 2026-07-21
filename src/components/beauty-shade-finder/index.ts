@@ -12,6 +12,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
+import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { buildSteps, filterShades, parseShades } from './utils.js';
@@ -255,30 +256,32 @@ export default class BeautyShadeFinder extends LitElement {
 
     return html`
       <div class="bsf-results">
-        <h3 class="bsf-results__title">
-          ${resultsTitle}
-          <span class="bsf-results__count"> · ${filtered.length}</span>
-        </h3>
+        <div class="bsf-results__head">
+          <h3 class="bsf-results__title">${resultsTitle}</h3>
+          <span class="bsf-results__count">${filtered.length}</span>
+        </div>
         <div class="bsf-swatches" role="listbox" aria-label=${resultsTitle}>
           ${filtered.map((shade) => {
             const active = shade.id === this.selectedShadeId;
+            const label = shade.shade_number || shade.shade_name || shade.name;
             return html`<button
               type="button"
               class=${classMap({
                 'bsf-swatch': true,
                 'bsf-swatch--square': shape === 'square',
                 'bsf-swatch--rounded': shape === 'rounded',
+                'is-active': active,
               })}
               role="option"
               aria-selected=${active ? 'true' : 'false'}
               aria-pressed=${active ? 'true' : 'false'}
-              aria-label=${shade.name || shade.shade_number || t('درجة', 'Shade')}
+              aria-label=${shade.name || label || t('درجة', 'Shade')}
               @click=${() => this.selectShade(shade.id)}
             >
-              <span class="bsf-swatch__chip" style=${styleMap({ background: shade.hex })}></span>
-              ${shade.shade_number || shade.shade_name
-                ? html`<span class="bsf-swatch__name">${shade.shade_number || shade.shade_name}</span>`
-                : nothing}
+              <span class="bsf-swatch__ring">
+                <span class="bsf-swatch__chip" style=${styleMap({ background: shade.hex || '#c4a484' })}></span>
+              </span>
+              ${label ? html`<span class="bsf-swatch__name">${label}</span>` : nothing}
             </button>`;
           })}
         </div>
@@ -336,6 +339,7 @@ export default class BeautyShadeFinder extends LitElement {
                   ${this.renderNav(answered)}
                 `}
           </div>
+          ${this.onResults ? renderCommerceOutcome({ config: c, prefix: 'bsf_', ready: true }) : nothing}
         </div>
       </section>
     `;

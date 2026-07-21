@@ -12,6 +12,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
+import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -428,6 +429,13 @@ export default class BeautySpfGuide extends LitElement {
                   ${this.renderNav()}
                 `}
           </div>
+          ${this.onResults
+            ? renderCommerceOutcome({
+                config: c,
+                prefix: 'bsg_',
+                ready: true,
+              })
+            : nothing}
         </div>
       </section>
     `;

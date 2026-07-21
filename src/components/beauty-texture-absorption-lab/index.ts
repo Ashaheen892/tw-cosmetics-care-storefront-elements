@@ -12,6 +12,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { getPageLocale, localizedString } from '../../utils/localizedString.js';
+import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -295,6 +296,7 @@ export default class BeautyTextureAbsorptionLab extends LitElement {
                 >${t('مقارنة قوامين', 'Compare two')}</button>
               </div>`
             : nothing}
+          ${renderCommerceOutcome({ config: c, prefix: 'bta_', ready: Boolean(active), selection: active })}
         </div>
       </section>
     `;

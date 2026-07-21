@@ -64,12 +64,12 @@ export const componentStyles = css`
   }
 
   .bch-color:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
   }
 
   .bch-color[aria-pressed='true'] {
-    border-color: var(--accent-color, #c2527f);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, #c2527f) 32%, transparent);
+    border-color: var(--accent-color, var(--fs-store-primary));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 32%, transparent);
   }
 
   .bch-color__swatch {
@@ -132,12 +132,12 @@ export const componentStyles = css`
   }
 
   .bch-type:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
   }
 
   .bch-type[aria-pressed='true'] {
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
+    border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
   }
 
@@ -166,7 +166,7 @@ export const componentStyles = css`
     border-radius: calc(var(--section-radius, 16px) * 0.9);
     background: linear-gradient(
       160deg,
-      color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
     border: 1px solid var(--border-color, #f2dde7);

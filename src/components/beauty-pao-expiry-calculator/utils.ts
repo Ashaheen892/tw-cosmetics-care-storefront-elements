@@ -79,7 +79,7 @@ export function formatDate(date: Date, fmt: DateFormat, locale: 'ar' | 'en'): st
 export function parseCategories(raw: unknown): PaoCategory[] {
   return normalizeCollection(raw)
     .map((c, i) => ({
-      id: String(c.cat_id ?? '').trim() || `cat-${i + 1}`,
+      id: String(c.id ?? c.cat_id ?? '').trim() || `cat-${i + 1}`,
       name: localizedString(c.name as LocaleValue),
       icon: String(c.icon ?? '').trim(),
       paoMonths: Math.max(0, toNumber(c.pao_months, 0)),

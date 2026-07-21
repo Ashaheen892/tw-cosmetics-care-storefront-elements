@@ -2,7 +2,7 @@ import { css as L, LitElement as I, nothing as b, html as i } from "lit";
 import { property as j, state as M } from "lit/decorators.js";
 import { classMap as E } from "lit/directives/class-map.js";
 import { styleMap as x } from "lit/directives/style-map.js";
-import { n as A, l as u, t as d, i as y, s as F, r as N, p as O, a as P } from "./sharedStyles--LaFqDVC.js";
+import { n as A, l as f, t as d, i as y, s as F, r as O, p as B, a as N, b as P } from "./sharedStyles-BgfDOkwJ.js";
 const Z = L`
   :host {
     display: block;
@@ -67,12 +67,12 @@ const Z = L`
   }
 
   .bch-color:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
   }
 
   .bch-color[aria-pressed='true'] {
-    border-color: var(--accent-color, #c2527f);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, #c2527f) 32%, transparent);
+    border-color: var(--accent-color, var(--fs-store-primary));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 32%, transparent);
   }
 
   .bch-color__swatch {
@@ -135,12 +135,12 @@ const Z = L`
   }
 
   .bch-type:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
   }
 
   .bch-type[aria-pressed='true'] {
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
+    border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
   }
 
@@ -169,7 +169,7 @@ const Z = L`
     border-radius: calc(var(--section-radius, 16px) * 0.9);
     background: linear-gradient(
       160deg,
-      color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
     border: 1px solid var(--border-color, #f2dde7);
@@ -289,8 +289,8 @@ const Z = L`
       transition: none !important;
     }
   }
-`, B = "#cccccc";
-function R(s) {
+`, R = "#cccccc";
+function q(s) {
   if (typeof s == "string") return s.trim();
   if (typeof s == "number" && Number.isFinite(s)) return String(s);
   if (s && typeof s == "object") {
@@ -302,11 +302,11 @@ function R(s) {
   }
   return "";
 }
-function q(s) {
+function K(s) {
   return A(s).map((e, r) => {
-    const t = u(e.name), o = H(R(e.hex ?? e.color));
+    const t = f(e.name), o = H(q(e.hex ?? e.color));
     return {
-      id: String(e.color_id ?? e.id ?? "").trim() || `color-${r + 1}`,
+      id: String(e.id ?? e.color_id ?? e.id ?? "").trim() || `color-${r + 1}`,
       name: t,
       hex: o
     };
@@ -314,7 +314,7 @@ function q(s) {
 }
 function H(s) {
   const e = String(s || "").trim(), r = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.exec(e);
-  if (!r) return B;
+  if (!r) return R;
   let t = r[1].toLowerCase();
   return t.length === 3 && (t = t.split("").map((o) => o + o).join("")), `#${t}`;
 }
@@ -333,7 +333,7 @@ function p(s) {
   const e = (s.h % 360 + 360) % 360, r = C(s.s / 100), t = C(s.l / 100), o = (1 - Math.abs(2 * t - 1)) * r, a = o * (1 - Math.abs(e / 60 % 2 - 1)), l = t - o / 2;
   let c = 0, n = 0, h = 0;
   e < 60 ? [c, n, h] = [o, a, 0] : e < 120 ? [c, n, h] = [a, o, 0] : e < 180 ? [c, n, h] = [0, o, a] : e < 240 ? [c, n, h] = [0, a, o] : e < 300 ? [c, n, h] = [a, 0, o] : [c, n, h] = [o, 0, a];
-  const m = (g) => Math.round((g + l) * 255).toString(16).padStart(2, "0");
+  const m = (u) => Math.round((u + l) * 255).toString(16).padStart(2, "0");
   return `#${m(c)}${m(n)}${m(h)}`;
 }
 function C(s) {
@@ -342,7 +342,7 @@ function C(s) {
 function v(s, e) {
   return { ...s, h: ((s.h + e) % 360 + 360) % 360 };
 }
-function K(s, e) {
+function U(s, e) {
   const r = T(s);
   switch (e) {
     case "complementary":
@@ -363,7 +363,7 @@ function K(s, e) {
       return [p(r)];
   }
 }
-function U(s, e) {
+function V(s, e) {
   const r = T(e), t = s[0] || p(r), o = s[1] || s[0] || p(r), a = s[2] || p({
     h: r.h,
     s: Math.round(r.s * 0.55),
@@ -371,7 +371,7 @@ function U(s, e) {
   });
   return { lips: t, eyes: o, cheeks: a };
 }
-function V(s) {
+function X(s) {
   const e = {
     complementary: ["ألوان متعاكسة", "Opposite colors"],
     analogous: ["ألوان متقاربة", "Neighboring colors"],
@@ -379,7 +379,7 @@ function V(s) {
   }, [r, t] = e[s];
   return d(r, t);
 }
-function X(s) {
+function D(s) {
   const e = {
     complementary: ["تباين جريء", "Bold contrast"],
     analogous: ["انسجام ناعم", "Soft blend"],
@@ -387,14 +387,14 @@ function X(s) {
   }, [r, t] = e[s];
   return d(r, t);
 }
-function D(s) {
+function G(s) {
   const e = [];
   return y(s.bch_show_complementary, !0) && e.push("complementary"), y(s.bch_show_analogous, !0) && e.push("analogous"), y(s.bch_show_triadic, !0) && e.push("triadic"), e;
 }
-var G = Object.defineProperty, _ = (s, e, r, t) => {
+var J = Object.defineProperty, _ = (s, e, r, t) => {
   for (var o = void 0, a = s.length - 1, l; a >= 0; a--)
     (l = s[a]) && (o = l(e, r, o) || o);
-  return o && G(e, r, o), o;
+  return o && J(e, r, o), o;
 };
 const w = class w extends I {
   constructor() {
@@ -411,7 +411,7 @@ const w = class w extends I {
   }
   get colors() {
     var e;
-    return q((e = this.config) == null ? void 0 : e.bch_colors);
+    return K((e = this.config) == null ? void 0 : e.bch_colors);
   }
   resolveColor(e) {
     var t;
@@ -460,13 +460,13 @@ const w = class w extends I {
   }
   renderTypes(e, r) {
     if (!e.length) return b;
-    const t = this.config || {}, o = u(t.bch_harmony_label) || d("2) اختاري نوع التناسق", "2) Choose harmony style");
+    const t = this.config || {}, o = f(t.bch_harmony_label) || d("2) اختاري نوع التناسق", "2) Choose harmony style");
     return i`
       <div class="bch-group">
         <p class="bch-group__label">${o}</p>
         <div class="bch-types" role="group" aria-label=${o}>
           ${e.map((a) => {
-      const l = r === a, c = V(a), n = X(a);
+      const l = r === a, c = X(a), n = D(a);
       return i`
               <button
                 type="button"
@@ -505,9 +505,9 @@ const w = class w extends I {
   }
   renderZones(e, r) {
     const t = this.config || {}, o = [
-      { key: "lips", label: u(t.bch_lips_label) || d("الشفاه", "Lips") },
-      { key: "eyes", label: u(t.bch_eyes_label) || d("العيون", "Eyes") },
-      { key: "cheeks", label: u(t.bch_cheeks_label) || d("الخدود", "Cheeks") }
+      { key: "lips", label: f(t.bch_lips_label) || d("الشفاه", "Lips") },
+      { key: "eyes", label: f(t.bch_eyes_label) || d("العيون", "Eyes") },
+      { key: "cheeks", label: f(t.bch_cheeks_label) || d("الخدود", "Cheeks") }
     ];
     return i`
       <div class="bch-zones">
@@ -532,7 +532,7 @@ const w = class w extends I {
     `;
   }
   render() {
-    const e = this.config || {}, r = N(e, "bch_"), t = r.animate && !O(), o = this.colors, a = u(e.bch_title), l = u(e.bch_desc), c = y(e.bch_show_hex, !0), n = y(e.bch_show_notice, !0), h = u(e.bch_notice) || d(
+    const e = this.config || {}, r = O(e, "bch_"), t = r.animate && !B(), o = this.colors, a = f(e.bch_title), l = f(e.bch_desc), c = y(e.bch_show_hex, !0), n = y(e.bch_show_notice, !0), h = f(e.bch_notice) || d(
       "اقتراحات الألوان إرشادية لمساعدتك على التنسيق.",
       "Color suggestions are guidance to help you coordinate."
     );
@@ -543,7 +543,7 @@ const w = class w extends I {
         "Add color shades in the element settings."
       )}
       </div>`;
-    const m = D(e);
+    const m = G(e);
     if (!m.length)
       return i`<div class="fs-empty" role="status">
         ${d(
@@ -551,11 +551,11 @@ const w = class w extends I {
         "Enable at least one harmony type in the settings."
       )}
       </div>`;
-    const g = this.resolveColor(o), $ = this.resolveHarmony(m), z = (g == null ? void 0 : g.hex) ?? o[0].hex, k = K(z, $), S = U(k, z);
+    const u = this.resolveColor(o), $ = this.resolveHarmony(m), z = (u == null ? void 0 : u.hex) ?? o[0].hex, k = U(z, $), S = V(k, z);
     return i`
       <section
         class=${E({ "fs-section": !0, "fs-animate": t })}
-        style=${x(P(r))}
+        style=${x(N(r))}
         aria-label=${a || d("عجلة تناسق ألوان المكياج", "Makeup color harmony wheel")}
       >
         <div class="fs-container">
@@ -568,7 +568,7 @@ const w = class w extends I {
             <div class="bch-controls">
               <div class="bch-group">
                 <p class="bch-group__label">${d("1) اختاري لون الأساس", "1) Choose a base color")}</p>
-                ${this.renderColors(o, g)}
+                ${this.renderColors(o, u)}
               </div>
               ${this.renderTypes(m, $)}
             </div>
@@ -586,23 +586,24 @@ const w = class w extends I {
 
             ${n ? i`<p class="bch-notice">${h}</p>` : b}
           </div>
+          ${P({ config: e, prefix: "bch_", ready: !!u, selection: u })}
         </div>
       </section>
     `;
   }
 };
 w.styles = [F, Z];
-let f = w;
+let g = w;
 _([
   j({ type: Object })
-], f.prototype, "config");
+], g.prototype, "config");
 _([
   M()
-], f.prototype, "selectedColorId");
+], g.prototype, "selectedColorId");
 _([
   M()
-], f.prototype, "harmonyType");
-typeof f < "u" && f.registerSallaComponent("salla-beauty-color-harmony");
+], g.prototype, "harmonyType");
+typeof g < "u" && g.registerSallaComponent("salla-beauty-color-harmony");
 export {
-  f as default
+  g as default
 };

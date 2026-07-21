@@ -4,7 +4,7 @@
 All 15 components are cosmetics-native, product-free interactive/educational
 tools built here with field ids that match exactly what each component reads
 from `config`. Every component is prepended with the standard Salla element
-editor controls (notmrb / has_container / background) for parity with the
+editor controls (background) for parity with the
 default element editor.
 """
 import json
@@ -41,6 +41,9 @@ PREVIEW_IMAGES = {
     "beauty-spf-guide": "1487412720507-e7ab37603c6f",             # outdoor sunlight face
     "beauty-color-harmony": "1586495777744-4413f21062fa",         # lip color harmony
     "beauty-weekly-planner": "1571781926291-c477ebfd024b",        # weekly care products
+    "beauty-categories": "1522335789203-aabd1fc54bc9",            # beauty category circles
+    "beauty-before-after": "1580489944761-15a19d654956",          # before/after face
+    "beauty-promo-banners": "1512496015851-a90fb38ba796",         # promo banner flatlay
 }
 
 # Content images for image-dependent components (full defaults out of the box).
@@ -131,7 +134,10 @@ LINK_SOURCES = [
     {"label": "ماركة تجارية", "key": "brands", "value": "brands"},
     {"label": "صفحة تعريفية", "key": "pages", "value": "pages"},
     {"label": "مقالة", "key": "blog_articles", "value": "blog_articles"},
+    {"label": "تصنيف ضمن المدونة", "key": "blog_categories", "value": "blog_categories"},
     {"label": "التخفيضات", "key": "offers_link", "value": "offers_link"},
+    {"label": "الماركات التجارية", "key": "brands_link", "value": "brands_link"},
+    {"label": "المدونة", "key": "blog_link", "value": "blog_link"},
     {"label": "رابط خارجي", "key": "custom", "value": "custom"},
 ]
 
@@ -318,6 +324,40 @@ def variable_list(fid, label="الرابط", conditions=None):
     )
 
 
+def products_picker(
+    fid,
+    label="اختر المنتج",
+    *,
+    multichoice=True,
+    required=False,
+    max_length=24,
+    min_length=0,
+    desc=None,
+    conditions=None,
+):
+    """Raed/Saji product picker with no preselected sample products."""
+    return with_conditions(
+        {
+            "id": fid,
+            "icon": "sicon-keyboard_arrow_down",
+            "type": "items",
+            "label": label,
+            "format": "dropdown-list",
+            "source": "products",
+            "options": [],
+            "required": required,
+            "selected": [],
+            "maxLength": max_length,
+            "minLength": min_length,
+            "searchable": True,
+            "description": desc,
+            "multichoice": multichoice,
+            "key": u(),
+        },
+        conditions,
+    )
+
+
 def dropdown_manual(fid, label, options, selected_value, *, icon="sicon-keyboard_arrow_down",
                     multichoice=False, desc=None, conditions=None):
     opts = [{"key": val, "label": lbl, "value": val} for lbl, val in options]
@@ -374,9 +414,6 @@ def theme_fields(p, *, accent="#c2527f", bg="#fbf5f8", card="#ffffff"):
         number(f"{p}radius", "تدوير الحواف", 20, 0, 40, "px"),
         boolean(f"{p}animate", "تفعيل الحركات والانتقالات", True,
                 "يتوقف تلقائياً عند تفعيل خيار تقليل الحركة في الجهاز."),
-        static_title(f"{p}space_title", "المسافات الخارجية"),
-        number(f"{p}space_desktop", "مسافة الكمبيوتر (أعلى/أسفل)", 48, 0, 250, "px"),
-        number(f"{p}space_mobile", "مسافة الجوال (أعلى/أسفل)", 28, 0, 120, "px"),
     ]
 
 
@@ -391,20 +428,154 @@ def quiz_nav_fields(p):
     ]
 
 
+def commerce_fields(p):
+    """Dynamic Salla product sources + optional conversion CTA.
+
+    Sources: latest (default) | sales | selected | categories | brands
+    Prefer scripts/upgrade-commerce-dynamic.py for in-place bundle upgrades.
+    """
+    show = f"{p}show_products"
+    source = f"{p}products_source"
+    return [
+        static_title(f"{p}commerce_title", "التوصيات والتحويل التجاري"),
+        boolean(
+            show,
+            "تفعيل عرض المنتجات",
+            False,
+            "معطّل افتراضيًا. عند التفعيل تُعرض المنتجات حسب المصدر المختار.",
+        ),
+        dropdown_manual(
+            source,
+            "نوع مصدر المنتجات",
+            [
+                ("أحدث المنتجات", "latest"),
+                ("الأكثر مبيعًا", "sales"),
+                ("منتجات مختارة", "selected"),
+                ("منتجات من تصنيف", "categories"),
+                ("الماركات التجارية", "brands"),
+            ],
+            "latest",
+            icon="sicon-t-shirt",
+            desc="الافتراضي: أحدث المنتجات.",
+            conditions=cond_eq(show, True),
+        ),
+        products_picker(
+            f"{p}chosen_products",
+            "المنتجات المختارة",
+            multichoice=True,
+            max_length=24,
+            desc="منتجات سلة الحقيقية — بدون عينات وهمية.",
+            conditions=cond_eq(source, "selected"),
+        ),
+        with_conditions(
+            {
+                "id": f"{p}categories",
+                "icon": "sicon-keyboard_arrow_down",
+                "type": "items",
+                "label": "التصنيف",
+                "format": "dropdown-list",
+                "source": "categories",
+                "options": [],
+                "required": False,
+                "selected": [],
+                "searchable": True,
+                "key": u(),
+            },
+            cond_eq(source, "categories"),
+        ),
+        with_conditions(
+            {
+                "id": f"{p}product_brands",
+                "icon": "sicon-keyboard_arrow_down",
+                "type": "items",
+                "label": "الماركات التجارية",
+                "format": "dropdown-list",
+                "source": "brands",
+                "options": [],
+                "required": False,
+                "selected": [],
+                "searchable": True,
+                "description": "عرض منتجات من الماركات التجارية.",
+                "key": u(),
+            },
+            cond_eq(source, "brands"),
+        ),
+        number(
+            f"{p}products_limit",
+            "عدد المنتجات المعروضة",
+            8,
+            1,
+            24,
+            "",
+            "الحد الأقصى لعرض المنتجات.",
+            conditions=cond_eq(show, True),
+        ),
+        multilang(
+            f"{p}products_title",
+            "عنوان قسم المنتجات",
+            "منتجات مختارة لك",
+            "Selected for you",
+            conditions=cond_eq(show, True),
+        ),
+        boolean(f"{p}show_cta", "عرض زر رابط بعد النتيجة", False),
+        variable_list(
+            f"{p}result_link",
+            "رابط زر التسوق",
+            conditions=cond_eq(f"{p}show_cta", True),
+        ),
+        multilang(
+            f"{p}cta_label",
+            "نص زر التسوق",
+            "تسوق الآن",
+            "Shop now",
+            conditions=cond_eq(f"{p}show_cta", True),
+        ),
+    ]
+
+
+def append_commerce_fields(components):
+    """Append real-product controls and remove legacy fake product collections."""
+    for comp in components:
+        prefix = {
+            "beauty-shade-finder": "bsf_",
+            "beauty-routine-builder": "brb_",
+            "beauty-ingredient-lab": "bil_",
+            "beauty-care-assistant": "bca_",
+            "beauty-collection-reveal": "bcr_",
+            "beauty-face-zone-map": "bfz_",
+            "beauty-routine-layering-board": "brl_",
+            "beauty-lighting-finish-simulator": "bls_",
+            "beauty-pao-expiry-calculator": "bpa_",
+            "beauty-texture-absorption-lab": "bta_",
+            "beauty-actives-compatibility": "bac_",
+            "beauty-fragrance-finder": "bff_",
+            "beauty-spf-guide": "bsg_",
+            "beauty-color-harmony": "bch_",
+            "beauty-weekly-planner": "bwp_",
+            "beauty-categories": "bcat_",
+            "beauty-before-after": "bba_",
+            "beauty-promo-banners": "bpb_",
+        }[comp["name"]]
+        comp["fields"] = [
+            field
+            for field in comp["fields"]
+            if not (
+                field.get("id") == f"{prefix}products"
+                and field.get("format") == "collection"
+            )
+        ]
+        existing = {field.get("id") for field in comp["fields"]}
+        comp["fields"].extend(
+            field for field in commerce_fields(prefix) if field.get("id") not in existing
+        )
+
+
 def editor_controls():
     """Standard Salla element editor controls, mirroring the default element
-    editor used across native storefront elements (notmrb / container /
+    editor used across native storefront elements (
     background). Prepended to every component so merchants get the exact same
     top-of-editor experience they expect from built-in elements."""
     return [
-        boolean(
-            "notmrb", "إزالة المسافة السفلية", False,
-            "فعّل هذا الخيار لإزالة المسافة السفلية أسفل العنصر.",
-        ),
-        boolean(
-            "has_container", "إضافة العنصر داخل حاوية (Container)", True,
-            "فعّل هذا الخيار لعرض العنصر داخل حاوية منظّمة بعرض الصفحة مع باقي الأقسام.",
-        ),
         boolean(
             "add_component_background_color", "إضافة لون خلفية للعنصر", False,
             "فعّل هذا الخيار لتخصيص لون خلفية كامل للعنصر.",
@@ -420,7 +591,7 @@ def editor_controls():
 def prepend_editor_controls(components):
     for c in components:
         existing = {f.get("id") for f in c.get("fields", [])}
-        if "notmrb" in existing:
+        if "add_component_background_color" in existing:
             continue
         c["fields"] = editor_controls() + c["fields"]
 
@@ -936,7 +1107,6 @@ PERIOD_OPTS = [("صباحي ومسائي", "both"), ("صباحي", "morning"), (
 def build_face_zone_map():
     p = "bfz_"
     zone_fields = [
-        text(f"{p}zones.zone_id", "معرّف داخلي (فريد)", "forehead"),
         multilang(f"{p}zones.name", "اسم المنطقة", "الجبهة", "Forehead"),
         number(f"{p}zones.x", "الموضع الأفقي", 50, 0, 100, "%",
                "من يمين الصورة كنسبة مئوية"),
@@ -1003,9 +1173,9 @@ def build_face_zone_map():
                             [("بجانب الصورة", "inline"), ("لوحة سفلية على الجوال", "sheet")], "inline"),
             text(
                 f"{p}default_zone",
-                "المنطقة المفتوحة افتراضيًا (المعرّف)",
+                "المنطقة المفتوحة افتراضيًا ",
                 "forehead",
-                desc="معرّف المنطقة التي تظهر تفاصيلها عند التحميل. إن تُرك فارغًا تُفتح أول منطقة.",
+                desc="اسم أو رمز المنطقة التي تظهر تفاصيلها عند التحميل. إن تُرك فارغًا تُفتح أول منطقة.",
             ),
             boolean(f"{p}show_nav", "إظهار أزرار السابق والتالي", True),
             boolean(f"{p}show_names", "إظهار أسماء المناطق فوق الصورة", False),
@@ -1022,7 +1192,6 @@ def build_face_zone_map():
 def build_layering_board():
     p = "brl_"
     step_fields = [
-        text(f"{p}routines.steps.step_id", "معرّف الخطوة (فريد)", ""),
         multilang(f"{p}routines.steps.step_title", "اسم الخطوة", "المنظف", "Cleanser"),
         text(f"{p}routines.steps.icon", "أيقونة أو رمز (اختياري)", ""),
         image(f"{p}routines.steps.image", "صورة (اختياري)"),
@@ -1038,7 +1207,6 @@ def build_layering_board():
         number(f"{p}routines.steps.correct_order", "الترتيب الصحيح", 1, 1, 30, ""),
     ]
     routine_fields = [
-        text(f"{p}routines.routine_id", "معرّف الروتين (فريد)", "morning"),
         multilang(f"{p}routines.name", "اسم الروتين", "روتين صباحي", "Morning routine"),
         collection(f"{p}routines.steps", "خطوة", step_fields, []),
     ]
@@ -1090,7 +1258,7 @@ def build_layering_board():
                              ("درجات سلم", "stairs"), ("مسار", "path"), ("دوائر متصلة", "circles")], "layers"),
             dropdown_manual(f"{p}direction", "اتجاه الترتيب",
                             [("رأسي", "vertical"), ("أفقي", "horizontal")], "vertical"),
-            text(f"{p}default_routine", "الروتين المفتوح افتراضيًا (المعرّف)", ""),
+            text(f"{p}default_routine", "الروتين المفتوح افتراضيًا ", ""),
             boolean(f"{p}enable_drag", "تفعيل السحب وإعادة الترتيب (وضع الاختبار)", True),
             boolean(f"{p}enable_check", "تفعيل زر التحقق", True),
             boolean(f"{p}show_answer", "السماح بإظهار الترتيب الصحيح", True),
@@ -1109,7 +1277,6 @@ def build_layering_board():
 def build_lighting_simulator():
     p = "bls_"
     light_fields = [
-        text(f"{p}lights.light_id", "معرّف داخلي (فريد)", "daylight"),
         multilang(f"{p}lights.name", "اسم الحالة", "ضوء النهار", "Daylight"),
         text(f"{p}lights.icon", "أيقونة أو رمز (اختياري)", ""),
         image(f"{p}lights.image", "الصورة"),
@@ -1176,7 +1343,7 @@ def build_lighting_simulator():
             dropdown_manual(f"{p}compare_style", "أسلوب المقارنة",
                             [("شريط سحب", "slider"), ("تقسيم", "split"), ("جنبًا إلى جنب", "side")], "slider"),
             boolean(f"{p}enable_finish", "تفعيل طبقة اختيار اللمسة النهائية", False),
-            text(f"{p}default_light", "حالة الإضاءة الافتراضية (المعرّف)", ""),
+            text(f"{p}default_light", "حالة الإضاءة الافتراضية ", ""),
             dropdown_manual(f"{p}default_finish", "اللمسة الافتراضية", FINISH_OPTS, "any"),
             boolean(f"{p}show_indicators", "إظهار مؤشرات المظهر", True),
             boolean(f"{p}show_palette", "إظهار لوحة الألوان", True),
@@ -1195,7 +1362,6 @@ def build_lighting_simulator():
 def build_pao_calculator():
     p = "bpa_"
     cat_fields = [
-        text(f"{p}categories.cat_id", "معرّف الفئة (فريد)", "mascara"),
         multilang(f"{p}categories.name", "اسم الفئة", "ماسكارا", "Mascara"),
         text(f"{p}categories.icon", "أيقونة أو رمز (اختياري)", ""),
         number(f"{p}categories.pao_months", "المدة المقترحة (أشهر)", 6, 1, 60, ""),
@@ -1267,7 +1433,6 @@ def build_pao_calculator():
 def build_texture_lab():
     p = "bta_"
     tex_fields = [
-        text(f"{p}textures.tex_id", "معرّف داخلي (فريد)", "serum"),
         multilang(f"{p}textures.name", "اسم القوام", "سيروم", "Serum"),
         text(f"{p}textures.icon", "أيقونة أو رمز (اختياري)", ""),
         image(f"{p}textures.image", "صورة قوام حقيقية (اختياري)"),
@@ -1324,7 +1489,7 @@ def build_texture_lab():
             dropdown_manual(f"{p}sample_shape", "شكل العينات",
                             [("قطرات", "drops"), ("دوائر", "circles"), ("مسحات", "swatches"),
                              ("شرائح زجاجية", "slides"), ("كتل ناعمة", "blobs"), ("فقاعات", "bubbles")], "drops"),
-            text(f"{p}default_texture", "القوام المفتوح افتراضيًا (المعرّف)", ""),
+            text(f"{p}default_texture", "القوام المفتوح افتراضيًا ", ""),
             dropdown_manual(f"{p}indicator_type", "شكل المؤشرات",
                             [("أشرطة", "bars"), ("نقاط", "dots"), ("دوائر", "circles"), ("مقياس نصف دائري", "semicircle")], "bars"),
             boolean(f"{p}show_indicators", "إظهار المؤشرات الحسية", True),
@@ -1349,7 +1514,6 @@ def build_texture_lab():
 def build_actives_compatibility():
     p = "bac_"
     active_fields = [
-        text(f"{p}actives.active_id", "معرّف داخلي (فريد)", "retinol"),
         multilang(f"{p}actives.name", "اسم المكوّن", "الريتينول", "Retinol"),
         color(f"{p}actives.color", "لون المكوّن", "#b06a8a"),
         multilang(f"{p}actives.desc", "وصف مختصر", "", "", "textarea", "300"),
@@ -1367,8 +1531,8 @@ def build_actives_compatibility():
          "desc": {"ar": "ترطيب عميق يناسب جميع المكوّنات تقريبًا.", "en": ""}},
     ]
     rule_fields = [
-        text(f"{p}rules.a", "المكوّن الأول (المعرّف)", "retinol"),
-        text(f"{p}rules.b", "المكوّن الثاني (المعرّف)", "vitc"),
+        text(f"{p}rules.a", "المكوّن الأول ", "retinol"),
+        text(f"{p}rules.b", "المكوّن الثاني ", "vitc"),
         dropdown_manual(f"{p}rules.level", "درجة التوافق",
                         [("متوافقان", "compatible"), ("بحذر", "caution"), ("يُفضّل تجنّبهما معًا", "avoid")],
                         "caution"),
@@ -1426,7 +1590,6 @@ def build_actives_compatibility():
 def build_fragrance_finder():
     p = "bff_"
     fam_fields = [
-        text(f"{p}families.family_id", "معرّف داخلي (فريد)", "floral"),
         multilang(f"{p}families.name", "اسم العائلة", "الزهري", "Floral"),
         color(f"{p}families.color", "اللون", "#d98cae"),
         text(f"{p}families.icon", "أيقونة أو رمز (اختياري)", "🌸"),
@@ -1480,7 +1643,7 @@ def build_fragrance_finder():
             static_title(f"{p}display_title", "خيارات العرض"),
             dropdown_manual(f"{p}layout", "طريقة العرض",
                             [("شبكة", "grid"), ("عجلة دائرية", "wheel"), ("قائمة", "list")], "grid"),
-            text(f"{p}default_family", "العائلة المفتوحة افتراضيًا (المعرّف)", "floral"),
+            text(f"{p}default_family", "العائلة المفتوحة افتراضيًا ", "floral"),
             boolean(f"{p}show_pyramid", "إظهار هرم النوتات", True),
             multilang(f"{p}pyramid_top_label", "نص المقدمة", "المقدمة", "Top notes"),
             multilang(f"{p}pyramid_heart_label", "نص القلب", "القلب", "Heart notes"),
@@ -1500,7 +1663,6 @@ def build_fragrance_finder():
 def build_spf_guide():
     p = "bsg_"
     pt_fields = [
-        text(f"{p}phototypes.pt_id", "معرّف داخلي (فريد)", "fair"),
         multilang(f"{p}phototypes.name", "اسم النوع", "بشرة فاتحة", "Fair skin"),
         multilang(f"{p}phototypes.desc", "وصف مختصر", "", "", "text", "200"),
         number(f"{p}phototypes.base_minutes", "دقائق الحماية الطبيعية", 15, 1, 120, ""),
@@ -1526,7 +1688,6 @@ def build_spf_guide():
         {"spf": 15}, {"spf": 30}, {"spf": 50},
     ]
     cond_fields = [
-        text(f"{p}conditions.cond_id", "معرّف داخلي (فريد)", "normal"),
         multilang(f"{p}conditions.name", "اسم الحالة", "يوم عادي", "Normal day"),
         number(f"{p}conditions.factor", "معامل التأثير", 1, 0, 3, ""),
         multilang(f"{p}conditions.desc", "وصف مختصر", "", "", "text", "160"),
@@ -1588,7 +1749,6 @@ def build_spf_guide():
 def build_color_harmony():
     p = "bch_"
     color_fields = [
-        text(f"{p}colors.color_id", "معرّف داخلي (فريد)", "rose"),
         multilang(f"{p}colors.name", "اسم الدرجة", "وردي", "Rose"),
         color(f"{p}colors.hex", "كود اللون", "#d94f70"),
     ]
@@ -1611,7 +1771,7 @@ def build_color_harmony():
             static_title(f"{p}colors_title", "الدرجات الأساسية"),
             collection(f"{p}colors", "درجة", color_fields, color_sample),
             static_title(f"{p}display_title", "خيارات العرض"),
-            text(f"{p}default_color", "الدرجة المختارة افتراضيًا (المعرّف)", "rose"),
+            text(f"{p}default_color", "الدرجة المختارة افتراضيًا ", "rose"),
             boolean(f"{p}show_complementary", "إتاحة التناسق المتكامل (Complementary)", True),
             boolean(f"{p}show_analogous", "إتاحة التناسق المتجاور (Analogous)", True),
             boolean(f"{p}show_triadic", "إتاحة التناسق الثلاثي (Triadic)", True),
@@ -1632,7 +1792,6 @@ def build_color_harmony():
 def build_weekly_planner():
     p = "bwp_"
     step_fields = [
-        text(f"{p}steps.step_id", "معرّف داخلي (فريد)", "cleanser"),
         multilang(f"{p}steps.name", "اسم الخطوة", "المنظّف", "Cleanser"),
         color(f"{p}steps.color", "اللون", "#6c8ea8"),
         text(f"{p}steps.icon", "أيقونة أو رمز (اختياري)", "🧴"),
@@ -1686,6 +1845,109 @@ def build_weekly_planner():
     )
 
 
+
+
+def build_beauty_categories():
+    p = 'bcat_'
+    item_fields = [
+        multilang(f'{p}items.title', 'اسم التصنيف', 'العناية بالبشرة', 'Skincare'),
+        image(f'{p}items.image', 'صورة التصنيف'),
+        variable_list(f'{p}items.link', 'رابط التصنيف'),
+    ]
+    sample = [
+        {'title': {'ar': 'العناية بالبشرة', 'en': 'Skincare'}, 'image': "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80", 'link': None},
+        {'title': {'ar': 'المكياج', 'en': 'Makeup'}, 'image': "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80", 'link': None},
+        {'title': {'ar': 'العطور', 'en': 'Fragrances'}, 'image': "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80", 'link': None},
+        {'title': {'ar': 'العناية بالشعر', 'en': 'Haircare'}, 'image': "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80", 'link': None},
+    ]
+    return component(
+        'beauty-categories', 'التصنيفات', 'sicon-grid',
+        [
+            static_title(f'{p}content_title', 'محتوى العنصر'),
+            multilang(f'{p}title', 'العنوان', 'تصنيفاتنا', 'Our Categories'),
+            multilang(f'{p}desc', 'الوصف',
+                      'تصفحي منتجات الجمال والعناية حسب احتياجك.',
+                      'Browse beauty and care products by your needs.',
+                      'textarea', '200'),
+            dropdown_manual(f'{p}layout', 'التخطيط',
+                            [('سلايدر', 'slider'), ('شبكة', 'grid')], 'slider'),
+            static_title(f'{p}items_title', 'التصنيفات'),
+            collection(f'{p}items', 'تصنيف', item_fields, sample),
+            *theme_fields(p),
+        ],
+    )
+
+
+def build_beauty_before_after():
+    p = 'bba_'
+    item_fields = [
+        image(f'{p}items.before_image', 'صورة قبل'),
+        image(f'{p}items.after_image', 'صورة بعد'),
+        multilang(f'{p}items.before_label', 'تسمية قبل', 'قبل', 'Before'),
+        multilang(f'{p}items.after_label', 'تسمية بعد', 'بعد', 'After'),
+        multilang(f'{p}items.title', 'العنوان', 'نتائج العناية', 'Care results'),
+    ]
+    sample = [
+        {'before_image': "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=1000&q=80", 'after_image': "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1000&q=80",
+         'before_label': {'ar': 'قبل', 'en': 'Before'},
+         'after_label': {'ar': 'بعد', 'en': 'After'},
+         'title': {'ar': 'النتيجة بعد أسبوعين', 'en': '2-week results'}},
+    ]
+    return component(
+        'beauty-before-after', 'قبل وبعد', 'sicon-image',
+        [
+            static_title(f'{p}content_title', 'محتوى العنصر'),
+            multilang(f'{p}title', 'العنوان', 'قبل وبعد', 'Before & After'),
+            multilang(f'{p}desc', 'الوصف',
+                      'قارني النتيجة بصريًا قبل وبعد روتين العناية.',
+                      'Compare the visible result before and after the care routine.',
+                      'textarea', '200'),
+            image(f'{p}before_image', 'صورة قبل (لزوج واحد)', "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=1000&q=80"),
+            image(f'{p}after_image', 'صورة بعد (لزوج واحد)', "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1000&q=80"),
+            static_title(f'{p}items_title', 'أزواج متعددة (اختياري)'),
+            collection(f'{p}items', 'زوج قبل/بعد', item_fields, sample),
+            *theme_fields(p),
+        ],
+    )
+
+
+def build_beauty_promo_banners():
+    p = 'bpb_'
+    item_fields = [
+        multilang(f'{p}items.title', 'العنوان', 'عرض مميز', 'Featured offer'),
+        multilang(f'{p}items.subtitle', 'الوصف الفرعي',
+                  'اكتشفي مختارات العناية والجمال.',
+                  'Discover selected beauty and care products.'),
+        image(f'{p}items.image', 'صورة البنر'),
+        variable_list(f'{p}items.link', 'الرابط'),
+        multilang(f'{p}items.cta_label', 'نص الزر', 'تسوقي الآن', 'Shop now'),
+    ]
+    sample = [
+        {'title': {'ar': 'عروض الصيف', 'en': 'Summer Sale'},
+         'subtitle': {'ar': 'خصم حتى 40%', 'en': 'Up to 40% off'},
+         'image': "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1400&q=80", 'link': None,
+         'cta_label': {'ar': 'تسوقي الآن', 'en': 'Shop now'}},
+        {'title': {'ar': 'وصل حديثًا', 'en': 'New Arrivals'},
+         'subtitle': {'ar': 'اكتشفي أحدث المنتجات', 'en': 'Discover the latest'},
+         'image': "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=1400&q=80", 'link': None,
+         'cta_label': {'ar': 'اكتشفي', 'en': 'Explore'}},
+    ]
+    return component(
+        'beauty-promo-banners', 'بنرات العروض', 'sicon-picture',
+        [
+            static_title(f'{p}content_title', 'محتوى العنصر'),
+            multilang(f'{p}title', 'عنوان القسم', 'عروض الجمال', 'Beauty Offers'),
+            multilang(f'{p}desc', 'وصف القسم',
+                      'عروض موسمية ومختارات جديدة لمتجر العناية.',
+                      'Seasonal offers and new picks for your beauty store.',
+                      'textarea', '200'),
+            static_title(f'{p}items_title', 'البنرات'),
+            collection(f'{p}items', 'بنر', item_fields, sample),
+            *theme_fields(p),
+        ],
+    )
+
+
 # ---------------------------------------------------------------------------
 # Assembly
 # ---------------------------------------------------------------------------
@@ -1710,6 +1972,10 @@ def build_components():
         build_spf_guide(),
         build_color_harmony(),
         build_weekly_planner(),
+        # Storefront showcase & commerce elements
+        build_beauty_categories(),
+        build_beauty_before_after(),
+        build_beauty_promo_banners(),
     ]
 
 
@@ -1729,7 +1995,7 @@ def validate(bundle):
     components = bundle["components"]
     names = [c["name"] for c in components]
     assert len(names) == len(set(names)), "duplicate component names"
-    assert len(components) == 15, f"expected 15 components, got {len(components)}"
+    assert len(components) == 18, f"expected 18 components, got {len(components)}"
     for comp in components:
         assert comp.get("key"), f"missing component key: {comp['name']}"
         ids = [f["id"] for f in comp["fields"]]
@@ -1795,9 +2061,19 @@ def polish_bundle_content(components):
             return normalize_locale_obj(node)
         return node
 
-    def polish_field(field):
+    media_pool = [
+        *COLLECTION_IMAGES,
+        *LIGHT_IMAGES.values(),
+        FACE_IMAGE,
+        ROUTINE_BG,
+        COVER_IMAGE,
+    ]
+
+    def polish_field(field, component_image="", component_index=0):
         if not isinstance(field, dict):
             return
+        if field.get("format") == "image" and not field.get("value"):
+            field["value"] = component_image or media_pool[component_index % len(media_pool)]
         if field.get("multilanguage") and isinstance(field.get("value"), dict):
             field["value"] = {
                 "en": str(field["value"].get("en") or ""),
@@ -1805,18 +2081,36 @@ def polish_bundle_content(components):
             }
         elif field.get("type") == "collection":
             field["value"] = walk(field.get("value") or [])
-            for nested in field.get("fields") or []:
-                polish_field(nested)
+            rows = field["value"]
+            nested_fields = field.get("fields") or []
+            for row_index, row in enumerate(rows):
+                if not isinstance(row, dict):
+                    continue
+                for nested in nested_fields:
+                    if nested.get("format") != "image":
+                        continue
+                    leaf = str(nested.get("id") or "").rsplit(".", 1)[-1]
+                    if row.get(leaf):
+                        continue
+                    if leaf.endswith("image_mobile") and row.get("image"):
+                        row[leaf] = row["image"]
+                    else:
+                        row[leaf] = media_pool[
+                            (component_index + row_index) % len(media_pool)
+                        ]
+            for nested in nested_fields:
+                polish_field(nested, component_image, component_index)
 
-    for comp in components:
+    for component_index, comp in enumerate(components):
         title = comp.get("title")
         if isinstance(title, dict):
             # Component title is Arabic-only in this kit.
             comp["title"] = str(title.get("ar") or title.get("en") or "").strip()
         elif title is not None:
             comp["title"] = str(title).strip()
+        component_image = str(comp.get("image") or comp.get("preview_image") or "")
         for field in comp.get("fields") or []:
-            polish_field(field)
+            polish_field(field, component_image, component_index)
 
 
 def main():
@@ -1833,6 +2127,7 @@ def main():
     }
     bundle["components"] = build_components()
     prepend_editor_controls(bundle["components"])
+    append_commerce_fields(bundle["components"])
     apply_preview_images(bundle["components"])
     polish_bundle_content(bundle["components"])
 

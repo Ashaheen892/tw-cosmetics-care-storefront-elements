@@ -1,9 +1,9 @@
-import { css as F, LitElement as I, html as a, nothing as b } from "lit";
-import { property as R, state as x } from "lit/decorators.js";
-import { classMap as h } from "lit/directives/class-map.js";
-import { styleMap as y } from "lit/directives/style-map.js";
-import { n as O, g as v, b as D, l as $, d as T, f as w, h as P, e as M, s as q, t as c, i as S, r as B, p as H, m as U, a as V } from "./sharedStyles--LaFqDVC.js";
-const j = F`
+import { css as A, LitElement as F, html as a, nothing as c } from "lit";
+import { property as I, state as v } from "lit/decorators.js";
+import { classMap as u } from "lit/directives/class-map.js";
+import { styleMap as _ } from "lit/directives/style-map.js";
+import { n as R, g as x, c as O, l as y, f as B, h as $, j as z, e as L, s as H, t as d, i as k, r as T, p as X, o as j, a as q, b as U } from "./sharedStyles-BgfDOkwJ.js";
+const V = A`
   .bls-mode-toggle {
     display: flex;
     flex-wrap: wrap;
@@ -13,7 +13,7 @@ const j = F`
     margin: 0 auto 1.1rem;
     padding: 0.25rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
     border: 1px solid var(--border-color, #f2dde7);
   }
 
@@ -31,7 +31,7 @@ const j = F`
   }
 
   .bls-mode-toggle__btn.is-active {
-    background: var(--bls-active, var(--accent-color, #c2527f));
+    background: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
   }
 
@@ -124,14 +124,14 @@ const j = F`
 
   .bls-chip:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--bls-active, var(--accent-color, #c2527f)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 40%, var(--border-color, #f2dde7));
   }
 
   .bls-chip.is-active {
-    border-color: var(--bls-active, var(--accent-color, #c2527f));
-    background: color-mix(in srgb, var(--bls-active, var(--accent-color, #c2527f)) 10%, var(--card-bg, #fff));
+    border-color: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
+    background: color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 10%, var(--card-bg, #fff));
     box-shadow:
-      0 0 0 3px color-mix(in srgb, var(--bls-active, var(--accent-color, #c2527f)) 20%, transparent),
+      0 0 0 3px color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 20%, transparent),
       0 8px 18px rgba(43, 33, 28, 0.08);
   }
 
@@ -141,14 +141,14 @@ const j = F`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: color-mix(in srgb, var(--bls-active, var(--accent-color, #c2527f)) 12%, var(--card-bg, #fff));
-    color: var(--bls-active, var(--accent-color, #c2527f));
+    background: color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 12%, var(--card-bg, #fff));
+    color: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     font-size: 0.95rem;
     line-height: 1;
   }
 
   .bls-chip.is-active .bls-chip__icon {
-    background: var(--bls-active, var(--accent-color, #c2527f));
+    background: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
   }
 
@@ -167,7 +167,7 @@ const j = F`
   }
 
   .bls-chip.is-active .bls-chip__dot {
-    background: var(--bls-active, var(--accent-color, #c2527f));
+    background: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     box-shadow: none;
   }
 
@@ -191,7 +191,7 @@ const j = F`
   }
 
   .bls-finish-chip.is-active {
-    background: var(--bls-active, var(--accent-color, #c2527f));
+    background: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     border-color: transparent;
     color: #fff;
   }
@@ -204,9 +204,9 @@ const j = F`
     border-radius: calc(var(--section-radius, 20px) + 4px);
     background: linear-gradient(
       165deg,
-      color-mix(in srgb, var(--accent-color, #c2527f) 14%, #2a1f24),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, #2a1f24),
       #1a1216 55%,
-      color-mix(in srgb, var(--accent-color, #c2527f) 8%, #2a1f24)
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, #2a1f24)
     );
     box-shadow:
       0 16px 40px rgba(43, 33, 28, 0.18),
@@ -232,7 +232,7 @@ const j = F`
     border-radius: calc(var(--section-radius, 20px) - 2px);
     overflow: hidden;
     background: color-mix(in srgb, var(--border-color, #f2dde7) 45%, #1a1216);
-    border: 3px solid color-mix(in srgb, var(--accent-color, #c2527f) 35%, #fff);
+    border: 3px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, #fff);
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.12),
       0 8px 24px rgba(0, 0, 0, 0.35);
@@ -263,7 +263,7 @@ const j = F`
     gap: 0.55rem;
     background: radial-gradient(
       circle at 50% 35%,
-      color-mix(in srgb, var(--accent-color, #c2527f) 12%, #2a1f24),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, #2a1f24),
       #1a1216 70%
     );
   }
@@ -274,8 +274,8 @@ const j = F`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 2px dashed color-mix(in srgb, var(--accent-color, #c2527f) 50%, rgba(255, 255, 255, 0.35));
-    color: color-mix(in srgb, var(--accent-color, #c2527f) 70%, #fff);
+    border: 2px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 50%, rgba(255, 255, 255, 0.35));
+    color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #fff);
     font-size: 1.4rem;
     opacity: 0.85;
   }
@@ -362,7 +362,7 @@ const j = F`
   }
 
   .bls-indicator__val {
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
     font-weight: 800;
     font-variant-numeric: tabular-nums;
   }
@@ -438,6 +438,27 @@ const j = F`
 
   .bls-cmp-slider {
     position: relative;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: col-resize;
+    outline: none;
+  }
+
+  .bls-cmp-slider:focus-visible {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, transparent),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .bls-cmp-slider.is-dragging {
+    cursor: grabbing;
+  }
+
+  .bls-cmp-slider .bls-pic > img {
+    pointer-events: none;
+    -webkit-user-drag: none;
   }
 
   .bls-cmp-slider .bls-img--overlay {
@@ -454,29 +475,67 @@ const j = F`
     top: 0;
     bottom: 0;
     inset-inline-start: var(--bls-pos, 50%);
-    width: 2px;
+    width: 3px;
+    transform: translateX(-50%);
     background: #fff;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
-    cursor: ew-resize;
-    touch-action: none;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
     z-index: 3;
   }
 
-  .bls-cmp-handle::after {
-    content: '⇆';
+  :host-context([dir='rtl']) .bls-cmp-handle,
+  :host([dir='rtl']) .bls-cmp-handle {
+    transform: translateX(50%);
+  }
+
+  .bls-cmp-handle__pill {
     position: absolute;
     top: 50%;
-    inset-inline-start: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 46px;
+    height: 46px;
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: #fff;
-    color: #33232e;
-    font-size: 0.9rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(
+      135deg,
+      var(--accent-color, var(--fs-store-primary)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
+    );
+    border: 3px solid #fff;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+  }
+
+  .bls-cmp-hint {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(20, 14, 12, 0.72);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: bls-hint-pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes bls-hint-pulse {
+    0%,
+    100% {
+      opacity: 0.85;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   .bls-cmp-split .bls-img--overlay {
@@ -539,49 +598,59 @@ const j = F`
     }
   }
 
+  @media (max-width: 639px) {
+    .bls-cmp-handle__pill {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .bls-stage--fade .bls-layer,
     .bls-chip {
       transition: none !important;
     }
+    .bls-cmp-hint {
+      animation: none;
+    }
   }
-`, N = ["any", "matte", "dewy", "glossy", "natural", "velvet"];
-function G(d) {
-  return O(d).map((e, s) => {
-    const i = v(e.finish, "any");
+`, D = ["any", "matte", "dewy", "glossy", "natural", "velvet"];
+function K(p) {
+  return R(p).map((e, r) => {
+    const s = x(e.finish, "any");
     return {
-      id: String(e.light_id ?? "").trim() || `light-${s + 1}`,
-      name: $(e.name) || `${s + 1}`,
+      id: String(e.id ?? e.light_id ?? "").trim() || `light-${r + 1}`,
+      name: y(e.name) || `${r + 1}`,
       icon: String(e.icon ?? "").trim(),
-      image: M(e.image),
-      imageMobile: M(e.image_mobile),
-      finish: N.includes(i) ? i : "any",
-      desc: $(e.desc),
-      colorEffect: $(e.color_effect),
-      gloss: w(P(e.gloss, 0), 0, 5),
-      clarity: w(P(e.clarity, 0), 0, 5),
-      contrast: w(P(e.contrast, 0), 0, 5),
-      palette: T(e.palette),
-      note: $(e.note),
-      link: D(e.link)
+      image: L(e.image),
+      imageMobile: L(e.image_mobile),
+      finish: D.includes(s) ? s : "any",
+      desc: y(e.desc),
+      colorEffect: y(e.color_effect),
+      gloss: $(z(e.gloss, 0), 0, 5),
+      clarity: $(z(e.clarity, 0), 0, 5),
+      contrast: $(z(e.contrast, 0), 0, 5),
+      palette: B(e.palette),
+      note: y(e.note),
+      link: O(e.link)
     };
   }).filter((e) => e.image || e.name);
 }
-function W(d) {
-  return v(d.bls_view_mode, "single") === "compare" ? "compare" : "single";
+function G(p) {
+  return x(p.bls_view_mode, "single") === "compare" ? "compare" : "single";
 }
-function X(d) {
-  const e = v(d.bls_compare_style, "slider");
+function W(p) {
+  const e = x(p.bls_compare_style, "slider");
   return ["split", "slider", "side"].includes(e) ? e : "slider";
 }
-function Y(d) {
-  const e = v(d.bls_transition, "fade");
+function Y(p) {
+  const e = x(p.bls_transition, "fade");
   return ["fade", "slide", "none"].includes(e) ? e : "fade";
 }
-function J(d, e = "4/5") {
-  return (v(d.bls_aspect, e) || e).replace("/", " / ");
+function J(p, e = "4/5") {
+  return (x(p.bls_aspect, e) || e).replace("/", " / ");
 }
-function K(d, e) {
+function Q(p, e) {
   return {
     any: ["عام", "Any"],
     matte: ["مطفي", "Matte"],
@@ -589,31 +658,34 @@ function K(d, e) {
     glossy: ["لامع", "Glossy"],
     natural: ["طبيعي", "Natural"],
     velvet: ["مخملي", "Velvet"]
-  }[d][e === "en" ? 1 : 0];
+  }[p][e === "en" ? 1 : 0];
 }
-function z(d) {
+function C(p) {
   const e = /* @__PURE__ */ new Set();
-  for (const s of d) s.finish !== "any" && e.add(s.finish);
-  return N.filter((s) => e.has(s));
+  for (const r of p) r.finish !== "any" && e.add(r.finish);
+  return D.filter((r) => e.has(r));
 }
-var Q = Object.defineProperty, u = (d, e, s, i) => {
-  for (var r = void 0, t = d.length - 1, l; t >= 0; t--)
-    (l = d[t]) && (r = l(e, s, r) || r);
-  return r && Q(e, s, r), r;
+var Z = Object.defineProperty, f = (p, e, r, s) => {
+  for (var i = void 0, t = p.length - 1, n; t >= 0; t--)
+    (n = p[t]) && (i = n(e, r, i) || i);
+  return i && Z(e, r, i), i;
 };
-const C = class C extends I {
+const M = class M extends F {
   constructor() {
-    super(...arguments), this.config = {}, this.selId = "", this.selName = "", this.selFinish = "", this.cmpA = "", this.cmpB = "", this.sliderPos = 50, this.compareOn = null, this.boundLangHandler = () => this.requestUpdate(), this.onSliderMove = (e) => {
+    super(...arguments), this.config = {}, this.selId = "", this.selName = "", this.selFinish = "", this.cmpA = "", this.cmpB = "", this.sliderPos = 50, this.sliderDragging = !1, this.compareOn = null, this.boundLangHandler = () => this.requestUpdate(), this.onSliderMove = (e) => {
       var t;
-      const s = (t = this.shadowRoot) == null ? void 0 : t.querySelector(".bls-cmp-slider");
-      if (!s) return;
-      const i = s.getBoundingClientRect(), r = this.isRtl() ? (i.right - e.clientX) / i.width : (e.clientX - i.left) / i.width;
-      this.sliderPos = w(Math.round(r * 100), 0, 100);
+      const r = (t = this.shadowRoot) == null ? void 0 : t.querySelector(".bls-cmp-slider");
+      if (!r) return;
+      const s = r.getBoundingClientRect(), i = this.isRtl() ? (s.right - e.clientX) / s.width : (e.clientX - s.left) / s.width;
+      this.sliderPos = $(Math.round(i * 100), 0, 100);
     }, this.onSliderDown = (e) => {
-      var s, i;
-      (i = (s = e.currentTarget).setPointerCapture) == null || i.call(s, e.pointerId), this.onSliderMove(e), window.addEventListener("pointermove", this.onSliderMove), window.addEventListener("pointerup", this.onSliderUp, { once: !0 });
+      var r, s;
+      e.preventDefault(), this.sliderDragging = !0, (s = (r = e.currentTarget).setPointerCapture) == null || s.call(r, e.pointerId), this.onSliderMove(e), window.addEventListener("pointermove", this.onSliderMove), window.addEventListener("pointerup", this.onSliderUp, { once: !0 });
     }, this.onSliderUp = () => {
-      window.removeEventListener("pointermove", this.onSliderMove);
+      this.sliderDragging = !1, window.removeEventListener("pointermove", this.onSliderMove);
+    }, this.onSliderKey = (e) => {
+      const r = e.shiftKey ? 10 : 5, s = this.isRtl() ? -1 : 1;
+      e.key === "ArrowLeft" ? (e.preventDefault(), this.sliderPos = $(this.sliderPos - r * s, 0, 100)) : e.key === "ArrowRight" ? (e.preventDefault(), this.sliderPos = $(this.sliderPos + r * s, 0, 100)) : e.key === "Home" ? (e.preventDefault(), this.sliderPos = 0) : e.key === "End" && (e.preventDefault(), this.sliderPos = 100);
     };
   }
   connectedCallback() {
@@ -627,159 +699,159 @@ const C = class C extends I {
   }
   get lights() {
     var e;
-    return G((e = this.config) == null ? void 0 : e.bls_lights);
+    return K((e = this.config) == null ? void 0 : e.bls_lights);
   }
   uniqueNames(e) {
-    const s = /* @__PURE__ */ new Set(), i = [];
-    for (const r of e)
-      s.has(r.name) || (s.add(r.name), i.push(r.name));
-    return i;
+    const r = /* @__PURE__ */ new Set(), s = [];
+    for (const i of e)
+      r.has(i.name) || (r.add(i.name), s.push(i.name));
+    return s;
   }
   defaultName(e) {
-    var t, l;
-    const s = String(((t = this.config) == null ? void 0 : t.bls_default_light) ?? "").trim(), i = e.find((o) => o.id === s);
-    if (i) return i.name;
-    const r = e.find((o) => o.name === s);
-    return r ? r.name : ((l = e[0]) == null ? void 0 : l.name) ?? "";
+    var t, n;
+    const r = String(((t = this.config) == null ? void 0 : t.bls_default_light) ?? "").trim(), s = e.find((o) => o.id === r);
+    if (s) return s.name;
+    const i = e.find((o) => o.name === r);
+    return i ? i.name : ((n = e[0]) == null ? void 0 : n.name) ?? "";
   }
   defaultFinish(e) {
-    var r;
-    const s = z(e), i = v((r = this.config) == null ? void 0 : r.bls_default_finish, "");
-    return s.includes(i) ? i : s[0] ?? "any";
+    var i;
+    const r = C(e), s = x((i = this.config) == null ? void 0 : i.bls_default_finish, "");
+    return r.includes(s) ? s : r[0] ?? "any";
   }
-  activeSingle(e, s) {
+  activeSingle(e, r) {
     var t;
-    if (s) {
-      const l = this.selName || this.defaultName(e), o = this.selFinish || this.defaultFinish(e);
-      return e.find((n) => n.name === l && n.finish === o) || e.find((n) => n.finish === o) || e.find((n) => n.name === l) || e[0];
+    if (r) {
+      const n = this.selName || this.defaultName(e), o = this.selFinish || this.defaultFinish(e);
+      return e.find((l) => l.name === n && l.finish === o) || e.find((l) => l.finish === o) || e.find((l) => l.name === n) || e[0];
     }
-    const i = String(((t = this.config) == null ? void 0 : t.bls_default_light) ?? "").trim(), r = this.selId || i;
-    return e.find((l) => l.id === r) || e.find((l) => l.name === r) || e[0];
+    const s = String(((t = this.config) == null ? void 0 : t.bls_default_light) ?? "").trim(), i = this.selId || s;
+    return e.find((n) => n.id === i) || e.find((n) => n.name === i) || e[0];
   }
-  renderPicture(e, s, i) {
-    return e != null && e.image ? a`<picture class="bls-pic ${s}">
-      ${e.imageMobile ? a`<source media="(max-width: 639px)" srcset=${e.imageMobile} />` : b}
+  renderPicture(e, r, s) {
+    return e != null && e.image ? a`<picture class="bls-pic ${r}">
+      ${e.imageMobile ? a`<source media="(max-width: 639px)" srcset=${e.imageMobile} />` : c}
       <img
         src=${e.image}
         alt=${e.name}
-        loading=${i ? "eager" : "lazy"}
+        loading=${s ? "eager" : "lazy"}
         decoding="async"
-        fetchpriority=${i ? "high" : "low"}
+        fetchpriority=${s ? "high" : "low"}
       />
-    </picture>` : a`<div class="bls-pic bls-pic--empty ${s}" role="img" aria-label=${c("لا توجد صورة", "No image")}>
+    </picture>` : a`<div class="bls-pic bls-pic--empty ${r}" role="img" aria-label=${d("لا توجد صورة", "No image")}>
         <span class="bls-empty__icon" aria-hidden="true">◯</span>
-        <span class="bls-empty__text">${c("أضيفي صورة لهذه الحالة", "Add an image for this state")}</span>
+        <span class="bls-empty__text">${d("أضيفي صورة لهذه الحالة", "Add an image for this state")}</span>
       </div>`;
   }
   // —— compare slider ——
   isRtl() {
     return getComputedStyle(this).direction === "rtl";
   }
-  renderIndicators(e, s) {
-    const r = [
-      [s === "en" ? "Glossiness" : "اللمعان", e.gloss],
-      [s === "en" ? "Color clarity" : "وضوح اللون", e.clarity],
-      [s === "en" ? "Contrast" : "التباين", e.contrast]
+  renderIndicators(e, r) {
+    const i = [
+      [r === "en" ? "Glossiness" : "اللمعان", e.gloss],
+      [r === "en" ? "Color clarity" : "وضوح اللون", e.clarity],
+      [r === "en" ? "Contrast" : "التباين", e.contrast]
     ].filter(([, t]) => t > 0);
-    return r.length ? a`<div class="bls-indicators">
-      ${r.map(
-      ([t, l]) => a`<div class="bls-indicator">
+    return i.length ? a`<div class="bls-indicators">
+      ${i.map(
+      ([t, n]) => a`<div class="bls-indicator">
           <span class="bls-indicator__label">${t}</span>
-          <span class="fs-meter"><span style=${y({ width: `${l / 5 * 100}%` })}></span></span>
-          <span class="bls-indicator__val">${l}/5</span>
+          <span class="fs-meter"><span style=${_({ width: `${n / 5 * 100}%` })}></span></span>
+          <span class="bls-indicator__val">${n}/5</span>
         </div>`
     )}
-    </div>` : b;
+    </div>` : c;
   }
-  renderPanel(e, s) {
-    const i = this.config || {}, r = S(i.bls_show_indicators, !0), t = S(i.bls_show_palette, !0);
+  renderPanel(e, r) {
+    const s = this.config || {}, i = k(s.bls_show_indicators, !0), t = k(s.bls_show_palette, !0);
     return a`<div class="bls-panel">
-      ${e.desc ? a`<p class="bls-desc">${e.desc}</p>` : b}
-      ${e.colorEffect ? a`<p class="bls-color-effect">${c("تأثير اللون", "Color effect")}: ${e.colorEffect}</p>` : b}
-      ${r ? this.renderIndicators(e, s) : b}
-      ${t && e.palette.length ? a`<div class="bls-palette">${e.palette.map((l) => a`<span class="bls-swatch" style=${y({ background: l })} title=${l}></span>`)}</div>` : b}
-      ${e.note ? a`<p class="bls-note">★ ${e.note}</p>` : b}
-      ${e.link ? a`<a class="fs-btn fs-btn--ghost bls-link" href=${e.link} target="_blank" rel="noopener noreferrer">${c("اقرئي المزيد", "Read more")}</a>` : b}
+      ${e.desc ? a`<p class="bls-desc">${e.desc}</p>` : c}
+      ${e.colorEffect ? a`<p class="bls-color-effect">${d("تأثير اللون", "Color effect")}: ${e.colorEffect}</p>` : c}
+      ${i ? this.renderIndicators(e, r) : c}
+      ${t && e.palette.length ? a`<div class="bls-palette">${e.palette.map((n) => a`<span class="bls-swatch" style=${_({ background: n })} title=${n}></span>`)}</div>` : c}
+      ${e.note ? a`<p class="bls-note">★ ${e.note}</p>` : c}
+      ${e.link ? a`<a class="fs-btn fs-btn--ghost bls-link" href=${e.link} target="_blank" rel="noopener noreferrer">${d("اقرئي المزيد", "Read more")}</a>` : c}
     </div>`;
   }
-  renderLightChip(e, s) {
-    const i = e.icon.startsWith("sicon-");
+  renderLightChip(e, r) {
+    const s = e.icon.startsWith("sicon-");
     return a`
       <button
         type="button"
-        class=${h({ "bls-chip": !0, "is-active": s })}
-        aria-pressed=${s ? "true" : "false"}
+        class=${u({ "bls-chip": !0, "is-active": r })}
+        aria-pressed=${r ? "true" : "false"}
         @click=${() => this.selId = e.id}
       >
         <span class="bls-chip__icon" aria-hidden="true">
-          ${e.icon ? i ? a`<span class=${e.icon}></span>` : e.icon : "✦"}
+          ${e.icon ? s ? a`<span class=${e.icon}></span>` : e.icon : "✦"}
         </span>
         <span class="bls-chip__name">${e.name}</span>
         <span class="bls-chip__dot" aria-hidden="true"></span>
       </button>
     `;
   }
-  renderSingle(e, s) {
-    var L;
-    const i = this.config || {}, r = S(i.bls_enable_finish, !1) && z(e).length > 0, t = v((L = this.config) == null ? void 0 : L.bls_preload, "lazy") === "eager", l = Y(i), o = this.activeSingle(e, r), n = this.uniqueNames(e), _ = z(e), k = o == null ? void 0 : o.name, f = this.selFinish || this.defaultFinish(e);
+  renderSingle(e, r) {
+    var w;
+    const s = this.config || {}, i = k(s.bls_enable_finish, !1) && C(e).length > 0, t = x((w = this.config) == null ? void 0 : w.bls_preload, "lazy") === "eager", n = Y(s), o = this.activeSingle(e, i), l = this.uniqueNames(e), S = C(e), P = o == null ? void 0 : o.name, g = this.selFinish || this.defaultFinish(e);
     return a`
       <div class="bls-shell">
         <aside class="bls-aside">
           <div class="bls-controls-card">
-            ${r ? a`
+            ${i ? a`
                   <div class="bls-controls">
-                    <span class="bls-controls__label">${c("اللمسة النهائية", "Finish")}</span>
-                    <div class="bls-finish-chips" role="group" aria-label=${c("اللمسة النهائية", "Finish")}>
-                      ${_.map(
-      (p) => a`<button
+                    <span class="bls-controls__label">${d("اللمسة النهائية", "Finish")}</span>
+                    <div class="bls-finish-chips" role="group" aria-label=${d("اللمسة النهائية", "Finish")}>
+                      ${S.map(
+      (m) => a`<button
                           type="button"
-                          class=${h({ "bls-finish-chip": !0, "is-active": p === f })}
-                          aria-pressed=${p === f ? "true" : "false"}
-                          @click=${() => this.selFinish = p}
+                          class=${u({ "bls-finish-chip": !0, "is-active": m === g })}
+                          aria-pressed=${m === g ? "true" : "false"}
+                          @click=${() => this.selFinish = m}
                         >
-                          ${K(p, s)}
+                          ${Q(m, r)}
                         </button>`
     )}
                     </div>
                   </div>
                   <div class="bls-controls">
-                    <span class="bls-controls__label">${c("نوع الإضاءة", "Lighting")}</span>
-                    <div class="bls-chips" role="group" aria-label=${c("حالات الإضاءة", "Lighting states")}>
-                      ${n.map((p) => {
-      const g = e.find((E) => E.name === p), A = !!(g != null && g.icon.startsWith("sicon-"));
+                    <span class="bls-controls__label">${d("نوع الإضاءة", "Lighting")}</span>
+                    <div class="bls-chips" role="group" aria-label=${d("حالات الإضاءة", "Lighting states")}>
+                      ${l.map((m) => {
+      const h = e.find((E) => E.name === m), N = !!(h != null && h.icon.startsWith("sicon-"));
       return a`<button
                           type="button"
-                          class=${h({ "bls-chip": !0, "is-active": p === k })}
-                          aria-pressed=${p === k ? "true" : "false"}
-                          @click=${() => this.selName = p}
+                          class=${u({ "bls-chip": !0, "is-active": m === P })}
+                          aria-pressed=${m === P ? "true" : "false"}
+                          @click=${() => this.selName = m}
                         >
                           <span class="bls-chip__icon" aria-hidden="true">
-                            ${g != null && g.icon ? A ? a`<span class=${g.icon}></span>` : g.icon : "✦"}
+                            ${h != null && h.icon ? N ? a`<span class=${h.icon}></span>` : h.icon : "✦"}
                           </span>
-                          <span class="bls-chip__name">${p}</span>
+                          <span class="bls-chip__name">${m}</span>
                           <span class="bls-chip__dot" aria-hidden="true"></span>
                         </button>`;
     })}
                     </div>
                   </div>
                 ` : a`<div class="bls-controls">
-                  <span class="bls-controls__label">${c("اختاري الإضاءة", "Pick a lighting")}</span>
-                  <div class="bls-chips" role="group" aria-label=${c("حالات الإضاءة", "Lighting states")}>
-                    ${e.map((p) => this.renderLightChip(p, p.id === (o == null ? void 0 : o.id)))}
+                  <span class="bls-controls__label">${d("اختاري الإضاءة", "Pick a lighting")}</span>
+                  <div class="bls-chips" role="group" aria-label=${d("حالات الإضاءة", "Lighting states")}>
+                    ${e.map((m) => this.renderLightChip(m, m.id === (o == null ? void 0 : o.id)))}
                   </div>
                 </div>`}
           </div>
 
-          ${o ? this.renderPanel(o, s) : b}
+          ${o ? this.renderPanel(o, r) : c}
         </aside>
 
         <div class="bls-mirror">
-          <div class=${h({ "bls-stage": !0, "bls-stage--fade": l === "fade" })}>
+          <div class=${u({ "bls-stage": !0, "bls-stage--fade": n === "fade" })}>
             ${t ? e.map(
-      (p) => this.renderPicture(p, `bls-layer ${p.id === (o == null ? void 0 : o.id) ? "is-on" : ""}`, !0)
+      (m) => this.renderPicture(m, `bls-layer ${m.id === (o == null ? void 0 : o.id) ? "is-on" : ""}`, !0)
     ) : this.renderPicture(o, "", !0)}
             <div class="bls-caption">
-              <b>${o == null ? void 0 : o.name}</b>${o != null && o.colorEffect ? a` — ${o.colorEffect}` : b}
+              <b>${o == null ? void 0 : o.name}</b>${o != null && o.colorEffect ? a` — ${o.colorEffect}` : c}
             </div>
           </div>
         </div>
@@ -787,128 +859,141 @@ const C = class C extends I {
     `;
   }
   renderCompare(e) {
-    const s = this.config || {}, i = X(s), r = e.find((n) => n.id === this.cmpA) || e[0], t = e.find((n) => n.id === this.cmpB) || e[1] || e[0], l = a`<div class="bls-compare-picks">
+    const r = this.config || {}, s = W(r), i = e.find((l) => l.id === this.cmpA) || e[0], t = e.find((l) => l.id === this.cmpB) || e[1] || e[0], n = a`<div class="bls-compare-picks">
       <div>
-        <label for="bls-a">${c("الحالة الأولى", "First state")}</label>
-        <select id="bls-a" @change=${(n) => this.cmpA = n.target.value}>
-          ${e.map((n) => a`<option value=${n.id} ?selected=${n.id === (r == null ? void 0 : r.id)}>${n.name}</option>`)}
+        <label for="bls-a">${d("الحالة الأولى", "First state")}</label>
+        <select id="bls-a" @change=${(l) => this.cmpA = l.target.value}>
+          ${e.map((l) => a`<option value=${l.id} ?selected=${l.id === (i == null ? void 0 : i.id)}>${l.name}</option>`)}
         </select>
       </div>
       <div>
-        <label for="bls-b">${c("الحالة الثانية", "Second state")}</label>
-        <select id="bls-b" @change=${(n) => this.cmpB = n.target.value}>
-          ${e.map((n) => a`<option value=${n.id} ?selected=${n.id === (t == null ? void 0 : t.id)}>${n.name}</option>`)}
+        <label for="bls-b">${d("الحالة الثانية", "Second state")}</label>
+        <select id="bls-b" @change=${(l) => this.cmpB = l.target.value}>
+          ${e.map((l) => a`<option value=${l.id} ?selected=${l.id === (t == null ? void 0 : t.id)}>${l.name}</option>`)}
         </select>
       </div>
     </div>`;
-    if (i === "side")
+    if (s === "side")
       return a`<div class="bls-wrap">
         <div class="bls-cmp-side">
-          <div class="bls-stage"><span class="bls-cmp-tag bls-cmp-tag--a">${r == null ? void 0 : r.name}</span>${this.renderPicture(r, "", !0)}</div>
+          <div class="bls-stage"><span class="bls-cmp-tag bls-cmp-tag--a">${i == null ? void 0 : i.name}</span>${this.renderPicture(i, "", !0)}</div>
           <div class="bls-stage"><span class="bls-cmp-tag bls-cmp-tag--b">${t == null ? void 0 : t.name}</span>${this.renderPicture(t, "", !0)}</div>
         </div>
-        ${l}
+        ${n}
       </div>`;
-    const o = i === "slider" ? y({ "--bls-pos": `${this.sliderPos}%` }) : y({});
+    const o = s === "slider" ? _({ "--bls-pos": `${this.sliderPos}%` }) : _({});
     return a`<div class="bls-wrap">
       <div
-        class=${h({ "bls-stage": !0, "bls-cmp-slider": i === "slider", "bls-cmp-split": i === "split" })}
+        class=${u({
+      "bls-stage": !0,
+      "bls-cmp-slider": s === "slider",
+      "bls-cmp-split": s === "split",
+      "is-dragging": s === "slider" && this.sliderDragging
+    })}
         style=${o}
+        role=${s === "slider" ? "slider" : c}
+        tabindex=${s === "slider" ? "0" : c}
+        aria-label=${s === "slider" ? d("اسحبي للمقارنة بين الحالتين", "Drag to compare the two states") : c}
+        aria-valuenow=${s === "slider" ? Math.round(this.sliderPos) : c}
+        aria-valuemin=${s === "slider" ? "0" : c}
+        aria-valuemax=${s === "slider" ? "100" : c}
+        @pointerdown=${s === "slider" ? this.onSliderDown : void 0}
+        @keydown=${s === "slider" ? this.onSliderKey : void 0}
       >
-        <span class="bls-cmp-tag bls-cmp-tag--a">${r == null ? void 0 : r.name}</span>
-        <span class="bls-cmp-tag bls-cmp-tag--b">${t == null ? void 0 : t.name}</span>
-        ${this.renderPicture(r, "", !0)}
+        <span class="bls-cmp-tag bls-cmp-tag--a">${t == null ? void 0 : t.name}</span>
+        <span class="bls-cmp-tag bls-cmp-tag--b">${i == null ? void 0 : i.name}</span>
+        ${this.renderPicture(i, "", !0)}
         ${this.renderPicture(t, "bls-img--overlay", !0)}
-        ${i === "slider" ? a`<div
-              class="bls-cmp-handle"
-              role="slider"
-              tabindex="0"
-              aria-label=${c("حرّكي للمقارنة", "Drag to compare")}
-              aria-valuenow=${this.sliderPos}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              @pointerdown=${this.onSliderDown}
-              @keydown=${(n) => {
-      n.key === "ArrowLeft" && (this.sliderPos = w(this.sliderPos - 5, 0, 100)), n.key === "ArrowRight" && (this.sliderPos = w(this.sliderPos + 5, 0, 100));
-    }}
-            ></div>` : b}
+        ${s === "slider" ? a`
+              <div class="bls-cmp-handle" aria-hidden="true">
+                <span class="bls-cmp-handle__pill">‹ ›</span>
+              </div>
+              ${!this.sliderDragging && this.sliderPos === 50 ? a`<div class="bls-cmp-hint" aria-hidden="true">${d("اسحبي للمقارنة", "Drag to compare")}</div>` : c}
+            ` : c}
       </div>
-      ${l}
+      ${n}
     </div>`;
   }
   render() {
-    const e = this.config || {}, s = B(e, "bls_"), i = s.animate && !H(), r = this.lights, t = $(e.bls_title), l = $(e.bls_desc), o = U() === "en" ? "en" : "ar", n = W(e), _ = S(e.bls_show_compare, !0) && r.length >= 2, k = this.compareOn ?? n === "compare", f = _ && k ? "compare" : "single";
-    return r.length ? a`
+    const e = this.config || {}, r = T(e, "bls_"), s = r.animate && !X(), i = this.lights, t = y(e.bls_title), n = y(e.bls_desc), o = j() === "en" ? "en" : "ar", l = G(e), S = k(e.bls_show_compare, !0) && i.length >= 2, P = this.compareOn ?? l === "compare", g = S && P ? "compare" : "single";
+    if (!i.length)
+      return a`<div class="fs-empty" role="status">
+        ${d("أضيفي حالات إضاءة مع صورها من إعدادات العنصر.", "Add lighting states with their images in the element settings.")}
+      </div>`;
+    const w = this.activeSingle(i, k(e.bls_enable_finish, !1));
+    return a`
       <section
-        class=${h({ "fs-section": !0, "fs-animate": i })}
-        style=${y({
-      ...V(s),
+        class=${u({ "fs-section": !0, "fs-animate": s })}
+        style=${_({
+      ...q(r),
       "--bls-aspect": J(e),
-      "--bls-active": String(e.bls_active_color ?? s.accent),
-      "--bls-speed": `${Math.max(0, P(e.bls_speed, 400))}ms`
+      "--bls-active": String(e.bls_active_color ?? r.accent),
+      "--bls-speed": `${Math.max(0, z(e.bls_speed, 400))}ms`
     })}
-        aria-label=${t || c("محاكي الإضاءة والمظهر", "Lighting & finish simulator")}
+        aria-label=${t || d("محاكي الإضاءة والمظهر", "Lighting & finish simulator")}
       >
         <div class="fs-container">
-          ${t || l ? a`<div class="fs-header">
-                ${t ? a`<h2 class="fs-title">${t}</h2>` : b}
-                ${l ? a`<p class="fs-desc">${l}</p>` : b}
-              </div>` : b}
+          ${t || n ? a`<div class="fs-header">
+                ${t ? a`<h2 class="fs-title">${t}</h2>` : c}
+                ${n ? a`<p class="fs-desc">${n}</p>` : c}
+              </div>` : c}
 
-          ${_ ? a`<div class="bls-mode-toggle" role="group" aria-label=${c("طريقة العرض", "View mode")}>
+          ${S ? a`<div class="bls-mode-toggle" role="group" aria-label=${d("طريقة العرض", "View mode")}>
                 <button
                   type="button"
-                  class=${h({ "bls-mode-toggle__btn": !0, "is-active": f === "single" })}
-                  aria-pressed=${f === "single" ? "true" : "false"}
+                  class=${u({ "bls-mode-toggle__btn": !0, "is-active": g === "single" })}
+                  aria-pressed=${g === "single" ? "true" : "false"}
                   @click=${() => this.compareOn = !1}
                 >
-                  ${c("حالة واحدة", "Single")}
+                  ${d("حالة واحدة", "Single")}
                 </button>
                 <button
                   type="button"
-                  class=${h({ "bls-mode-toggle__btn": !0, "is-active": f === "compare" })}
-                  aria-pressed=${f === "compare" ? "true" : "false"}
+                  class=${u({ "bls-mode-toggle__btn": !0, "is-active": g === "compare" })}
+                  aria-pressed=${g === "compare" ? "true" : "false"}
                   @click=${() => this.compareOn = !0}
                 >
-                  ${c("مقارنة", "Compare")}
+                  ${d("مقارنة", "Compare")}
                 </button>
-              </div>` : b}
+              </div>` : c}
 
-          ${f === "compare" ? this.renderCompare(r) : this.renderSingle(r, o)}
+          ${g === "compare" ? this.renderCompare(i) : this.renderSingle(i, o)}
+          ${U({ config: e, prefix: "bls_", ready: !!w, selection: w })}
         </div>
       </section>
-    ` : a`<div class="fs-empty" role="status">
-        ${c("أضيفي حالات إضاءة مع صورها من إعدادات العنصر.", "Add lighting states with their images in the element settings.")}
-      </div>`;
+    `;
   }
 };
-C.styles = [q, j];
-let m = C;
-u([
-  R({ type: Object })
-], m.prototype, "config");
-u([
-  x()
-], m.prototype, "selId");
-u([
-  x()
-], m.prototype, "selName");
-u([
-  x()
-], m.prototype, "selFinish");
-u([
-  x()
-], m.prototype, "cmpA");
-u([
-  x()
-], m.prototype, "cmpB");
-u([
-  x()
-], m.prototype, "sliderPos");
-u([
-  x()
-], m.prototype, "compareOn");
-typeof m < "u" && m.registerSallaComponent("salla-beauty-lighting-finish-simulator");
+M.styles = [H, V];
+let b = M;
+f([
+  I({ type: Object })
+], b.prototype, "config");
+f([
+  v()
+], b.prototype, "selId");
+f([
+  v()
+], b.prototype, "selName");
+f([
+  v()
+], b.prototype, "selFinish");
+f([
+  v()
+], b.prototype, "cmpA");
+f([
+  v()
+], b.prototype, "cmpB");
+f([
+  v()
+], b.prototype, "sliderPos");
+f([
+  v()
+], b.prototype, "sliderDragging");
+f([
+  v()
+], b.prototype, "compareOn");
+typeof b < "u" && b.registerSallaComponent("salla-beauty-lighting-finish-simulator");
 export {
-  m as default
+  b as default
 };

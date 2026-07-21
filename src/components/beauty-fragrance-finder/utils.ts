@@ -25,7 +25,7 @@ export function parseFamilies(raw: unknown): FragranceFamily[] {
     .map((f, i) => {
       const name = localizedString(f.name as LocaleValue);
       return {
-        id: String(f.family_id ?? '').trim() || `family-${i + 1}`,
+        id: String(f.id ?? f.family_id ?? '').trim() || `family-${i + 1}`,
         name,
         color: String(f.color ?? '').trim(),
         icon: String(f.icon ?? '').trim(),

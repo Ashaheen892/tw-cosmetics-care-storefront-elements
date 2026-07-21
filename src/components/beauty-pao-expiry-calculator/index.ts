@@ -11,6 +11,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { getPageLocale, localizedString } from '../../utils/localizedString.js';
+import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -191,6 +192,7 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
         aria-label=${this.stateLabel(result.state, Math.max(0, result.daysRemaining))}
       >
         <svg viewBox="0 0 210 210" aria-hidden="true">
+          <circle class="bpa-dial__disc" cx="105" cy="105" r="80"></circle>
           <circle class="bpa-dial__track" cx="105" cy="105" r=${r}></circle>
           <circle
             class="bpa-dial__value"
@@ -205,6 +207,11 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
           <div class="bpa-dial__unit">
             ${result.daysRemaining >= 0 ? t('يوم متبقٍ', 'days left') : t('يوم مضى', 'days over')}
           </div>
+          ${result.state !== 'expired'
+            ? html`<div class="bpa-dial__ratio">
+                ${t(`${Math.round(remainingRatio * 100)}٪ من المدة`, `${Math.round(remainingRatio * 100)}% of period`)}
+              </div>`
+            : nothing}
         </div>
       </div>
 
@@ -466,6 +473,7 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
           ${this.renderSaved()}
 
           <p class="bpa-notice">${notice}</p>
+          ${renderCommerceOutcome({ config: c, prefix: 'bpa_', ready: true })}
         </div>
       </section>
     `;

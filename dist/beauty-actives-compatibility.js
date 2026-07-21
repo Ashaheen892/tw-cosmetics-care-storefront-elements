@@ -1,9 +1,9 @@
-import { css as R, LitElement as A, html as s, nothing as p } from "lit";
+import { css as L, LitElement as R, html as s, nothing as p } from "lit";
 import { property as P, state as S } from "lit/decorators.js";
 import { classMap as h } from "lit/directives/class-map.js";
 import { styleMap as f } from "lit/directives/style-map.js";
-import { n as C, l as n, t, g as T, s as E, r as V, p as B, i as N, a as z } from "./sharedStyles--LaFqDVC.js";
-const O = R`
+import { n as C, l as n, t, g as T, s as E, r as V, p as B, i as O, a as z, b as N } from "./sharedStyles-BgfDOkwJ.js";
+const M = L`
   .bac-picker {
     display: grid;
     gap: 0;
@@ -82,7 +82,7 @@ const O = R`
   }
 
   .bac-chip:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
   }
 
   .bac-chip:active {
@@ -90,8 +90,8 @@ const O = R`
   }
 
   .bac-chip.is-selected {
-    border-color: var(--accent-color, #c2527f);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, #c2527f) 30%, transparent);
+    border-color: var(--accent-color, var(--fs-store-primary));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, transparent);
   }
 
   .bac-chip__swatch {
@@ -100,17 +100,17 @@ const O = R`
     border-radius: 50%;
     flex: 0 0 auto;
     border: 1px solid color-mix(in srgb, #000 12%, transparent);
-    background: var(--swatch, var(--accent-color, #c2527f));
+    background: var(--swatch, var(--accent-color, var(--fs-store-primary)));
   }
 
   /* —— Verdict card —— */
   .bac-verdict {
     padding: 1.35rem 1.25rem 1.4rem;
     border-radius: var(--section-radius, 16px);
-    border: 2px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 35%, transparent);
+    border: 2px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 35%, transparent);
     background: linear-gradient(
       165deg,
-      color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 14%, var(--card-bg, #fff)) 0%,
+      color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 14%, var(--card-bg, #fff)) 0%,
       var(--card-bg, #fff) 55%
     );
     box-shadow: 0 12px 32px color-mix(in srgb, var(--verdict-color, #000) 12%, transparent);
@@ -139,7 +139,7 @@ const O = R`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: var(--verdict-color, var(--accent-color, #c2527f));
+    background: var(--verdict-color, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     font-size: 1.5rem;
     font-weight: 800;
@@ -151,8 +151,8 @@ const O = R`
     display: inline-block;
     padding: 0.35rem 1rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 18%, var(--card-bg, #fff));
-    color: var(--verdict-color, var(--accent-color, #c2527f));
+    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--card-bg, #fff));
+    color: var(--verdict-color, var(--accent-color, var(--fs-store-primary)));
     font-size: 0.92rem;
     font-weight: 800;
     letter-spacing: 0.01em;
@@ -216,8 +216,8 @@ const O = R`
     margin-top: 0.9rem;
     padding: 0.7rem 0.85rem;
     border-radius: 12px;
-    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 10%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 22%, transparent);
+    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 10%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 22%, transparent);
     text-align: start;
   }
 
@@ -227,7 +227,7 @@ const O = R`
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--verdict-color, var(--accent-color, #c2527f));
+    color: var(--verdict-color, var(--accent-color, var(--fs-store-primary)));
     padding-top: 0.15rem;
   }
 
@@ -246,15 +246,15 @@ const O = R`
     margin-top: 0.75rem;
     padding: 0.65rem 0.8rem;
     border-radius: 12px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 22%, transparent);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, transparent);
     text-align: start;
   }
 
   .bac-timing__label {
     font-weight: 800;
     font-size: 0.82rem;
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
     white-space: nowrap;
   }
 
@@ -286,37 +286,37 @@ const O = R`
       transition: none !important;
     }
   }
-`, M = ["compatible", "caution", "avoid"];
-function j(l) {
-  const e = T(l, "compatible").toLowerCase();
-  return M.includes(e) ? e : "compatible";
-}
+`, j = ["compatible", "caution", "avoid"];
 function D(l) {
+  const e = T(l, "compatible").toLowerCase();
+  return j.includes(e) ? e : "compatible";
+}
+function H(l) {
   return C(l).map((e, i) => {
-    const c = n(e.name);
+    const o = n(e.name);
     return {
-      id: String(e.active_id ?? "").trim() || `active-${i + 1}`,
-      name: c,
+      id: String(e.id ?? e.active_id ?? "").trim() || `active-${i + 1}`,
+      name: o,
       color: String(e.color ?? "").trim(),
       desc: n(e.desc)
     };
   }).filter((e) => e.name);
 }
-function H(l) {
+function U(l) {
   return C(l).map((e) => ({
     a: String(e.a ?? "").trim(),
     b: String(e.b ?? "").trim(),
-    level: j(e.level),
+    level: D(e.level),
     note: n(e.note),
     timing: n(e.timing)
   })).filter((e) => e.a && e.b);
 }
-function U(l, e, i) {
+function Y(l, e, i) {
   return !e || !i ? null : l.find(
-    (c) => c.a === e && c.b === i || c.a === i && c.b === e
+    (o) => o.a === e && o.b === i || o.a === i && o.b === e
   ) ?? null;
 }
-const Y = {
+const q = {
   compatible: {
     ar: "يمكنك دمجهما في روتين واحد — راقبي بشرتك عند أول استخدام.",
     en: "You can use both in one routine — watch your skin on first use."
@@ -330,7 +330,7 @@ const Y = {
     en: "Do not combine in the same routine — pick one at a time."
   }
 };
-function q(l, e, i, c) {
+function F(l, e, i, o) {
   if (e && i && e === i)
     return {
       level: "same",
@@ -342,12 +342,12 @@ function q(l, e, i, c) {
       timing: "",
       hasRule: !1
     };
-  const r = U(l, e, i);
+  const r = Y(l, e, i);
   if (r) {
-    const a = Y[r.level];
+    const a = q[r.level];
     return {
       level: r.level,
-      note: r.note || c,
+      note: r.note || o,
       tip: t(a.ar, a.en),
       timing: r.timing,
       hasRule: !0
@@ -355,7 +355,7 @@ function q(l, e, i, c) {
   }
   return {
     level: "unknown",
-    note: c || t(
+    note: o || t(
       "لا توجد قاعدة محددة لهذا الزوج — راجعي تعليمات المنتج أو استشيري مختصًا.",
       "No specific rule for this pair — check product labels or consult a professional."
     ),
@@ -367,24 +367,24 @@ function q(l, e, i, c) {
     hasRule: !1
   };
 }
-var F = Object.defineProperty, k = (l, e, i, c) => {
-  for (var r = void 0, a = l.length - 1, o; a >= 0; a--)
-    (o = l[a]) && (r = o(e, i, r) || r);
-  return r && F(e, i, r), r;
+var G = Object.defineProperty, $ = (l, e, i, o) => {
+  for (var r = void 0, a = l.length - 1, c; a >= 0; a--)
+    (c = l[a]) && (r = c(e, i, r) || r);
+  return r && G(e, i, r), r;
 };
-const G = {
+const I = {
   compatible: "#2f7d5b",
   caution: "#b8791f",
   avoid: "#b23a4a",
   unknown: "#6b7280",
   same: "#8f7a86"
-}, I = {
+}, J = {
   compatible: "✓",
   caution: "!",
   avoid: "✕",
   unknown: "?",
   same: "↔"
-}, w = class w extends A {
+}, k = class k extends R {
   constructor() {
     super(...arguments), this.config = {}, this.selectedA = "", this.selectedB = "", this.boundLangHandler = () => this.requestUpdate();
   }
@@ -399,31 +399,31 @@ const G = {
   }
   get actives() {
     var e;
-    return D((e = this.config) == null ? void 0 : e.bac_actives);
+    return H((e = this.config) == null ? void 0 : e.bac_actives);
   }
   get rules() {
     var e;
-    return H((e = this.config) == null ? void 0 : e.bac_rules);
+    return U((e = this.config) == null ? void 0 : e.bac_rules);
   }
-  resolvePick(e, i, c) {
+  resolvePick(e, i, o) {
     var r, a;
-    return i && e.some((o) => o.id === i) ? i : ((r = e[c]) == null ? void 0 : r.id) ?? ((a = e[0]) == null ? void 0 : a.id) ?? "";
+    return i && e.some((c) => c.id === i) ? i : ((r = e[o]) == null ? void 0 : r.id) ?? ((a = e[0]) == null ? void 0 : a.id) ?? "";
   }
-  renderChips(e, i, c, r) {
+  renderChips(e, i, o, r) {
     return s`
       <div class="bac-slot">
         <p class="bac-slot__label">${r}</p>
         <div class="bac-chips" role="group" aria-label=${r}>
           ${e.map((a) => {
-      const o = a.id === i;
+      const c = a.id === i;
       return s`
               <button
                 type="button"
-                class=${h({ "bac-chip": !0, "is-selected": o })}
+                class=${h({ "bac-chip": !0, "is-selected": c })}
                 style=${f(a.color ? { "--swatch": a.color } : {})}
-                aria-pressed=${o ? "true" : "false"}
+                aria-pressed=${c ? "true" : "false"}
                 title=${a.desc || a.name}
-                @click=${() => c(a.id)}
+                @click=${() => o(a.id)}
               >
                 <span class="bac-chip__swatch" aria-hidden="true"></span>
                 <span>${a.name}</span>
@@ -434,8 +434,8 @@ const G = {
       </div>
     `;
   }
-  renderResult(e, i, c) {
-    const r = this.config || {}, a = e.find(($) => $.id === i) ?? null, o = e.find(($) => $.id === c) ?? null, _ = n(r.bac_default_note) || t(
+  renderResult(e, i, o) {
+    const r = this.config || {}, a = e.find((y) => y.id === i) ?? null, c = e.find((y) => y.id === o) ?? null, _ = n(r.bac_default_note) || t(
       "لا توجد قاعدة محددة لهذا الزوج في قاعدة البيانات.",
       "No specific rule for this pair in the database."
     ), g = {
@@ -444,22 +444,22 @@ const G = {
       avoid: n(r.bac_label_avoid) || t("تجنّبي الدمج", "Avoid"),
       unknown: n(r.bac_label_unknown) || t("لا قاعدة / غير معروف", "No rule / unknown"),
       same: t("نفس المكوّن", "Same ingredient")
-    }, v = q(this.rules, i, c, _), { level: d, note: x, tip: u, timing: m } = v, L = G[d], y = n(r.bac_result_title);
+    }, v = F(this.rules, i, o, _), { level: d, note: x, tip: u, timing: m } = v, A = I[d], w = n(r.bac_result_title);
     return s`
       <div
         class=${h({ "bac-verdict": !0, [`bac-verdict--${d}`]: !0 })}
         role="region"
         aria-live="polite"
         aria-label=${g[d]}
-        style=${f({ "--verdict-color": L })}
+        style=${f({ "--verdict-color": A })}
       >
-        ${y ? s`<h3 class="bac-verdict__title">${y}</h3>` : p}
+        ${w ? s`<h3 class="bac-verdict__title">${w}</h3>` : p}
         <div class="bac-verdict__hero">
-          <span class="bac-verdict__icon" aria-hidden="true">${I[d]}</span>
+          <span class="bac-verdict__icon" aria-hidden="true">${J[d]}</span>
           <span class="bac-verdict__badge">${g[d]}</span>
         </div>
 
-        ${a && o ? s`<div class="bac-pair" aria-label=${t("المكوّنان المختاران", "Selected pair")}>
+        ${a && c ? s`<div class="bac-pair" aria-label=${t("المكوّنان المختاران", "Selected pair")}>
               <span class="bac-pair__pill">
                 <span
                   class="bac-pair__dot"
@@ -472,10 +472,10 @@ const G = {
               <span class="bac-pair__pill">
                 <span
                   class="bac-pair__dot"
-                  style=${f(o.color ? { background: o.color } : {})}
+                  style=${f(c.color ? { background: c.color } : {})}
                   aria-hidden="true"
                 ></span>
-                <span>${o.name}</span>
+                <span>${c.name}</span>
               </span>
             </div>` : p}
 
@@ -494,14 +494,14 @@ const G = {
     `;
   }
   render() {
-    const e = this.config || {}, i = V(e, "bac_"), c = i.animate && !B(), r = this.actives, a = n(e.bac_title), o = n(e.bac_desc), _ = N(e.bac_show_notice, !0), g = n(e.bac_notice) || t(
+    const e = this.config || {}, i = V(e, "bac_"), o = i.animate && !B(), r = this.actives, a = n(e.bac_title), c = n(e.bac_desc), _ = O(e.bac_show_notice, !0), g = n(e.bac_notice) || t(
       "هذه المعلومات توعوية عامة ولا تُغني عن استشارة مختص العناية بالبشرة.",
       "This information is general and educational and does not replace advice from a skincare professional."
     );
     if (r.length < 2)
       return s`
         <section
-          class=${h({ "fs-section": !0, "fs-animate": c })}
+          class=${h({ "fs-section": !0, "fs-animate": o })}
           style=${f(z(i))}
           aria-label=${a || t("مدقّق توافق المكونات الفعّالة", "Actives compatibility checker")}
         >
@@ -515,14 +515,14 @@ const G = {
     const v = this.resolvePick(r, this.selectedA, 0), d = this.resolvePick(r, this.selectedB, 1), x = n(e.bac_pick_a_label) || t("المكوّن الأول", "First active"), u = n(e.bac_pick_b_label) || t("المكوّن الثاني", "Second active");
     return s`
       <section
-        class=${h({ "fs-section": !0, "fs-animate": c })}
+        class=${h({ "fs-section": !0, "fs-animate": o })}
         style=${f(z(i))}
         aria-label=${a || t("مدقّق توافق المكونات الفعّالة", "Actives compatibility checker")}
       >
         <div class="fs-container">
-          ${a || o ? s`<div class="fs-header">
+          ${a || c ? s`<div class="fs-header">
                 ${a ? s`<h2 class="fs-title">${a}</h2>` : p}
-                ${o ? s`<p class="fs-desc">${o}</p>` : p}
+                ${c ? s`<p class="fs-desc">${c}</p>` : p}
               </div>` : p}
 
           ${this.renderResult(r, v, d)}
@@ -538,20 +538,21 @@ const G = {
           </div>
 
           ${_ ? s`<p class="bac-notice">${g}</p>` : p}
+          ${N({ config: e, prefix: "bac_", ready: !!this.selectedA, selection: this.selectedA })}
         </div>
       </section>
     `;
   }
 };
-w.styles = [E, O];
-let b = w;
-k([
+k.styles = [E, M];
+let b = k;
+$([
   P({ type: Object })
 ], b.prototype, "config");
-k([
+$([
   S()
 ], b.prototype, "selectedA");
-k([
+$([
   S()
 ], b.prototype, "selectedB");
 typeof b < "u" && b.registerSallaComponent("salla-beauty-actives-compatibility");

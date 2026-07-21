@@ -6,11 +6,11 @@
     <title>معاينة العناصر — بدون محرر</title>
     <style>
       :root {
-        --page-bg: #f7f1ec;
-        --ink: #3a2a2f;
-        --muted: #7a646c;
-        --card: #fffdfb;
-        --line: rgba(90, 60, 70, 0.12);
+        --page-bg: #fbf5f8;
+        --ink: #2c1810;
+        --muted: #64748b;
+        --card: #ffffff;
+        --line: rgba(23, 32, 51, 0.1);
         --accent: #c2527f;
       }
       * { box-sizing: border-box; }
@@ -18,8 +18,7 @@
         margin: 0;
         padding: 0;
         background:
-          radial-gradient(1200px 500px at 10% -10%, rgba(194, 82, 127, 0.12), transparent 55%),
-          radial-gradient(900px 420px at 100% 0%, rgba(214, 168, 120, 0.16), transparent 50%),
+          radial-gradient(1200px 500px at 10% -10%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 55%),
           var(--page-bg);
         color: var(--ink);
         font-family: "Segoe UI", Tahoma, "Noto Sans Arabic", sans-serif;
@@ -34,19 +33,11 @@
         gap: 1rem;
         padding: 0.85rem 1.25rem;
         backdrop-filter: blur(10px);
-        background: rgba(247, 241, 236, 0.88);
+        background: color-mix(in srgb, var(--page-bg) 90%, #fff);
         border-bottom: 1px solid var(--line);
       }
-      .topbar h1 {
-        margin: 0;
-        font-size: 1.05rem;
-        font-weight: 800;
-      }
-      .topbar p {
-        margin: 0.15rem 0 0;
-        color: var(--muted);
-        font-size: 0.82rem;
-      }
+      .topbar h1 { margin: 0; font-size: 1.05rem; font-weight: 800; }
+      .topbar p { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.82rem; }
       .nav {
         display: flex;
         flex-wrap: wrap;
@@ -57,95 +48,64 @@
       .nav a {
         text-decoration: none;
         color: var(--ink);
-        font-size: 0.72rem;
-        padding: 0.35rem 0.55rem;
-        border: 1px solid var(--line);
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.35rem 0.65rem;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.7);
-        white-space: nowrap;
+        border: 1px solid var(--line);
+        background: var(--card);
       }
       .nav a:hover { border-color: var(--accent); color: var(--accent); }
-      .stage {
-        width: min(1600px, 100%);
-        margin: 0 auto;
-        padding: 1.25rem;
-      }
-      .card {
+      .stage { width: min(1600px, 100%); margin: 0 auto; padding: 1.25rem; }
+      .component-card {
         margin: 0 0 2rem;
+        overflow: hidden;
+        border-radius: 20px;
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 22px;
-        overflow: hidden;
-        box-shadow: 0 18px 40px rgba(70, 40, 50, 0.06);
+        box-shadow: 0 12px 36px rgba(23, 32, 51, 0.06);
       }
       .card-head {
         display: flex;
-        align-items: center;
+        align-items: baseline;
         justify-content: space-between;
         gap: 1rem;
-        padding: 0.9rem 1.15rem;
+        padding: 0.85rem 1.1rem;
         border-bottom: 1px solid var(--line);
-        background: linear-gradient(180deg, #fff, #fbf6f2);
       }
-      .card-head h2 {
-        margin: 0;
-        font-size: 1rem;
-        font-weight: 800;
-      }
-      .card-head code {
-        font-size: 0.72rem;
-        color: var(--muted);
-      }
-      .frame {
-        width: 1600px;
-        max-width: 100%;
-        min-height: 1200px;
-        margin: 0 auto;
-        padding: 1.25rem;
-        background: #fff;
-      }
-      .frame[data-component] {
-        display: block;
-      }
-      .solo .card { display: none; }
-      .solo .card.is-solo { display: block; }
-      .solo .topbar .nav { display: none; }
-      .solo .stage { padding-top: 0.5rem; }
-      .solo .card-head { display: none; }
-      .solo .frame {
-        min-height: 1200px;
-        height: 1200px;
-        overflow: hidden;
-      }
+      .card-head h2 { margin: 0; font-size: 1rem; font-weight: 800; }
+      .card-head code { font-size: 0.72rem; color: var(--muted); }
+      .frame { min-height: 640px; }
+      body.solo .nav, body.solo .card-head { display: none; }
+      body.solo .component-card:not(.is-solo) { display: none; }
     </style>
   </head>
   <body>
     <header class="topbar">
       <div>
-        <h1>معاينة عناصر التجميل والعناية</h1>
-        <p>وضع عرض نظيف بدون محرر الإعدادات — مناسب للقطات والـ GIF</p>
+        <h1 id="page-title">معاينة العناصر — بدون محرر</h1>
+        <p>وضع عرض نظيف بدون محرر الإعدادات — مناسب للقطات والـ WebP المتحرك</p>
       </div>
       <nav class="nav" id="nav"></nav>
     </header>
     <main class="stage" id="stage"></main>
     <script type="module">
-      const COMPONENTS = [
-        ['beauty-shade-finder', 'محدد درجة المكياج المناسبة'],
-        ['beauty-routine-builder', 'منشئ روتين العناية'],
-        ['beauty-ingredient-lab', 'مختبر المكونات والقوام'],
-        ['beauty-care-assistant', 'مساعد اختيار منتجات الجمال'],
-        ['beauty-collection-reveal', 'الكشف الإبداعي عن المجموعة'],
-        ['beauty-face-zone-map', 'خريطة مناطق الوجه والعناية'],
-        ['beauty-routine-layering-board', 'ترتيب طبقات روتين العناية'],
-        ['beauty-lighting-finish-simulator', 'محاكي الإضاءة والمظهر'],
-        ['beauty-pao-expiry-calculator', 'حاسبة مدة الاستخدام بعد الفتح'],
-        ['beauty-texture-absorption-lab', 'مختبر القوام والامتصاص'],
-        ['beauty-actives-compatibility', 'مدقّق توافق المكوّنات الفعّالة'],
-        ['beauty-fragrance-finder', 'محدد عائلة العطر'],
-        ['beauty-spf-guide', 'دليل الحماية من الشمس'],
-        ['beauty-color-harmony', 'عجلة تناسق ألوان المكياج'],
-        ['beauty-weekly-planner', 'مخطّط الروتين الأسبوعي'],
-      ];
+      // Shim: outside the Twilight runtime, provide registerSallaComponent so
+      // component modules (post salla transform) can self-register.
+      if (!Function.prototype.registerSallaComponent) {
+        Object.defineProperty(Function.prototype, 'registerSallaComponent', {
+          value(tag) {
+            if (tag && !customElements.get(tag)) customElements.define(tag, this);
+          },
+          configurable: true,
+        });
+      }
+
+      function arabicTitle(title) {
+        if (typeof title === 'string') return title.trim();
+        if (title && typeof title === 'object') return String(title.ar || title.en || '').trim();
+        return '';
+      }
 
       function buildDefaults(raw) {
         const data = {};
@@ -160,9 +120,7 @@
           if (field.format === 'dropdown-list' && Array.isArray(field.selected) && field.selected[0]) {
             const pick = field.selected[0];
             data[field.id] =
-              pick && typeof pick === 'object'
-                ? pick.value ?? pick.key ?? pick
-                : pick;
+              pick && typeof pick === 'object' ? pick.value ?? pick.key ?? pick : pick;
             continue;
           }
           if (typeof field.value !== 'undefined') data[field.id] = field.value;
@@ -175,34 +133,44 @@
       if (only) document.body.classList.add('solo');
 
       const bundle = await fetch('/twilight-bundle.json').then((r) => r.json());
-      const byName = Object.fromEntries((bundle.components || []).map((c) => [c.name, c]));
+      const components = (bundle.components || []).filter((c) => c?.name);
+      document.getElementById('page-title').textContent =
+        arabicTitle(bundle.name) || bundle.name || 'معاينة العناصر — بدون محرر';
 
       const nav = document.getElementById('nav');
       const stage = document.getElementById('stage');
 
-      for (const [name, title] of COMPONENTS) {
+      for (const component of components) {
+        const name = component.name;
         if (only && only !== name) continue;
+        const title = arabicTitle(component.title) || name;
+
         const a = document.createElement('a');
         a.href = `#${name}`;
         a.textContent = title;
         nav.appendChild(a);
 
         const card = document.createElement('section');
-        card.className = 'card' + (only === name ? ' is-solo' : '');
+        card.className = 'component-card' + (only === name ? ' is-solo' : '');
         card.id = name;
+        card.setAttribute('data-component', name);
         card.innerHTML = `
           <div class="card-head">
             <h2>${title}</h2>
             <code>${name}</code>
           </div>
-          <div class="frame" data-component="${name}"></div>
+          <div class="frame"></div>
         `;
         stage.appendChild(card);
 
-        await import(`/src/components/${name}/index.ts`);
-        const tag = `salla-${name}`;
-        const el = document.createElement(tag);
-        el.config = buildDefaults(byName[name]);
+        try {
+          await import(`/src/components/${name}/index.ts`);
+        } catch (err) {
+          console.error(`Failed to load ${name}`, err);
+          continue;
+        }
+        const el = document.createElement(`salla-${name}`);
+        el.config = buildDefaults(component);
         card.querySelector('.frame').appendChild(el);
       }
     </script>

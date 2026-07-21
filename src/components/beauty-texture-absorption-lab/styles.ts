@@ -26,14 +26,14 @@ export const componentStyles = css`
   .bta-sample__blob {
     width: 3.4rem;
     height: 3.4rem;
-    background: var(--sample-color, var(--accent-color, #c2527f));
+    background: var(--sample-color, var(--accent-color, var(--fs-store-primary)));
     box-shadow: inset 0 -6px 10px rgba(0, 0, 0, 0.15), 0 6px 14px rgba(43, 33, 28, 0.18);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
   .bta-sample:hover .bta-sample__blob { transform: scale(1.08); }
   .bta-sample.is-active .bta-sample__blob {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 40%, transparent), 0 8px 18px rgba(43, 33, 28, 0.22);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sample-color, var(--accent-color, var(--fs-store-primary))) 40%, transparent), 0 8px 18px rgba(43, 33, 28, 0.22);
   }
 
   .bta-sample__name { font-size: 0.78rem; font-weight: 700; color: var(--text-color, #33232e); text-align: center; }
@@ -76,7 +76,7 @@ export const componentStyles = css`
     width: 30%;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: var(--sample-color, var(--accent-color, #c2527f));
+    background: var(--sample-color, var(--accent-color, var(--fs-store-primary)));
     box-shadow: inset 0 -8px 14px rgba(0, 0, 0, 0.16);
     transform: scale(calc(0.5 + var(--spread, 0) * 1.9));
     opacity: calc(1 - var(--spread, 0) * 0.55);
@@ -106,13 +106,13 @@ export const componentStyles = css`
     padding: 0.55rem 1.25rem;
     border: none;
     border-radius: 999px;
-    background: var(--sample-color, var(--accent-color, #c2527f));
+    background: var(--sample-color, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     font: inherit;
     font-size: 0.88rem;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 8px 22px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 45%, transparent);
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--sample-color, var(--accent-color, var(--fs-store-primary))) 45%, transparent);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     white-space: nowrap;
   }
@@ -125,7 +125,7 @@ export const componentStyles = css`
   .bta-play__cta:hover,
   .bta-play__cta:focus-visible {
     transform: translateX(-50%) scale(1.02);
-    box-shadow: 0 10px 26px color-mix(in srgb, var(--sample-color, var(--accent-color, #c2527f)) 55%, transparent);
+    box-shadow: 0 10px 26px color-mix(in srgb, var(--sample-color, var(--accent-color, var(--fs-store-primary))) 55%, transparent);
   }
 
   [dir='rtl'] .bta-play__cta:hover,
@@ -151,22 +151,22 @@ export const componentStyles = css`
   .bta-indicators { display: grid; gap: 0.55rem; }
 
   .bta-indicators .fs-meter {
-    --meter-fill: var(--meter-color, var(--accent-color, #c2527f));
+    --meter-fill: var(--meter-color, var(--accent-color, var(--fs-store-primary)));
   }
 
   .bta-indicators .fs-meter > span {
-    background: var(--meter-fill, var(--accent-color, #c2527f));
+    background: var(--meter-fill, var(--accent-color, var(--fs-store-primary)));
   }
 
   .bta-ind { display: grid; grid-template-columns: 7.5rem 1fr auto; align-items: center; gap: 0.6rem; font-size: 0.8rem; }
   .bta-ind__label { color: var(--muted-color, #8f7a86); font-weight: 700; }
-  .bta-ind__val { color: var(--meter-color, var(--accent-color, #c2527f)); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .bta-ind__val { color: var(--meter-color, var(--accent-color, var(--fs-store-primary))); font-weight: 800; font-variant-numeric: tabular-nums; }
 
   .bta-dots { display: inline-flex; gap: 0.28rem; }
   .bta-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; background: color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent); }
-  .bta-dot.is-on { background: var(--meter-color, var(--accent-color, #c2527f)); }
-  .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--meter-color, var(--accent-color, #c2527f)); }
-  .bta-circle.is-on { background: var(--meter-color, var(--accent-color, #c2527f)); }
+  .bta-dot.is-on { background: var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
+  .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
+  .bta-circle.is-on { background: var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
 
   .bta-gauge {
     --p: 0;
@@ -174,7 +174,7 @@ export const componentStyles = css`
     height: 1.5rem;
     border-radius: 3rem 3rem 0 0;
     background:
-      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, #c2527f)) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
+      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, var(--fs-store-primary))) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
   }
 
   .bta-facts { display: grid; gap: 0.4rem; font-size: 0.84rem; }

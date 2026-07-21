@@ -73,8 +73,8 @@ export const componentStyles = css`
   .bpa-input:focus,
   .bpa-select:focus {
     outline: none;
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 55%, var(--border-color, #f2dde7));
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, #c2527f) 18%, transparent);
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 55%, var(--border-color, #f2dde7));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 18%, transparent);
   }
 
   .bpa-cat-chips,
@@ -109,19 +109,19 @@ export const componentStyles = css`
   .bpa-cat-chip:hover,
   .bpa-pao-chip:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
   }
 
   .bpa-cat-chip.is-active,
   .bpa-pao-chip.is-active {
     background: linear-gradient(
       135deg,
-      var(--accent-color, #c2527f),
-      color-mix(in srgb, var(--accent-color, #c2527f) 65%, #5a2f4d)
+      var(--accent-color, var(--fs-store-primary)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
     );
     border-color: transparent;
     color: #fff;
-    box-shadow: 0 8px 18px color-mix(in srgb, var(--accent-color, #c2527f) 28%, transparent);
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, transparent);
   }
 
   .bpa-cat-chip__icon {
@@ -139,12 +139,12 @@ export const componentStyles = css`
   .bpa-hero {
     min-width: 0;
     background: var(--card-bg, #fff);
-    border: 1.5px solid color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 28%, var(--border-color, #f2dde7));
+    border: 1.5px solid color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #f2dde7));
     border-radius: var(--section-radius, 20px);
     padding: 1.45rem 1.25rem 1.35rem;
     text-align: center;
     box-shadow:
-      0 1px 0 color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 12%, transparent),
+      0 1px 0 color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 12%, transparent),
       0 16px 36px rgba(120, 44, 82, 0.09);
   }
 
@@ -174,12 +174,12 @@ export const componentStyles = css`
 
   .bpa-hero--empty {
     border-style: dashed;
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 22%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #f2dde7));
     box-shadow: none;
     background:
       radial-gradient(
         80% 70% at 50% 0%,
-        color-mix(in srgb, var(--accent-color, #c2527f) 8%, transparent),
+        color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, transparent),
         transparent 70%
       ),
       color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
@@ -208,9 +208,9 @@ export const componentStyles = css`
     place-items: center;
     border-radius: 50%;
     font-size: 1.55rem;
-    color: var(--accent-color, #c2527f);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
-    border: 1px dashed color-mix(in srgb, var(--accent-color, #c2527f) 40%, transparent);
+    color: var(--accent-color, var(--fs-store-primary));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
+    border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, transparent);
   }
 
   .bpa-error {
@@ -226,9 +226,10 @@ export const componentStyles = css`
 
   .bpa-dial {
     position: relative;
-    width: min(230px, 68vw);
-    height: min(230px, 68vw);
-    margin: 0.15rem auto 1.15rem;
+    width: min(240px, 70vw);
+    height: min(240px, 70vw);
+    margin: 0.35rem auto 1.25rem;
+    filter: drop-shadow(0 10px 24px color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 18%, transparent));
   }
 
   .bpa-dial svg {
@@ -237,16 +238,23 @@ export const componentStyles = css`
     height: 100%;
   }
 
+  .bpa-dial__disc {
+    fill: color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 7%, var(--card-bg, #fff));
+    stroke: color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 14%, transparent);
+    stroke-width: 1;
+  }
+
   .bpa-dial__track {
     fill: none;
-    stroke: color-mix(in srgb, var(--border-color, #f2dde7) 75%, transparent);
-    stroke-width: 13;
+    stroke: color-mix(in srgb, var(--bpa-color, var(--border-color, #f2dde7)) 14%, var(--border-color, #f2dde7));
+    stroke-width: 14;
+    opacity: 0.55;
   }
 
   .bpa-dial__value {
     fill: none;
-    stroke: var(--bpa-color, var(--accent-color, #c2527f));
-    stroke-width: 13;
+    stroke: var(--bpa-color, var(--accent-color, var(--fs-store-primary)));
+    stroke-width: 14;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.65s ease, stroke 0.3s ease;
   }
@@ -255,23 +263,36 @@ export const componentStyles = css`
     position: absolute;
     inset: 0;
     display: grid;
-    place-items: center;
+    place-content: center;
+    justify-items: center;
+    row-gap: 0.15rem;
     text-align: center;
+    padding: 1.4rem;
   }
 
   .bpa-dial__days {
-    font-size: clamp(2.35rem, 8vw, 3.1rem);
+    font-size: clamp(2.5rem, 8vw, 3.4rem);
     font-weight: 800;
     line-height: 1;
     color: var(--bpa-color, var(--text-color, #33232e));
     letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
   }
 
   .bpa-dial__unit {
-    font-size: 0.84rem;
-    color: var(--muted-color, #8f7a86);
-    margin-top: 0.3rem;
+    font-size: 0.86rem;
+    color: var(--text-color, #33232e);
+    font-weight: 800;
+  }
+
+  .bpa-dial__ratio {
+    font-size: 0.7rem;
     font-weight: 700;
+    color: var(--bpa-color, var(--muted-color, #8f7a86));
+    padding: 0.18rem 0.6rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 12%, var(--card-bg, #fff));
+    margin-top: 0.25rem;
   }
 
   .bpa-state {
@@ -281,9 +302,9 @@ export const componentStyles = css`
     font-weight: 800;
     font-size: 0.9rem;
     margin-bottom: 1.1rem;
-    background: color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 16%, var(--card-bg, #fff));
-    color: var(--bpa-color, var(--accent-color, #c2527f));
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 22%, transparent);
+    background: color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 16%, var(--card-bg, #fff));
+    color: var(--bpa-color, var(--accent-color, var(--fs-store-primary)));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 22%, transparent);
   }
 
   .bpa-dates {
@@ -297,7 +318,7 @@ export const componentStyles = css`
   .bpa-date-cell {
     padding: 0.75rem 0.65rem;
     border-radius: 14px;
-    background: color-mix(in srgb, var(--bpa-color, var(--accent-color, #c2527f)) 6%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 6%, var(--card-bg, #fff));
     border: 1px solid color-mix(in srgb, var(--bpa-color, var(--border-color, #f2dde7)) 18%, var(--border-color, #f2dde7));
   }
 
@@ -332,8 +353,8 @@ export const componentStyles = css`
   .bpa-tips {
     padding: 0.8rem 0.9rem;
     border-radius: 14px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 7%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 14%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 7%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--border-color, #f2dde7));
     font-size: 0.84rem;
     line-height: 1.6;
     color: var(--text-color, #33232e);
@@ -343,7 +364,7 @@ export const componentStyles = css`
     margin: 0 0 0.35rem;
     font-size: 0.76rem;
     font-weight: 800;
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
   }
 
   .bpa-tips p {
@@ -405,7 +426,7 @@ export const componentStyles = css`
     padding: 1.4rem 1rem;
     text-align: center;
     border-radius: 14px;
-    border: 1px dashed color-mix(in srgb, var(--accent-color, #c2527f) 25%, var(--border-color, #f2dde7));
+    border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #f2dde7));
     background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
     color: var(--muted-color, #8f7a86);
     font-size: 0.88rem;
@@ -523,8 +544,8 @@ export const componentStyles = css`
   }
 
   .bpa-icon-btn:hover {
-    color: var(--accent-color, #c2527f);
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
+    color: var(--accent-color, var(--fs-store-primary));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
   }
 
   @media (max-width: 639px) {

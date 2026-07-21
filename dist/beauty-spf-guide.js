@@ -1,9 +1,9 @@
-import { css as B, LitElement as V, html as r, nothing as p } from "lit";
+import { css as B, LitElement as V, html as r, nothing as c } from "lit";
 import { property as H, state as v } from "lit/decorators.js";
 import { classMap as C } from "lit/directives/class-map.js";
 import { styleMap as u } from "lit/directives/style-map.js";
-import { n as x, l as a, f, h as y, t as n, s as D, i as P, r as K, p as j, a as z } from "./sharedStyles--LaFqDVC.js";
-const A = B`
+import { n as y, l as a, h as f, j as x, t as o, s as j, i as P, r as D, p as K, a as z, b as A } from "./sharedStyles-BgfDOkwJ.js";
+const F = B`
   :host {
     display: block;
     direction: inherit;
@@ -40,8 +40,8 @@ const A = B`
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      var(--accent-color, #c2527f),
-      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+      var(--accent-color, var(--fs-store-primary)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #7b2c52)
     );
     transition: width 0.25s ease;
   }
@@ -111,13 +111,13 @@ const A = B`
   }
 
   .bsg-option:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
   }
 
   .bsg-option[aria-pressed='true'] {
-    border-color: var(--accent-color, #c2527f);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, #c2527f) 25%, transparent);
+    border-color: var(--accent-color, var(--fs-store-primary));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, transparent);
   }
 
   .bsg-option--compact {
@@ -154,7 +154,7 @@ const A = B`
     border-radius: 50%;
     border: 1px solid color-mix(in srgb, #000 12%, transparent);
     flex: 0 0 auto;
-    background: var(--bsg-swatch, var(--accent-color, #c2527f));
+    background: var(--bsg-swatch, var(--accent-color, var(--fs-store-primary)));
   }
 
   .bsg-nav {
@@ -198,8 +198,8 @@ const A = B`
     gap: 0.4rem;
     padding: 0.35rem 0.7rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 22%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #f2dde7));
     font-size: 0.82rem;
     font-weight: 700;
     color: var(--text-color, #33232e);
@@ -216,8 +216,8 @@ const A = B`
     gap: 0.3rem;
     padding: 0.9rem 1rem;
     border-radius: calc(var(--section-radius, 16px) * 0.7);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 20%, transparent);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 20%, transparent);
   }
 
   .bsg-duration--hero {
@@ -225,10 +225,10 @@ const A = B`
     text-align: center;
     background: linear-gradient(
       145deg,
-      color-mix(in srgb, var(--accent-color, #c2527f) 14%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 30%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, var(--border-color, #f2dde7));
   }
 
   .bsg-duration__label {
@@ -241,7 +241,7 @@ const A = B`
     font-size: 1.85rem;
     font-weight: 800;
     line-height: 1.1;
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
     letter-spacing: -0.01em;
   }
 
@@ -271,8 +271,8 @@ const A = B`
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      color-mix(in srgb, #e0a100 80%, var(--accent-color, #c2527f)),
-      var(--accent-color, #c2527f)
+      color-mix(in srgb, #e0a100 80%, var(--accent-color, var(--fs-store-primary))),
+      var(--accent-color, var(--fs-store-primary))
     );
     transition: width 0.35s ease;
   }
@@ -378,58 +378,58 @@ const A = B`
     }
   }
 `;
-function F(i) {
+function U(n) {
   const e = ["phototype", "spf"];
-  return i && e.push("condition"), e;
+  return n && e.push("condition"), e;
 }
-function U(i) {
-  return x(i).map((e, s) => {
+function O(n) {
+  return y(n).map((e, s) => {
     const t = a(e.name);
     return {
-      id: String(e.pt_id ?? "").trim() || `pt-${s + 1}`,
+      id: String(e.id ?? e.pt_id ?? "").trim() || `pt-${s + 1}`,
       name: t,
       desc: a(e.desc),
-      baseMinutes: f(y(e.base_minutes, 15), 1, 240),
+      baseMinutes: f(x(e.base_minutes, 15), 1, 240),
       color: String(e.color ?? "").trim()
     };
   }).filter((e) => e.name);
 }
-function O(i) {
-  return x(i).map((e) => {
-    const s = f(Math.round(y(e.spf, 30)), 1, 100), t = a(e.label) || `SPF ${s}`;
+function q(n) {
+  return y(n).map((e) => {
+    const s = f(Math.round(x(e.spf, 30)), 1, 100), t = a(e.label) || `SPF ${s}`;
     return { spf: s, label: t };
   }).filter((e) => e.spf > 0);
 }
-function q(i) {
-  return x(i).map((e, s) => {
+function Y(n) {
+  return y(n).map((e, s) => {
     const t = a(e.name);
     return {
-      id: String(e.cond_id ?? "").trim() || `cond-${s + 1}`,
+      id: String(e.id ?? e.cond_id ?? "").trim() || `cond-${s + 1}`,
       name: t,
-      factor: f(y(e.factor, 1), 0.1, 3),
+      factor: f(x(e.factor, 1), 0.1, 3),
       desc: a(e.desc)
     };
   }).filter((e) => e.name);
 }
-function Y(i) {
-  return x(i).map((e) => a(e.tip)).filter(Boolean);
+function J(n) {
+  return y(n).map((e) => a(e.tip)).filter(Boolean);
 }
-function J(i, e, s) {
-  return f(i * e * s, 0, 1e5);
+function Q(n, e, s) {
+  return f(n * e * s, 0, 1e5);
 }
-function Q(i) {
-  const e = Math.max(0, Math.round(i)), s = Math.floor(e / 60), t = e % 60, o = n("س", "h"), l = n("د", "m");
-  return s <= 0 ? `${t}${l}` : t <= 0 ? `${s}${o}` : `${s}${o} ${t}${l}`;
+function W(n) {
+  const e = Math.max(0, Math.round(n)), s = Math.floor(e / 60), t = e % 60, i = o("س", "h"), l = o("د", "m");
+  return s <= 0 ? `${t}${l}` : t <= 0 ? `${s}${i}` : `${s}${i} ${t}${l}`;
 }
-function _(i, e) {
-  return i === "phototype" ? a(e.bsg_phototype_label) || n("نوع البشرة", "Skin phototype") : i === "spf" ? a(e.bsg_spf_label) || n("عامل الحماية SPF", "SPF value") : a(e.bsg_condition_label) || n("ظروف التعرّض", "Exposure condition");
+function _(n, e) {
+  return n === "phototype" ? a(e.bsg_phototype_label) || o("نوع البشرة", "Skin phototype") : n === "spf" ? a(e.bsg_spf_label) || o("عامل الحماية SPF", "SPF value") : a(e.bsg_condition_label) || o("ظروف التعرّض", "Exposure condition");
 }
-var W = Object.defineProperty, m = (i, e, s, t) => {
-  for (var o = void 0, l = i.length - 1, c; l >= 0; l--)
-    (c = i[l]) && (o = c(e, s, o) || o);
-  return o && W(e, s, o), o;
+var X = Object.defineProperty, m = (n, e, s, t) => {
+  for (var i = void 0, l = n.length - 1, p; l >= 0; l--)
+    (p = n[l]) && (i = p(e, s, i) || i);
+  return i && X(e, s, i), i;
 };
-const X = 480, $ = class $ extends V {
+const Z = 480, $ = class $ extends V {
   constructor() {
     super(...arguments), this.config = {}, this.selectedPtId = "", this.selectedSpf = 0, this.selectedCondId = "", this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate(), this.boundKeyHandler = (e) => this.onKeyDown(e);
   }
@@ -444,18 +444,18 @@ const X = 480, $ = class $ extends V {
   }
   get phototypes() {
     var e;
-    return U((e = this.config) == null ? void 0 : e.bsg_phototypes);
+    return O((e = this.config) == null ? void 0 : e.bsg_phototypes);
   }
   get spfValues() {
     var e;
-    return O((e = this.config) == null ? void 0 : e.bsg_spf_values);
+    return q((e = this.config) == null ? void 0 : e.bsg_spf_values);
   }
   get conditions() {
     var e;
-    return q((e = this.config) == null ? void 0 : e.bsg_conditions);
+    return Y((e = this.config) == null ? void 0 : e.bsg_conditions);
   }
   get plan() {
-    return F(this.conditions.length > 0);
+    return U(this.conditions.length > 0);
   }
   get onResults() {
     return this.stepIndex >= this.plan.length;
@@ -468,8 +468,8 @@ const X = 480, $ = class $ extends V {
     return e ? e === "phototype" ? !!this.selectedPtId : e === "spf" ? this.selectedSpf > 0 : e === "condition" ? !!this.selectedCondId : !1 : !1;
   }
   label(e, s, t) {
-    var o;
-    return a((o = this.config) == null ? void 0 : o[e]) || n(s, t);
+    var i;
+    return a((i = this.config) == null ? void 0 : i[e]) || o(s, t);
   }
   goNext() {
     this.stepIndex < this.plan.length && (this.stepIndex += 1);
@@ -485,12 +485,12 @@ const X = 480, $ = class $ extends V {
     s != null && s.closest("button, a, input, textarea, select") || (e.key === "Enter" && !this.onResults && this.canNext && (e.preventDefault(), this.goNext()), e.key === "Backspace" && this.stepIndex > 0 && !this.onResults && (e.preventDefault(), this.goBack()));
   }
   renderProgress(e) {
-    const s = Math.min(this.stepIndex + 1, e), t = e ? Math.round(Math.min(this.stepIndex, e) / e * 100) : 0, o = this.currentStep, l = o ? _(o, this.config || {}) : "";
+    const s = Math.min(this.stepIndex + 1, e), t = e ? Math.round(Math.min(this.stepIndex, e) / e * 100) : 0, i = this.currentStep, l = i ? _(i, this.config || {}) : "";
     return r`
       <div class="bsg-progress" aria-hidden="true">
         <div class="bsg-progress__bar"><span style=${u({ width: `${t}%` })}></span></div>
         <span class="bsg-progress__text">
-          ${this.onResults ? n("النتيجة", "Result") : r`${n(`الخطوة ${s} من ${e}`, `Step ${s} of ${e}`)}
+          ${this.onResults ? o("النتيجة", "Result") : r`${o(`الخطوة ${s} من ${e}`, `Step ${s} of ${e}`)}
                 <span class="bsg-progress__step"> · ${l}</span>`}
         </span>
       </div>
@@ -501,22 +501,22 @@ const X = 480, $ = class $ extends V {
     return r`
       <div class="bsg-step">
         <h3 class="bsg-step__title">${s}</h3>
-        <p class="bsg-step__hint">${n("اختاري نوع بشرتك حسب حساسيتها للشمس", "Pick your sun-sensitivity phototype")}</p>
+        <p class="bsg-step__hint">${o("اختاري نوع بشرتك حسب حساسيتها للشمس", "Pick your sun-sensitivity phototype")}</p>
         <div class="bsg-options" role="group" aria-label=${s}>
           ${e.map((t) => {
-      const o = this.selectedPtId === t.id;
+      const i = this.selectedPtId === t.id;
       return r`
               <button
                 type="button"
                 class="bsg-option"
-                aria-pressed=${o ? "true" : "false"}
+                aria-pressed=${i ? "true" : "false"}
                 style=${u(t.color ? { "--bsg-swatch": t.color } : {})}
                 @click=${() => this.selectedPtId = t.id}
               >
                 <span class="bsg-swatch" aria-hidden="true"></span>
                 <span class="bsg-option__body">
                   <span class="bsg-option__name">${t.name}</span>
-                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : p}
+                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : c}
                 </span>
               </button>
             `;
@@ -530,15 +530,15 @@ const X = 480, $ = class $ extends V {
     return r`
       <div class="bsg-step">
         <h3 class="bsg-step__title">${s}</h3>
-        <p class="bsg-step__hint">${n("اختاري عامل الحماية الذي تستخدمينه", "Choose the SPF you apply")}</p>
+        <p class="bsg-step__hint">${o("اختاري عامل الحماية الذي تستخدمينه", "Choose the SPF you apply")}</p>
         <div class="bsg-options bsg-options--compact" role="group" aria-label=${s}>
           ${e.map((t) => {
-      const o = this.selectedSpf === t.spf;
+      const i = this.selectedSpf === t.spf;
       return r`
               <button
                 type="button"
                 class="bsg-option bsg-option--compact"
-                aria-pressed=${o ? "true" : "false"}
+                aria-pressed=${i ? "true" : "false"}
                 @click=${() => this.selectedSpf = t.spf}
               >
                 <span class="bsg-option__name">${t.label}</span>
@@ -554,20 +554,20 @@ const X = 480, $ = class $ extends V {
     return r`
       <div class="bsg-step">
         <h3 class="bsg-step__title">${s}</h3>
-        <p class="bsg-step__hint">${n("اختاري ظروف تعرّضك للشمس اليوم", "Pick today's sun exposure setting")}</p>
+        <p class="bsg-step__hint">${o("اختاري ظروف تعرّضك للشمس اليوم", "Pick today's sun exposure setting")}</p>
         <div class="bsg-options" role="group" aria-label=${s}>
           ${e.map((t) => {
-      const o = this.selectedCondId === t.id;
+      const i = this.selectedCondId === t.id;
       return r`
               <button
                 type="button"
                 class="bsg-option"
-                aria-pressed=${o ? "true" : "false"}
+                aria-pressed=${i ? "true" : "false"}
                 @click=${() => this.selectedCondId = t.id}
               >
                 <span class="bsg-option__body">
                   <span class="bsg-option__name">${t.name}</span>
-                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : p}
+                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : c}
                 </span>
               </button>
             `;
@@ -577,7 +577,7 @@ const X = 480, $ = class $ extends V {
     `;
   }
   renderNav() {
-    const e = this.label("bsg_back_btn", "السابق", "Back"), s = this.label("bsg_next_btn", "التالي", "Next"), t = this.label("bsg_see_btn", "عرض التقدير", "See estimate"), o = this.stepIndex === this.plan.length - 1;
+    const e = this.label("bsg_back_btn", "السابق", "Back"), s = this.label("bsg_next_btn", "التالي", "Next"), t = this.label("bsg_see_btn", "عرض التقدير", "See estimate"), i = this.stepIndex === this.plan.length - 1;
     return r`
       <div class="bsg-nav">
         ${this.stepIndex > 0 ? r`<button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
@@ -589,17 +589,17 @@ const X = 480, $ = class $ extends V {
           ?disabled=${!this.canNext}
           @click=${() => this.goNext()}
         >
-          ${o ? t : s}
+          ${i ? t : s}
         </button>
       </div>
     `;
   }
   renderCurrentStep() {
     const e = this.currentStep;
-    return e ? e === "phototype" ? this.renderPhototypeStep(this.phototypes) : e === "spf" ? this.renderSpfStep(this.spfValues) : this.renderConditionStep(this.conditions) : p;
+    return e ? e === "phototype" ? this.renderPhototypeStep(this.phototypes) : e === "spf" ? this.renderSpfStep(this.spfValues) : this.renderConditionStep(this.conditions) : c;
   }
   renderResults() {
-    const e = this.config || {}, s = this.phototypes, t = this.spfValues, o = this.conditions, l = Y(e.bsg_tips), c = s.find((h) => h.id === this.selectedPtId) ?? null, d = t.find((h) => h.spf === this.selectedSpf) ?? null, g = o.find((h) => h.id === this.selectedCondId) ?? null, M = (g == null ? void 0 : g.factor) ?? 1, w = J((c == null ? void 0 : c.baseMinutes) ?? 0, (d == null ? void 0 : d.spf) ?? 0, M), k = f(w / X * 100, 0, 100), N = P(e.bsg_show_meter, !0), R = P(e.bsg_show_notice, !0), S = f(Math.round(y(e.bsg_reapply_minutes, 120)), 1, 1e5), I = a(e.bsg_reapply_note), E = a(e.bsg_result_title) || n("توصياتك", "Your guidance"), L = a(e.bsg_notice) || n("هذه إرشادات توعوية عامة وليست نصيحة طبية.", "This is general educational guidance, not medical advice."), T = n(
+    const e = this.config || {}, s = this.phototypes, t = this.spfValues, i = this.conditions, l = J(e.bsg_tips), p = s.find((h) => h.id === this.selectedPtId) ?? null, d = t.find((h) => h.spf === this.selectedSpf) ?? null, g = i.find((h) => h.id === this.selectedCondId) ?? null, M = (g == null ? void 0 : g.factor) ?? 1, w = Q((p == null ? void 0 : p.baseMinutes) ?? 0, (d == null ? void 0 : d.spf) ?? 0, M), k = f(w / Z * 100, 0, 100), R = P(e.bsg_show_meter, !0), N = P(e.bsg_show_notice, !0), S = f(Math.round(x(e.bsg_reapply_minutes, 120)), 1, 1e5), I = a(e.bsg_reapply_note), E = a(e.bsg_result_title) || o("توصياتك", "Your guidance"), L = a(e.bsg_notice) || o("هذه إرشادات توعوية عامة وليست نصيحة طبية.", "This is general educational guidance, not medical advice."), T = o(
       `أعيدي التطبيق كل ${S} دقيقة`,
       `Reapply every ${S} min`
     );
@@ -608,53 +608,53 @@ const X = 480, $ = class $ extends V {
         <h3 class="bsg-results__title">${E}</h3>
 
         <div class="bsg-results__summary">
-          ${c ? r`<span class="bsg-results__pill">
+          ${p ? r`<span class="bsg-results__pill">
                 <span
                   class="bsg-swatch"
                   aria-hidden="true"
-                  style=${u(c.color ? { "--bsg-swatch": c.color } : {})}
+                  style=${u(p.color ? { "--bsg-swatch": p.color } : {})}
                 ></span>
-                ${c.name}
-              </span>` : p}
-          ${d ? r`<span class="bsg-results__pill">${d.label}</span>` : p}
-          ${g ? r`<span class="bsg-results__pill">${g.name}</span>` : p}
+                ${p.name}
+              </span>` : c}
+          ${d ? r`<span class="bsg-results__pill">${d.label}</span>` : c}
+          ${g ? r`<span class="bsg-results__pill">${g.name}</span>` : c}
         </div>
 
         <div class="bsg-duration bsg-duration--hero">
           <span class="bsg-duration__label">
-            ${n("تقدير تقريبي لمدة التعرّض الآمن", "Rough safe-exposure estimate")}
+            ${o("تقدير تقريبي لمدة التعرّض الآمن", "Rough safe-exposure estimate")}
           </span>
-          <span class="bsg-duration__value">${Q(w)}</span>
+          <span class="bsg-duration__value">${W(w)}</span>
         </div>
 
-        ${N ? r`<div class="bsg-meter-wrap bsg-meter-wrap--hero">
+        ${R ? r`<div class="bsg-meter-wrap bsg-meter-wrap--hero">
               <div
                 class="bsg-meter"
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="100"
                 aria-valuenow=${Math.round(k)}
-                aria-label=${n("مؤشر التعرّض التوضيحي", "Illustrative exposure meter")}
+                aria-label=${o("مؤشر التعرّض التوضيحي", "Illustrative exposure meter")}
               >
                 <span style=${u({ width: `${k}%` })}></span>
               </div>
               <p class="bsg-meter-caption">
-                ${n("مؤشر توضيحي فقط — التقدير يقلّ في ظروف الانعكاس العالي.", "Illustrative only — the estimate drops in high-reflection conditions.")}
+                ${o("مؤشر توضيحي فقط — التقدير يقلّ في ظروف الانعكاس العالي.", "Illustrative only — the estimate drops in high-reflection conditions.")}
               </p>
-            </div>` : p}
+            </div>` : c}
 
         <div class="bsg-reapply">
           <span class="bsg-reapply__icon" aria-hidden="true">☀︎</span>
           <div class="bsg-reapply__body">
             <p class="bsg-reapply__main">${T}</p>
-            ${I ? r`<p class="bsg-reapply__note">${I}</p>` : r`<p class="bsg-reapply__note">${n("أعيدي التطبيق بعد السباحة أو التعرّق.", "Reapply after swimming or sweating.")}</p>`}
+            ${I ? r`<p class="bsg-reapply__note">${I}</p>` : r`<p class="bsg-reapply__note">${o("أعيدي التطبيق بعد السباحة أو التعرّق.", "Reapply after swimming or sweating.")}</p>`}
           </div>
         </div>
 
         ${l.length ? r`<div class="bsg-tips">
-              <p class="bsg-tips__title">${n("نصائح", "Tips")}</p>
+              <p class="bsg-tips__title">${o("نصائح", "Tips")}</p>
               <ul>${l.map((h) => r`<li>${h}</li>`)}</ul>
-            </div>` : p}
+            </div>` : c}
 
         <div class="bsg-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
@@ -665,21 +665,21 @@ const X = 480, $ = class $ extends V {
           </button>
         </div>
 
-        ${R ? r`<p class="bsg-notice bsg-notice--inline">${L}</p>` : p}
+        ${N ? r`<p class="bsg-notice bsg-notice--inline">${L}</p>` : c}
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, s = K(e, "bsg_"), t = s.animate && !j(), o = this.phototypes, l = this.spfValues, c = this.plan, d = a(e.bsg_title), g = a(e.bsg_desc);
-    return !o.length || !l.length ? r`
+    const e = this.config || {}, s = D(e, "bsg_"), t = s.animate && !K(), i = this.phototypes, l = this.spfValues, p = this.plan, d = a(e.bsg_title), g = a(e.bsg_desc);
+    return !i.length || !l.length ? r`
         <section
           class=${C({ "fs-section": !0, "fs-animate": t })}
           style=${u(z(s))}
-          aria-label=${d || n("دليل الحماية من الشمس", "Sun protection guide")}
+          aria-label=${d || o("دليل الحماية من الشمس", "Sun protection guide")}
         >
           <div class="fs-container">
             <div class="fs-empty" role="status">
-              ${n("أكملي إعدادات العنصر لعرض الدليل.", "Complete the element settings to show the guide.")}
+              ${o("أكملي إعدادات العنصر لعرض الدليل.", "Complete the element settings to show the guide.")}
             </div>
           </div>
         </section>
@@ -687,28 +687,33 @@ const X = 480, $ = class $ extends V {
       <section
         class=${C({ "fs-section": !0, "fs-animate": t })}
         style=${u(z(s))}
-        aria-label=${d || n("دليل الحماية من الشمس", "Sun protection guide")}
+        aria-label=${d || o("دليل الحماية من الشمس", "Sun protection guide")}
         tabindex="0"
       >
         <div class="fs-container">
           ${d || g ? r`<div class="fs-header">
-                ${d ? r`<h2 class="fs-title">${d}</h2>` : p}
-                ${g ? r`<p class="fs-desc">${g}</p>` : p}
-              </div>` : p}
+                ${d ? r`<h2 class="fs-title">${d}</h2>` : c}
+                ${g ? r`<p class="fs-desc">${g}</p>` : c}
+              </div>` : c}
 
           <div class="bsg-wrap">
-            ${this.renderProgress(c.length)}
+            ${this.renderProgress(p.length)}
             ${this.onResults ? this.renderResults() : r`
                   ${this.renderCurrentStep()}
                   ${this.renderNav()}
                 `}
           </div>
+          ${this.onResults ? A({
+      config: e,
+      prefix: "bsg_",
+      ready: !0
+    }) : c}
         </div>
       </section>
     `;
   }
 };
-$.styles = [D, A];
+$.styles = [j, F];
 let b = $;
 m([
   H({ type: Object })

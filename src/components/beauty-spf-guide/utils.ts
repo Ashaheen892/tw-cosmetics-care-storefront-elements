@@ -13,7 +13,7 @@ export function parsePhototypes(raw: unknown): Phototype[] {
     .map((row, i) => {
       const name = localizedString(row.name as LocaleValue);
       return {
-        id: String(row.pt_id ?? '').trim() || `pt-${i + 1}`,
+        id: String(row.id ?? row.pt_id ?? '').trim() || `pt-${i + 1}`,
         name,
         desc: localizedString(row.desc as LocaleValue),
         baseMinutes: clamp(toNumber(row.base_minutes, 15), 1, 240),
@@ -38,7 +38,7 @@ export function parseConditions(raw: unknown): SunCondition[] {
     .map((row, i) => {
       const name = localizedString(row.name as LocaleValue);
       return {
-        id: String(row.cond_id ?? '').trim() || `cond-${i + 1}`,
+        id: String(row.id ?? row.cond_id ?? '').trim() || `cond-${i + 1}`,
         name,
         factor: clamp(toNumber(row.factor, 1), 0.1, 3),
         desc: localizedString(row.desc as LocaleValue),

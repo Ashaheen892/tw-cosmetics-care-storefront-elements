@@ -13,6 +13,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
+import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -155,6 +156,29 @@ export default class BeautyFaceZoneMap extends LitElement {
     </div>`;
   }
 
+  private renderLegend(zones: FaceZone[], activeId: string) {
+    if (zones.length < 2) return nothing;
+    return html`
+      <div class="bfz-legend" role="tablist" aria-label=${t('مناطق الوجه', 'Face zones')}>
+        ${zones.map(
+          (zone) => html`
+            <button
+              type="button"
+              role="tab"
+              class=${classMap({ 'bfz-legend__btn': true, 'is-active': activeId === zone.id })}
+              style=${styleMap(zone.dotColor ? { '--dot-color': zone.dotColor } : {})}
+              aria-selected=${activeId === zone.id ? 'true' : 'false'}
+              @click=${() => this.select(zone.id)}
+            >
+              <span class="bfz-legend__swatch" aria-hidden="true"></span>
+              <span>${zone.name || zone.title}</span>
+            </button>
+          `
+        )}
+      </div>
+    `;
+  }
+
   private renderDetail(zone: FaceZone | null, mode: string) {
     if (!zone) {
       return this.renderEmptyPanel(mode);
@@ -163,11 +187,17 @@ export default class BeautyFaceZoneMap extends LitElement {
     const showNav = isTruthy(c.bfz_show_nav, true) && this.zones.length > 1;
     const stepsTitle = t('خطوات العناية', 'Care steps');
     const tipsTitle = t('نصائح', 'Tips');
+    const zoneIndex = this.zones.findIndex((z) => z.id === zone.id);
 
     return html`
       <div class="bfz-panel" id="bfz-detail" role="region" aria-live="polite">
         <div class="bfz-panel__head">
-          <h3 class="bfz-panel__title">${zone.title || zone.name}</h3>
+          <div>
+            <p class="bfz-panel__eyebrow">
+              ${t('منطقة العناية', 'Care zone')}${zoneIndex >= 0 ? ` · ${zoneIndex + 1}/${this.zones.length}` : ''}
+            </p>
+            <h3 class="bfz-panel__title">${zone.title || zone.name}</h3>
+          </div>
           <div class="bfz-nav">
             ${mode === 'sheet'
               ? html`<button
@@ -288,6 +318,8 @@ export default class BeautyFaceZoneMap extends LitElement {
                 )}
               </div>
 
+              ${this.renderLegend(zones, activeZoneId)}
+
               ${coachActive
                 ? html`<div class="bfz-coach" role="status">
                     <p class="bfz-coach__text">${t('اضغطي على منطقة في الخريطة', 'Tap a zone on the map')}</p>
@@ -311,6 +343,7 @@ export default class BeautyFaceZoneMap extends LitElement {
           </div>
 
           ${showNotice ? html`<p class="bfz-notice">${notice}</p>` : nothing}
+          ${renderCommerceOutcome({ config: c, prefix: 'bfz_', ready: Boolean(active), selection: active })}
         </div>
       </section>
     `;

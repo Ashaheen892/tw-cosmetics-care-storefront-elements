@@ -10,6 +10,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
+import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -72,48 +73,68 @@ export default class BeautyIngredientLab extends LitElement {
 
   private select(ingredient: Ingredient): void {
     this.selectedId = ingredient.id;
+    // On phones the detail panel sits below the grid — bring it into view.
+    if (window.matchMedia('(max-width: 859px)').matches) {
+      requestAnimationFrame(() => {
+        const detail = this.renderRoot.querySelector('.bil-detail');
+        detail?.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
+      });
+    }
+  }
+
+  private renderBadge(ingredient: Ingredient, cls = 'bil-card__badge') {
+    return ingredient.image
+      ? html`<img class=${cls} src=${ingredient.image} alt="" loading="lazy" />`
+      : html`<span class=${cls} style=${styleMap({ background: ingredient.color })} aria-hidden="true">
+          ${(ingredient.name || '•').slice(0, 1)}
+        </span>`;
   }
 
   private renderDetail(ingredient: Ingredient, showLink: boolean) {
     return html`
       <div class="bil-detail" aria-live="polite">
         <div class="bil-detail__head">
-          ${ingredient.image
-            ? html`<img class="bil-card__badge" src=${ingredient.image} alt="" loading="lazy" />`
-            : html`<span class="bil-card__badge" style=${styleMap({ background: ingredient.color })} aria-hidden="true">
-                ${(ingredient.name || '•').slice(0, 1)}
-              </span>`}
-          <h3 class="bil-detail__title">${ingredient.name || t('مكوّن', 'Ingredient')}</h3>
+          ${this.renderBadge(ingredient, 'bil-detail__badge')}
+          <div>
+            <p class="bil-detail__eyebrow">${t('المكوّن المختار', 'Selected ingredient')}</p>
+            <h3 class="bil-detail__title">${ingredient.name || t('مكوّن', 'Ingredient')}</h3>
+            ${ingredient.texture
+              ? html`<span class="bil-detail__texture">${textureLabel(ingredient.texture)}</span>`
+              : nothing}
+          </div>
         </div>
-        ${ingredient.desc ? html`<p class="bil-card__desc" style="-webkit-line-clamp:unset">${ingredient.desc}</p>` : nothing}
+
+        ${ingredient.desc ? html`<p class="bil-detail__desc">${ingredient.desc}</p>` : nothing}
 
         ${ingredient.benefits.length
-          ? html`<div>
-              <p class="bil-meta__row"><b>${t('الفوائد', 'Benefits')}</b></p>
+          ? html`<div class="bil-block">
+              <h4 class="bil-block__title">${t('الفوائد', 'Benefits')}</h4>
               <div class="bil-chips">
                 ${ingredient.benefits.map((b) => html`<span class="bil-chip">${b}</span>`)}
               </div>
             </div>`
           : nothing}
 
-        <div class="bil-meta">
-          ${ingredient.skin_types.length
-            ? html`<div class="bil-meta__row">
-                <b>${t('أنواع البشرة المناسبة', 'Suitable skin types')}:</b>
-                <div class="bil-chips" style="margin-top:0.35rem">
-                  ${ingredient.skin_types.map((s) => html`<span class="bil-chip">${s}</span>`)}
-                </div>
-              </div>`
-            : nothing}
-          ${ingredient.usage_time
-            ? html`<p class="bil-meta__row"><b>${t('وقت الاستخدام', 'Usage time')}:</b> ${ingredient.usage_time}</p>`
-            : nothing}
-        </div>
+        ${ingredient.skin_types.length
+          ? html`<div class="bil-block">
+              <h4 class="bil-block__title">${t('أنواع البشرة المناسبة', 'Suitable skin types')}</h4>
+              <div class="bil-chips">
+                ${ingredient.skin_types.map((s) => html`<span class="bil-chip bil-chip--soft">${s}</span>`)}
+              </div>
+            </div>`
+          : nothing}
 
-        ${ingredient.note ? html`<div class="bil-note">${ingredient.note}</div>` : nothing}
+        ${ingredient.usage_time
+          ? html`<div class="bil-block">
+              <h4 class="bil-block__title">${t('وقت الاستخدام', 'Usage time')}</h4>
+              <p class="bil-block__text">${ingredient.usage_time}</p>
+            </div>`
+          : nothing}
+
+        ${ingredient.note ? html`<div class="bil-note"><span aria-hidden="true">⚠︎</span><span>${ingredient.note}</span></div> ` : nothing}
 
         ${ingredient.link && showLink
-          ? html`<a class="bil-link" href=${ingredient.link}>${t('اعرفي المزيد', 'Learn more')}</a>`
+          ? html`<a class="fs-btn fs-btn--ghost bil-link" href=${ingredient.link}>${t('اعرفي المزيد', 'Learn more')}</a>`
           : nothing}
       </div>
     `;
@@ -188,31 +209,37 @@ export default class BeautyIngredientLab extends LitElement {
                 </div>`
               : nothing}
 
-            <div class="bil-grid" role="list">
-              ${filtered.map((ingredient) => {
-                const active = ingredient.id === this.selectedId;
-                return html`<button
-                  type="button"
-                  class="bil-card"
-                  role="listitem"
-                  aria-pressed=${active ? 'true' : 'false'}
-                  @click=${() => this.select(ingredient)}
-                >
-                  ${ingredient.image
-                    ? html`<img class="bil-card__badge" src=${ingredient.image} alt="" loading="lazy" />`
-                    : html`<span class="bil-card__badge" style=${styleMap({ background: ingredient.color })} aria-hidden="true">
-                        ${(ingredient.name || '•').slice(0, 1)}
-                      </span>`}
-                  <h3 class="bil-card__name">${ingredient.name || t('مكوّن', 'Ingredient')}</h3>
-                  ${ingredient.texture
-                    ? html`<span class="bil-card__texture">${textureLabel(ingredient.texture)}</span>`
-                    : nothing}
-                </button>`;
-              })}
-            </div>
+            <div class="bil-body">
+              <div class="bil-grid" role="list">
+                ${filtered.length
+                  ? filtered.map((ingredient) => {
+                      const active = ingredient.id === this.selectedId;
+                      return html`<button
+                        type="button"
+                        class="bil-card"
+                        role="listitem"
+                        aria-pressed=${active ? 'true' : 'false'}
+                        @click=${() => this.select(ingredient)}
+                      >
+                        ${this.renderBadge(ingredient)}
+                        <span class="bil-card__text">
+                          <span class="bil-card__name">${ingredient.name || t('مكوّن', 'Ingredient')}</span>
+                          ${ingredient.texture
+                            ? html`<span class="bil-card__texture">${textureLabel(ingredient.texture)}</span>`
+                            : nothing}
+                        </span>
+                        <span class="bil-card__check" aria-hidden="true">✓</span>
+                      </button>`;
+                    })
+                  : html`<div class="bil-empty" role="status">
+                      ${t('لا توجد مكونات بهذا القوام.', 'No ingredients with this texture.')}
+                    </div>`}
+              </div>
 
-            ${selected ? this.renderDetail(selected, showLink) : nothing}
+              ${selected ? this.renderDetail(selected, showLink) : nothing}
+            </div>
           </div>
+          ${renderCommerceOutcome({ config: c, prefix: 'bil_', ready: Boolean(selected), selection: selected })}
         </div>
       </section>
     `;

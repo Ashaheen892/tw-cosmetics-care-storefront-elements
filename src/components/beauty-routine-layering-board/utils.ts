@@ -23,7 +23,7 @@ function parseSteps(raw: unknown): LayerStep[] {
     .map((s, i) => {
       const period = getRadioValue(s.period, 'both') as StepPeriod;
       return {
-        id: String(s.step_id ?? '').trim() || `step-${i + 1}`,
+        id: String(s.id ?? s.step_id ?? '').trim() || `step-${i + 1}`,
         title: localizedString(s.step_title as LocaleValue),
         icon: String(s.icon ?? '').trim(),
         image: extractImageUrl(s.image),
@@ -45,7 +45,7 @@ function parseSteps(raw: unknown): LayerStep[] {
 export function parseRoutines(raw: unknown): Routine[] {
   return normalizeCollection(raw)
     .map((r, i) => ({
-      id: String(r.routine_id ?? '').trim() || `routine-${i + 1}`,
+      id: String(r.id ?? r.routine_id ?? '').trim() || `routine-${i + 1}`,
       name: localizedString(r.name as LocaleValue) || `${i + 1}`,
       steps: parseSteps(r.steps),
     }))

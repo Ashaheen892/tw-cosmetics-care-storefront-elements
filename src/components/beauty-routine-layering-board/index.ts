@@ -11,6 +11,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { getPageLocale, localizedString } from '../../utils/localizedString.js';
+import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -35,6 +36,7 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
   @state() private checked = false;
   @state() private revealed = false;
   @state() private draggingId = '';
+  @state() private overId = '';
   @state() private announce = '';
 
   private boundLangHandler = () => this.requestUpdate();
@@ -78,6 +80,8 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
     this.expandedId = '';
     this.orderKey = '';
     this.order = [];
+    this.draggingId = '';
+    this.overId = '';
   }
 
   private ensureOrder(routine: Routine): string[] {
@@ -130,7 +134,8 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
     if (!this.draggingId) return;
     const el = this.shadowRoot?.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null;
     const row = el?.closest('[data-step]') as HTMLElement | null;
-    const overId = row?.getAttribute('data-step');
+    const overId = row?.getAttribute('data-step') || '';
+    this.overId = overId && overId !== this.draggingId ? overId : '';
     if (!overId || overId === this.draggingId) return;
     this.moveIdTo(this.draggingId, this.order.indexOf(overId));
   }
@@ -138,6 +143,7 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
   private onPointerUp(): void {
     if (!this.draggingId) return;
     this.draggingId = '';
+    this.overId = '';
     this.checked = false;
     this.announceOrder();
   }
@@ -199,6 +205,7 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
       ${steps.map((step, i) => {
         const expanded = this.expandedId === step.id;
         return html`<div class="brl-step" style=${styleMap(step.color ? { '--step-color': step.color } : {})}>
+          <span class="brl-step__index" aria-hidden="true">${i + 1}</span>
           ${step.image
             ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />`
             : this.renderMarker(step, i + 1)}
@@ -236,61 +243,90 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
     const byId = new Map(routine.steps.map((s) => [s.id, s]));
     const correct = sortedByCorrect(routine.steps).map((s) => s.id);
     const enableDrag = isTruthy(this.config?.brl_enable_drag, true) && !this.revealed;
+    const score = this.checked ? order.filter((id, i) => id === correct[i]).length : 0;
+    const progressPct = this.checked ? Math.round((score / Math.max(1, routine.steps.length)) * 100) : 0;
 
-    return html`<div
-      class=${classMap({ 'brl-board': true, [`brl-board--${resolveShape(this.config)}`]: true, 'brl-board--horizontal': resolveDirection(this.config) === 'horizontal' })}
-      @pointermove=${this.onPointerMove}
-      @pointerup=${this.onPointerUp}
-      @pointercancel=${this.onPointerUp}
-    >
-      ${order.map((id, i) => {
-        const step = byId.get(id);
-        if (!step) return nothing;
-        const ok = this.checked ? id === correct[i] : null;
-        return html`<div
-          class=${classMap({
-            'brl-step': true,
-            'is-dragging': this.draggingId === id,
-            'is-ok': ok === true,
-            'is-bad': ok === false,
-          })}
-          data-step=${id}
-          style=${styleMap(step.color ? { '--step-color': step.color } : {})}
-        >
-          ${!this.revealed
-            ? html`<div class="brl-handles">
-                ${enableDrag
-                  ? html`<button
-                      type="button"
-                      class="brl-handle brl-handle--drag"
-                      aria-label=${t('اسحبي لإعادة الترتيب', 'Drag to reorder')}
-                      @pointerdown=${(e: PointerEvent) => this.onPointerDown(e, id)}
-                    >
-                      <span class="brl-handle__grip" aria-hidden="true">⠿</span>
-                      <span class="brl-handle__label">${t('اسحبي', 'Drag')}</span>
-                    </button>`
-                  : nothing}
-                <button type="button" class="brl-handle" ?disabled=${i === 0} aria-label=${t('نقل لأعلى', 'Move up')} @click=${() => this.moveStep(i, -1)}>▲</button>
-                <button type="button" class="brl-handle" ?disabled=${i === order.length - 1} aria-label=${t('نقل لأسفل', 'Move down')} @click=${() => this.moveStep(i, 1)}>▼</button>
-              </div>`
-            : nothing}
-          ${step.image
-            ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />`
-            : this.renderMarker(step, i + 1)}
-          <div class="brl-step__body">
-            <h3 class="brl-step__title">
-              ${step.title}
-              ${step.optional ? html`<span class="brl-badge">${t('اختيارية', 'Optional')}</span>` : nothing}
-              ${step.period !== 'both' ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>` : nothing}
-            </h3>
-            ${this.checked && step.descShort ? html`<p class="brl-step__short">${step.descShort}</p>` : nothing}
-          </div>
-          ${ok === null
-            ? nothing
-            : html`<span class="brl-step__result ${ok ? 'brl-step__result--ok' : 'brl-step__result--bad'}" aria-hidden="true">${ok ? '✓' : '✗'}</span>`}
-        </div>`;
-      })}
-    </div>`;
+    return html`
+      <div class="brl-intro">
+        <p class="brl-intro__title">${t('رتّبي الطبقات من الأولى إلى الأخيرة', 'Order layers from first to last')}</p>
+        <p class="brl-intro__text">
+          ${t(
+            'اسحبي البطاقة من المقبض أو استخدمي الأسهم، ثم اضغطي «تحقّقي من الترتيب».',
+            'Drag a card from the handle or use the arrows, then tap “Check order”.'
+          )}
+        </p>
+        <div class="brl-intro__row">
+          <span class="brl-pill">${t(`${routine.steps.length} طبقات`, `${routine.steps.length} layers`)}</span>
+          ${enableDrag ? html`<span class="brl-pill">⠿ ${t('اسحبي لإعادة الترتيب', 'Drag to reorder')}</span>` : nothing}
+        </div>
+      </div>
+
+      ${this.checked
+        ? html`<div class="brl-progress" role="status">
+            <div class="brl-progress__bar"><span style=${styleMap({ width: `${progressPct}%` })}></span></div>
+            <div class="brl-progress__text">
+              ${t(`${score} من ${routine.steps.length} في المكان الصحيح`, `${score} of ${routine.steps.length} in the right place`)}
+            </div>
+          </div>`
+        : nothing}
+
+      <div
+        class=${classMap({ 'brl-board': true, [`brl-board--${resolveShape(this.config)}`]: true, 'brl-board--horizontal': resolveDirection(this.config) === 'horizontal' })}
+        @pointermove=${this.onPointerMove}
+        @pointerup=${this.onPointerUp}
+        @pointercancel=${this.onPointerUp}
+      >
+        ${order.map((id, i) => {
+          const step = byId.get(id);
+          if (!step) return nothing;
+          const ok = this.checked ? id === correct[i] : null;
+          return html`<div
+            class=${classMap({
+              'brl-step': true,
+              'is-dragging': this.draggingId === id,
+              'is-over': this.overId === id,
+              'is-ok': ok === true,
+              'is-bad': ok === false,
+            })}
+            data-step=${id}
+            style=${styleMap(step.color ? { '--step-color': step.color } : {})}
+          >
+            ${!this.revealed
+              ? html`<div class="brl-handles">
+                  ${enableDrag
+                    ? html`<button
+                        type="button"
+                        class="brl-handle brl-handle--drag"
+                        aria-label=${t('اسحبي لإعادة الترتيب', 'Drag to reorder')}
+                        @pointerdown=${(e: PointerEvent) => this.onPointerDown(e, id)}
+                      >
+                        <span class="brl-handle__grip" aria-hidden="true">⠿</span>
+                        <span class="brl-handle__label">${t('اسحبي', 'Drag')}</span>
+                      </button>`
+                    : nothing}
+                  <button type="button" class="brl-handle" ?disabled=${i === 0} aria-label=${t('نقل لأعلى', 'Move up')} @click=${() => this.moveStep(i, -1)}>▲</button>
+                  <button type="button" class="brl-handle" ?disabled=${i === order.length - 1} aria-label=${t('نقل لأسفل', 'Move down')} @click=${() => this.moveStep(i, 1)}>▼</button>
+                </div>`
+              : nothing}
+            <span class="brl-step__index" aria-hidden="true">${i + 1}</span>
+            ${step.image
+              ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />`
+              : this.renderMarker(step, i + 1)}
+            <div class="brl-step__body">
+              <h3 class="brl-step__title">
+                ${step.title}
+                ${step.optional ? html`<span class="brl-badge">${t('اختيارية', 'Optional')}</span>` : nothing}
+                ${step.period !== 'both' ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>` : nothing}
+              </h3>
+              ${step.descShort ? html`<p class="brl-step__short">${step.descShort}</p>` : nothing}
+            </div>
+            ${ok === null
+              ? nothing
+              : html`<span class="brl-step__result ${ok ? 'brl-step__result--ok' : 'brl-step__result--bad'}" aria-hidden="true">${ok ? '✓' : '✗'}</span>`}
+          </div>`;
+        })}
+      </div>
+    `;
   }
 
   render() {
@@ -360,49 +396,40 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
               `
             : nothing}
 
-          ${mode === 'quiz'
-            ? html`<div class="brl-toolbar">
-                <p class="brl-hint">${t('رتّبي الخطوات بالسحب أو بالأسهم ثم تحققي.', 'Order the steps by dragging or with arrows, then check.')}</p>
-                ${isTruthy(c.brl_enable_drag, true)
-                  ? html`<p class="brl-drag-tip">
-                      <span class="brl-drag-tip__icon" aria-hidden="true">⠿</span>
-                      ${t('على الجوال: اضغطي على المقبض واسحبي', 'On mobile: press the handle and drag')}
-                    </p>`
-                  : nothing}
-              </div>`
-            : nothing}
+          <div class="brl-shell">
+            ${mode === 'quiz' ? this.renderQuiz(routine, locale) : this.renderGuide(routine, locale)}
 
-          ${mode === 'quiz' ? this.renderQuiz(routine, locale) : this.renderGuide(routine, locale)}
+            ${mode === 'quiz' && this.checked
+              ? html`<div class=${classMap({ 'brl-feedback': true, 'brl-feedback--win': win, 'brl-feedback--retry': !win })} role="status">
+                  <span class="brl-feedback__icon" aria-hidden="true">${win ? '✓' : '↻'}</span>
+                  <span class="brl-feedback__msg">${win ? successMsg : retryMsg}</span>
+                  <span class="brl-feedback__score">
+                    ${(() => {
+                      const correct = sortedByCorrect(routine.steps).map((s) => s.id);
+                      const score = this.order.filter((id, i) => id === correct[i]).length;
+                      return t(`${score} من ${routine.steps.length} صحيحة`, `${score} of ${routine.steps.length} correct`);
+                    })()}
+                  </span>
+                </div>`
+              : nothing}
 
-          ${mode === 'quiz' && this.checked
-            ? html`<div class=${classMap({ 'brl-feedback': true, 'brl-feedback--win': win, 'brl-feedback--retry': !win })} role="status">
-                <span class="brl-feedback__icon" aria-hidden="true">${win ? '✓' : '↻'}</span>
-                <span class="brl-feedback__msg">${win ? successMsg : retryMsg}</span>
-                <span class="brl-feedback__score">
-                  ${(() => {
-                    const correct = sortedByCorrect(routine.steps).map((s) => s.id);
-                    const score = this.order.filter((id, i) => id === correct[i]).length;
-                    return t(`${score} من ${routine.steps.length} صحيحة`, `${score} of ${routine.steps.length} correct`);
-                  })()}
-                </span>
-              </div>`
-            : nothing}
-
-          ${mode === 'quiz'
-            ? html`<div class="brl-actions">
-                ${isTruthy(c.brl_enable_check, true) && !this.revealed
-                  ? html`<button type="button" class="fs-btn" @click=${() => this.verify(routine)}>${t('تحقّقي من الترتيب', 'Check order')}</button>`
-                  : nothing}
-                ${isTruthy(c.brl_enable_retry, true)
-                  ? html`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.retry(routine)}>${t('إعادة المحاولة', 'Try again')}</button>`
-                  : nothing}
-                ${isTruthy(c.brl_show_answer, true)
-                  ? html`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.showAnswer(routine)}>${t('إظهار الترتيب الصحيح', 'Show correct order')}</button>`
-                  : nothing}
-              </div>`
-            : nothing}
+            ${mode === 'quiz'
+              ? html`<div class="brl-actions">
+                  ${isTruthy(c.brl_enable_check, true) && !this.revealed
+                    ? html`<button type="button" class="fs-btn" @click=${() => this.verify(routine)}>${t('تحقّقي من الترتيب', 'Check order')}</button>`
+                    : nothing}
+                  ${isTruthy(c.brl_enable_retry, true)
+                    ? html`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.retry(routine)}>${t('إعادة المحاولة', 'Try again')}</button>`
+                    : nothing}
+                  ${isTruthy(c.brl_show_answer, true)
+                    ? html`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.showAnswer(routine)}>${t('إظهار الترتيب الصحيح', 'Show correct order')}</button>`
+                    : nothing}
+                </div>`
+              : nothing}
+          </div>
 
           <span class="brl-sr" role="status" aria-live="polite">${this.announce}</span>
+          ${renderCommerceOutcome({ config: c, prefix: 'brl_', ready: true })}
         </div>
       </section>
     `;

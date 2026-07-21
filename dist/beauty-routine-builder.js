@@ -1,8 +1,8 @@
-import { css as w, LitElement as E, html as n, nothing as c } from "lit";
+import { css as w, LitElement as E, html as n, nothing as b } from "lit";
 import { property as I, state as g } from "lit/decorators.js";
-import { classMap as v } from "lit/directives/class-map.js";
+import { classMap as _ } from "lit/directives/class-map.js";
 import { styleMap as x } from "lit/directives/style-map.js";
-import { n as S, l as b, b as z, e as L, h as C, g as k, s as M, t as o, i as R, r as q, p as K, a as N } from "./sharedStyles--LaFqDVC.js";
+import { n as S, l as c, c as z, e as L, j as C, g as k, s as R, t as o, i as M, r as q, p as K, a as N, b as O } from "./sharedStyles-BgfDOkwJ.js";
 const A = w`
   :host {
     display: block;
@@ -60,8 +60,8 @@ const A = w`
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      var(--accent-color, #c2527f),
-      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+      var(--accent-color, var(--fs-store-primary)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #7b2c52)
     );
     transition: width 0.25s ease;
   }
@@ -112,12 +112,12 @@ const A = w`
   }
 
   .brb-chip:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
   }
 
   .brb-chip[aria-pressed='true'] {
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
+    border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
   }
@@ -189,7 +189,7 @@ const A = w`
     width: 2.1rem;
     height: 2.1rem;
     border-radius: 50%;
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     font-weight: 800;
     font-size: 0.95rem;
@@ -312,58 +312,58 @@ const A = w`
     ]
   }
 ], y = { quick: 1, basic: 2, complete: 3 };
-function O() {
+function j() {
   var i, e;
   return ((e = typeof document < "u" ? (i = document.documentElement.lang) == null ? void 0 : i.split(/[-_]/)[0] : "ar") == null ? void 0 : e.toLowerCase()) === "en";
 }
 function Q(i) {
-  const e = O();
-  return D.map((t) => {
-    const r = b(i[t.labelKey]) || (e ? t.labelEn : t.labelAr), s = t.options.map((a) => ({
+  const e = j();
+  return D.map((r) => {
+    const t = c(i[r.labelKey]) || (e ? r.labelEn : r.labelAr), s = r.options.map((a) => ({
       value: a.value,
       label: e ? a.en : a.ar
     }));
-    return { key: t.key, label: r, options: s };
+    return { key: r.key, label: t, options: s };
   });
 }
 function u(i, e) {
-  const t = i[e] ?? i[`brb_steps.${e}`];
-  return k(t, "").toLowerCase().trim();
+  const r = i[e] ?? i[`brb_steps.${e}`];
+  return k(r, "").toLowerCase().trim();
 }
-function j(i) {
-  return S(i).map((e, t) => {
-    const r = b(e.step_name) || "";
+function B(i) {
+  return S(i).map((e, r) => {
+    const t = c(e.step_name) || "";
     return {
-      id: `step-${t}`,
-      step_name: r,
-      step_desc: b(e.step_desc),
-      order: C(e.order, t + 1),
+      id: `step-${r}`,
+      step_name: t,
+      step_desc: c(e.step_desc),
+      order: C(e.order, r + 1),
       level: u(e, "level") || "quick",
       skin: u(e, "skin"),
       concern: u(e, "concern"),
       time: u(e, "time"),
       image: L(e.image),
-      name: r,
+      name: t,
       link: z(e.link ?? e["brb_steps.link"])
     };
   }).filter((e) => e.step_name || e.step_desc);
 }
-function B(i, e) {
+function H(i, e) {
   return !i || !e || i === "both" || e === "both" ? !0 : i === e;
 }
-function H(i, e) {
-  const t = e.routine ? y[e.routine] ?? 3 : 3;
-  return i.filter((r) => {
-    const s = (y[r.level] ?? 1) <= t, a = !e.skin || !r.skin || r.skin === e.skin, l = !e.concern || !r.concern || r.concern === e.concern, p = B(r.time, e.time);
+function P(i, e) {
+  const r = e.routine ? y[e.routine] ?? 3 : 3;
+  return i.filter((t) => {
+    const s = (y[t.level] ?? 1) <= r, a = !e.skin || !t.skin || t.skin === e.skin, l = !e.concern || !t.concern || t.concern === e.concern, p = H(t.time, e.time);
     return s && a && l && p;
-  }).sort((r, s) => r.order - s.order);
+  }).sort((t, s) => t.order - s.order);
 }
-var P = Object.defineProperty, h = (i, e, t, r) => {
+var U = Object.defineProperty, h = (i, e, r, t) => {
   for (var s = void 0, a = i.length - 1, l; a >= 0; a--)
-    (l = i[a]) && (s = l(e, t, s) || s);
-  return s && P(e, t, s), s;
+    (l = i[a]) && (s = l(e, r, s) || s);
+  return s && U(e, r, s), s;
 };
-const f = class f extends E {
+const m = class m extends E {
   constructor() {
     super(...arguments), this.config = {}, this.answers = {}, this.steps = [], this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate(), this.boundKeyHandler = (e) => this.onKeyDown(e);
   }
@@ -378,7 +378,7 @@ const f = class f extends E {
   }
   load() {
     var e;
-    this.steps = j((e = this.config) == null ? void 0 : e.brb_steps);
+    this.steps = B((e = this.config) == null ? void 0 : e.brb_steps);
   }
   get questions() {
     return Q(this.config || {});
@@ -387,14 +387,14 @@ const f = class f extends E {
     return this.stepIndex >= this.questions.length;
   }
   get routine() {
-    return H(this.steps, this.answers);
+    return P(this.steps, this.answers);
   }
-  label(e, t, r) {
+  label(e, r, t) {
     var s;
-    return b((s = this.config) == null ? void 0 : s[e]) || o(t, r);
+    return c((s = this.config) == null ? void 0 : s[e]) || o(r, t);
   }
-  pick(e, t) {
-    this.answers = { ...this.answers, [e]: t };
+  pick(e, r) {
+    this.answers = { ...this.answers, [e]: r };
   }
   goNext() {
     const e = this.questions.length;
@@ -407,18 +407,18 @@ const f = class f extends E {
     this.answers = {}, this.stepIndex = 0;
   }
   onKeyDown(e) {
-    const t = e.target;
-    if (t != null && t.closest("button, a, input, textarea, select")) return;
-    const r = this.questions[this.stepIndex], s = r ? !!this.answers[r.key] : !1;
+    const r = e.target;
+    if (r != null && r.closest("button, a, input, textarea, select")) return;
+    const t = this.questions[this.stepIndex], s = t ? !!this.answers[t.key] : !1;
     e.key === "Enter" && !this.onResults && s && (e.preventDefault(), this.goNext()), e.key === "Backspace" && this.stepIndex > 0 && !this.onResults && (e.preventDefault(), this.goBack());
   }
   renderProgress(e) {
-    const t = Math.min(this.stepIndex + 1, e), r = e ? Math.round(Math.min(this.stepIndex, e) / e * 100) : 0;
+    const r = Math.min(this.stepIndex + 1, e), t = e ? Math.round(Math.min(this.stepIndex, e) / e * 100) : 0;
     return n`
       <div class="brb-progress" aria-hidden="true">
-        <div class="brb-progress__bar"><span style=${x({ width: `${r}%` })}></span></div>
+        <div class="brb-progress__bar"><span style=${x({ width: `${t}%` })}></span></div>
         <span class="brb-progress__text">
-          ${this.onResults ? o("النتيجة", "Result") : o(`السؤال ${t} من ${e}`, `Question ${t} of ${e}`)}
+          ${this.onResults ? o("النتيجة", "Result") : o(`السؤال ${r} من ${e}`, `Question ${r} of ${e}`)}
         </span>
       </div>
     `;
@@ -428,15 +428,15 @@ const f = class f extends E {
       <div class="brb-question">
         <h3 class="brb-question__title">${e.label}</h3>
         <div class="brb-chips" role="group" aria-label=${e.label}>
-          ${e.options.map((t) => {
-      const r = this.answers[e.key] === t.value;
+          ${e.options.map((r) => {
+      const t = this.answers[e.key] === r.value;
       return n`<button
               type="button"
               class="brb-chip"
-              aria-pressed=${r ? "true" : "false"}
-              @click=${() => this.pick(e.key, t.value)}
+              aria-pressed=${t ? "true" : "false"}
+              @click=${() => this.pick(e.key, r.value)}
             >
-              ${t.label}
+              ${r.label}
             </button>`;
     })}
         </div>
@@ -444,11 +444,11 @@ const f = class f extends E {
     `;
   }
   renderNav(e) {
-    const t = this.label("brb_back_btn", "السابق", "Back"), r = this.label("brb_next_btn", "التالي", "Next"), s = this.label("brb_see_btn", "عرض الروتين", "See routine"), a = this.stepIndex === this.questions.length - 1;
+    const r = this.label("brb_back_btn", "السابق", "Back"), t = this.label("brb_next_btn", "التالي", "Next"), s = this.label("brb_see_btn", "عرض الروتين", "See routine"), a = this.stepIndex === this.questions.length - 1;
     return n`
       <div class="brb-nav">
         ${this.stepIndex > 0 ? n`<button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-              ${t}
+              ${r}
             </button>` : n`<span></span>`}
         <button
           type="button"
@@ -456,41 +456,41 @@ const f = class f extends E {
           ?disabled=${!e}
           @click=${() => this.goNext()}
         >
-          ${a ? s : r}
+          ${a ? s : t}
         </button>
       </div>
     `;
   }
-  renderStep(e, t, r) {
+  renderStep(e, r, t) {
     return n`
       <div class="brb-step" role="listitem">
-        <span class="brb-step__num" aria-hidden="true">${t + 1}</span>
+        <span class="brb-step__num" aria-hidden="true">${r + 1}</span>
         ${e.image ? n`<img class="brb-step__thumb" src=${e.image} alt="" loading="lazy" decoding="async" />` : n`<span class="brb-step__thumb" aria-hidden="true"></span>`}
         <div class="brb-step__body">
           <h4 class="brb-step__name">${e.step_name || e.name || o("خطوة", "Step")}</h4>
-          ${e.step_desc ? n`<p class="brb-step__desc">${e.step_desc}</p>` : c}
-          ${r && e.link ? n`<div class="brb-step__actions">
+          ${e.step_desc ? n`<p class="brb-step__desc">${e.step_desc}</p>` : b}
+          ${t && e.link ? n`<div class="brb-step__actions">
                 <a class="fs-btn fs-btn--ghost" href=${e.link} target="_blank" rel="noopener noreferrer">
                   ${o("التفاصيل", "Details")}
                 </a>
-              </div>` : c}
+              </div>` : b}
         </div>
       </div>
     `;
   }
   renderResults() {
-    const e = this.config || {}, t = this.routine, r = R(e.brb_show_link, !0), s = b(e.brb_result_title) || o("روتينك المقترح", "Your suggested routine");
+    const e = this.config || {}, r = this.routine, t = M(e.brb_show_link, !0), s = c(e.brb_result_title) || o("روتينك المقترح", "Your suggested routine");
     return n`
       <div class="brb-results" aria-live="polite">
         <div class="brb-routine__head">
           <h3 class="brb-routine__title">
             ${s}
-            ${t.length ? n`<span class="brb-routine__count"> · ${t.length} ${o("خطوات", "steps")}</span>` : c}
+            ${r.length ? n`<span class="brb-routine__count"> · ${r.length} ${o("خطوات", "steps")}</span>` : b}
           </h3>
         </div>
 
-        ${t.length ? n`<div class="brb-timeline" role="list">
-              ${t.map((a, l) => this.renderStep(a, l, r))}
+        ${r.length ? n`<div class="brb-timeline" role="list">
+              ${r.map((a, l) => this.renderStep(a, l, t))}
             </div>` : n`<p class="fs-empty">${o("لا توجد خطوات مطابقة لاختياراتك", "No steps match your choices")}</p>`}
 
         <div class="brb-results__actions">
@@ -498,43 +498,44 @@ const f = class f extends E {
             ${this.label("brb_back_btn", "تعديل الإجابات", "Edit answers")}
           </button>
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
-            ${b(e.brb_reset_btn) || o("إعادة الاختيار", "Start over")}
+            ${c(e.brb_reset_btn) || o("إعادة الاختيار", "Start over")}
           </button>
         </div>
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, t = q(e, "brb_"), r = t.animate && !K(), s = b(e.brb_title), a = b(e.brb_desc), l = this.questions, p = l[this.stepIndex], $ = p ? !!this.answers[p.key] : !1, m = k(e.brb_card_shape, "soft"), _ = b(e.brb_bg_image);
+    const e = this.config || {}, r = q(e, "brb_"), t = r.animate && !K(), s = c(e.brb_title), a = c(e.brb_desc), l = this.questions, p = l[this.stepIndex], $ = p ? !!this.answers[p.key] : !1, f = k(e.brb_card_shape, "soft"), v = c(e.brb_bg_image);
     return this.steps.length ? n`
       <section
-        class=${v({ "fs-section": !0, "fs-animate": r })}
-        style=${x(N(t))}
+        class=${_({ "fs-section": !0, "fs-animate": t })}
+        style=${x(N(r))}
         aria-label=${s || o("منشئ روتين العناية", "Beauty routine builder")}
         tabindex="0"
       >
         <div class="fs-container">
           ${s || a ? n`<div class="fs-header">
-                ${s ? n`<h2 class="fs-title">${s}</h2>` : c}
-                ${a ? n`<p class="fs-desc">${a}</p>` : c}
-              </div>` : c}
+                ${s ? n`<h2 class="fs-title">${s}</h2>` : b}
+                ${a ? n`<p class="fs-desc">${a}</p>` : b}
+              </div>` : b}
 
           <div
-            class=${v({
+            class=${_({
       "brb-shell": !0,
-      "brb-card--sharp": m === "sharp",
-      "brb-card--pill": m === "pill"
+      "brb-card--sharp": f === "sharp",
+      "brb-card--pill": f === "pill"
     })}
           >
-            ${_ ? n`<img class="brb-shell__bg" src=${_} alt="" loading="lazy" decoding="async" />` : c}
+            ${v ? n`<img class="brb-shell__bg" src=${v} alt="" loading="lazy" decoding="async" />` : b}
             <div class="brb-inner">
               ${this.renderProgress(l.length)}
               ${this.onResults ? this.renderResults() : n`
-                    ${p ? this.renderQuestion(p) : c}
+                    ${p ? this.renderQuestion(p) : b}
                     ${this.renderNav($)}
                   `}
             </div>
           </div>
+          ${this.onResults ? O({ config: e, prefix: "brb_", ready: !0 }) : b}
         </div>
       </section>
     ` : n`<div class="fs-empty" role="status">
@@ -542,8 +543,8 @@ const f = class f extends E {
       </div>`;
   }
 };
-f.styles = [M, A];
-let d = f;
+m.styles = [R, A];
+let d = m;
 h([
   I({ type: Object })
 ], d.prototype, "config");

@@ -1,40 +1,75 @@
 import { css } from 'lit';
 
 export const componentStyles = css`
+  :host {
+    display: block;
+    direction: inherit;
+    width: 100%;
+  }
+
   .bfz-layout {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.35rem;
     align-items: start;
+    width: 100%;
   }
 
   @media (min-width: 860px) {
     .bfz-layout {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 2rem;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 1.75rem;
     }
-    .bfz-layout--reverse {
-      direction: inherit;
-    }
-    .bfz-layout--reverse .bfz-stage {
+
+    .bfz-layout--reverse .bfz-stage-wrap {
       order: 2;
+    }
+
+    .bfz-layout--reverse .bfz-panel {
+      order: 1;
+    }
+
+    .bfz-panel {
+      position: sticky;
+      top: 1rem;
     }
   }
 
+  /* —— Map stage —— */
   .bfz-stage-wrap {
     position: relative;
-    max-width: 520px;
-    margin-inline: auto;
     width: 100%;
+    min-width: 0;
+    display: grid;
+    gap: 0.85rem;
   }
 
   .bfz-stage {
     position: relative;
     width: 100%;
     aspect-ratio: var(--bfz-aspect, 3 / 4);
-    border-radius: var(--section-radius, 16px);
+    border-radius: var(--section-radius, 20px);
     overflow: hidden;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 40%, var(--card-bg, #fff));
-    border: 1px solid var(--border-color, #f2dde7);
+    background:
+      radial-gradient(
+        90% 70% at 50% 20%,
+        color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
+        transparent 60%
+      ),
+      color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, transparent),
+      0 18px 40px rgba(120, 44, 82, 0.08);
+  }
+
+  .bfz-stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 35%, transparent);
+    z-index: 2;
   }
 
   .bfz-stage__img {
@@ -81,31 +116,82 @@ export const componentStyles = css`
     line-height: 1;
   }
 
+  /* —— Zone legend —— */
+  .bfz-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    justify-content: center;
+  }
+
+  .bfz-legend__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 36px;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color, #f2dde7);
+    background: var(--card-bg, #fff);
+    color: var(--text-color, #33232e);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .bfz-legend__btn:hover {
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+  }
+
+  .bfz-legend__btn.is-active {
+    background: var(--accent-color, var(--fs-store-primary));
+    border-color: var(--accent-color, var(--fs-store-primary));
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .bfz-legend__swatch {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--dot-color, var(--accent-color, var(--fs-store-primary)));
+    box-shadow: 0 0 0 2px color-mix(in srgb, #fff 70%, transparent);
+    flex: 0 0 auto;
+  }
+
+  .bfz-legend__btn.is-active .bfz-legend__swatch {
+    box-shadow: 0 0 0 2px color-mix(in srgb, #fff 35%, transparent);
+  }
+
+  /* —— Hotspots —— */
   .bfz-dot {
     position: absolute;
+    z-index: 3;
     transform: translate(-50%, -50%);
     inset-inline-start: var(--dot-x, 50%);
     top: var(--dot-y, 50%);
     width: var(--dot-size, 30px);
     height: var(--dot-size, 30px);
-    min-width: 26px;
-    min-height: 26px;
+    min-width: 28px;
+    min-height: 28px;
     display: grid;
     place-items: center;
     padding: 0;
     border-radius: 50%;
-    border: 2px solid #fff;
-    background: var(--dot-color, var(--accent-color, #c2527f));
+    border: 2.5px solid #fff;
+    background: var(--dot-color, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     font-size: 0.8rem;
     font-weight: 800;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28);
+    box-shadow: 0 6px 16px rgba(20, 14, 12, 0.28);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  /* RTL: mirror horizontal placement so % maps to the visual side authors expect */
   :host-context([dir='rtl']) .bfz-dot,
   :host([dir='rtl']) .bfz-dot {
     inset-inline-start: auto;
@@ -113,35 +199,41 @@ export const componentStyles = css`
     transform: translate(50%, -50%);
   }
 
-  .bfz-dot:hover {
-    transform: translate(-50%, -50%) scale(1.12);
+  .bfz-dot:hover,
+  .bfz-dot:focus-visible {
+    transform: translate(-50%, -50%) scale(1.14);
+    outline: none;
   }
+
   :host-context([dir='rtl']) .bfz-dot:hover,
-  :host([dir='rtl']) .bfz-dot:hover {
-    transform: translate(50%, -50%) scale(1.12);
+  :host-context([dir='rtl']) .bfz-dot:focus-visible,
+  :host([dir='rtl']) .bfz-dot:hover,
+  :host([dir='rtl']) .bfz-dot:focus-visible {
+    transform: translate(50%, -50%) scale(1.14);
   }
 
   .bfz-dot.is-active {
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 35%, transparent),
-      0 6px 16px rgba(20, 14, 12, 0.32);
+    box-shadow:
+      0 0 0 5px color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 32%, transparent),
+      0 8px 18px rgba(20, 14, 12, 0.3);
   }
 
   .bfz-dot--ring {
-    background: transparent;
-    border-color: var(--dot-color, var(--accent-color, #c2527f));
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 45%, transparent);
+    background: color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 12%, transparent);
+    border-color: var(--dot-color, var(--accent-color, var(--fs-store-primary)));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 28%, transparent);
   }
 
   .bfz-dot--area {
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 22%, transparent);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 22%, transparent);
     border-style: dashed;
     width: calc(var(--dot-size, 30px) * 2.2);
     height: calc(var(--dot-size, 30px) * 1.6);
   }
 
   .bfz-dot--icon {
-    background: color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 88%, #000);
+    background: color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 88%, #000);
   }
 
   .bfz-dot__pulse {
@@ -155,52 +247,79 @@ export const componentStyles = css`
   }
 
   @keyframes bfz-pulse {
-    0% { transform: scale(1); opacity: 0.55; }
-    70% { transform: scale(2.1); opacity: 0; }
-    100% { transform: scale(2.1); opacity: 0; }
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    70% {
+      transform: scale(2.1);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(2.1);
+      opacity: 0;
+    }
   }
 
   .bfz-dot__label {
     position: absolute;
-    top: calc(100% + 4px);
+    top: calc(100% + 6px);
     inset-inline-start: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: var(--text-color, #33232e);
-    background: color-mix(in srgb, var(--card-bg, #fff) 88%, transparent);
-    padding: 1px 6px;
-    border-radius: 6px;
+    background: color-mix(in srgb, var(--card-bg, #fff) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    padding: 0.15rem 0.45rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(43, 33, 28, 0.08);
     pointer-events: none;
   }
 
+  /* —— Detail panel —— */
   .bfz-panel {
+    min-width: 0;
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
-    border-radius: var(--section-radius, 16px);
-    padding: 1.15rem 1.15rem 1.25rem;
-    box-shadow: 0 10px 30px rgba(43, 33, 28, 0.07);
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border-radius: var(--section-radius, 20px);
+    padding: 1.2rem 1.25rem 1.35rem;
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
+      0 16px 36px rgba(120, 44, 82, 0.08);
+    display: grid;
+    gap: 0.95rem;
   }
 
   .bfz-panel__head {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 0.75rem;
-    margin-bottom: 0.5rem;
+  }
+
+  .bfz-panel__eyebrow {
+    margin: 0 0 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--accent-color, var(--fs-store-primary));
+    text-transform: uppercase;
   }
 
   .bfz-panel__title {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
     font-weight: 800;
+    line-height: 1.3;
     color: var(--text-color, #33232e);
   }
 
   .bfz-nav {
     display: inline-flex;
     gap: 0.35rem;
+    flex: 0 0 auto;
   }
 
   .bfz-nav__btn {
@@ -210,16 +329,31 @@ export const componentStyles = css`
     place-items: center;
     border-radius: 50%;
     border: 1px solid var(--border-color, #f2dde7);
-    background: var(--card-bg, #fff);
-    color: var(--accent-color, #c2527f);
-    font-size: 1rem;
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
+    color: var(--accent-color, var(--fs-store-primary));
+    font-size: 1.05rem;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   }
-  .bfz-nav__btn:hover { background: color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff)); }
+
+  .bfz-nav__btn:hover,
+  .bfz-nav__btn:focus-visible {
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    outline: none;
+  }
+
+  .bfz-panel__img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: calc(var(--section-radius, 20px) - 8px);
+    display: block;
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, #f2ece8);
+  }
 
   .bfz-panel__desc {
-    margin: 0 0 0.9rem;
+    margin: 0;
     color: var(--muted-color, #8f7a86);
     line-height: 1.7;
     font-size: 0.92rem;
@@ -229,28 +363,42 @@ export const componentStyles = css`
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-bottom: 0.9rem;
   }
 
   .bfz-tag {
     font-size: 0.74rem;
     font-weight: 700;
-    padding: 0.2rem 0.6rem;
+    padding: 0.28rem 0.7rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
-    color: var(--accent-color, #c2527f);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
+    color: var(--accent-color, var(--fs-store-primary));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 18%, transparent);
   }
 
-  .bfz-block { margin-bottom: 0.9rem; }
+  .bfz-block {
+    display: grid;
+    gap: 0.55rem;
+    padding-top: 0.15rem;
+  }
 
   .bfz-block__title {
-    margin: 0 0 0.4rem;
-    font-size: 0.82rem;
+    margin: 0;
+    font-size: 0.8rem;
     font-weight: 800;
+    letter-spacing: 0.02em;
     color: var(--text-color, #33232e);
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem;
+  }
+
+  .bfz-block__title::before {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--accent-color, var(--fs-store-primary));
+    flex: 0 0 auto;
   }
 
   .bfz-steps {
@@ -259,29 +407,34 @@ export const componentStyles = css`
     list-style: none;
     counter-reset: bfz-step;
     display: grid;
-    gap: 0.45rem;
+    gap: 0.5rem;
   }
 
   .bfz-steps li {
     counter-increment: bfz-step;
     position: relative;
-    padding-inline-start: 2rem;
+    padding-block: 0.65rem;
+    padding-inline: 2.45rem 0.75rem;
     font-size: 0.88rem;
     line-height: 1.55;
     color: var(--text-color, #33232e);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 5%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    border-radius: 12px;
   }
 
   .bfz-steps li::before {
     content: counter(bfz-step);
     position: absolute;
-    inset-inline-start: 0;
-    top: 0;
-    width: 1.4rem;
-    height: 1.4rem;
+    inset-inline-start: 0.55rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.45rem;
+    height: 1.45rem;
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     font-size: 0.72rem;
     font-weight: 800;
@@ -289,36 +442,51 @@ export const componentStyles = css`
 
   .bfz-tips {
     margin: 0;
-    padding-inline-start: 1.1rem;
+    padding: 0;
+    list-style: none;
     display: grid;
-    gap: 0.35rem;
+    gap: 0.4rem;
+  }
+
+  .bfz-tips li {
+    position: relative;
+    padding-inline-start: 1.15rem;
     color: var(--muted-color, #8f7a86);
     font-size: 0.86rem;
     line-height: 1.55;
   }
 
+  .bfz-tips li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0.55em;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #fff);
+  }
+
   .bfz-warn {
     display: flex;
-    gap: 0.5rem;
-    padding: 0.65rem 0.8rem;
-    border-radius: 12px;
-    background: color-mix(in srgb, #e0a100 14%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, #e0a100 40%, transparent);
+    gap: 0.55rem;
+    align-items: flex-start;
+    padding: 0.75rem 0.85rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, #e0a100 12%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, #e0a100 34%, transparent);
     color: color-mix(in srgb, #8a5a00 70%, var(--text-color, #33232e));
     font-size: 0.84rem;
     line-height: 1.55;
-    margin-bottom: 0.9rem;
   }
 
-  .bfz-panel__img {
-    width: 100%;
-    border-radius: 12px;
-    margin-bottom: 0.9rem;
-    display: block;
+  .bfz-panel .fs-btn {
+    justify-self: start;
+    margin-top: 0.15rem;
   }
 
   .bfz-notice {
-    margin-top: 1.25rem;
+    margin: 1.35rem 0 0;
     text-align: center;
     font-size: 0.8rem;
     color: var(--muted-color, #8f7a86);
@@ -330,27 +498,35 @@ export const componentStyles = css`
   }
 
   @keyframes bfz-coach-dot {
-    0%, 100% { box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28), 0 0 0 0 color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 45%, transparent); }
-    50% { box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28), 0 0 0 8px color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 0%, transparent); }
+    0%,
+    100% {
+      box-shadow:
+        0 6px 16px rgba(20, 14, 12, 0.28),
+        0 0 0 0 color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 45%, transparent);
+    }
+    50% {
+      box-shadow:
+        0 6px 16px rgba(20, 14, 12, 0.28),
+        0 0 0 10px color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 0%, transparent);
+    }
   }
 
   .bfz-coach {
-    position: absolute;
-    inset-inline: 0;
-    bottom: -0.35rem;
-    transform: translateY(100%);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.65rem;
-    padding: 0.65rem 0.85rem;
-    border-radius: 12px;
-    background: var(--text-color, #33232e);
+    padding: 0.7rem 0.9rem;
+    border-radius: 14px;
+    background: linear-gradient(
+      135deg,
+      var(--text-color, #33232e),
+      color-mix(in srgb, var(--text-color, #33232e) 78%, var(--accent-color, var(--fs-store-primary)))
+    );
     color: #fff;
     font-size: 0.84rem;
     font-weight: 700;
-    box-shadow: 0 8px 24px rgba(20, 14, 12, 0.22);
-    z-index: 5;
+    box-shadow: 0 10px 28px rgba(20, 14, 12, 0.2);
     animation: bfz-coach-in 0.35s ease;
   }
 
@@ -373,35 +549,44 @@ export const componentStyles = css`
   }
 
   @keyframes bfz-coach-in {
-    from { opacity: 0; transform: translateY(calc(100% + 6px)); }
-    to { opacity: 1; transform: translateY(100%); }
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .bfz-panel--empty {
-    min-height: 10rem;
-    display: grid;
+    min-height: 14rem;
     place-items: center;
   }
 
   .bfz-empty-state {
     text-align: center;
-    padding: 1.25rem 1rem;
+    padding: 1.35rem 1rem;
     max-width: 20rem;
     margin-inline: auto;
   }
 
   .bfz-empty-state__icon {
-    display: block;
-    font-size: 2rem;
-    color: var(--accent-color, #c2527f);
-    opacity: 0.5;
-    margin-bottom: 0.5rem;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto 0.75rem;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    color: var(--accent-color, var(--fs-store-primary));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
     line-height: 1;
   }
 
   .bfz-empty-state__title {
     margin: 0 0 0.4rem;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 800;
     color: var(--text-color, #33232e);
   }
@@ -410,14 +595,13 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.86rem;
     color: var(--muted-color, #8f7a86);
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
   .bfz-layout--sheet .bfz-sheet-close {
     display: grid;
   }
 
-  /* Bottom sheet on mobile; desktop keeps inline panel + empty state */
   @media (max-width: 859px) {
     .bfz-layout--sheet .bfz-panel--empty {
       display: none;
@@ -428,10 +612,10 @@ export const componentStyles = css`
       inset-inline: 0;
       bottom: 0;
       z-index: 60;
-      border-radius: 18px 18px 0 0;
+      border-radius: 20px 20px 0 0;
       max-height: 80vh;
       overflow-y: auto;
-      box-shadow: 0 -12px 40px rgba(20, 14, 12, 0.28);
+      box-shadow: 0 -14px 44px rgba(20, 14, 12, 0.28);
       animation: bfz-sheet-up 0.28s ease;
     }
 
@@ -439,14 +623,18 @@ export const componentStyles = css`
       position: fixed;
       inset: 0;
       z-index: 55;
-      background: rgba(20, 14, 12, 0.4);
+      background: rgba(20, 14, 12, 0.42);
       border: none;
     }
   }
 
   @keyframes bfz-sheet-up {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -454,7 +642,8 @@ export const componentStyles = css`
     .bfz-dot__pulse,
     .bfz-dot.is-coach-pulse,
     .bfz-coach,
-    .bfz-panel {
+    .bfz-panel,
+    .bfz-legend__btn {
       animation: none !important;
       transition: none !important;
     }

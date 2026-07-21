@@ -37,7 +37,7 @@ export const componentStyles = css`
   }
 
   .bwp-toggle__btn[aria-pressed='true'] {
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     box-shadow: 0 4px 12px rgba(43, 33, 28, 0.18);
   }
@@ -47,8 +47,8 @@ export const componentStyles = css`
     border-radius: calc(var(--section-radius, 20px) * 0.85);
     background: linear-gradient(
       165deg,
-      color-mix(in srgb, var(--accent-color, #c2527f) 6%, var(--section-bg, #fbf5f8)),
-      color-mix(in srgb, var(--accent-color, #c2527f) 3%, var(--card-bg, #fff))
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, var(--section-bg, #fbf5f8)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 3%, var(--card-bg, #fff))
     );
     border: 1px solid var(--border-color, #f2dde7);
     padding: 0.75rem;
@@ -68,8 +68,8 @@ export const componentStyles = css`
   .bwp-grid--pm .bwp-day__head {
     background: linear-gradient(
       135deg,
-      color-mix(in srgb, var(--accent-color, #c2527f) 18%, var(--card-bg, #fff)),
-      color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff))
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 18%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff))
     );
   }
 
@@ -94,7 +94,7 @@ export const componentStyles = css`
     font-size: 0.95rem;
     font-weight: 800;
     color: var(--text-color, #33232e);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 14%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff));
     border-bottom: 1px solid var(--border-color, #f2dde7);
     letter-spacing: 0.01em;
   }
@@ -132,7 +132,7 @@ export const componentStyles = css`
     gap: 0.35rem;
     font-size: 0.8rem;
     font-weight: 800;
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
   }
 
   .bwp-slot__label::before {
@@ -156,8 +156,8 @@ export const componentStyles = css`
     gap: 0.45rem;
     padding: 0.55rem 0.65rem;
     border-radius: 0.7rem;
-    background: color-mix(in srgb, var(--chip-color, var(--accent-color, #c2527f)) 12%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--chip-color, var(--accent-color, #c2527f)) 28%, transparent);
+    background: color-mix(in srgb, var(--chip-color, var(--accent-color, var(--fs-store-primary))) 12%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--chip-color, var(--accent-color, var(--fs-store-primary))) 28%, transparent);
     font-size: 0.9rem;
     line-height: 1.45;
     color: var(--text-color, #33232e);
@@ -169,7 +169,7 @@ export const componentStyles = css`
     height: 0.75rem;
     margin-top: 0.28rem;
     border-radius: 50%;
-    background: var(--chip-color, var(--accent-color, #c2527f));
+    background: var(--chip-color, var(--accent-color, var(--fs-store-primary)));
   }
 
   .bwp-chip__icon {
@@ -198,7 +198,7 @@ export const componentStyles = css`
     font-size: 0.86rem;
     font-weight: 700;
     font-style: italic;
-    color: color-mix(in srgb, var(--muted-color, #8f7a86) 75%, var(--accent-color, #c2527f));
+    color: color-mix(in srgb, var(--muted-color, #8f7a86) 75%, var(--accent-color, var(--fs-store-primary)));
     opacity: 0.9;
     padding: 0.65rem 0.4rem;
     text-align: center;
@@ -207,7 +207,7 @@ export const componentStyles = css`
   .bwp-day.is-empty .bwp-day__empty {
     background: radial-gradient(
       circle at 50% 40%,
-      color-mix(in srgb, var(--accent-color, #c2527f) 6%, transparent),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, transparent),
       transparent 70%
     );
   }
@@ -236,8 +236,8 @@ export const componentStyles = css`
     height: 1.1rem;
     margin-top: 0.15rem;
     border-radius: 50%;
-    background: var(--chip-color, var(--accent-color, #c2527f));
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--chip-color, var(--accent-color, #c2527f)) 22%, transparent);
+    background: var(--chip-color, var(--accent-color, var(--fs-store-primary)));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--chip-color, var(--accent-color, var(--fs-store-primary))) 22%, transparent);
   }
 
   .bwp-legend__text {
@@ -271,8 +271,8 @@ export const componentStyles = css`
     flex: 0 0 auto;
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--accent-color, #c2527f);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
+    color: var(--accent-color, var(--fs-store-primary));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
     padding: 0.2rem 0.55rem;
     border-radius: 999px;
     white-space: nowrap;

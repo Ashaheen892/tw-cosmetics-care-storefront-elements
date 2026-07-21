@@ -10,7 +10,7 @@ export const componentStyles = css`
     margin: 0 auto 1.1rem;
     padding: 0.25rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
     border: 1px solid var(--border-color, #f2dde7);
   }
 
@@ -28,7 +28,7 @@ export const componentStyles = css`
   }
 
   .bls-mode-toggle__btn.is-active {
-    background: var(--bls-active, var(--accent-color, #c2527f));
+    background: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
   }
 
@@ -121,14 +121,14 @@ export const componentStyles = css`
 
   .bls-chip:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--bls-active, var(--accent-color, #c2527f)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 40%, var(--border-color, #f2dde7));
   }
 
   .bls-chip.is-active {
-    border-color: var(--bls-active, var(--accent-color, #c2527f));
-    background: color-mix(in srgb, var(--bls-active, var(--accent-color, #c2527f)) 10%, var(--card-bg, #fff));
+    border-color: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
+    background: color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 10%, var(--card-bg, #fff));
     box-shadow:
-      0 0 0 3px color-mix(in srgb, var(--bls-active, var(--accent-color, #c2527f)) 20%, transparent),
+      0 0 0 3px color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 20%, transparent),
       0 8px 18px rgba(43, 33, 28, 0.08);
   }
 
@@ -138,14 +138,14 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: color-mix(in srgb, var(--bls-active, var(--accent-color, #c2527f)) 12%, var(--card-bg, #fff));
-    color: var(--bls-active, var(--accent-color, #c2527f));
+    background: color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 12%, var(--card-bg, #fff));
+    color: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     font-size: 0.95rem;
     line-height: 1;
   }
 
   .bls-chip.is-active .bls-chip__icon {
-    background: var(--bls-active, var(--accent-color, #c2527f));
+    background: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
   }
 
@@ -164,7 +164,7 @@ export const componentStyles = css`
   }
 
   .bls-chip.is-active .bls-chip__dot {
-    background: var(--bls-active, var(--accent-color, #c2527f));
+    background: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     box-shadow: none;
   }
 
@@ -188,7 +188,7 @@ export const componentStyles = css`
   }
 
   .bls-finish-chip.is-active {
-    background: var(--bls-active, var(--accent-color, #c2527f));
+    background: var(--bls-active, var(--accent-color, var(--fs-store-primary)));
     border-color: transparent;
     color: #fff;
   }
@@ -201,9 +201,9 @@ export const componentStyles = css`
     border-radius: calc(var(--section-radius, 20px) + 4px);
     background: linear-gradient(
       165deg,
-      color-mix(in srgb, var(--accent-color, #c2527f) 14%, #2a1f24),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, #2a1f24),
       #1a1216 55%,
-      color-mix(in srgb, var(--accent-color, #c2527f) 8%, #2a1f24)
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, #2a1f24)
     );
     box-shadow:
       0 16px 40px rgba(43, 33, 28, 0.18),
@@ -229,7 +229,7 @@ export const componentStyles = css`
     border-radius: calc(var(--section-radius, 20px) - 2px);
     overflow: hidden;
     background: color-mix(in srgb, var(--border-color, #f2dde7) 45%, #1a1216);
-    border: 3px solid color-mix(in srgb, var(--accent-color, #c2527f) 35%, #fff);
+    border: 3px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, #fff);
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.12),
       0 8px 24px rgba(0, 0, 0, 0.35);
@@ -260,7 +260,7 @@ export const componentStyles = css`
     gap: 0.55rem;
     background: radial-gradient(
       circle at 50% 35%,
-      color-mix(in srgb, var(--accent-color, #c2527f) 12%, #2a1f24),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, #2a1f24),
       #1a1216 70%
     );
   }
@@ -271,8 +271,8 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 2px dashed color-mix(in srgb, var(--accent-color, #c2527f) 50%, rgba(255, 255, 255, 0.35));
-    color: color-mix(in srgb, var(--accent-color, #c2527f) 70%, #fff);
+    border: 2px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 50%, rgba(255, 255, 255, 0.35));
+    color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #fff);
     font-size: 1.4rem;
     opacity: 0.85;
   }
@@ -359,7 +359,7 @@ export const componentStyles = css`
   }
 
   .bls-indicator__val {
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
     font-weight: 800;
     font-variant-numeric: tabular-nums;
   }
@@ -435,6 +435,27 @@ export const componentStyles = css`
 
   .bls-cmp-slider {
     position: relative;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: col-resize;
+    outline: none;
+  }
+
+  .bls-cmp-slider:focus-visible {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, transparent),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .bls-cmp-slider.is-dragging {
+    cursor: grabbing;
+  }
+
+  .bls-cmp-slider .bls-pic > img {
+    pointer-events: none;
+    -webkit-user-drag: none;
   }
 
   .bls-cmp-slider .bls-img--overlay {
@@ -451,29 +472,67 @@ export const componentStyles = css`
     top: 0;
     bottom: 0;
     inset-inline-start: var(--bls-pos, 50%);
-    width: 2px;
+    width: 3px;
+    transform: translateX(-50%);
     background: #fff;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
-    cursor: ew-resize;
-    touch-action: none;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
     z-index: 3;
   }
 
-  .bls-cmp-handle::after {
-    content: '⇆';
+  :host-context([dir='rtl']) .bls-cmp-handle,
+  :host([dir='rtl']) .bls-cmp-handle {
+    transform: translateX(50%);
+  }
+
+  .bls-cmp-handle__pill {
     position: absolute;
     top: 50%;
-    inset-inline-start: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 46px;
+    height: 46px;
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: #fff;
-    color: #33232e;
-    font-size: 0.9rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(
+      135deg,
+      var(--accent-color, var(--fs-store-primary)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
+    );
+    border: 3px solid #fff;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+  }
+
+  .bls-cmp-hint {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(20, 14, 12, 0.72);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: bls-hint-pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes bls-hint-pulse {
+    0%,
+    100% {
+      opacity: 0.85;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   .bls-cmp-split .bls-img--overlay {
@@ -536,10 +595,20 @@ export const componentStyles = css`
     }
   }
 
+  @media (max-width: 639px) {
+    .bls-cmp-handle__pill {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .bls-stage--fade .bls-layer,
     .bls-chip {
       transition: none !important;
+    }
+    .bls-cmp-hint {
+      animation: none;
     }
   }
 `;

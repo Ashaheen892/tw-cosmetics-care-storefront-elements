@@ -16,13 +16,60 @@ export function normalizeItem<T extends Record<string, unknown> = Record<string,
   }, {} as Record<string, unknown>) as T;
 }
 
+/** Stable id from label when merchant UI has no internal-id field (Raed add-on UX). */
+export function slugifyId(value: unknown, fallback = ''): string {
+  const raw =
+    typeof value === 'string' || typeof value === 'number'
+      ? String(value).trim()
+      : localizedString(value as LocaleValue, '').trim();
+  if (!raw) return fallback;
+  const slug = raw
+    .toLowerCase()
+    .replace(/[^a-z0-9\u0600-\u06ff]+/gi, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 48);
+  return slug || fallback;
+}
+
+
+/** Prefer English label for stable ASCII ids across AR/EN storefronts. */
+export function itemIdFromLabel(value: unknown, fallback = ''): string {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const row = value as Record<string, unknown>;
+    const en = String(row.en ?? '').trim();
+    const ar = String(row.ar ?? '').trim();
+    return slugifyId(en || ar, fallback);
+  }
+  return slugifyId(value, fallback);
+}
+
+export function resolveItemId(
+  item: Record<string, unknown>,
+  index: number,
+  prefix = 'item'
+): string {
+  const explicit = String(item.id ?? item.value ?? item.key ?? '').trim();
+  if (explicit) return explicit;
+  return (
+    itemIdFromLabel(item.name ?? item.title ?? item.label ?? item.brand ?? item.model, '') ||
+    `${prefix}-${index + 1}`
+  );
+}
+
 export function normalizeCollection<T extends Record<string, unknown> = Record<string, unknown>>(
   items: unknown
 ): T[] {
   if (!Array.isArray(items)) return [];
   return items
     .filter((item): item is Record<string, unknown> => !!item && typeof item === 'object')
-    .map((item) => normalizeItem<T>(item));
+    .map((item, index) => {
+      const normalized = normalizeItem<T>(item);
+      const row = normalized as Record<string, unknown>;
+      if (!String(row.id ?? '').trim()) {
+        row.id = resolveItemId(row, index);
+      }
+      return normalized;
+    });
 }
 
 export function getUnitValue(val: unknown, fallback = 0): number {
@@ -327,8 +374,8 @@ export function readSectionTheme(
     ),
     animate: isTruthy(c[`${prefix}animate`], defaults?.animate ?? true),
     fullWidth: isTruthy(c[`${prefix}full_width`], defaults?.fullWidth ?? false),
-    noBottomMargin: isTruthy(c.notmrb, defaults?.noBottomMargin ?? false),
-    hasContainer: isTruthy(c.has_container, defaults?.hasContainer ?? true),
+    noBottomMargin: false, // keep default bottom spacing — no merchant toggle
+    hasContainer: true, // always contained — no merchant toggle
     bgOverride: isTruthy(c.add_component_background_color, false)
       ? String(c.component_background_color ?? '').trim()
       : '',
@@ -338,13 +385,13 @@ export function readSectionTheme(
 export function themeStyleMap(theme: SectionTheme): Record<string, string> {
   const useContainer = theme.hasContainer !== false;
   return {
-    '--section-bg': theme.bgOverride || theme.bg,
+    '--section-bg': theme.bgOverride || theme.bg || 'transparent',
     '--text-color': theme.text,
     '--muted-color': theme.muted,
-    '--accent-color': theme.accent,
+    '--accent-color': theme.accent || 'var(--color-primary, var(--primary-color, #64748b))', /* raed-bridge */
     '--card-bg': theme.card,
     '--border-color': theme.border,
-    '--button-bg': theme.buttonBg,
+    '--button-bg': theme.buttonBg || theme.accent || 'var(--color-primary, var(--primary-color, #64748b))',
     '--button-color': theme.buttonColor,
     '--section-radius': theme.radius,
     '--space-desktop': `${theme.spaceDesktop}px`,

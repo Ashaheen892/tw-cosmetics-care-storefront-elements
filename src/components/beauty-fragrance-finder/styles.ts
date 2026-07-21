@@ -80,15 +80,15 @@ export const componentStyles = css`
 
   .bff-chip:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 45%, var(--border-color, #f2dde7));
     box-shadow: 0 8px 18px rgba(43, 33, 28, 0.08);
   }
 
   .bff-chip.is-active {
-    border-color: var(--fam-color, var(--accent-color, #c2527f));
-    background: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 8%, var(--card-bg, #fff));
+    border-color: var(--fam-color, var(--accent-color, var(--fs-store-primary)));
+    background: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 8%, var(--card-bg, #fff));
     box-shadow:
-      0 0 0 3px color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 22%, transparent),
+      0 0 0 3px color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 22%, transparent),
       0 10px 22px rgba(43, 33, 28, 0.1);
   }
 
@@ -99,13 +99,13 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: var(--fam-color, var(--accent-color, #c2527f));
+    background: var(--fam-color, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     font-size: 1rem;
     line-height: 1;
     box-shadow:
       inset 0 0 0 2px color-mix(in srgb, #fff 40%, transparent),
-      0 4px 10px color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 35%, transparent);
+      0 4px 10px color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 35%, transparent);
   }
 
   .bff-chip__meta {
@@ -139,7 +139,7 @@ export const componentStyles = css`
   }
 
   .bff-chip.is-active .bff-chip__dot {
-    background: var(--fam-color, var(--accent-color, #c2527f));
+    background: var(--fam-color, var(--accent-color, var(--fs-store-primary)));
     box-shadow: none;
   }
 
@@ -204,8 +204,8 @@ export const componentStyles = css`
       place-items: center;
       text-align: center;
       border-radius: 50%;
-      background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
-      border: 1px dashed color-mix(in srgb, var(--accent-color, #c2527f) 45%, transparent);
+      background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
+      border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, transparent);
       color: var(--muted-color, #8f7a86);
       font-size: 0.72rem;
       font-weight: 700;
@@ -224,9 +224,9 @@ export const componentStyles = css`
     padding: 1.15rem;
     border-radius: var(--section-radius, 20px);
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 28%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #f2dde7));
     box-shadow:
-      0 1px 0 color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 12%, transparent),
+      0 1px 0 color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 12%, transparent),
       0 16px 36px rgba(120, 44, 82, 0.09);
   }
 
@@ -265,12 +265,12 @@ export const componentStyles = css`
     width: 2.65rem;
     height: 2.65rem;
     border-radius: 50%;
-    background: var(--fam-color, var(--accent-color, #c2527f));
+    background: var(--fam-color, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     font-size: 1.2rem;
     box-shadow:
       inset 0 0 0 2px color-mix(in srgb, #fff 40%, transparent),
-      0 8px 18px color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 35%, transparent);
+      0 8px 18px color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 35%, transparent);
   }
 
   .bff-nav {
@@ -287,15 +287,15 @@ export const componentStyles = css`
     border-radius: 50%;
     border: 1px solid var(--border-color, #f2dde7);
     background: color-mix(in srgb, var(--card-bg, #fff) 70%, var(--section-bg, #fbf5f8));
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
     font-size: 1.05rem;
     cursor: pointer;
     transition: background 0.2s ease, border-color 0.2s ease;
   }
 
   .bff-nav__btn:hover {
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 40%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
   }
 
   .bff-hero__title {
@@ -325,8 +325,8 @@ export const componentStyles = css`
     font-weight: 700;
     padding: 0.28rem 0.7rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 14%, var(--card-bg, #fff));
-    color: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 78%, var(--text-color, #33232e));
+    background: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 14%, var(--card-bg, #fff));
+    color: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 78%, var(--text-color, #33232e));
   }
 
   .bff-hero__media {
@@ -337,7 +337,7 @@ export const componentStyles = css`
     background:
       linear-gradient(
         160deg,
-        color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 28%, transparent),
+        color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 28%, transparent),
         transparent 55%
       ),
       color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
@@ -366,7 +366,7 @@ export const componentStyles = css`
     background: linear-gradient(
       180deg,
       transparent 45%,
-      color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 22%, transparent)
+      color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 22%, transparent)
     );
     pointer-events: none;
   }
@@ -383,11 +383,11 @@ export const componentStyles = css`
     background:
       radial-gradient(
         90% 80% at 50% 0%,
-        color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 10%, transparent),
+        color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 10%, transparent),
         transparent 70%
       ),
       color-mix(in srgb, var(--section-bg, #fbf5f8) 65%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 18%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #f2dde7));
   }
 
   .bff-pyramid__intro {
@@ -402,8 +402,8 @@ export const componentStyles = css`
     width: 100%;
     border-radius: 14px;
     padding: 0.75rem 0.9rem;
-    background: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) var(--tier-tint, 10%), var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 28%, transparent);
+    background: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) var(--tier-tint, 10%), var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 28%, transparent);
     box-sizing: border-box;
     text-align: center;
     opacity: 0;
@@ -437,7 +437,7 @@ export const componentStyles = css`
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.03em;
-    color: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 85%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 85%, var(--text-color, #33232e));
     margin-bottom: 0.4rem;
   }
 
@@ -500,8 +500,8 @@ export const componentStyles = css`
     gap: 0.2rem;
     padding: 0.75rem 0.85rem;
     border-radius: 14px;
-    background: color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 7%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, #c2527f)) 18%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 7%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #f2dde7));
   }
 
   .bff-fact__label {

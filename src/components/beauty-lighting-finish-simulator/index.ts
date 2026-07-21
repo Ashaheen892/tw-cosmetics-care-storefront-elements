@@ -13,6 +13,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { getPageLocale, localizedString } from '../../utils/localizedString.js';
+import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -36,6 +37,7 @@ export default class BeautyLightingFinishSimulator extends LitElement {
   @state() private cmpA = '';
   @state() private cmpB = '';
   @state() private sliderPos = 50;
+  @state() private sliderDragging = false;
   @state() private compareOn: boolean | null = null;
 
   private boundLangHandler = () => this.requestUpdate();
@@ -148,6 +150,8 @@ export default class BeautyLightingFinishSimulator extends LitElement {
   };
 
   private onSliderDown = (e: PointerEvent): void => {
+    e.preventDefault();
+    this.sliderDragging = true;
     (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
     this.onSliderMove(e);
     window.addEventListener('pointermove', this.onSliderMove);
@@ -155,7 +159,26 @@ export default class BeautyLightingFinishSimulator extends LitElement {
   };
 
   private onSliderUp = (): void => {
+    this.sliderDragging = false;
     window.removeEventListener('pointermove', this.onSliderMove);
+  };
+
+  private onSliderKey = (e: KeyboardEvent): void => {
+    const step = e.shiftKey ? 10 : 5;
+    const dir = this.isRtl() ? -1 : 1;
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      this.sliderPos = clamp(this.sliderPos - step * dir, 0, 100);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      this.sliderPos = clamp(this.sliderPos + step * dir, 0, 100);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      this.sliderPos = 0;
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      this.sliderPos = 100;
+    }
   };
 
   private renderIndicators(light: LightState, locale: 'ar' | 'en') {
@@ -334,28 +357,35 @@ export default class BeautyLightingFinishSimulator extends LitElement {
     const overlayStyle = style === 'slider' ? styleMap({ '--bls-pos': `${this.sliderPos}%` }) : styleMap({});
     return html`<div class="bls-wrap">
       <div
-        class=${classMap({ 'bls-stage': true, 'bls-cmp-slider': style === 'slider', 'bls-cmp-split': style === 'split' })}
+        class=${classMap({
+          'bls-stage': true,
+          'bls-cmp-slider': style === 'slider',
+          'bls-cmp-split': style === 'split',
+          'is-dragging': style === 'slider' && this.sliderDragging,
+        })}
         style=${overlayStyle}
+        role=${style === 'slider' ? 'slider' : nothing}
+        tabindex=${style === 'slider' ? '0' : nothing}
+        aria-label=${style === 'slider' ? t('اسحبي للمقارنة بين الحالتين', 'Drag to compare the two states') : nothing}
+        aria-valuenow=${style === 'slider' ? Math.round(this.sliderPos) : nothing}
+        aria-valuemin=${style === 'slider' ? '0' : nothing}
+        aria-valuemax=${style === 'slider' ? '100' : nothing}
+        @pointerdown=${style === 'slider' ? this.onSliderDown : undefined}
+        @keydown=${style === 'slider' ? this.onSliderKey : undefined}
       >
-        <span class="bls-cmp-tag bls-cmp-tag--a">${a?.name}</span>
-        <span class="bls-cmp-tag bls-cmp-tag--b">${b?.name}</span>
+        <span class="bls-cmp-tag bls-cmp-tag--a">${b?.name}</span>
+        <span class="bls-cmp-tag bls-cmp-tag--b">${a?.name}</span>
         ${this.renderPicture(a, '', true)}
         ${this.renderPicture(b, 'bls-img--overlay', true)}
         ${style === 'slider'
-          ? html`<div
-              class="bls-cmp-handle"
-              role="slider"
-              tabindex="0"
-              aria-label=${t('حرّكي للمقارنة', 'Drag to compare')}
-              aria-valuenow=${this.sliderPos}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              @pointerdown=${this.onSliderDown}
-              @keydown=${(e: KeyboardEvent) => {
-                if (e.key === 'ArrowLeft') this.sliderPos = clamp(this.sliderPos - 5, 0, 100);
-                if (e.key === 'ArrowRight') this.sliderPos = clamp(this.sliderPos + 5, 0, 100);
-              }}
-            ></div>`
+          ? html`
+              <div class="bls-cmp-handle" aria-hidden="true">
+                <span class="bls-cmp-handle__pill">‹ ›</span>
+              </div>
+              ${!this.sliderDragging && this.sliderPos === 50
+                ? html`<div class="bls-cmp-hint" aria-hidden="true">${t('اسحبي للمقارنة', 'Drag to compare')}</div>`
+                : nothing}
+            `
           : nothing}
       </div>
       ${picks}
@@ -380,6 +410,8 @@ export default class BeautyLightingFinishSimulator extends LitElement {
         ${t('أضيفي حالات إضاءة مع صورها من إعدادات العنصر.', 'Add lighting states with their images in the element settings.')}
       </div>`;
     }
+
+    const active = this.activeSingle(lights, isTruthy(c.bls_enable_finish, false));
 
     return html`
       <section
@@ -422,6 +454,7 @@ export default class BeautyLightingFinishSimulator extends LitElement {
             : nothing}
 
           ${effectiveMode === 'compare' ? this.renderCompare(lights) : this.renderSingle(lights, locale)}
+          ${renderCommerceOutcome({ config: c, prefix: 'bls_', ready: Boolean(active), selection: active })}
         </div>
       </section>
     `;

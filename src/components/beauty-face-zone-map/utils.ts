@@ -28,7 +28,7 @@ export function parseZones(raw: unknown): FaceZone[] {
       const name = localizedString(z.name as LocaleValue);
       const title = localizedString(z.title as LocaleValue) || name;
       return {
-        id: String(z.zone_id ?? '').trim() || `zone-${i + 1}`,
+        id: String(z.id ?? z.zone_id ?? '').trim() || `zone-${i + 1}`,
         name,
         x: clamp(toNumber(z.x, 50), 0, 100),
         y: clamp(toNumber(z.y, 50), 0, 100),

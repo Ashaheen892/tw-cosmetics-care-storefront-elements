@@ -56,7 +56,7 @@ export function parseSteps(raw: unknown): PlannerStep[] {
     .map((s, i) => {
       const name = localizedString(s.name as LocaleValue);
       return {
-        id: String(s.step_id ?? '').trim() || `step-${i + 1}`,
+        id: String(s.id ?? s.step_id ?? '').trim() || `step-${i + 1}`,
         name,
         color: String(s.color ?? '').trim(),
         icon: String(s.icon ?? '').trim(),

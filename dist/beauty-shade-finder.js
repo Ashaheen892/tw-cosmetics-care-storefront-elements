@@ -1,9 +1,9 @@
-import { css as y, LitElement as k, html as i, nothing as c } from "lit";
+import { css as w, LitElement as k, html as i, nothing as c } from "lit";
 import { property as $, state as g } from "lit/decorators.js";
-import { classMap as _ } from "lit/directives/class-map.js";
+import { classMap as v } from "lit/directives/class-map.js";
 import { styleMap as u } from "lit/directives/style-map.js";
-import { n as w, l as b, b as S, g as x, m as I, s as C, t as d, o as E, i as L, r as M, p as z, a as q } from "./sharedStyles--LaFqDVC.js";
-const N = y`
+import { n as S, l as p, c as I, g as y, o as C, s as z, t as d, q, i as E, r as L, p as M, a as N, b as R } from "./sharedStyles-BgfDOkwJ.js";
+const D = w`
   :host {
     display: block;
     direction: inherit;
@@ -40,8 +40,8 @@ const N = y`
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      var(--accent-color, #c2527f),
-      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+      var(--accent-color, var(--fs-store-primary)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #7b2c52)
     );
     transition: width 0.25s ease;
   }
@@ -77,8 +77,8 @@ const N = y`
     color: var(--muted-color, #8f7a86);
     padding: 0.65rem 0.8rem;
     border-radius: 12px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, #fff);
-    border-inline-start: 3px solid var(--accent-color, #c2527f);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, #fff);
+    border-inline-start: 3px solid var(--accent-color, var(--fs-store-primary));
   }
 
   .bsf-chips {
@@ -103,12 +103,12 @@ const N = y`
   }
 
   .bsf-chip:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
   }
 
   .bsf-chip[aria-pressed='true'] {
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
+    border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
   }
@@ -127,26 +127,43 @@ const N = y`
 
   .bsf-results {
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
     gap: 1.25rem;
     align-items: start;
-    padding: 1.15rem;
-    border-radius: var(--section-radius, 16px);
+    padding: 1.25rem;
+    border-radius: var(--section-radius, 20px);
     background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    box-shadow: 0 12px 30px rgba(120, 44, 82, 0.05);
+  }
+
+  .bsf-results__head {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
   }
 
   .bsf-results__title {
-    grid-column: 1 / -1;
     margin: 0;
-    font-size: 1.05rem;
+    font-size: 1.08rem;
     font-weight: 800;
     color: var(--text-color, #33232e);
   }
 
   .bsf-results__count {
-    font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.65rem;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #fff;
+    background: var(--accent-color, var(--fs-store-primary));
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, transparent);
   }
 
   .bsf-results__actions {
@@ -157,52 +174,83 @@ const N = y`
   }
 
   .bsf-swatches {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.7rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(4.6rem, 1fr));
+    gap: 0.75rem 0.55rem;
+    padding: 0.85rem;
+    border-radius: 16px;
+    background: var(--card-bg, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 85%, #fff);
+    max-height: min(420px, 55vh);
+    overflow-y: auto;
+    scrollbar-width: thin;
   }
 
   .bsf-swatch {
     position: relative;
-    width: 4.1rem;
     display: grid;
-    gap: 0.3rem;
-    padding: 0;
+    gap: 0.4rem;
+    justify-items: center;
+    padding: 0.35rem 0.2rem;
     border: none;
     background: none;
     cursor: pointer;
     text-align: center;
+    font: inherit;
+  }
+
+  .bsf-swatch__ring {
+    width: 3.6rem;
+    height: 3.6rem;
+    padding: 3px;
+    border-radius: 999px;
+    box-sizing: border-box;
+    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
   }
 
   .bsf-swatch__chip {
-    width: 4.1rem;
-    height: 4.1rem;
-    border-radius: 999px;
-    border: 3px solid transparent;
-    box-shadow: 0 4px 14px rgba(43, 33, 28, 0.16), inset 0 -6px 12px rgba(0, 0, 0, 0.14);
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -8px 14px rgba(0, 0, 0, 0.16),
+      0 4px 10px rgba(43, 33, 28, 0.12);
   }
 
+  .bsf-swatch--square .bsf-swatch__ring,
   .bsf-swatch--square .bsf-swatch__chip {
-    border-radius: 10px;
+    border-radius: 12px;
   }
 
+  .bsf-swatch--rounded .bsf-swatch__ring,
   .bsf-swatch--rounded .bsf-swatch__chip {
     border-radius: 18px;
   }
 
-  .bsf-swatch:hover .bsf-swatch__chip {
+  .bsf-swatch:hover .bsf-swatch__ring {
+    transform: translateY(-2px) scale(1.04);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #f2dde7));
+  }
+
+  .bsf-swatch.is-active .bsf-swatch__ring,
+  .bsf-swatch[aria-pressed='true'] .bsf-swatch__ring {
+    background: var(--accent-color, var(--fs-store-primary));
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 18%, transparent),
+      0 8px 18px rgba(120, 44, 82, 0.16);
     transform: scale(1.06);
   }
 
-  .bsf-swatch[aria-pressed='true'] .bsf-swatch__chip {
-    border-color: var(--accent-color, #c2527f);
-    transform: scale(1.08);
-  }
-
   .bsf-swatch__name {
-    font-size: 0.72rem;
-    font-weight: 600;
+    width: 100%;
+    font-size: 0.7rem;
+    font-weight: 700;
     color: var(--muted-color, #8f7a86);
     line-height: 1.25;
     overflow: hidden;
@@ -210,32 +258,42 @@ const N = y`
     white-space: nowrap;
   }
 
+  .bsf-swatch.is-active .bsf-swatch__name,
+  .bsf-swatch[aria-pressed='true'] .bsf-swatch__name {
+    color: var(--accent-color, var(--fs-store-primary));
+  }
+
   .bsf-detail {
     display: grid;
-    gap: 0.65rem;
-    padding: 1rem;
-    border-radius: calc(var(--section-radius, 16px) * 0.9);
+    gap: 0.75rem;
+    padding: 1rem 1.05rem 1.1rem;
+    border-radius: calc(var(--section-radius, 20px) * 0.85);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    box-shadow: 0 10px 26px rgba(120, 44, 82, 0.06);
   }
 
   .bsf-detail__media {
-    aspect-ratio: 4 / 3;
-    border-radius: calc(var(--section-radius, 16px) * 0.7);
-    box-shadow: inset 0 -40px 50px rgba(0, 0, 0, 0.12);
+    aspect-ratio: 16 / 10;
+    border-radius: 14px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      inset 0 -36px 48px rgba(0, 0, 0, 0.14),
+      0 8px 20px rgba(43, 33, 28, 0.1);
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 55%, transparent);
   }
 
   .bsf-detail__name {
     margin: 0;
-    font-size: 1.05rem;
+    font-size: 1.08rem;
     font-weight: 800;
     color: var(--text-color, #33232e);
   }
 
   .bsf-detail__number {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--accent-color, var(--fs-store-primary));
   }
 
   .bsf-detail__desc {
@@ -252,7 +310,7 @@ const N = y`
   }
 
   .bsf-detail__chip {
-    opacity: 0.55;
+    opacity: 0.5;
   }
 
   .bsf-detail__chip--on {
@@ -270,16 +328,21 @@ const N = y`
     .bsf-results {
       grid-template-columns: 1fr;
     }
+
+    .bsf-swatches {
+      grid-template-columns: repeat(auto-fill, minmax(4.2rem, 1fr));
+      max-height: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .bsf-chip,
-    .bsf-swatch__chip,
+    .bsf-swatch__ring,
     .bsf-progress__bar span {
       transition: none;
     }
   }
-`, R = [
+`, O = [
   {
     key: "product_type",
     labelKey: "bsf_step_type_label",
@@ -335,34 +398,34 @@ const N = y`
     ]
   }
 ];
-function D() {
-  return I() === "en";
+function P() {
+  return C() === "en";
 }
-function P(l) {
-  const e = D();
-  return R.map((s) => {
-    const a = b(l[s.labelKey]) || (e ? s.labelEn : s.labelAr), t = s.options.map((r) => ({
-      value: r.value,
-      label: e ? r.en : r.ar
+function A(l) {
+  const e = P();
+  return O.map((s) => {
+    const r = p(l[s.labelKey]) || (e ? s.labelEn : s.labelAr), t = s.options.map((a) => ({
+      value: a.value,
+      label: e ? a.en : a.ar
     }));
-    return { key: s.key, label: a, options: t };
+    return { key: s.key, label: r, options: t };
   });
 }
 function m(l, e) {
   const s = l[e] ?? l[`bsf_shades.${e}`];
-  return x(s, "").toLowerCase().trim();
+  return y(s, "").toLowerCase().trim();
 }
-function A(l) {
-  return w(l).map((e, s) => {
-    const a = b(e.shade_name);
+function j(l) {
+  return S(l).map((e, s) => {
+    const r = p(e.shade_name);
     return {
       id: `shade-${s}`,
-      hex: b(e.hex) || "#d9b48f",
-      shade_name: a,
-      shade_number: b(e.shade_number),
-      name: a,
-      desc: b(e.desc),
-      link: S(e.link),
+      hex: p(e.hex) || "#d9b48f",
+      shade_name: r,
+      shade_number: p(e.shade_number),
+      name: r,
+      desc: p(e.desc),
+      link: I(e.link),
       product_type: m(e, "product_type"),
       skin: m(e, "skin"),
       undertone: m(e, "undertone"),
@@ -370,28 +433,28 @@ function A(l) {
     };
   }).filter((e) => e.shade_name || e.hex);
 }
-function O(l, e) {
-  const s = ["product_type", "skin", "undertone", "result"], a = l.filter(
-    (r) => s.every((o) => {
+function B(l, e) {
+  const s = ["product_type", "skin", "undertone", "result"], r = l.filter(
+    (a) => s.every((o) => {
       const n = e[o];
       if (!n) return !0;
-      const p = r[o];
-      return !p || p === n;
+      const f = a[o];
+      return !f || f === n;
     })
   );
-  if (a.length) return a;
-  const t = l.filter((r) => {
-    const o = !e.product_type || !r.product_type || r.product_type === e.product_type, n = !e.skin || !r.skin || r.skin === e.skin;
+  if (r.length) return r;
+  const t = l.filter((a) => {
+    const o = !e.product_type || !a.product_type || a.product_type === e.product_type, n = !e.skin || !a.skin || a.skin === e.skin;
     return o && n;
   });
   return t.length ? t : l;
 }
-var B = Object.defineProperty, h = (l, e, s, a) => {
-  for (var t = void 0, r = l.length - 1, o; r >= 0; r--)
-    (o = l[r]) && (t = o(e, s, t) || t);
-  return t && B(e, s, t), t;
+var K = Object.defineProperty, h = (l, e, s, r) => {
+  for (var t = void 0, a = l.length - 1, o; a >= 0; a--)
+    (o = l[a]) && (t = o(e, s, t) || t);
+  return t && K(e, s, t), t;
 };
-const v = class v extends k {
+const x = class x extends k {
   constructor() {
     super(...arguments), this.config = {}, this.selection = {}, this.shades = [], this.selectedShadeId = "", this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate();
   }
@@ -406,21 +469,21 @@ const v = class v extends k {
   }
   load() {
     var e;
-    this.shades = A((e = this.config) == null ? void 0 : e.bsf_shades), this.ensureSelectedShade();
+    this.shades = j((e = this.config) == null ? void 0 : e.bsf_shades), this.ensureSelectedShade();
   }
   get steps() {
-    return P(this.config || {});
+    return A(this.config || {});
   }
   get onResults() {
     return this.stepIndex >= this.steps.length;
   }
   get filtered() {
-    return O(this.shades, this.selection);
+    return B(this.shades, this.selection);
   }
   ensureSelectedShade() {
     var s;
     const e = this.filtered;
-    e.some((a) => a.id === this.selectedShadeId) || (this.selectedShadeId = ((s = e[0]) == null ? void 0 : s.id) ?? "");
+    e.some((r) => r.id === this.selectedShadeId) || (this.selectedShadeId = ((s = e[0]) == null ? void 0 : s.id) ?? "");
   }
   get selectedShade() {
     return this.filtered.find((e) => e.id === this.selectedShadeId) || null;
@@ -441,15 +504,15 @@ const v = class v extends k {
   selectShade(e) {
     this.selectedShadeId = e;
   }
-  label(e, s, a) {
+  label(e, s, r) {
     var t;
-    return b((t = this.config) == null ? void 0 : t[e]) || d(s, a);
+    return p((t = this.config) == null ? void 0 : t[e]) || d(s, r);
   }
   renderProgress(e) {
-    const s = Math.min(this.stepIndex + 1, e), a = e ? Math.round(Math.min(this.stepIndex, e) / e * 100) : 0;
+    const s = Math.min(this.stepIndex + 1, e), r = e ? Math.round(Math.min(this.stepIndex, e) / e * 100) : 0;
     return i`
       <div class="bsf-progress" aria-hidden="true">
-        <div class="bsf-progress__bar"><span style=${u({ width: `${a}%` })}></span></div>
+        <div class="bsf-progress__bar"><span style=${u({ width: `${r}%` })}></span></div>
         <span class="bsf-progress__text">
           ${this.onResults ? d("النتيجة", "Result") : d(`السؤال ${s} من ${e}`, `Question ${s} of ${e}`)}
         </span>
@@ -467,15 +530,15 @@ const v = class v extends k {
         <h3 class="bsf-question__title">${e.label}</h3>
         ${s ? i`<p class="bsf-question__hint">${s}</p>` : c}
         <div class="bsf-chips" role="group" aria-label=${e.label}>
-          ${e.options.map((a) => {
-      const t = this.selection[e.key] === a.value;
+          ${e.options.map((r) => {
+      const t = this.selection[e.key] === r.value;
       return i`<button
               type="button"
               class="bsf-chip"
               aria-pressed=${t ? "true" : "false"}
-              @click=${() => this.pick(e.key, a.value)}
+              @click=${() => this.pick(e.key, r.value)}
             >
-              ${a.label}
+              ${r.label}
             </button>`;
     })}
         </div>
@@ -483,7 +546,7 @@ const v = class v extends k {
     `;
   }
   renderNav(e) {
-    const s = this.label("bsf_back_btn", "السابق", "Back"), a = this.label("bsf_next_btn", "التالي", "Next"), t = this.label("bsf_see_btn", "عرض الدرجات", "See shades"), r = this.stepIndex === this.steps.length - 1;
+    const s = this.label("bsf_back_btn", "السابق", "Back"), r = this.label("bsf_next_btn", "التالي", "Next"), t = this.label("bsf_see_btn", "عرض الدرجات", "See shades"), a = this.stepIndex === this.steps.length - 1;
     return i`
       <div class="bsf-nav">
         ${this.stepIndex > 0 ? i`<button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
@@ -495,26 +558,26 @@ const v = class v extends k {
           ?disabled=${!e}
           @click=${() => this.goNext()}
         >
-          ${r ? t : a}
+          ${a ? t : r}
         </button>
       </div>
     `;
   }
   matchChips(e) {
-    const s = this.steps, a = [];
+    const s = this.steps, r = [];
     for (const t of s) {
-      const r = this.selection[t.key];
-      if (!r) continue;
-      const o = e[t.key], n = t.options.find((p) => p.value === r);
-      a.push({
-        label: (n == null ? void 0 : n.label) || r,
-        active: !o || o === r
+      const a = this.selection[t.key];
+      if (!a) continue;
+      const o = e[t.key], n = t.options.find((f) => f.value === a);
+      r.push({
+        label: (n == null ? void 0 : n.label) || a,
+        active: !o || o === a
       });
     }
-    return a;
+    return r;
   }
   renderDetail(e, s) {
-    const a = e.link ? E(e.link) : !1, t = this.matchChips(e);
+    const r = e.link ? q(e.link) : !1, t = this.matchChips(e);
     return i`
       <div class="bsf-detail" aria-live="polite">
         <div
@@ -530,21 +593,21 @@ const v = class v extends k {
         ${e.desc ? i`<p class="bsf-detail__desc">${e.desc}</p>` : c}
         ${t.length ? i`<div class="bsf-detail__chips" aria-label=${d("سبب المطابقة", "Match reasons")}>
               ${t.map(
-      (r) => i`<span
-                  class=${_({
+      (a) => i`<span
+                  class=${v({
         "fs-pill": !0,
         "bsf-detail__chip": !0,
-        "bsf-detail__chip--on": r.active
+        "bsf-detail__chip--on": a.active
       })}
-                >${r.label}</span>`
+                >${a.label}</span>`
     )}
             </div>` : c}
         ${s && e.link ? i`<div class="bsf-detail__actions">
               <a
                 class="fs-btn fs-btn--ghost"
                 href=${e.link}
-                target=${a ? "_blank" : "_self"}
-                rel=${a ? "noopener noreferrer" : c}
+                target=${r ? "_blank" : "_self"}
+                rel=${r ? "noopener noreferrer" : c}
               >
                 ${d("التفاصيل", "Details")}
               </a>
@@ -553,39 +616,42 @@ const v = class v extends k {
     `;
   }
   renderResults() {
-    const e = this.config || {}, s = this.filtered, a = this.selectedShade, t = L(e.bsf_show_link, !0), r = x(e.bsf_swatch_shape, "circle"), o = this.label(
+    const e = this.config || {}, s = this.filtered, r = this.selectedShade, t = E(e.bsf_show_link, !0), a = y(e.bsf_swatch_shape, "circle"), o = this.label(
       "bsf_results_title",
       "الدرجات المناسبة لكِ",
       "Shades that suit you"
     );
     return i`
       <div class="bsf-results">
-        <h3 class="bsf-results__title">
-          ${o}
-          <span class="bsf-results__count"> · ${s.length}</span>
-        </h3>
+        <div class="bsf-results__head">
+          <h3 class="bsf-results__title">${o}</h3>
+          <span class="bsf-results__count">${s.length}</span>
+        </div>
         <div class="bsf-swatches" role="listbox" aria-label=${o}>
           ${s.map((n) => {
-      const p = n.id === this.selectedShadeId;
+      const f = n.id === this.selectedShadeId, _ = n.shade_number || n.shade_name || n.name;
       return i`<button
               type="button"
-              class=${_({
+              class=${v({
         "bsf-swatch": !0,
-        "bsf-swatch--square": r === "square",
-        "bsf-swatch--rounded": r === "rounded"
+        "bsf-swatch--square": a === "square",
+        "bsf-swatch--rounded": a === "rounded",
+        "is-active": f
       })}
               role="option"
-              aria-selected=${p ? "true" : "false"}
-              aria-pressed=${p ? "true" : "false"}
-              aria-label=${n.name || n.shade_number || d("درجة", "Shade")}
+              aria-selected=${f ? "true" : "false"}
+              aria-pressed=${f ? "true" : "false"}
+              aria-label=${n.name || _ || d("درجة", "Shade")}
               @click=${() => this.selectShade(n.id)}
             >
-              <span class="bsf-swatch__chip" style=${u({ background: n.hex })}></span>
-              ${n.shade_number || n.shade_name ? i`<span class="bsf-swatch__name">${n.shade_number || n.shade_name}</span>` : c}
+              <span class="bsf-swatch__ring">
+                <span class="bsf-swatch__chip" style=${u({ background: n.hex || "#c4a484" })}></span>
+              </span>
+              ${_ ? i`<span class="bsf-swatch__name">${_}</span>` : c}
             </button>`;
     })}
         </div>
-        ${a ? this.renderDetail(a, t) : i`<p class="fs-empty">${d("لا توجد درجات مطابقة", "No matching shades")}</p>`}
+        ${r ? this.renderDetail(r, t) : i`<p class="fs-empty">${d("لا توجد درجات مطابقة", "No matching shades")}</p>`}
         <div class="bsf-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
             ${this.label("bsf_back_btn", "تعديل الإجابات", "Edit answers")}
@@ -598,26 +664,27 @@ const v = class v extends k {
     `;
   }
   render() {
-    const e = this.config || {}, s = M(e, "bsf_"), a = s.animate && !z(), t = b(e.bsf_title), r = b(e.bsf_desc), o = this.steps, n = o[this.stepIndex], p = n ? !!this.selection[n.key] : !1;
+    const e = this.config || {}, s = L(e, "bsf_"), r = s.animate && !M(), t = p(e.bsf_title), a = p(e.bsf_desc), o = this.steps, n = o[this.stepIndex], f = n ? !!this.selection[n.key] : !1;
     return this.shades.length ? i`
       <section
-        class=${_({ "fs-section": !0, "fs-animate": a })}
-        style=${u(q(s))}
+        class=${v({ "fs-section": !0, "fs-animate": r })}
+        style=${u(N(s))}
         aria-label=${t || d("محدد درجة المكياج المناسبة", "Beauty shade finder")}
       >
         <div class="fs-container">
-          ${t || r ? i`<div class="fs-header">
+          ${t || a ? i`<div class="fs-header">
                 ${t ? i`<h2 class="fs-title">${t}</h2>` : c}
-                ${r ? i`<p class="fs-desc">${r}</p>` : c}
+                ${a ? i`<p class="fs-desc">${a}</p>` : c}
               </div>` : c}
 
           <div class="bsf-wrap">
             ${this.renderProgress(o.length)}
             ${this.onResults ? this.renderResults() : i`
                   ${n ? this.renderQuestion(n) : c}
-                  ${this.renderNav(p)}
+                  ${this.renderNav(f)}
                 `}
           </div>
+          ${this.onResults ? R({ config: e, prefix: "bsf_", ready: !0 }) : c}
         </div>
       </section>
     ` : i`<div class="fs-empty" role="status">
@@ -625,24 +692,24 @@ const v = class v extends k {
       </div>`;
   }
 };
-v.styles = [C, N];
-let f = v;
+x.styles = [z, D];
+let b = x;
 h([
   $({ type: Object })
-], f.prototype, "config");
+], b.prototype, "config");
 h([
   g()
-], f.prototype, "selection");
+], b.prototype, "selection");
 h([
   g()
-], f.prototype, "shades");
+], b.prototype, "shades");
 h([
   g()
-], f.prototype, "selectedShadeId");
+], b.prototype, "selectedShadeId");
 h([
   g()
-], f.prototype, "stepIndex");
-typeof f < "u" && f.registerSallaComponent("salla-beauty-shade-finder");
+], b.prototype, "stepIndex");
+typeof b < "u" && b.registerSallaComponent("salla-beauty-shade-finder");
 export {
-  f as default
+  b as default
 };

@@ -79,7 +79,7 @@ export const componentStyles = css`
   }
 
   .bac-chip:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
   }
 
   .bac-chip:active {
@@ -87,8 +87,8 @@ export const componentStyles = css`
   }
 
   .bac-chip.is-selected {
-    border-color: var(--accent-color, #c2527f);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, #c2527f) 30%, transparent);
+    border-color: var(--accent-color, var(--fs-store-primary));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, transparent);
   }
 
   .bac-chip__swatch {
@@ -97,17 +97,17 @@ export const componentStyles = css`
     border-radius: 50%;
     flex: 0 0 auto;
     border: 1px solid color-mix(in srgb, #000 12%, transparent);
-    background: var(--swatch, var(--accent-color, #c2527f));
+    background: var(--swatch, var(--accent-color, var(--fs-store-primary)));
   }
 
   /* —— Verdict card —— */
   .bac-verdict {
     padding: 1.35rem 1.25rem 1.4rem;
     border-radius: var(--section-radius, 16px);
-    border: 2px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 35%, transparent);
+    border: 2px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 35%, transparent);
     background: linear-gradient(
       165deg,
-      color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 14%, var(--card-bg, #fff)) 0%,
+      color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 14%, var(--card-bg, #fff)) 0%,
       var(--card-bg, #fff) 55%
     );
     box-shadow: 0 12px 32px color-mix(in srgb, var(--verdict-color, #000) 12%, transparent);
@@ -136,7 +136,7 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: var(--verdict-color, var(--accent-color, #c2527f));
+    background: var(--verdict-color, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     font-size: 1.5rem;
     font-weight: 800;
@@ -148,8 +148,8 @@ export const componentStyles = css`
     display: inline-block;
     padding: 0.35rem 1rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 18%, var(--card-bg, #fff));
-    color: var(--verdict-color, var(--accent-color, #c2527f));
+    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--card-bg, #fff));
+    color: var(--verdict-color, var(--accent-color, var(--fs-store-primary)));
     font-size: 0.92rem;
     font-weight: 800;
     letter-spacing: 0.01em;
@@ -213,8 +213,8 @@ export const componentStyles = css`
     margin-top: 0.9rem;
     padding: 0.7rem 0.85rem;
     border-radius: 12px;
-    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 10%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, #c2527f)) 22%, transparent);
+    background: color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 10%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--verdict-color, var(--accent-color, var(--fs-store-primary))) 22%, transparent);
     text-align: start;
   }
 
@@ -224,7 +224,7 @@ export const componentStyles = css`
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--verdict-color, var(--accent-color, #c2527f));
+    color: var(--verdict-color, var(--accent-color, var(--fs-store-primary)));
     padding-top: 0.15rem;
   }
 
@@ -243,15 +243,15 @@ export const componentStyles = css`
     margin-top: 0.75rem;
     padding: 0.65rem 0.8rem;
     border-radius: 12px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 22%, transparent);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, transparent);
     text-align: start;
   }
 
   .bac-timing__label {
     font-weight: 800;
     font-size: 0.82rem;
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
     white-space: nowrap;
   }
 

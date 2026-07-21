@@ -23,7 +23,8 @@ const DESKTOP_THUMBS = path.join(
   'Desktop',
   'ثامبنيلز-عناصر-التجميل-GIF'
 );
-const DEMO_URL = 'http://127.0.0.1:5173/node_modules/.salla-temp/preview.html';
+const DEMO_URL =
+  process.env.DEMO_URL || 'http://127.0.0.1:5173/node_modules/.salla-temp/preview.html';
 const W = 1600;
 const H = 1200;
 const FRAME_MS = 900;
@@ -44,6 +45,9 @@ const ALL = [
   'beauty-spf-guide',
   'beauty-color-harmony',
   'beauty-weekly-planner',
+  'beauty-categories',
+  'beauty-before-after',
+  'beauty-promo-banners',
 ];
 
 /** 6 featured thumbnails for Desktop folder */
@@ -513,6 +517,118 @@ const DEMOS = {
     await shot(steps[3]);
     await clickInHost(page, host, ['button', '[role="button"]'], 3);
     await page.waitForTimeout(450);
+    await shot(steps[4]);
+  },
+
+  async 'beauty-categories'(page, host, shot) {
+    const steps = [
+      'استعراض دوائر التصنيفات',
+      'تمييز تصنيف عند المرور عليه',
+      'تمييز تصنيف آخر',
+      'استعراض بقية التصنيفات',
+      'جاهزة للانتقال لصفحة التصنيف',
+    ];
+    const hoverItem = async (i) => {
+      await page.evaluate(
+        ({ el, i }) => {
+          const root = el.shadowRoot || el;
+          const items = [...root.querySelectorAll('.bcat-item')];
+          items.forEach((n) => n.classList.remove('bcat-hover'));
+          const target = items[i];
+          if (target) {
+            target.classList.add('bcat-hover');
+            target.style.transform = 'translateY(-4px)';
+            const disc = target.querySelector('.bcat-disc');
+            if (disc) {
+              disc.style.borderColor = 'var(--accent-color, #c2527f)';
+              disc.style.boxShadow =
+                '0 0 0 5px color-mix(in srgb, var(--accent-color, #c2527f) 16%, transparent), 0 14px 28px rgba(120,44,82,.14)';
+            }
+          }
+        },
+        { el: host, i }
+      );
+    };
+    await shot(steps[0]);
+    await hoverItem(0);
+    await page.waitForTimeout(350);
+    await shot(steps[1]);
+    await hoverItem(1);
+    await page.waitForTimeout(350);
+    await shot(steps[2]);
+    await hoverItem(2);
+    await page.waitForTimeout(350);
+    await shot(steps[3]);
+    await hoverItem(3);
+    await page.waitForTimeout(350);
+    await shot(steps[4]);
+  },
+
+  async 'beauty-before-after'(page, host, shot) {
+    const steps = [
+      'عرض المقارنة قبل/بعد',
+      'سحب المقبض نحو «قبل»',
+      'العودة إلى المنتصف',
+      'سحب المقبض نحو «بعد»',
+      'استخدام الأزرار السريعة للمقارنة',
+    ];
+    const setPos = async (pos) => {
+      await page.evaluate(
+        ({ el, pos }) => {
+          const root = el.shadowRoot || el;
+          const range = root.querySelector('.bba-range__input');
+          if (range) {
+            range.value = String(pos);
+            range.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+          }
+        },
+        { el: host, pos }
+      );
+    };
+    await shot(steps[0]);
+    await setPos(85);
+    await page.waitForTimeout(400);
+    await shot(steps[1]);
+    await setPos(50);
+    await page.waitForTimeout(400);
+    await shot(steps[2]);
+    await setPos(15);
+    await page.waitForTimeout(400);
+    await shot(steps[3]);
+    await clickInHost(page, host, ['.bba-quick__btn', 'button'], 1);
+    await page.waitForTimeout(400);
+    await shot(steps[4]);
+  },
+
+  async 'beauty-promo-banners'(page, host, shot) {
+    const steps = [
+      'استعراض بنرات العروض',
+      'التمرير إلى البنر التالي',
+      'قراءة تفاصيل العرض',
+      'التمرير لبنر آخر',
+      'زر تسوقي الآن جاهز للنقر',
+    ];
+    const scrollTrack = async (ratio) => {
+      await page.evaluate(
+        ({ el, ratio }) => {
+          const root = el.shadowRoot || el;
+          const track = root.querySelector('.bpb-track');
+          if (track) track.scrollTo({ left: track.scrollWidth * ratio, behavior: 'instant' });
+        },
+        { el: host, ratio }
+      );
+    };
+    await shot(steps[0]);
+    await scrollTrack(0.3);
+    await page.waitForTimeout(400);
+    await shot(steps[1]);
+    await page.waitForTimeout(300);
+    await shot(steps[2]);
+    await scrollTrack(0.7);
+    await page.waitForTimeout(400);
+    await shot(steps[3]);
+    await scrollTrack(1);
+    await page.waitForTimeout(400);
     await shot(steps[4]);
   },
 

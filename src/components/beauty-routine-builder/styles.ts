@@ -57,8 +57,8 @@ export const componentStyles = css`
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      var(--accent-color, #c2527f),
-      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+      var(--accent-color, var(--fs-store-primary)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #7b2c52)
     );
     transition: width 0.25s ease;
   }
@@ -109,12 +109,12 @@ export const componentStyles = css`
   }
 
   .brb-chip:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
   }
 
   .brb-chip[aria-pressed='true'] {
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
+    border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
   }
@@ -186,7 +186,7 @@ export const componentStyles = css`
     width: 2.1rem;
     height: 2.1rem;
     border-radius: 50%;
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     font-weight: 800;
     font-size: 0.95rem;

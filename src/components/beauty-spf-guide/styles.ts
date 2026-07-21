@@ -37,8 +37,8 @@ export const componentStyles = css`
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      var(--accent-color, #c2527f),
-      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+      var(--accent-color, var(--fs-store-primary)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #7b2c52)
     );
     transition: width 0.25s ease;
   }
@@ -108,13 +108,13 @@ export const componentStyles = css`
   }
 
   .bsg-option:hover {
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
   }
 
   .bsg-option[aria-pressed='true'] {
-    border-color: var(--accent-color, #c2527f);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, #c2527f) 25%, transparent);
+    border-color: var(--accent-color, var(--fs-store-primary));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, transparent);
   }
 
   .bsg-option--compact {
@@ -151,7 +151,7 @@ export const componentStyles = css`
     border-radius: 50%;
     border: 1px solid color-mix(in srgb, #000 12%, transparent);
     flex: 0 0 auto;
-    background: var(--bsg-swatch, var(--accent-color, #c2527f));
+    background: var(--bsg-swatch, var(--accent-color, var(--fs-store-primary)));
   }
 
   .bsg-nav {
@@ -195,8 +195,8 @@ export const componentStyles = css`
     gap: 0.4rem;
     padding: 0.35rem 0.7rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 22%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #f2dde7));
     font-size: 0.82rem;
     font-weight: 700;
     color: var(--text-color, #33232e);
@@ -213,8 +213,8 @@ export const componentStyles = css`
     gap: 0.3rem;
     padding: 0.9rem 1rem;
     border-radius: calc(var(--section-radius, 16px) * 0.7);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 20%, transparent);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 20%, transparent);
   }
 
   .bsg-duration--hero {
@@ -222,10 +222,10 @@ export const componentStyles = css`
     text-align: center;
     background: linear-gradient(
       145deg,
-      color-mix(in srgb, var(--accent-color, #c2527f) 14%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 30%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, var(--border-color, #f2dde7));
   }
 
   .bsg-duration__label {
@@ -238,7 +238,7 @@ export const componentStyles = css`
     font-size: 1.85rem;
     font-weight: 800;
     line-height: 1.1;
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
     letter-spacing: -0.01em;
   }
 
@@ -268,8 +268,8 @@ export const componentStyles = css`
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      color-mix(in srgb, #e0a100 80%, var(--accent-color, #c2527f)),
-      var(--accent-color, #c2527f)
+      color-mix(in srgb, #e0a100 80%, var(--accent-color, var(--fs-store-primary))),
+      var(--accent-color, var(--fs-store-primary))
     );
     transition: width 0.35s ease;
   }

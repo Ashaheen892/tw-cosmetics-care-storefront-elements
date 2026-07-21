@@ -15,7 +15,7 @@ export function parseActives(raw: unknown): Active[] {
     .map((row, i) => {
       const name = localizedString(row.name as LocaleValue);
       return {
-        id: String(row.active_id ?? '').trim() || `active-${i + 1}`,
+        id: String(row.id ?? row.active_id ?? '').trim() || `active-${i + 1}`,
         name,
         color: String(row.color ?? '').trim(),
         desc: localizedString(row.desc as LocaleValue),

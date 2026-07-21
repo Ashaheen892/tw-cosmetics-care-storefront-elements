@@ -20,7 +20,7 @@ export const componentStyles = css`
     align-items: center;
     gap: 0.7rem;
     padding: 0.9rem 1.1rem;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
     border-bottom: 1px solid var(--border-color, #f2dde7);
   }
 
@@ -29,7 +29,7 @@ export const componentStyles = css`
     height: 2.6rem;
     border-radius: 50%;
     object-fit: cover;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 30%, #fff);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, #fff);
     display: grid;
     place-items: center;
     color: #fff;
@@ -78,8 +78,8 @@ export const componentStyles = css`
     border-radius: inherit;
     background: linear-gradient(
       90deg,
-      var(--accent-color, #c2527f),
-      color-mix(in srgb, var(--accent-color, #c2527f) 70%, #7b2c52)
+      var(--accent-color, var(--fs-store-primary)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #7b2c52)
     );
     transition: width 0.35s ease;
   }
@@ -137,14 +137,14 @@ export const componentStyles = css`
   }
 
   button.bca-trail__chip:hover {
-    border-color: var(--accent-color, #c2527f);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, var(--card-bg, #fff));
+    border-color: var(--accent-color, var(--fs-store-primary));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
   }
 
   .bca-trail__chip--current {
-    border-color: var(--accent-color, #c2527f);
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
-    color: var(--accent-color, #c2527f);
+    border-color: var(--accent-color, var(--fs-store-primary));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
+    color: var(--accent-color, var(--fs-store-primary));
     cursor: default;
     max-width: 11rem;
   }
@@ -160,7 +160,7 @@ export const componentStyles = css`
     max-width: 85%;
     padding: 0.85rem 1.05rem;
     border-radius: 16px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff));
     color: var(--text-color, #33232e);
     font-size: 1rem;
     line-height: 1.6;
@@ -197,7 +197,7 @@ export const componentStyles = css`
   }
 
   .bca-answer:hover {
-    border-color: var(--accent-color, #c2527f);
+    border-color: var(--accent-color, var(--fs-store-primary));
     transform: translateY(-1px);
   }
 
@@ -223,10 +223,10 @@ export const componentStyles = css`
     border-radius: calc(var(--section-radius, 18px) * 0.85);
     background: linear-gradient(
       145deg,
-      color-mix(in srgb, var(--accent-color, #c2527f) 14%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
-    border: 1px solid color-mix(in srgb, var(--accent-color, #c2527f) 28%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, var(--border-color, #f2dde7));
     box-shadow: 0 10px 28px rgba(194, 82, 127, 0.1);
   }
 
@@ -236,7 +236,7 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     font-size: 1rem;
     font-weight: 800;
@@ -279,9 +279,9 @@ export const componentStyles = css`
   /* —— Style: mirror (framed) —— */
   .bca--mirror .bca-shell {
     border-width: 6px;
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 35%, #fff);
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, #fff);
     border-radius: 999px / 60px;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--accent-color, #c2527f) 6%, #fff), var(--card-bg, #fff));
+    background: linear-gradient(180deg, color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, #fff), var(--card-bg, #fff));
   }
 
   /* —— Style: cards —— */

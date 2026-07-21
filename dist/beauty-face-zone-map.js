@@ -1,43 +1,78 @@
-import { css as N, LitElement as O, nothing as o, html as t } from "lit";
-import { property as R, state as T } from "lit/decorators.js";
-import { classMap as x } from "lit/directives/class-map.js";
-import { styleMap as C } from "lit/directives/style-map.js";
-import { n as Z, l as p, b as U, e as W, d as q, f as _, h as u, g as y, s as G, j as K, k as V, t as s, i as h, r as X, p as B, a as F } from "./sharedStyles--LaFqDVC.js";
-const J = N`
+import { css as O, LitElement as N, nothing as i, html as r } from "lit";
+import { property as Z, state as j } from "lit/decorators.js";
+import { classMap as v } from "lit/directives/class-map.js";
+import { styleMap as _ } from "lit/directives/style-map.js";
+import { n as R, l as m, c as U, e as W, f as q, h as y, j as u, g as w, s as F, k as G, m as K, t as s, i as h, r as V, p as X, a as B, b as J } from "./sharedStyles-BgfDOkwJ.js";
+const Q = O`
+  :host {
+    display: block;
+    direction: inherit;
+    width: 100%;
+  }
+
   .bfz-layout {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.35rem;
     align-items: start;
+    width: 100%;
   }
 
   @media (min-width: 860px) {
     .bfz-layout {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 2rem;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 1.75rem;
     }
-    .bfz-layout--reverse {
-      direction: inherit;
-    }
-    .bfz-layout--reverse .bfz-stage {
+
+    .bfz-layout--reverse .bfz-stage-wrap {
       order: 2;
+    }
+
+    .bfz-layout--reverse .bfz-panel {
+      order: 1;
+    }
+
+    .bfz-panel {
+      position: sticky;
+      top: 1rem;
     }
   }
 
+  /* —— Map stage —— */
   .bfz-stage-wrap {
     position: relative;
-    max-width: 520px;
-    margin-inline: auto;
     width: 100%;
+    min-width: 0;
+    display: grid;
+    gap: 0.85rem;
   }
 
   .bfz-stage {
     position: relative;
     width: 100%;
     aspect-ratio: var(--bfz-aspect, 3 / 4);
-    border-radius: var(--section-radius, 16px);
+    border-radius: var(--section-radius, 20px);
     overflow: hidden;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 40%, var(--card-bg, #fff));
-    border: 1px solid var(--border-color, #f2dde7);
+    background:
+      radial-gradient(
+        90% 70% at 50% 20%,
+        color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
+        transparent 60%
+      ),
+      color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, transparent),
+      0 18px 40px rgba(120, 44, 82, 0.08);
+  }
+
+  .bfz-stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 35%, transparent);
+    z-index: 2;
   }
 
   .bfz-stage__img {
@@ -84,31 +119,82 @@ const J = N`
     line-height: 1;
   }
 
+  /* —— Zone legend —— */
+  .bfz-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    justify-content: center;
+  }
+
+  .bfz-legend__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 36px;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color, #f2dde7);
+    background: var(--card-bg, #fff);
+    color: var(--text-color, #33232e);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .bfz-legend__btn:hover {
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+  }
+
+  .bfz-legend__btn.is-active {
+    background: var(--accent-color, var(--fs-store-primary));
+    border-color: var(--accent-color, var(--fs-store-primary));
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .bfz-legend__swatch {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--dot-color, var(--accent-color, var(--fs-store-primary)));
+    box-shadow: 0 0 0 2px color-mix(in srgb, #fff 70%, transparent);
+    flex: 0 0 auto;
+  }
+
+  .bfz-legend__btn.is-active .bfz-legend__swatch {
+    box-shadow: 0 0 0 2px color-mix(in srgb, #fff 35%, transparent);
+  }
+
+  /* —— Hotspots —— */
   .bfz-dot {
     position: absolute;
+    z-index: 3;
     transform: translate(-50%, -50%);
     inset-inline-start: var(--dot-x, 50%);
     top: var(--dot-y, 50%);
     width: var(--dot-size, 30px);
     height: var(--dot-size, 30px);
-    min-width: 26px;
-    min-height: 26px;
+    min-width: 28px;
+    min-height: 28px;
     display: grid;
     place-items: center;
     padding: 0;
     border-radius: 50%;
-    border: 2px solid #fff;
-    background: var(--dot-color, var(--accent-color, #c2527f));
+    border: 2.5px solid #fff;
+    background: var(--dot-color, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     font-size: 0.8rem;
     font-weight: 800;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28);
+    box-shadow: 0 6px 16px rgba(20, 14, 12, 0.28);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  /* RTL: mirror horizontal placement so % maps to the visual side authors expect */
   :host-context([dir='rtl']) .bfz-dot,
   :host([dir='rtl']) .bfz-dot {
     inset-inline-start: auto;
@@ -116,35 +202,41 @@ const J = N`
     transform: translate(50%, -50%);
   }
 
-  .bfz-dot:hover {
-    transform: translate(-50%, -50%) scale(1.12);
+  .bfz-dot:hover,
+  .bfz-dot:focus-visible {
+    transform: translate(-50%, -50%) scale(1.14);
+    outline: none;
   }
+
   :host-context([dir='rtl']) .bfz-dot:hover,
-  :host([dir='rtl']) .bfz-dot:hover {
-    transform: translate(50%, -50%) scale(1.12);
+  :host-context([dir='rtl']) .bfz-dot:focus-visible,
+  :host([dir='rtl']) .bfz-dot:hover,
+  :host([dir='rtl']) .bfz-dot:focus-visible {
+    transform: translate(50%, -50%) scale(1.14);
   }
 
   .bfz-dot.is-active {
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 35%, transparent),
-      0 6px 16px rgba(20, 14, 12, 0.32);
+    box-shadow:
+      0 0 0 5px color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 32%, transparent),
+      0 8px 18px rgba(20, 14, 12, 0.3);
   }
 
   .bfz-dot--ring {
-    background: transparent;
-    border-color: var(--dot-color, var(--accent-color, #c2527f));
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 45%, transparent);
+    background: color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 12%, transparent);
+    border-color: var(--dot-color, var(--accent-color, var(--fs-store-primary)));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 28%, transparent);
   }
 
   .bfz-dot--area {
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 22%, transparent);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 22%, transparent);
     border-style: dashed;
     width: calc(var(--dot-size, 30px) * 2.2);
     height: calc(var(--dot-size, 30px) * 1.6);
   }
 
   .bfz-dot--icon {
-    background: color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 88%, #000);
+    background: color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 88%, #000);
   }
 
   .bfz-dot__pulse {
@@ -158,52 +250,79 @@ const J = N`
   }
 
   @keyframes bfz-pulse {
-    0% { transform: scale(1); opacity: 0.55; }
-    70% { transform: scale(2.1); opacity: 0; }
-    100% { transform: scale(2.1); opacity: 0; }
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    70% {
+      transform: scale(2.1);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(2.1);
+      opacity: 0;
+    }
   }
 
   .bfz-dot__label {
     position: absolute;
-    top: calc(100% + 4px);
+    top: calc(100% + 6px);
     inset-inline-start: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: var(--text-color, #33232e);
-    background: color-mix(in srgb, var(--card-bg, #fff) 88%, transparent);
-    padding: 1px 6px;
-    border-radius: 6px;
+    background: color-mix(in srgb, var(--card-bg, #fff) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    padding: 0.15rem 0.45rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(43, 33, 28, 0.08);
     pointer-events: none;
   }
 
+  /* —— Detail panel —— */
   .bfz-panel {
+    min-width: 0;
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
-    border-radius: var(--section-radius, 16px);
-    padding: 1.15rem 1.15rem 1.25rem;
-    box-shadow: 0 10px 30px rgba(43, 33, 28, 0.07);
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border-radius: var(--section-radius, 20px);
+    padding: 1.2rem 1.25rem 1.35rem;
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
+      0 16px 36px rgba(120, 44, 82, 0.08);
+    display: grid;
+    gap: 0.95rem;
   }
 
   .bfz-panel__head {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 0.75rem;
-    margin-bottom: 0.5rem;
+  }
+
+  .bfz-panel__eyebrow {
+    margin: 0 0 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--accent-color, var(--fs-store-primary));
+    text-transform: uppercase;
   }
 
   .bfz-panel__title {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
     font-weight: 800;
+    line-height: 1.3;
     color: var(--text-color, #33232e);
   }
 
   .bfz-nav {
     display: inline-flex;
     gap: 0.35rem;
+    flex: 0 0 auto;
   }
 
   .bfz-nav__btn {
@@ -213,16 +332,31 @@ const J = N`
     place-items: center;
     border-radius: 50%;
     border: 1px solid var(--border-color, #f2dde7);
-    background: var(--card-bg, #fff);
-    color: var(--accent-color, #c2527f);
-    font-size: 1rem;
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
+    color: var(--accent-color, var(--fs-store-primary));
+    font-size: 1.05rem;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   }
-  .bfz-nav__btn:hover { background: color-mix(in srgb, var(--accent-color, #c2527f) 10%, var(--card-bg, #fff)); }
+
+  .bfz-nav__btn:hover,
+  .bfz-nav__btn:focus-visible {
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    outline: none;
+  }
+
+  .bfz-panel__img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: calc(var(--section-radius, 20px) - 8px);
+    display: block;
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, #f2ece8);
+  }
 
   .bfz-panel__desc {
-    margin: 0 0 0.9rem;
+    margin: 0;
     color: var(--muted-color, #8f7a86);
     line-height: 1.7;
     font-size: 0.92rem;
@@ -232,28 +366,42 @@ const J = N`
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-bottom: 0.9rem;
   }
 
   .bfz-tag {
     font-size: 0.74rem;
     font-weight: 700;
-    padding: 0.2rem 0.6rem;
+    padding: 0.28rem 0.7rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 12%, var(--card-bg, #fff));
-    color: var(--accent-color, #c2527f);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
+    color: var(--accent-color, var(--fs-store-primary));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 18%, transparent);
   }
 
-  .bfz-block { margin-bottom: 0.9rem; }
+  .bfz-block {
+    display: grid;
+    gap: 0.55rem;
+    padding-top: 0.15rem;
+  }
 
   .bfz-block__title {
-    margin: 0 0 0.4rem;
-    font-size: 0.82rem;
+    margin: 0;
+    font-size: 0.8rem;
     font-weight: 800;
+    letter-spacing: 0.02em;
     color: var(--text-color, #33232e);
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem;
+  }
+
+  .bfz-block__title::before {
+    content: '';
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--accent-color, var(--fs-store-primary));
+    flex: 0 0 auto;
   }
 
   .bfz-steps {
@@ -262,29 +410,34 @@ const J = N`
     list-style: none;
     counter-reset: bfz-step;
     display: grid;
-    gap: 0.45rem;
+    gap: 0.5rem;
   }
 
   .bfz-steps li {
     counter-increment: bfz-step;
     position: relative;
-    padding-inline-start: 2rem;
+    padding-block: 0.65rem;
+    padding-inline: 2.45rem 0.75rem;
     font-size: 0.88rem;
     line-height: 1.55;
     color: var(--text-color, #33232e);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 5%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    border-radius: 12px;
   }
 
   .bfz-steps li::before {
     content: counter(bfz-step);
     position: absolute;
-    inset-inline-start: 0;
-    top: 0;
-    width: 1.4rem;
-    height: 1.4rem;
+    inset-inline-start: 0.55rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.45rem;
+    height: 1.45rem;
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     font-size: 0.72rem;
     font-weight: 800;
@@ -292,36 +445,51 @@ const J = N`
 
   .bfz-tips {
     margin: 0;
-    padding-inline-start: 1.1rem;
+    padding: 0;
+    list-style: none;
     display: grid;
-    gap: 0.35rem;
+    gap: 0.4rem;
+  }
+
+  .bfz-tips li {
+    position: relative;
+    padding-inline-start: 1.15rem;
     color: var(--muted-color, #8f7a86);
     font-size: 0.86rem;
     line-height: 1.55;
   }
 
+  .bfz-tips li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0.55em;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 70%, #fff);
+  }
+
   .bfz-warn {
     display: flex;
-    gap: 0.5rem;
-    padding: 0.65rem 0.8rem;
-    border-radius: 12px;
-    background: color-mix(in srgb, #e0a100 14%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, #e0a100 40%, transparent);
+    gap: 0.55rem;
+    align-items: flex-start;
+    padding: 0.75rem 0.85rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, #e0a100 12%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, #e0a100 34%, transparent);
     color: color-mix(in srgb, #8a5a00 70%, var(--text-color, #33232e));
     font-size: 0.84rem;
     line-height: 1.55;
-    margin-bottom: 0.9rem;
   }
 
-  .bfz-panel__img {
-    width: 100%;
-    border-radius: 12px;
-    margin-bottom: 0.9rem;
-    display: block;
+  .bfz-panel .fs-btn {
+    justify-self: start;
+    margin-top: 0.15rem;
   }
 
   .bfz-notice {
-    margin-top: 1.25rem;
+    margin: 1.35rem 0 0;
     text-align: center;
     font-size: 0.8rem;
     color: var(--muted-color, #8f7a86);
@@ -333,27 +501,35 @@ const J = N`
   }
 
   @keyframes bfz-coach-dot {
-    0%, 100% { box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28), 0 0 0 0 color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 45%, transparent); }
-    50% { box-shadow: 0 4px 12px rgba(20, 14, 12, 0.28), 0 0 0 8px color-mix(in srgb, var(--dot-color, var(--accent-color, #c2527f)) 0%, transparent); }
+    0%,
+    100% {
+      box-shadow:
+        0 6px 16px rgba(20, 14, 12, 0.28),
+        0 0 0 0 color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 45%, transparent);
+    }
+    50% {
+      box-shadow:
+        0 6px 16px rgba(20, 14, 12, 0.28),
+        0 0 0 10px color-mix(in srgb, var(--dot-color, var(--accent-color, var(--fs-store-primary))) 0%, transparent);
+    }
   }
 
   .bfz-coach {
-    position: absolute;
-    inset-inline: 0;
-    bottom: -0.35rem;
-    transform: translateY(100%);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.65rem;
-    padding: 0.65rem 0.85rem;
-    border-radius: 12px;
-    background: var(--text-color, #33232e);
+    padding: 0.7rem 0.9rem;
+    border-radius: 14px;
+    background: linear-gradient(
+      135deg,
+      var(--text-color, #33232e),
+      color-mix(in srgb, var(--text-color, #33232e) 78%, var(--accent-color, var(--fs-store-primary)))
+    );
     color: #fff;
     font-size: 0.84rem;
     font-weight: 700;
-    box-shadow: 0 8px 24px rgba(20, 14, 12, 0.22);
-    z-index: 5;
+    box-shadow: 0 10px 28px rgba(20, 14, 12, 0.2);
     animation: bfz-coach-in 0.35s ease;
   }
 
@@ -376,35 +552,44 @@ const J = N`
   }
 
   @keyframes bfz-coach-in {
-    from { opacity: 0; transform: translateY(calc(100% + 6px)); }
-    to { opacity: 1; transform: translateY(100%); }
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .bfz-panel--empty {
-    min-height: 10rem;
-    display: grid;
+    min-height: 14rem;
     place-items: center;
   }
 
   .bfz-empty-state {
     text-align: center;
-    padding: 1.25rem 1rem;
+    padding: 1.35rem 1rem;
     max-width: 20rem;
     margin-inline: auto;
   }
 
   .bfz-empty-state__icon {
-    display: block;
-    font-size: 2rem;
-    color: var(--accent-color, #c2527f);
-    opacity: 0.5;
-    margin-bottom: 0.5rem;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto 0.75rem;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    color: var(--accent-color, var(--fs-store-primary));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
     line-height: 1;
   }
 
   .bfz-empty-state__title {
     margin: 0 0 0.4rem;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 800;
     color: var(--text-color, #33232e);
   }
@@ -413,14 +598,13 @@ const J = N`
     margin: 0;
     font-size: 0.86rem;
     color: var(--muted-color, #8f7a86);
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
   .bfz-layout--sheet .bfz-sheet-close {
     display: grid;
   }
 
-  /* Bottom sheet on mobile; desktop keeps inline panel + empty state */
   @media (max-width: 859px) {
     .bfz-layout--sheet .bfz-panel--empty {
       display: none;
@@ -431,10 +615,10 @@ const J = N`
       inset-inline: 0;
       bottom: 0;
       z-index: 60;
-      border-radius: 18px 18px 0 0;
+      border-radius: 20px 20px 0 0;
       max-height: 80vh;
       overflow-y: auto;
-      box-shadow: 0 -12px 40px rgba(20, 14, 12, 0.28);
+      box-shadow: 0 -14px 44px rgba(20, 14, 12, 0.28);
       animation: bfz-sheet-up 0.28s ease;
     }
 
@@ -442,14 +626,18 @@ const J = N`
       position: fixed;
       inset: 0;
       z-index: 55;
-      background: rgba(20, 14, 12, 0.4);
+      background: rgba(20, 14, 12, 0.42);
       border: none;
     }
   }
 
   @keyframes bfz-sheet-up {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -457,59 +645,60 @@ const J = N`
     .bfz-dot__pulse,
     .bfz-dot.is-coach-pulse,
     .bfz-coach,
-    .bfz-panel {
+    .bfz-panel,
+    .bfz-legend__btn {
       animation: none !important;
       transition: none !important;
     }
   }
-`, Q = ["pulse", "ring", "number", "icon", "area", "label"];
+`, ee = ["pulse", "ring", "number", "icon", "area", "label"];
 function S(d) {
-  const e = p(d, "");
+  const e = m(d, "");
   return e ? e.split(/\r?\n|،|;|,/).map((a) => a.trim()).filter(Boolean) : [];
 }
-function ee(d) {
-  return Z(d).map((e, a) => {
-    const r = p(e.name), i = p(e.title) || r;
+function re(d) {
+  return R(d).map((e, a) => {
+    const t = m(e.name), o = m(e.title) || t;
     return {
-      id: String(e.zone_id ?? "").trim() || `zone-${a + 1}`,
-      name: r,
-      x: _(u(e.x, 50), 0, 100),
-      y: _(u(e.y, 50), 0, 100),
-      dotSize: _(u(e.dot_size, 30), 12, 120),
+      id: String(e.id ?? e.zone_id ?? "").trim() || `zone-${a + 1}`,
+      name: t,
+      x: y(u(e.x, 50), 0, 100),
+      y: y(u(e.y, 50), 0, 100),
+      dotSize: y(u(e.dot_size, 30), 12, 120),
       dotColor: String(e.dot_color ?? "").trim(),
       icon: String(e.icon ?? "").trim(),
-      title: i,
-      desc: p(e.desc),
+      title: o,
+      desc: m(e.desc),
       tags: q(e.tags),
       steps: S(e.steps),
       tips: S(e.tips),
-      warning: p(e.warning),
+      warning: m(e.warning),
       image: W(e.image),
       link: U(e.link)
     };
   }).filter((e) => e.name || e.title || e.desc);
 }
 function te(d) {
-  const e = y(d.bfz_dot_shape, "pulse");
-  return Q.includes(e) ? e : "pulse";
+  const e = w(d.bfz_dot_shape, "pulse");
+  return ee.includes(e) ? e : "pulse";
 }
 function ae(d) {
-  return y(d.bfz_detail_mode, "inline") === "sheet" ? "sheet" : "inline";
+  return w(d.bfz_detail_mode, "inline") === "sheet" ? "sheet" : "inline";
 }
-function re(d, e = "3/4") {
-  return (y(d.bfz_aspect, e) || e).replace("/", " / ");
+function oe(d, e = "3/4") {
+  return (w(d.bfz_aspect, e) || e).replace("/", " / ");
 }
-var ie = Object.defineProperty, $ = (d, e, a, r) => {
-  for (var i = void 0, c = d.length - 1, n; c >= 0; c--)
-    (n = d[c]) && (i = n(e, a, i) || i);
-  return i && ie(e, a, i), i;
+var ie = Object.defineProperty, $ = (d, e, a, t) => {
+  for (var o = void 0, c = d.length - 1, n; c >= 0; c--)
+    (n = d[c]) && (o = n(e, a, o) || o);
+  return o && ie(e, a, o), o;
 };
-const I = "tw-bfz-coach-seen", w = class w extends O {
+const L = "tw-bfz-coach-seen", k = class k extends N {
   constructor() {
     super(...arguments), this.config = {}, this.activeId = "", this.showCoach = !1, this.boundLangHandler = () => this.requestUpdate();
   }
   connectedCallback() {
-    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.showCoach = !K(I, !1);
+    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.showCoach = !G(L, !1);
   }
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
@@ -518,67 +707,67 @@ const I = "tw-bfz-coach-seen", w = class w extends O {
     e.has("config") && (this.activeId = this.defaultZoneId(this.zones));
   }
   dismissCoach() {
-    this.showCoach = !1, V(I, !0);
+    this.showCoach = !1, K(L, !0);
   }
   get zones() {
     var e;
-    return ee((e = this.config) == null ? void 0 : e.bfz_zones);
+    return re((e = this.config) == null ? void 0 : e.bfz_zones);
   }
   /** Merchant preset, otherwise the first zone — never leave the panel empty. */
   defaultZoneId(e) {
-    var r, i;
+    var t, o;
     if (!e.length) return "";
-    const a = String(((r = this.config) == null ? void 0 : r.bfz_default_zone) ?? "").trim();
-    return a && e.some((c) => c.id === a) ? a : ((i = e[0]) == null ? void 0 : i.id) ?? "";
+    const a = String(((t = this.config) == null ? void 0 : t.bfz_default_zone) ?? "").trim();
+    return a && e.some((c) => c.id === a) ? a : ((o = e[0]) == null ? void 0 : o.id) ?? "";
   }
   resolveActive(e) {
     if (!e.length || this.activeId === "__none__") return null;
     if (this.activeId) {
-      const r = e.find((i) => i.id === this.activeId);
-      if (r) return r;
+      const t = e.find((o) => o.id === this.activeId);
+      if (t) return t;
     }
     const a = this.defaultZoneId(e);
-    return e.find((r) => r.id === a) ?? e[0] ?? null;
+    return e.find((t) => t.id === a) ?? e[0] ?? null;
   }
   select(e) {
     this.activeId = e, this.dismissCoach();
   }
   step(e, a) {
     var n;
-    const r = this.resolveActive(e), c = ((r ? e.findIndex((l) => l.id === r.id) : -1) + a + e.length) % e.length;
+    const t = this.resolveActive(e), c = ((t ? e.findIndex((f) => f.id === t.id) : -1) + a + e.length) % e.length;
     this.activeId = ((n = e[c]) == null ? void 0 : n.id) ?? "", this.dismissCoach();
   }
-  renderDot(e, a, r, i, c, n, l) {
-    const g = l === e.id, f = e.name || e.title, v = a === "label" || c, z = r || n;
-    return t`
+  renderDot(e, a, t, o, c, n, f) {
+    const l = f === e.id, p = e.name || e.title, x = a === "label" || c, z = t || n;
+    return r`
       <button
         type="button"
-        class=${x({
+        class=${v({
       "bfz-dot": !0,
       [`bfz-dot--${a}`]: !0,
-      "is-active": g,
-      "is-coach-pulse": n && !g
+      "is-active": l,
+      "is-coach-pulse": n && !l
     })}
-        style=${C({
+        style=${_({
       "--dot-x": `${e.x}%`,
       "--dot-y": `${e.y}%`,
       "--dot-size": `${e.dotSize}px`,
       ...e.dotColor ? { "--dot-color": e.dotColor } : {}
     })}
-        aria-pressed=${g ? "true" : "false"}
+        aria-pressed=${l ? "true" : "false"}
         aria-controls="bfz-detail"
-        aria-label=${f}
-        title=${f}
+        aria-label=${p}
+        title=${p}
         @click=${() => this.select(e.id)}
       >
-        ${z ? t`<span class="bfz-dot__pulse" aria-hidden="true"></span>` : o}
-        ${a === "number" ? t`<span>${i + 1}</span>` : a === "icon" && e.icon ? t`<span class=${e.icon.startsWith("sicon-") ? e.icon : ""}>${e.icon.startsWith("sicon-") ? "" : e.icon}</span>` : o}
-        ${v ? t`<span class="bfz-dot__label">${f}</span>` : o}
+        ${z ? r`<span class="bfz-dot__pulse" aria-hidden="true"></span>` : i}
+        ${a === "number" ? r`<span>${o + 1}</span>` : a === "icon" && e.icon ? r`<span class=${e.icon.startsWith("sicon-") ? e.icon : ""}>${e.icon.startsWith("sicon-") ? "" : e.icon}</span>` : i}
+        ${x ? r`<span class="bfz-dot__label">${p}</span>` : i}
       </button>
     `;
   }
   renderEmptyPanel(e) {
-    return t`<div class="bfz-panel bfz-panel--empty" id="bfz-detail" role="region">
+    return r`<div class="bfz-panel bfz-panel--empty" id="bfz-detail" role="region">
       <div class="bfz-empty-state">
         <span class="bfz-empty-state__icon" aria-hidden="true">◎</span>
         <h3 class="bfz-empty-state__title">${s("اختاري منطقة", "Pick a zone")}</h3>
@@ -591,126 +780,155 @@ const I = "tw-bfz-coach-seen", w = class w extends O {
       </div>
     </div>`;
   }
+  renderLegend(e, a) {
+    return e.length < 2 ? i : r`
+      <div class="bfz-legend" role="tablist" aria-label=${s("مناطق الوجه", "Face zones")}>
+        ${e.map(
+      (t) => r`
+            <button
+              type="button"
+              role="tab"
+              class=${v({ "bfz-legend__btn": !0, "is-active": a === t.id })}
+              style=${_(t.dotColor ? { "--dot-color": t.dotColor } : {})}
+              aria-selected=${a === t.id ? "true" : "false"}
+              @click=${() => this.select(t.id)}
+            >
+              <span class="bfz-legend__swatch" aria-hidden="true"></span>
+              <span>${t.name || t.title}</span>
+            </button>
+          `
+    )}
+      </div>
+    `;
+  }
   renderDetail(e, a) {
     if (!e)
       return this.renderEmptyPanel(a);
-    const r = this.config || {}, i = h(r.bfz_show_nav, !0) && this.zones.length > 1, c = s("خطوات العناية", "Care steps"), n = s("نصائح", "Tips");
-    return t`
+    const t = this.config || {}, o = h(t.bfz_show_nav, !0) && this.zones.length > 1, c = s("خطوات العناية", "Care steps"), n = s("نصائح", "Tips"), f = this.zones.findIndex((l) => l.id === e.id);
+    return r`
       <div class="bfz-panel" id="bfz-detail" role="region" aria-live="polite">
         <div class="bfz-panel__head">
-          <h3 class="bfz-panel__title">${e.title || e.name}</h3>
+          <div>
+            <p class="bfz-panel__eyebrow">
+              ${s("منطقة العناية", "Care zone")}${f >= 0 ? ` · ${f + 1}/${this.zones.length}` : ""}
+            </p>
+            <h3 class="bfz-panel__title">${e.title || e.name}</h3>
+          </div>
           <div class="bfz-nav">
-            ${a === "sheet" ? t`<button
+            ${a === "sheet" ? r`<button
                   type="button"
                   class="bfz-nav__btn bfz-sheet-close"
                   aria-label=${s("إغلاق", "Close")}
                   @click=${() => this.activeId = "__none__"}
-                >✕</button>` : o}
-            ${i ? t`
+                >✕</button>` : i}
+            ${o ? r`
                   <button type="button" class="bfz-nav__btn" aria-label=${s("السابق", "Previous")} @click=${() => this.step(this.zones, -1)}>‹</button>
                   <button type="button" class="bfz-nav__btn" aria-label=${s("التالي", "Next")} @click=${() => this.step(this.zones, 1)}>›</button>
-                ` : o}
+                ` : i}
           </div>
         </div>
 
-        ${e.image ? t`<img class="bfz-panel__img" src=${e.image} alt="" loading="lazy" decoding="async" />` : o}
-        ${e.desc ? t`<p class="bfz-panel__desc">${e.desc}</p>` : o}
+        ${e.image ? r`<img class="bfz-panel__img" src=${e.image} alt="" loading="lazy" decoding="async" />` : i}
+        ${e.desc ? r`<p class="bfz-panel__desc">${e.desc}</p>` : i}
 
-        ${e.tags.length ? t`<div class="bfz-tags">${e.tags.map((l) => t`<span class="bfz-tag">${l}</span>`)}</div>` : o}
+        ${e.tags.length ? r`<div class="bfz-tags">${e.tags.map((l) => r`<span class="bfz-tag">${l}</span>`)}</div>` : i}
 
-        ${e.steps.length ? t`<div class="bfz-block">
+        ${e.steps.length ? r`<div class="bfz-block">
               <h4 class="bfz-block__title">${c}</h4>
-              <ol class="bfz-steps">${e.steps.map((l) => t`<li>${l}</li>`)}</ol>
-            </div>` : o}
+              <ol class="bfz-steps">${e.steps.map((l) => r`<li>${l}</li>`)}</ol>
+            </div>` : i}
 
-        ${e.tips.length ? t`<div class="bfz-block">
+        ${e.tips.length ? r`<div class="bfz-block">
               <h4 class="bfz-block__title">${n}</h4>
-              <ul class="bfz-tips">${e.tips.map((l) => t`<li>${l}</li>`)}</ul>
-            </div>` : o}
+              <ul class="bfz-tips">${e.tips.map((l) => r`<li>${l}</li>`)}</ul>
+            </div>` : i}
 
-        ${e.warning ? t`<div class="bfz-warn"><span aria-hidden="true">⚠︎</span><span>${e.warning}</span></div>` : o}
+        ${e.warning ? r`<div class="bfz-warn"><span aria-hidden="true">⚠︎</span><span>${e.warning}</span></div>` : i}
 
-        ${e.link ? t`<a class="fs-btn" href=${e.link} target="_blank" rel="noopener noreferrer">
+        ${e.link ? r`<a class="fs-btn" href=${e.link} target="_blank" rel="noopener noreferrer">
               ${s("اقرئي المزيد", "Read more")}
-            </a>` : o}
+            </a>` : i}
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, a = X(e, "bfz_"), r = a.animate && !B(), i = this.zones, c = p(e.bfz_face_image), n = p(e.bfz_title), l = p(e.bfz_desc), g = te(e), f = ae(e), v = h(e.bfz_pulse, !0) && r, z = Math.max(600, u(e.bfz_pulse_speed, 2200)), L = h(e.bfz_reverse, !1), A = h(e.bfz_show_names, !1), D = re(e), b = this.resolveActive(i), j = h(e.bfz_show_notice, !0), E = p(e.bfz_notice) || s("المعلومات المعروضة توعوية ولا تُعد تشخيصًا طبيًا.", "The information shown is educational and is not a medical diagnosis."), P = (b == null ? void 0 : b.id) ?? "", k = this.showCoach && !b;
-    if (!i.length)
-      return t`<div class="fs-empty" role="status">
+    const e = this.config || {}, a = V(e, "bfz_"), t = a.animate && !X(), o = this.zones, c = m(e.bfz_face_image), n = m(e.bfz_title), f = m(e.bfz_desc), l = te(e), p = ae(e), x = h(e.bfz_pulse, !0) && t, z = Math.max(600, u(e.bfz_pulse_speed, 2200)), D = h(e.bfz_reverse, !1), T = h(e.bfz_show_names, !1), A = oe(e), b = this.resolveActive(o), E = h(e.bfz_show_notice, !0), M = m(e.bfz_notice) || s("المعلومات المعروضة توعوية ولا تُعد تشخيصًا طبيًا.", "The information shown is educational and is not a medical diagnosis."), C = (b == null ? void 0 : b.id) ?? "", I = this.showCoach && !b;
+    if (!o.length)
+      return r`<div class="fs-empty" role="status">
         ${s("أضيفي مناطق الوجه من إعدادات العنصر لعرض الخريطة التفاعلية.", "Add face zones in the element settings to show the interactive map.")}
       </div>`;
-    const M = f === "sheet" && !!b;
-    return t`
+    const P = p === "sheet" && !!b;
+    return r`
       <section
-        class=${x({ "fs-section": !0, "fs-animate": r })}
-        style=${C({
-      ...F(a),
-      "--bfz-aspect": D,
+        class=${v({ "fs-section": !0, "fs-animate": t })}
+        style=${_({
+      ...B(a),
+      "--bfz-aspect": A,
       "--bfz-pulse-speed": `${z}ms`
     })}
         aria-label=${n || s("خريطة مناطق الوجه والعناية", "Face care zone map")}
       >
         <div class="fs-container">
-          ${n || l ? t`<div class="fs-header">
-                ${n ? t`<h2 class="fs-title">${n}</h2>` : o}
-                ${l ? t`<p class="fs-desc">${l}</p>` : o}
-              </div>` : o}
+          ${n || f ? r`<div class="fs-header">
+                ${n ? r`<h2 class="fs-title">${n}</h2>` : i}
+                ${f ? r`<p class="fs-desc">${f}</p>` : i}
+              </div>` : i}
 
           <div
-            class=${x({
+            class=${v({
       "bfz-layout": !0,
-      "bfz-layout--reverse": L,
-      "bfz-layout--sheet": f === "sheet"
+      "bfz-layout--reverse": D,
+      "bfz-layout--sheet": p === "sheet"
     })}
           >
             <div class="bfz-stage-wrap">
               <div class="bfz-stage">
-                ${c ? t`<img class="bfz-stage__img" src=${c} alt="" loading="lazy" decoding="async" />` : t`<div class="bfz-stage__missing" role="img" aria-label=${s("صورة وجه غير متوفرة", "Face image not available")}>
+                ${c ? r`<img class="bfz-stage__img" src=${c} alt="" loading="lazy" decoding="async" />` : r`<div class="bfz-stage__missing" role="img" aria-label=${s("صورة وجه غير متوفرة", "Face image not available")}>
                       <span class="bfz-stage__missing-icon" aria-hidden="true">👤</span>
                       <p>${s("أضيفي صورة وجه من الإعدادات", "Add a face image in settings")}</p>
                     </div>`}
-                ${i.map(
-      (Y, H) => this.renderDot(Y, g, v, H, A, k && r, P)
+                ${o.map(
+      (Y, H) => this.renderDot(Y, l, x, H, T, I && t, C)
     )}
               </div>
 
-              ${k ? t`<div class="bfz-coach" role="status">
+              ${this.renderLegend(o, C)}
+
+              ${I ? r`<div class="bfz-coach" role="status">
                     <p class="bfz-coach__text">${s("اضغطي على منطقة في الخريطة", "Tap a zone on the map")}</p>
                     <button type="button" class="bfz-coach__dismiss" aria-label=${s("إخفاء", "Dismiss")} @click=${() => this.dismissCoach()}>✕</button>
-                  </div>` : o}
+                  </div>` : i}
             </div>
 
-            ${f === "sheet" ? t`
-                  ${M ? t`<button
+            ${p === "sheet" ? r`
+                  ${P ? r`<button
                         class="bfz-sheet-backdrop"
                         aria-label=${s("إغلاق", "Close")}
                         @click=${() => this.activeId = "__none__"}
-                      ></button>` : o}
-                  ${this.renderDetail(b, f)}
-                ` : this.renderDetail(b, f)}
+                      ></button>` : i}
+                  ${this.renderDetail(b, p)}
+                ` : this.renderDetail(b, p)}
           </div>
 
-          ${j ? t`<p class="bfz-notice">${E}</p>` : o}
+          ${E ? r`<p class="bfz-notice">${M}</p>` : i}
+          ${J({ config: e, prefix: "bfz_", ready: !!b, selection: b })}
         </div>
       </section>
     `;
   }
 };
-w.styles = [G, J];
-let m = w;
+k.styles = [F, Q];
+let g = k;
 $([
-  R({ type: Object })
-], m.prototype, "config");
+  Z({ type: Object })
+], g.prototype, "config");
 $([
-  T()
-], m.prototype, "activeId");
+  j()
+], g.prototype, "activeId");
 $([
-  T()
-], m.prototype, "showCoach");
-typeof m < "u" && m.registerSallaComponent("salla-beauty-face-zone-map");
+  j()
+], g.prototype, "showCoach");
+typeof g < "u" && g.registerSallaComponent("salla-beauty-face-zone-map");
 export {
-  m as default
+  g as default
 };

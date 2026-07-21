@@ -1,9 +1,9 @@
-import { css as $, LitElement as w, nothing as n, html as r } from "lit";
+import { css as $, LitElement as w, nothing as c, html as r } from "lit";
 import { property as k, state as z } from "lit/decorators.js";
 import { classMap as v } from "lit/directives/class-map.js";
-import { styleMap as m } from "lit/directives/style-map.js";
-import { g as C, c as S, n as L, b as M, l, e as X, t as d, s as j, i as h, r as O, p as E, a as I } from "./sharedStyles--LaFqDVC.js";
-const T = $`
+import { styleMap as g } from "lit/directives/style-map.js";
+import { g as C, d as S, n as L, c as M, l, e as O, t as d, s as X, i as h, r as j, p as E, a as I, b as T } from "./sharedStyles-BgfDOkwJ.js";
+const A = $`
   :host {
     direction: inherit;
   }
@@ -12,15 +12,14 @@ const T = $`
     position: relative;
     border-radius: var(--section-radius, 18px);
     overflow: hidden;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 6%, var(--section-bg, #fbf5f8));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, var(--section-bg, #fbf5f8));
     border: 1px solid var(--border-color, #f2dde7);
     min-height: 260px;
   }
 
-  /* Closed: compact centered hero (mid-frame, not full card stack height) */
+  /* Closed: full container width, mid-frame height */
   .bcr-scene:not(.is-open) {
-    width: min(100%, 720px);
-    margin-inline: auto;
+    width: 100%;
     aspect-ratio: 16 / 10;
     max-height: min(42vh, 380px);
   }
@@ -111,8 +110,8 @@ const T = $`
   .bcr-cover__btn {
     min-height: 48px;
     padding: 0.65rem 1.75rem;
-    background: var(--accent-color, #c2527f);
-    border-color: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
+    border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     font-size: 0.95rem;
     font-weight: 800;
@@ -121,8 +120,8 @@ const T = $`
 
   .bcr-cover__btn:hover,
   .bcr-cover__btn:focus-visible {
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 88%, #fff);
-    border-color: color-mix(in srgb, var(--accent-color, #c2527f) 88%, #fff);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 88%, #fff);
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 88%, #fff);
     color: #fff;
   }
 
@@ -254,7 +253,7 @@ const T = $`
     width: 100%;
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    background: color-mix(in srgb, var(--accent-color, #c2527f) 8%, #f2ece8);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, #f2ece8);
   }
 
   .bcr-card__img {
@@ -274,7 +273,7 @@ const T = $`
     font-weight: 700;
     line-height: 1.4;
     color: #fff;
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 
@@ -315,8 +314,8 @@ const T = $`
     gap: 0.35rem;
     padding: 0.45rem 0.9rem;
     border-radius: 999px;
-    border: 1px solid var(--accent-color, #c2527f);
-    color: var(--accent-color, #c2527f);
+    border: 1px solid var(--accent-color, var(--fs-store-primary));
+    color: var(--accent-color, var(--fs-store-primary));
     background: transparent;
     font-size: 0.82rem;
     font-weight: 600;
@@ -326,7 +325,7 @@ const T = $`
 
   .bcr-card__link:hover,
   .bcr-card__link:focus-visible {
-    background: var(--accent-color, #c2527f);
+    background: var(--accent-color, var(--fs-store-primary));
     color: #fff;
   }
 
@@ -342,7 +341,7 @@ const T = $`
   .bcr-count::before {
     content: '✦';
     margin-inline-end: 0.35rem;
-    color: var(--accent-color, #c2527f);
+    color: var(--accent-color, var(--fs-store-primary));
     opacity: 0.75;
   }
 
@@ -357,7 +356,7 @@ const T = $`
       animation: none !important;
     }
   }
-`, A = [
+`, Y = [
   "bag",
   "box",
   "drawers",
@@ -365,32 +364,32 @@ const T = $`
   "curtain",
   "carousel"
 ];
-function Y(c) {
-  const e = C(c.bcr_mode, "box");
-  return A.includes(e) ? e : "box";
+function H(i) {
+  const e = C(i.bcr_mode, "box");
+  return Y.includes(e) ? e : "box";
 }
-function H(c) {
-  const e = S(c.bcr_speed, 140);
+function R(i) {
+  const e = S(i.bcr_speed, 140);
   return Math.max(0, Math.min(600, e));
 }
-function R(c) {
-  return c === 1 ? d("بطاقة واحدة", "1 card") : d(`${c} بطاقات`, `${c} cards`);
+function U(i) {
+  return i === 1 ? d("بطاقة واحدة", "1 card") : d(`${i} بطاقات`, `${i} cards`);
 }
-function U(c) {
-  return L(c).map((e) => ({
+function V(i) {
+  return L(i).map((e) => ({
     title: l(e.title),
     subtitle: l(e.subtitle),
-    image: X(e.image),
+    image: O(e.image),
     tag: l(e.tag),
     link: M(e.link)
   })).filter((e) => e.title || e.image);
 }
-var V = Object.defineProperty, u = (c, e, t, i) => {
-  for (var a = void 0, s = c.length - 1, o; s >= 0; s--)
-    (o = c[s]) && (a = o(e, t, a) || a);
-  return a && V(e, t, a), a;
+var D = Object.defineProperty, u = (i, e, t, s) => {
+  for (var a = void 0, n = i.length - 1, o; n >= 0; n--)
+    (o = i[n]) && (a = o(e, t, a) || a);
+  return a && D(e, t, a), a;
 };
-const g = class g extends w {
+const m = class m extends w {
   constructor() {
     super(...arguments), this.config = {}, this.revealed = !1, this.boundLangHandler = () => this.requestUpdate(), this.observer = null;
   }
@@ -412,9 +411,9 @@ const g = class g extends w {
         return;
       }
       this.observer = new IntersectionObserver(
-        (i) => {
+        (s) => {
           var a;
-          i.some((s) => s.isIntersecting) && (this.reveal(), (a = this.observer) == null || a.disconnect(), this.observer = null);
+          s.some((n) => n.isIntersecting) && (this.reveal(), (a = this.observer) == null || a.disconnect(), this.observer = null);
         },
         { threshold: 0.35 }
       ), this.observer.observe(this);
@@ -424,13 +423,13 @@ const g = class g extends w {
     this.revealed = !0;
   }
   renderCover(e) {
-    const t = this.config || {}, i = l(t.bcr_cover_image), a = l(t.bcr_cover_title) || l(t.bcr_title), s = l(t.bcr_reveal_btn) || d("اكشفي المجموعة", "Reveal collection"), o = r`
-      ${i ? r`<img class="bcr-cover__img" src=${i} alt="" loading="lazy" decoding="async" />` : n}
+    const t = this.config || {}, s = l(t.bcr_cover_image), a = l(t.bcr_cover_title) || l(t.bcr_title), n = l(t.bcr_reveal_btn) || d("اكشفي المجموعة", "Reveal collection"), o = r`
+      ${s ? r`<img class="bcr-cover__img" src=${s} alt="" loading="lazy" decoding="async" />` : c}
       <div class="bcr-cover__scrim" aria-hidden="true"></div>
       <div class="bcr-cover__inner">
-        ${a ? r`<h3 class="bcr-cover__title">${a}</h3>` : n}
+        ${a ? r`<h3 class="bcr-cover__title">${a}</h3>` : c}
         <p class="bcr-cover__hint">${d("اضغطي للكشف عن البطاقات", "Tap to reveal the cards")}</p>
-        <button type="button" class="fs-btn bcr-cover__btn" @click=${this.reveal}>${s}</button>
+        <button type="button" class="fs-btn bcr-cover__btn" @click=${this.reveal}>${n}</button>
       </div>
     `;
     return e === "curtain" || e === "petals" ? r`
@@ -446,7 +445,7 @@ const g = class g extends w {
     `;
   }
   renderCard(e, t) {
-    const i = !!e.link && t;
+    const s = !!e.link && t;
     return r`
       <article class="bcr-card">
         ${e.image ? r`<div class="bcr-card__media">
@@ -457,47 +456,47 @@ const g = class g extends w {
                 loading="lazy"
                 decoding="async"
               />
-              ${e.tag ? r`<span class="bcr-card__tag">${e.tag}</span>` : n}
-            </div>` : e.tag ? r`<span class="bcr-card__tag bcr-card__tag--standalone">${e.tag}</span>` : n}
+              ${e.tag ? r`<span class="bcr-card__tag">${e.tag}</span>` : c}
+            </div>` : e.tag ? r`<span class="bcr-card__tag bcr-card__tag--standalone">${e.tag}</span>` : c}
         <div class="bcr-card__body">
-          ${e.title ? r`<h3 class="bcr-card__title">${e.title}</h3>` : n}
-          ${e.subtitle ? r`<p class="bcr-card__subtitle">${e.subtitle}</p>` : n}
-          ${i ? r`<a class="bcr-card__link" href=${e.link}>
+          ${e.title ? r`<h3 class="bcr-card__title">${e.title}</h3>` : c}
+          ${e.subtitle ? r`<p class="bcr-card__subtitle">${e.subtitle}</p>` : c}
+          ${s ? r`<a class="bcr-card__link" href=${e.link}>
                 ${d("اكتشفي المزيد", "Discover more")}
-              </a>` : n}
+              </a>` : c}
         </div>
       </article>
     `;
   }
   render() {
-    const e = this.config || {}, t = O(e, "bcr_"), i = t.animate && !E(), a = Y(e), s = H(e), o = l(e.bcr_title), f = l(e.bcr_desc), _ = h(e.bcr_show_link, !0), p = U(e.bcr_items);
-    return p.length ? r`
+    const e = this.config || {}, t = j(e, "bcr_"), s = t.animate && !E(), a = H(e), n = R(e), o = l(e.bcr_title), p = l(e.bcr_desc), _ = h(e.bcr_show_link, !0), f = V(e.bcr_items);
+    return f.length ? r`
       <section
-        class=${v({ "fs-section": !0, "fs-animate": i })}
-        style=${m(I(t))}
+        class=${v({ "fs-section": !0, "fs-animate": s })}
+        style=${g(I(t))}
         aria-label=${o || d("الكشف الإبداعي عن المجموعة", "Creative collection reveal")}
       >
         <div class="fs-container">
-          ${o || f ? r`<div class="fs-header">
-                ${o ? r`<h2 class="fs-title">${o}</h2>` : n}
-                ${f ? r`<p class="fs-desc">${f}</p>` : n}
-              </div>` : n}
+          ${o || p ? r`<div class="fs-header">
+                ${o ? r`<h2 class="fs-title">${o}</h2>` : c}
+                ${p ? r`<p class="fs-desc">${p}</p>` : c}
+              </div>` : c}
 
           <div
             class=${v({
       "bcr-scene": !0,
-      "is-open": this.revealed || !i
+      "is-open": this.revealed || !s
     })}
           >
             ${this.renderCover(a)}
             <div class=${v({ "bcr-stage": !0, [`bcr-stage--${a}`]: !0 })}>
-              <div class="bcr-grid" role="list" aria-hidden=${this.revealed || !i ? "false" : "true"}>
-                ${p.map(
+              <div class="bcr-grid" role="list" aria-hidden=${this.revealed || !s ? "false" : "true"}>
+                ${f.map(
       (x, y) => r`
                     <div
                       class="bcr-item"
                       role="listitem"
-                      style=${m({ "--reveal-delay": `${y * s}ms` })}
+                      style=${g({ "--reveal-delay": `${y * n}ms` })}
                     >
                       ${this.renderCard(x, _)}
                     </div>
@@ -507,7 +506,8 @@ const g = class g extends w {
             </div>
           </div>
 
-          ${this.revealed ? r`<p class="bcr-count" role="status">${R(p.length)}</p>` : n}
+          ${this.revealed ? r`<p class="bcr-count" role="status">${U(f.length)}</p>` : c}
+          ${T({ config: e, prefix: "bcr_", ready: !0 })}
         </div>
       </section>
     ` : r`<div class="fs-empty" role="status">
@@ -515,8 +515,8 @@ const g = class g extends w {
       </div>`;
   }
 };
-g.styles = [j, T];
-let b = g;
+m.styles = [X, A];
+let b = m;
 u([
   k({ type: Object })
 ], b.prototype, "config");

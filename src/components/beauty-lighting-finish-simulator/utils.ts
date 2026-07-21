@@ -23,7 +23,7 @@ export function parseLights(raw: unknown): LightState[] {
     .map((l, i) => {
       const finish = getRadioValue(l.finish, 'any') as Finish;
       return {
-        id: String(l.light_id ?? '').trim() || `light-${i + 1}`,
+        id: String(l.id ?? l.light_id ?? '').trim() || `light-${i + 1}`,
         name: localizedString(l.name as LocaleValue) || `${i + 1}`,
         icon: String(l.icon ?? '').trim(),
         image: extractImageUrl(l.image),

@@ -2,6 +2,8 @@
 
 This kit provides custom Twilight components for cosmetics and beauty-care stores on Salla's e-commerce platform. It includes a pre-configured build setup and development environment to help you get started quickly.
 
+These elements are Twilight add-ons for stores using Theme Raed, not a full theme replacement; they inherit store colors where possible and convert interactions through merchant-configured products or CTA links.
+
 ## Getting Started
 
 1. Clone this repository

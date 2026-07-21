@@ -16,7 +16,7 @@ const lvl = (v: unknown) => clamp(toNumber(v, 0), 0, 5);
 export function parseTextures(raw: unknown): Texture[] {
   return normalizeCollection(raw)
     .map((tx, i) => ({
-      id: String(tx.tex_id ?? '').trim() || `texture-${i + 1}`,
+      id: String(tx.id ?? tx.tex_id ?? '').trim() || `texture-${i + 1}`,
       name: localizedString(tx.name as LocaleValue) || `${i + 1}`,
       icon: String(tx.icon ?? '').trim(),
       image: extractImageUrl(tx.image),
