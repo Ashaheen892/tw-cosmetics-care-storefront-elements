@@ -4,8 +4,8 @@ import { css, LitElement, nothing, html } from "lit";
 import { property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { n as normalizeCollection, l as localizedString, g as getRadioValue, j as toNumber, i as isTruthy, e as extractImageUrl, s as sharedSectionCss, t, r as readSectionTheme, p as prefersReducedMotion, o as getPageLocale, c as getUnitValue, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
-import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+import { n as normalizeCollection, l as localizedString, g as getRadioValue, j as toNumber, i as isTruthy, e as extractImageUrl, s as sharedSectionCss, t, r as readSectionTheme, p as prefersReducedMotion, o as getPageLocale, c as getUnitValue, a as themeStyleMap } from "./sharedStyles-CPLtr3dp.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-D0x70G-K.js";
 const componentStyles = css`
   :host {
     display: block;
@@ -172,14 +172,15 @@ const componentStyles = css`
 
   .brl-step {
     position: relative;
-    display: flex;
-    gap: 0.75rem;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    gap: 0.65rem 0.75rem;
+    align-items: center;
     background: var(--card-bg, #fff);
     border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     border-inline-start: 4px solid var(--step-color, var(--accent-color, var(--fs-store-primary)));
     border-radius: var(--brl-card-radius, 16px);
-    padding: 0.8rem 0.9rem;
+    padding: 0.85rem 0.95rem;
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, transparent),
       0 8px 20px rgba(120, 44, 82, 0.05);
@@ -188,6 +189,26 @@ const componentStyles = css`
       box-shadow 0.2s ease,
       border-color 0.2s ease,
       background 0.2s ease;
+  }
+
+  .brl-step--quiz {
+    grid-template-columns: auto auto auto minmax(0, 1fr) auto;
+  }
+
+  .brl-step--quiz:not(.has-result) {
+    grid-template-columns: auto auto auto minmax(0, 1fr);
+  }
+
+  .brl-step--quiz.is-revealed {
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+  }
+
+  .brl-step--quiz.is-revealed:not(.has-result) {
+    grid-template-columns: auto auto minmax(0, 1fr);
+  }
+
+  .brl-step--guide:not(.has-toggle) {
+    grid-template-columns: auto auto minmax(0, 1fr);
   }
 
   .brl-step.is-dragging {
@@ -262,11 +283,14 @@ const componentStyles = css`
     font-size: 0.98rem;
     font-weight: 800;
     color: var(--text-color, #000000);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    flex-wrap: wrap;
     line-height: 1.35;
+  }
+
+  .brl-step__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.15rem;
   }
 
   .brl-badge {
@@ -277,6 +301,7 @@ const componentStyles = css`
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
     color: var(--accent-color, var(--fs-store-primary));
     border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 16%, transparent);
+    line-height: 1.2;
   }
 
   .brl-step__short {
@@ -322,8 +347,12 @@ const componentStyles = css`
   .brl-step__toggle {
     flex: 0 0 auto;
     align-self: center;
-    width: 32px;
-    height: 32px;
+    justify-self: end;
+    width: 2rem;
+    height: 2rem;
+    min-width: 2rem;
+    min-height: 2rem;
+    padding: 0;
     border-radius: 50%;
     border: 1px solid var(--border-color, #e5e7eb);
     background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, transparent));
@@ -331,6 +360,7 @@ const componentStyles = css`
     cursor: pointer;
     font-size: 1rem;
     font-weight: 700;
+    line-height: 1;
     transition: background 0.15s ease, border-color 0.15s ease;
   }
 
@@ -345,6 +375,7 @@ const componentStyles = css`
     flex-direction: column;
     gap: 0.28rem;
     align-self: center;
+    justify-self: start;
     flex: 0 0 auto;
   }
 
@@ -587,7 +618,69 @@ const componentStyles = css`
     }
     .brl-step {
       padding: 0.7rem 0.75rem;
-      gap: 0.55rem;
+      gap: 0.45rem 0.55rem;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .brl-step--guide:not(.has-toggle) {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .brl-step--quiz,
+    .brl-step--quiz:not(.has-result) {
+      grid-template-columns: auto auto minmax(0, 1fr);
+    }
+
+    .brl-step--quiz.has-result {
+      grid-template-columns: auto auto minmax(0, 1fr) auto;
+    }
+
+    .brl-step--quiz.is-revealed {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .brl-step--quiz.is-revealed:not(.has-result) {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .brl-step__index {
+      display: none;
+    }
+
+    .brl-step__thumb {
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 10px;
+    }
+
+    .brl-step__marker {
+      width: 2.2rem;
+      height: 2.2rem;
+      font-size: 0.85rem;
+    }
+
+    .brl-step__title {
+      font-size: 0.9rem;
+    }
+
+    .brl-step__short {
+      font-size: 0.78rem;
+    }
+
+    .brl-handles {
+      gap: 0.2rem;
+    }
+
+    .brl-handle {
+      width: 28px;
+      height: 26px;
+      font-size: 0.72rem;
+    }
+
+    .brl-handle--drag {
+      min-width: 2.35rem;
+      min-height: 2.5rem;
+      padding: 0.3rem 0.35rem;
     }
   }
 
@@ -768,22 +861,33 @@ const _BeautyRoutineLayeringBoard = class _BeautyRoutineLayeringBoard extends Li
       ${step.icon ? step.icon.startsWith("sicon-") ? html`<span class="brl-icon ${step.icon}"></span>` : html`<span class="brl-icon">${step.icon}</span>` : display}
     </span>`;
   }
+  renderStepBadges(step, locale) {
+    const badges = [
+      step.optional ? html`<span class="brl-badge">${t("اختيارية", "Optional")}</span>` : nothing,
+      step.period !== "both" ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>` : nothing
+    ].filter((x) => x !== nothing);
+    return badges.length ? html`<div class="brl-step__badges">${badges}</div>` : nothing;
+  }
   renderGuide(routine, locale) {
     const steps = sortedByCorrect(routine.steps);
     return html`<div
       class=${classMap({ "brl-board": !0, [`brl-board--${resolveShape(this.config)}`]: !0, "brl-board--horizontal": resolveDirection(this.config) === "horizontal" })}
     >
       ${steps.map((step, i) => {
-      const expanded = this.expandedId === step.id;
-      return html`<div class="brl-step" style=${styleMap(step.color ? { "--step-color": step.color } : {})}>
+      const expanded = this.expandedId === step.id, canToggle = !!(step.descLong || step.note);
+      return html`<div
+          class=${classMap({
+        "brl-step": !0,
+        "brl-step--guide": !0,
+        "has-toggle": canToggle
+      })}
+          style=${styleMap(step.color ? { "--step-color": step.color } : {})}
+        >
           <span class="brl-step__index" aria-hidden="true">${i + 1}</span>
           ${step.image ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />` : this.renderMarker(step, i + 1)}
           <div class="brl-step__body">
-            <h3 class="brl-step__title">
-              ${step.title}
-              ${step.optional ? html`<span class="brl-badge">${t("اختيارية", "Optional")}</span>` : nothing}
-              ${step.period !== "both" ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>` : nothing}
-            </h3>
+            <h3 class="brl-step__title">${step.title}</h3>
+            ${this.renderStepBadges(step, locale)}
             ${step.descShort ? html`<p class="brl-step__short">${step.descShort}</p>` : nothing}
             ${this.renderMeta(step)}
             ${expanded ? html`
@@ -791,7 +895,7 @@ const _BeautyRoutineLayeringBoard = class _BeautyRoutineLayeringBoard extends Li
                   ${step.note ? html`<p class="brl-step__note">★ ${step.note}</p>` : nothing}
                 ` : nothing}
           </div>
-          ${step.descLong || step.note ? html`<button
+          ${canToggle ? html`<button
                 type="button"
                 class="brl-step__toggle"
                 aria-expanded=${expanded ? "true" : "false"}
@@ -840,6 +944,9 @@ const _BeautyRoutineLayeringBoard = class _BeautyRoutineLayeringBoard extends Li
       return html`<div
             class=${classMap({
         "brl-step": !0,
+        "brl-step--quiz": !0,
+        "has-result": ok !== null,
+        "is-revealed": this.revealed,
         "is-dragging": this.draggingId === id,
         "is-over": this.overId === id,
         "is-ok": ok === !0,
@@ -864,11 +971,8 @@ const _BeautyRoutineLayeringBoard = class _BeautyRoutineLayeringBoard extends Li
             <span class="brl-step__index" aria-hidden="true">${i + 1}</span>
             ${step.image ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />` : this.renderMarker(step, i + 1)}
             <div class="brl-step__body">
-              <h3 class="brl-step__title">
-                ${step.title}
-                ${step.optional ? html`<span class="brl-badge">${t("اختيارية", "Optional")}</span>` : nothing}
-                ${step.period !== "both" ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>` : nothing}
-              </h3>
+              <h3 class="brl-step__title">${step.title}</h3>
+              ${this.renderStepBadges(step, locale)}
               ${step.descShort ? html`<p class="brl-step__short">${step.descShort}</p>` : nothing}
             </div>
             ${ok === null ? nothing : html`<span class="brl-step__result ${ok ? "brl-step__result--ok" : "brl-step__result--bad"}" aria-hidden="true">${ok ? "✓" : "✗"}</span>`}

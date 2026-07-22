@@ -2,6 +2,7 @@ import { html, LitElement, nothing } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import type { Swiper as SwiperInstance } from 'swiper';
 import {
   isExternalUrl,
   isTruthy,
@@ -12,6 +13,7 @@ import {
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
 import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
+import { destroyFsSwiper, fsSwiperCss, mountFsSwiper } from '../../utils/fsSwiper.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { parseItems, resolveMode, revealStagger, cardCountLabel } from './utils.js';
@@ -22,11 +24,17 @@ export default class BeautyCollectionReveal extends LitElement {
   config: Record<string, unknown> = {};
 
   @state() private revealed = false;
+  @state() private swiperReady = false;
 
-  private boundLangHandler = () => this.requestUpdate();
+  private boundLangHandler = () => {
+    this.requestUpdate();
+    queueMicrotask(() => this.remountSwiper());
+  };
   private observer: IntersectionObserver | null = null;
+  private swiper: SwiperInstance | null = null;
+  private remountTimer: ReturnType<typeof setTimeout> | null = null;
 
-  static styles = [sharedSectionCss, componentStyles];
+  static styles = [sharedSectionCss, fsSwiperCss, componentStyles];
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -37,14 +45,39 @@ export default class BeautyCollectionReveal extends LitElement {
     window.removeEventListener('language-changed', this.boundLangHandler);
     this.observer?.disconnect();
     this.observer = null;
+    if (this.remountTimer) clearTimeout(this.remountTimer);
+    destroyFsSwiper(this.swiper);
+    this.swiper = null;
     super.disconnectedCallback();
   }
 
   updated(changed: Map<string, unknown>): void {
     if (changed.has('config')) {
       this.revealed = false;
+      this.observer?.disconnect();
+      this.observer = null;
+      destroyFsSwiper(this.swiper);
+      this.swiper = null;
+      this.swiperReady = false;
     }
     this.maybeObserveAutoStart();
+
+    // Mount slider once cards become visible — avoid remount loops on swiperReady.
+    if (changed.has('revealed') && this.revealed) {
+      this.scheduleRemount();
+      return;
+    }
+    if (changed.has('config')) {
+      const animate =
+        readSectionTheme(this.config || {}, 'bcr_').animate && !prefersReducedMotion();
+      if (!animate) this.scheduleRemount();
+    }
+  }
+
+  protected firstUpdated(): void {
+    const animate =
+      readSectionTheme(this.config || {}, 'bcr_').animate && !prefersReducedMotion();
+    if (this.revealed || !animate) this.scheduleRemount();
   }
 
   private maybeObserveAutoStart(): void {
@@ -67,21 +100,92 @@ export default class BeautyCollectionReveal extends LitElement {
     this.observer.observe(this);
   }
 
-  private reveal(): void {
+  private reveal = (): void => {
     this.revealed = true;
+  };
+
+  private scheduleRemount(): void {
+    if (this.remountTimer) clearTimeout(this.remountTimer);
+    // Wait for cover transition + DOM paint before measuring slides.
+    this.remountTimer = setTimeout(() => this.remountSwiper(), 80);
+  }
+
+  private remountSwiper(): void {
+    destroyFsSwiper(this.swiper);
+    this.swiper = null;
+
+    const animate =
+      readSectionTheme(this.config || {}, 'bcr_').animate && !prefersReducedMotion();
+    if (!this.revealed && animate) {
+      this.swiperReady = false;
+      return;
+    }
+
+    const root = this.renderRoot.querySelector('.bcr-swiper') as HTMLElement | null;
+    if (!root) return;
+
+    const items = parseItems(this.config?.bcr_items);
+    if (items.length < 1) return;
+
+    const rtl = getComputedStyle(this).direction !== 'ltr';
+    const prevEl = root.querySelector('.bcr-nav--prev') as HTMLElement | null;
+    const nextEl = root.querySelector('.bcr-nav--next') as HTMLElement | null;
+    const pagEl = root.querySelector('.bcr-dots') as HTMLElement | null;
+    const multi = items.length > 1;
+
+    this.swiper = mountFsSwiper(root, {
+      rtl,
+      slidesPerView: 'auto',
+      spaceBetween: 14,
+      centeredSlides: false,
+      watchOverflow: true,
+      navigation: multi
+        ? {
+            prevEl: prevEl || undefined,
+            nextEl: nextEl || undefined,
+          }
+        : undefined,
+      pagination: multi && pagEl
+        ? {
+            el: pagEl,
+            clickable: true,
+            bulletClass: 'bcr-dot',
+            bulletActiveClass: 'is-active',
+          }
+        : undefined,
+      breakpoints: {
+        0: { spaceBetween: 10 },
+        640: { spaceBetween: 14 },
+      },
+    });
+
+    if (!this.swiperReady) this.swiperReady = true;
+    requestAnimationFrame(() => {
+      this.swiper?.update();
+      this.swiper?.updateSlides();
+    });
+  }
+
+  private renderCoverMedia() {
+    const coverImg = localizedString(this.config?.bcr_cover_image as string);
+    return html`
+      ${coverImg
+        ? html`<img class="bcr-cover__img" src=${coverImg} alt="" loading="lazy" decoding="async" />`
+        : nothing}
+      <div class="bcr-cover__scrim" aria-hidden="true"></div>
+    `;
   }
 
   private renderCover(mode: RevealMode) {
     const c = this.config || {};
-    const coverImg = localizedString(c.bcr_cover_image as string);
     const coverTitle =
       localizedString(c.bcr_cover_title as string) ||
       localizedString(c.bcr_title as string);
-    const btnText = localizedString(c.bcr_reveal_btn as string) || t('اكشفي المجموعة', 'Reveal collection');
+    const btnText =
+      localizedString(c.bcr_reveal_btn as string) || t('اكشفي المجموعة', 'Reveal collection');
+    const split = mode === 'curtain' || mode === 'petals';
 
     const inner = html`
-      ${coverImg ? html`<img class="bcr-cover__img" src=${coverImg} alt="" loading="lazy" decoding="async" />` : nothing}
-      <div class="bcr-cover__scrim" aria-hidden="true"></div>
       <div class="bcr-cover__inner">
         ${coverTitle ? html`<h3 class="bcr-cover__title">${coverTitle}</h3>` : nothing}
         <p class="bcr-cover__hint">${t('اضغطي للكشف عن البطاقات', 'Tap to reveal the cards')}</p>
@@ -89,19 +193,36 @@ export default class BeautyCollectionReveal extends LitElement {
       </div>
     `;
 
-    // curtain & petals split into two halves for a symmetric open
-    if (mode === 'curtain' || mode === 'petals') {
+    if (split) {
       return html`
-        <div class="bcr-cover bcr-cover--${mode}" aria-hidden=${this.revealed ? 'true' : 'false'}>
+        <div
+          class=${classMap({
+            'bcr-cover': true,
+            [`bcr-cover--${mode}`]: true,
+            'bcr-cover--split': true,
+          })}
+          aria-hidden=${this.revealed ? 'true' : 'false'}
+        >
+          <div class="bcr-cover__panel bcr-cover__panel--start" aria-hidden="true">
+            ${this.renderCoverMedia()}
+          </div>
+          <div class="bcr-cover__panel bcr-cover__panel--end" aria-hidden="true">
+            ${this.renderCoverMedia()}
+          </div>
           ${inner}
         </div>
-        <div class="bcr-cover__half bcr-cover__half--start" aria-hidden="true"></div>
-        <div class="bcr-cover__half bcr-cover__half--end" aria-hidden="true"></div>
       `;
     }
 
     return html`
-      <div class="bcr-cover bcr-cover--${mode}" aria-hidden=${this.revealed ? 'true' : 'false'}>
+      <div
+        class=${classMap({
+          'bcr-cover': true,
+          [`bcr-cover--${mode}`]: true,
+        })}
+        aria-hidden=${this.revealed ? 'true' : 'false'}
+      >
+        ${this.renderCoverMedia()}
         ${inner}
       </div>
     `;
@@ -118,6 +239,7 @@ export default class BeautyCollectionReveal extends LitElement {
             alt=${item.title || ''}
             loading="lazy"
             decoding="async"
+            draggable="false"
           />
           ${item.tag ? html`<span class="bcr-card__tag">${item.tag}</span>` : nothing}
         </div>`
@@ -137,7 +259,10 @@ export default class BeautyCollectionReveal extends LitElement {
     `;
 
     if (!href) {
-      return html`<article class="bcr-card bcr-card--static" aria-label=${item.title || t('بطاقة المجموعة', 'Collection card')}>
+      return html`<article
+        class="bcr-card bcr-card--static"
+        aria-label=${item.title || t('بطاقة المجموعة', 'Collection card')}
+      >
         ${media}${body}
       </article>`;
     }
@@ -149,9 +274,65 @@ export default class BeautyCollectionReveal extends LitElement {
         target=${external ? '_blank' : nothing}
         rel=${external ? 'noopener noreferrer' : nothing}
         aria-label=${item.title || t('انتقل إلى المجموعة', 'Go to collection')}
+        draggable="false"
+        @dragstart=${(e: DragEvent) => e.preventDefault()}
       >
         ${media}${body}
       </a>
+    `;
+  }
+
+  private renderSlider(items: RevealItem[], mode: RevealMode, stagger: number, visible: boolean) {
+    const multi = items.length > 1;
+    return html`
+      <div class=${classMap({ 'bcr-stage': true, [`bcr-stage--${mode}`]: true })}>
+        <div
+          class=${classMap({
+            swiper: true,
+            'bcr-swiper': true,
+            'is-ready': this.swiperReady,
+          })}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label=${t('بطاقات المجموعة', 'Collection cards')}
+          aria-hidden=${visible ? 'false' : 'true'}
+        >
+          <div class="swiper-wrapper">
+            ${items.map(
+              (item, i) => html`
+                <div
+                  class="swiper-slide bcr-slide"
+                  role="group"
+                  aria-label=${item.title || `${t('بطاقة', 'Card')} ${i + 1}`}
+                  style=${styleMap({ '--reveal-delay': `${i * stagger}ms` })}
+                >
+                  ${this.renderCard(item)}
+                </div>
+              `
+            )}
+          </div>
+
+          ${multi
+            ? html`
+                <button
+                  type="button"
+                  class="bcr-nav bcr-nav--prev"
+                  aria-label=${t('السابق', 'Previous')}
+                >
+                  <span class="bcr-nav__chev" aria-hidden="true"></span>
+                </button>
+                <button
+                  type="button"
+                  class="bcr-nav bcr-nav--next"
+                  aria-label=${t('التالي', 'Next')}
+                >
+                  <span class="bcr-nav__chev" aria-hidden="true"></span>
+                </button>
+                <div class="bcr-dots" aria-label=${t('شرائح البطاقات', 'Card slides')}></div>
+              `
+            : nothing}
+        </div>
+      </div>
     `;
   }
 
@@ -164,6 +345,7 @@ export default class BeautyCollectionReveal extends LitElement {
     const title = localizedString(c.bcr_title as string);
     const desc = localizedString(c.bcr_desc as string);
     const items = parseItems(c.bcr_items);
+    const dir = getComputedStyle(this).direction === 'ltr' ? 'ltr' : 'rtl';
 
     if (!items.length) {
       return html`<div class="fs-empty" role="status">
@@ -190,23 +372,11 @@ export default class BeautyCollectionReveal extends LitElement {
               'bcr-scene': true,
               'is-open': this.revealed || !animate,
             })}
+            dir=${dir}
+            data-mode=${mode}
           >
             ${this.renderCover(mode)}
-            <div class=${classMap({ 'bcr-stage': true, [`bcr-stage--${mode}`]: true })}>
-              <div class="bcr-grid" role="list" aria-hidden=${this.revealed || !animate ? 'false' : 'true'}>
-                ${items.map(
-                  (item, i) => html`
-                    <div
-                      class="bcr-item"
-                      role="listitem"
-                      style=${styleMap({ '--reveal-delay': `${i * stagger}ms` })}
-                    >
-                      ${this.renderCard(item)}
-                    </div>
-                  `
-                )}
-              </div>
-            </div>
+            ${this.renderSlider(items, mode, stagger, this.revealed || !animate)}
           </div>
 
           ${this.revealed

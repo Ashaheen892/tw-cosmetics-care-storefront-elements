@@ -751,21 +751,52 @@ export const sharedSectionCss = css`
      */
     button[class*='option'],
     button[class*='segment'],
-    button[class*='toggle'],
+    button[class*='toggle']:not(.brl-step__toggle),
     button[class*='answer'],
     button[class*='finish'],
-    button[role='tab'],
+    button[role='tab']:not(.bpb-dot):not(.bcat-dot):not(.bcr-dot):not(.brl-tab),
     button.bch-color,
     button.bch-type,
     button.bta-play__cta,
     button.bil-segment__btn,
-    button.brl-step__toggle,
     button.bcr-cover__btn,
     a.fs-btn {
       min-height: 44px !important;
       padding-top: 0.35rem !important;
       padding-bottom: 0.35rem !important;
       font-size: 0.82rem !important;
+    }
+
+    /* Icon controls inside routine cards must stay compact */
+    button.brl-step__toggle,
+    button.brl-handle {
+      min-height: 0 !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      font-size: inherit !important;
+    }
+
+    button.brl-tab {
+      min-height: 36px !important;
+      padding: 0.35rem 0.9rem !important;
+      font-size: 0.8rem !important;
+    }
+
+    /* Carousel dots / icon nav must stay compact on phone */
+    button.bpb-dot,
+    button.bcat-dot,
+    button.bcr-dot {
+      min-height: 0 !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      font-size: 0 !important;
+    }
+
+    button.bpb-nav.fs-tap,
+    button.bcat-nav.fs-tap,
+    button.bcr-nav {
+      min-height: 0 !important;
+      min-width: 0 !important;
     }
 
     /* Form controls that read as large tap targets */

@@ -1,9 +1,9 @@
 import { html, LitElement, nothing } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { ref } from 'lit/directives/ref.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import {
+  isExternalUrl,
   isTruthy,
   prefersReducedMotion,
   readSectionTheme,
@@ -11,23 +11,34 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { enableDragScroll } from '../../utils/dragScroll.js';
+import {
+  Autoplay,
+  destroyFsSwiper,
+  fsSwiperCss,
+  mountFsSwiper,
+  type Swiper,
+} from '../../utils/fsSwiper.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { parseBanners } from './utils.js';
+import type { PromoBanner } from './types.js';
 
-const AUTOPLAY_MS = 5000;
+const AUTOPLAY_MS = 5500;
 
 export default class BeautyPromoBanners extends LitElement {
   @property({ type: Object })
   config: Record<string, unknown> = {};
 
-  private boundLangHandler = () => this.requestUpdate();
-  private trackEl: HTMLElement | null = null;
-  private autoTimer: ReturnType<typeof setInterval> | null = null;
-  private paused = false;
+  @state() private swiperReady = false;
 
-  static styles = [sharedSectionCss, componentStyles];
+  private boundLangHandler = () => {
+    this.requestUpdate();
+    queueMicrotask(() => this.remountSwiper());
+  };
+  private swiper: Swiper | null = null;
+  private remountTimer: ReturnType<typeof setTimeout> | null = null;
+
+  static styles = [sharedSectionCss, fsSwiperCss, componentStyles];
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -36,75 +47,135 @@ export default class BeautyPromoBanners extends LitElement {
 
   disconnectedCallback(): void {
     window.removeEventListener('language-changed', this.boundLangHandler);
-    this.clearAutoplay();
+    if (this.remountTimer) clearTimeout(this.remountTimer);
+    destroyFsSwiper(this.swiper);
+    this.swiper = null;
     super.disconnectedCallback();
   }
 
+  protected firstUpdated(): void {
+    this.remountSwiper();
+  }
+
   updated(changed: Map<string, unknown>): void {
-    if (changed.has('config')) this.syncAutoplay();
+    if (changed.has('config')) this.scheduleRemount();
   }
 
-  private bindTrack = (el?: Element) => {
-    if (el instanceof HTMLElement) {
-      this.trackEl = el;
-      enableDragScroll(el);
-      this.syncAutoplay();
-    }
-  };
-
-  private clearAutoplay(): void {
-    if (this.autoTimer) {
-      clearInterval(this.autoTimer);
-      this.autoTimer = null;
-    }
+  private scheduleRemount(): void {
+    if (this.remountTimer) clearTimeout(this.remountTimer);
+    this.remountTimer = setTimeout(() => this.remountSwiper(), 0);
   }
 
-  private syncAutoplay(): void {
-    this.clearAutoplay();
+  private remountSwiper(): void {
+    destroyFsSwiper(this.swiper);
+    this.swiper = null;
+    this.swiperReady = false;
+
     const banners = parseBanners(this.config?.bpb_items);
-    if (!isTruthy(this.config?.bpb_autoplay, true) || banners.length < 2) return;
-    this.autoTimer = setInterval(() => this.advance(), AUTOPLAY_MS);
+    const root = this.renderRoot.querySelector('.bpb-swiper') as HTMLElement | null;
+    if (!root || banners.length < 1) return;
+
+    const multi = banners.length > 1;
+    const autoplayOn =
+      multi && isTruthy(this.config?.bpb_autoplay, true) && !prefersReducedMotion();
+    const prevEl = root.querySelector('.bpb-nav--prev') as HTMLElement | null;
+    const nextEl = root.querySelector('.bpb-nav--next') as HTMLElement | null;
+    const pagEl = this.renderRoot.querySelector('.bpb-dots') as HTMLElement | null;
+    const rtl = getComputedStyle(this).direction !== 'ltr';
+
+    this.swiper = mountFsSwiper(root, {
+      rtl,
+      modules: autoplayOn ? [Autoplay] : [],
+      slidesPerView: 1,
+      spaceBetween: 0,
+      speed: 480,
+      loop: multi,
+      watchOverflow: true,
+      navigation: multi
+        ? {
+            prevEl: prevEl || undefined,
+            nextEl: nextEl || undefined,
+          }
+        : undefined,
+      pagination: multi && pagEl
+        ? {
+            el: pagEl,
+            clickable: true,
+            bulletClass: 'bpb-dot',
+            bulletActiveClass: 'is-active',
+          }
+        : undefined,
+      autoplay: autoplayOn
+        ? {
+            delay: AUTOPLAY_MS,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }
+        : false,
+    });
+
+    this.swiperReady = true;
   }
 
-  /** Advance the scroll-snap track one card, looping back to the start. */
-  private advance(): void {
-    const track = this.trackEl;
-    if (!track || this.paused || !track.isConnected) return;
-    const maxStart = track.scrollWidth - track.clientWidth;
-    if (maxStart <= 0) return;
+  private renderCard(banner: PromoBanner, index: number, total: number) {
+    const external = banner.link ? isExternalUrl(banner.link) : false;
+    const dir = getComputedStyle(this).direction === 'ltr' ? 'ltr' : 'rtl';
+    const body = html`
+      ${banner.image
+        ? html`<img
+            class="bpb-card__img"
+            src=${banner.image}
+            alt=""
+            loading=${index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+            draggable="false"
+          />`
+        : html`<div class="bpb-card__fallback" aria-hidden="true"></div>`}
+      <div class="bpb-card__shade" aria-hidden="true"></div>
+      <div class="bpb-card__body">
+        ${total > 1
+          ? html`<span class="bpb-card__count">${index + 1} / ${total}</span>`
+          : nothing}
+        ${banner.title ? html`<h3 class="bpb-card__title">${banner.title}</h3>` : nothing}
+        ${banner.subtitle ? html`<p class="bpb-card__subtitle">${banner.subtitle}</p>` : nothing}
+        ${banner.link
+          ? html`<span class="bpb-card__cta">
+              <span class="bpb-card__cta-label"
+                >${banner.cta_label || t('تسوقي الآن', 'Shop now')}</span
+              >
+              <span class="bpb-card__cta-arrow" aria-hidden="true"></span>
+            </span>`
+          : nothing}
+      </div>
+    `;
 
-    const card = track.querySelector<HTMLElement>('.bpb-card');
-    if (!card) return;
-    const step = card.offsetWidth + 16;
-    const rtl = (getComputedStyle(track).direction || 'ltr') === 'rtl';
-    const position = Math.abs(track.scrollLeft);
-    const atEnd = position >= maxStart - 8;
-    const nextPosition = atEnd ? 0 : Math.min(position + step, maxStart);
-    const behavior: ScrollBehavior = prefersReducedMotion() ? 'auto' : 'smooth';
+    if (banner.link) {
+      return html`
+        <a
+          class="bpb-card bpb-card--link"
+          dir=${dir}
+          href=${banner.link}
+          target=${external ? '_blank' : nothing}
+          rel=${external ? 'noopener noreferrer' : nothing}
+          aria-label=${banner.title || t('عرض', 'Promotion')}
+          draggable="false"
+          @dragstart=${(e: DragEvent) => e.preventDefault()}
+        >
+          ${body}
+        </a>
+      `;
+    }
 
-    // `scroll-snap-type: x mandatory` cancels smooth programmatic scrolling
-    // in Chrome, so lift the snap for the duration of the animation.
-    const target = rtl ? -nextPosition : nextPosition;
-    track.style.scrollSnapType = 'none';
-    track.scrollTo({ left: target, behavior });
-    window.setTimeout(() => {
-      if (!track.isConnected) return;
-      // Throttled tabs/iframes never run the smooth animation — force the end
-      // position so autoplay still advances.
-      if (Math.abs(track.scrollLeft - target) > 4) {
-        track.scrollTo({ left: target, behavior: 'auto' });
-      }
-      track.style.scrollSnapType = '';
-    }, 700);
+    return html`
+      <article
+        class="bpb-card"
+        dir=${dir}
+        aria-label=${banner.title || t('عرض', 'Promotion')}
+      >
+        ${body}
+      </article>
+    `;
   }
-
-  private pause = () => {
-    this.paused = true;
-  };
-
-  private resume = () => {
-    this.paused = false;
-  };
 
   render() {
     const c = this.config || {};
@@ -113,6 +184,7 @@ export default class BeautyPromoBanners extends LitElement {
     const title = localizedString(c.bpb_title as string);
     const desc = localizedString(c.bpb_desc as string);
     const banners = parseBanners(c.bpb_items);
+    const multi = banners.length > 1;
 
     if (!banners.length) {
       return html`<div class="fs-empty" role="status">
@@ -124,7 +196,7 @@ export default class BeautyPromoBanners extends LitElement {
       <section
         class=${classMap({ 'fs-section': true, 'fs-animate': animate })}
         style=${styleMap(themeStyleMap(theme))}
-        aria-label=${title || t('العروض', 'Promotions')}
+        aria-label=${title || t('عروض الجمال', 'Beauty promotions')}
       >
         <div class="fs-container">
           ${title || desc
@@ -134,35 +206,53 @@ export default class BeautyPromoBanners extends LitElement {
               </div>`
             : nothing}
 
-          <div
-            class="bpb-track"
-            role="list"
-            ${ref(this.bindTrack)}
-            @pointerenter=${this.pause}
-            @pointerleave=${this.resume}
-            @pointerdown=${this.pause}
-            @pointerup=${this.resume}
-            @pointercancel=${this.resume}
-          >
-            ${banners.map(
-              (banner) => html`
-                <article class="bpb-card" role="listitem">
-                  ${banner.image
-                    ? html`<img class="bpb-card__img" src=${banner.image} alt="" loading="lazy" decoding="async" />`
-                    : nothing}
-                  <div class="bpb-card__overlay" aria-hidden="true"></div>
-                  <div class="bpb-card__body">
-                    ${banner.title ? html`<h3 class="bpb-card__title">${banner.title}</h3>` : nothing}
-                    ${banner.subtitle ? html`<p class="bpb-card__subtitle">${banner.subtitle}</p>` : nothing}
-                    ${banner.link
-                      ? html`<a class="bpb-card__cta" href=${banner.link}>
-                          ${banner.cta_label || t('تسوقي الآن', 'Shop now')}
-                        </a>`
-                      : nothing}
-                  </div>
-                </article>
-              `
-            )}
+          <div class="bpb-carousel">
+            <div
+              class=${classMap({
+                swiper: true,
+                'bpb-swiper': true,
+                'is-ready': this.swiperReady,
+              })}
+              role="region"
+              aria-roledescription="carousel"
+              aria-label=${title || t('عروض الجمال', 'Beauty promotions')}
+            >
+              <div class="swiper-wrapper">
+                ${banners.map(
+                  (banner, i) => html`
+                    <div class="swiper-slide bpb-slide">
+                      ${this.renderCard(banner, i, banners.length)}
+                    </div>
+                  `
+                )}
+              </div>
+
+              ${multi
+                ? html`
+                    <button
+                      type="button"
+                      class="bpb-nav bpb-nav--prev"
+                      aria-label=${t('السابق', 'Previous')}
+                    >
+                      <span class="bpb-nav__chev" aria-hidden="true"></span>
+                    </button>
+                    <button
+                      type="button"
+                      class="bpb-nav bpb-nav--next"
+                      aria-label=${t('التالي', 'Next')}
+                    >
+                      <span class="bpb-nav__chev" aria-hidden="true"></span>
+                    </button>
+                  `
+                : nothing}
+            </div>
+
+            ${multi
+              ? html`<div
+                  class="bpb-dots"
+                  aria-label=${t('شرائح العرض', 'Promo slides')}
+                ></div>`
+              : nothing}
           </div>
         </div>
       </section>

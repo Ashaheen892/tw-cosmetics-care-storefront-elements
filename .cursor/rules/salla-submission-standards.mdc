@@ -90,3 +90,30 @@ normalize_uuid_keys.py   # مطلوب لقبول سلة
 4. أضف سكربت `audit_salla_submission.py` و`"audit:salla"` في package.json
 5. لا تضف `public/` أو سكربتات capture إلى Git
 
+## 8) إرشادات مقاسات الصور (حقول image)
+
+كل حقل `format: "image"` يجب أن يحتوي:
+- `description` بنص المقاس المقترح (عربي + إنجليزي)
+- `labelHTML` بملاحظة قصيرة تظهر للتاجر في المحرر
+
+أمثلة:
+- بانر: `1920×800`
+- قبل/بعد: `1000×1200`
+- أيقونة/شعار: `512×512`
+- بطاقة/خطوة: `800×800`
+- أفاتار: `256×256`
+
+بعد إضافة حقول صور جديدة شغّل: `python3 patch_image_size_guides.py`
+
+
+
+## 9) السلايدرات — Swiper.js فقط
+
+كل سلايدر عرض (carousel / horizontal slider) يجب أن يستخدم:
+- `src/utils/fsSwiper.ts` → `mountFsSwiper` + `fsSwiperCss`
+- markup: `.swiper` > `.swiper-wrapper` > `.swiper-slide`
+
+لا تستخدم `enableDragScroll` أو `translateX` يدوي للسلايدرات.
+
+**استثناء:** عناصر المقارنة قبل/بعد (range / clip) ليست carousel — تبقى مخصصة.
+

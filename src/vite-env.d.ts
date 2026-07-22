@@ -9,3 +9,8 @@ interface SallaGlobal {
 }
 
 declare const Salla: SallaGlobal | undefined;
+
+declare module '*.css?inline' {
+  const css: string;
+  export default css;
+}

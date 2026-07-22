@@ -235,6 +235,12 @@ def text(fid, label, value="", fmt="text", max_len="200", desc=None,
 
 
 def image(fid, label, value="", desc=None, conditions=None):
+    size_desc = desc or 'المقاس المقترح: 800×800 بكسل (مربع عام). Recommended size: 800×800px (general square). يفضّل JPG أو WebP بجودة عالية.'
+    size_html = (
+        '<small style="display:block;margin-top:4px;opacity:.85">'
+        "📐 المقاس المقترح: <b>800×800</b> بكسل — مربع عام"
+        "</small>"
+    )
     return with_conditions(
         {
             "id": fid,
@@ -242,8 +248,8 @@ def image(fid, label, value="", desc=None, conditions=None):
             "type": "string",
             "format": "image",
             "label": label,
-            "description": desc,
-            "labelHTML": None,
+            "description": size_desc,
+            "labelHTML": size_html,
             "placeholder": "e.g. https://hostname.com/image.png",
             "icon": "sicon-image",
             "value": value,

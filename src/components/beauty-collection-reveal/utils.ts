@@ -10,8 +10,32 @@ import { localizedString, type LocaleValue } from '../../utils/localizedString.j
 import { REVEAL_MODES, type RevealItem, type RevealMode } from './types.js';
 
 export function resolveMode(config: Record<string, unknown>): RevealMode {
-  const val = getRadioValue(config.bcr_mode, 'box') as RevealMode;
-  return REVEAL_MODES.includes(val) ? val : 'box';
+  const raw = config?.bcr_mode;
+  let val = getRadioValue(raw, 'box').toLowerCase().trim();
+
+  // Extra pass: if config still holds the full dropdown field, map UUID → value.
+  if (!REVEAL_MODES.includes(val as RevealMode) && raw && typeof raw === 'object') {
+    const obj = raw as Record<string, unknown>;
+    const options = Array.isArray(obj.options) ? obj.options : [];
+    const selected = Array.isArray(obj.selected) ? obj.selected[0] : null;
+    const sel =
+      selected && typeof selected === 'object'
+        ? (selected as Record<string, unknown>)
+        : null;
+    const needle = String(sel?.value ?? sel?.key ?? val).trim();
+    for (const opt of options) {
+      if (!opt || typeof opt !== 'object') continue;
+      const row = opt as Record<string, unknown>;
+      const optVal = String(row.value ?? '').trim();
+      const optKey = String(row.key ?? '').trim();
+      if (needle && (needle === optVal || needle === optKey) && optVal) {
+        val = optVal.toLowerCase();
+        break;
+      }
+    }
+  }
+
+  return REVEAL_MODES.includes(val as RevealMode) ? (val as RevealMode) : 'box';
 }
 
 /** Per-item stagger delay (ms), clamped to a sane range. */

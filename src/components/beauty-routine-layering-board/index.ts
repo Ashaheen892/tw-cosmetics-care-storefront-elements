@@ -197,6 +197,16 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
     </span>`;
   }
 
+  private renderStepBadges(step: LayerStep, locale: 'ar' | 'en') {
+    const badges = [
+      step.optional ? html`<span class="brl-badge">${t('اختيارية', 'Optional')}</span>` : nothing,
+      step.period !== 'both'
+        ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>`
+        : nothing,
+    ].filter((x) => x !== nothing);
+    return badges.length ? html`<div class="brl-step__badges">${badges}</div>` : nothing;
+  }
+
   private renderGuide(routine: Routine, locale: 'ar' | 'en') {
     const steps = sortedByCorrect(routine.steps);
     return html`<div
@@ -204,17 +214,22 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
     >
       ${steps.map((step, i) => {
         const expanded = this.expandedId === step.id;
-        return html`<div class="brl-step" style=${styleMap(step.color ? { '--step-color': step.color } : {})}>
+        const canToggle = Boolean(step.descLong || step.note);
+        return html`<div
+          class=${classMap({
+            'brl-step': true,
+            'brl-step--guide': true,
+            'has-toggle': canToggle,
+          })}
+          style=${styleMap(step.color ? { '--step-color': step.color } : {})}
+        >
           <span class="brl-step__index" aria-hidden="true">${i + 1}</span>
           ${step.image
             ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />`
             : this.renderMarker(step, i + 1)}
           <div class="brl-step__body">
-            <h3 class="brl-step__title">
-              ${step.title}
-              ${step.optional ? html`<span class="brl-badge">${t('اختيارية', 'Optional')}</span>` : nothing}
-              ${step.period !== 'both' ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>` : nothing}
-            </h3>
+            <h3 class="brl-step__title">${step.title}</h3>
+            ${this.renderStepBadges(step, locale)}
             ${step.descShort ? html`<p class="brl-step__short">${step.descShort}</p>` : nothing}
             ${this.renderMeta(step)}
             ${expanded
@@ -224,7 +239,7 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
                 `
               : nothing}
           </div>
-          ${step.descLong || step.note
+          ${canToggle
             ? html`<button
                 type="button"
                 class="brl-step__toggle"
@@ -283,6 +298,9 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
           return html`<div
             class=${classMap({
               'brl-step': true,
+              'brl-step--quiz': true,
+              'has-result': ok !== null,
+              'is-revealed': this.revealed,
               'is-dragging': this.draggingId === id,
               'is-over': this.overId === id,
               'is-ok': ok === true,
@@ -313,11 +331,8 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
               ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />`
               : this.renderMarker(step, i + 1)}
             <div class="brl-step__body">
-              <h3 class="brl-step__title">
-                ${step.title}
-                ${step.optional ? html`<span class="brl-badge">${t('اختيارية', 'Optional')}</span>` : nothing}
-                ${step.period !== 'both' ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>` : nothing}
-              </h3>
+              <h3 class="brl-step__title">${step.title}</h3>
+              ${this.renderStepBadges(step, locale)}
               ${step.descShort ? html`<p class="brl-step__short">${step.descShort}</p>` : nothing}
             </div>
             ${ok === null

@@ -318,23 +318,36 @@ function themeStyleMap(theme) {
 }
 __name(themeStyleMap, "themeStyleMap");
 function getRadioValue(value, fallback = "") {
+  const fromOption = /* @__PURE__ */ __name((item) => {
+    if (typeof item == "string" && item.trim()) return item.trim();
+    if (!item || typeof item != "object") return "";
+    const o = item;
+    return o.value != null && String(o.value).trim() ? String(o.value).trim() : o.key != null && String(o.key).trim() ? String(o.key).trim() : "";
+  }, "fromOption");
   if (typeof value == "string" && value.trim()) return value.trim();
-  if (Array.isArray(value) && value[0]) {
-    const first = value[0];
-    if (typeof first == "string") return first;
-    if (first && typeof first == "object" && "value" in first)
-      return String(first.value ?? fallback);
-    if (first && typeof first == "object" && "key" in first)
-      return String(first.key ?? fallback);
-  }
+  if (Array.isArray(value) && value[0])
+    return fromOption(value[0]) || fallback;
   if (value && typeof value == "object") {
     const obj = value;
-    if (Array.isArray(obj.selected) && obj.selected[0])
-      return getRadioValue(obj.selected, fallback);
-    if ("value" in obj && obj.value != null && !Array.isArray(obj.value))
-      return String(obj.value ?? fallback);
+    if (Array.isArray(obj.selected) && obj.selected[0]) {
+      const picked = fromOption(obj.selected[0]);
+      if (picked) {
+        if (Array.isArray(obj.options))
+          for (const opt of obj.options) {
+            if (!opt || typeof opt != "object") continue;
+            const row = opt, optVal = row.value != null ? String(row.value).trim() : "", optKey = row.key != null ? String(row.key).trim() : "";
+            if (picked === optVal || picked === optKey)
+              return optVal || picked;
+          }
+        return picked;
+      }
+    }
+    if ("value" in obj && obj.value != null && !Array.isArray(obj.value)) {
+      const v = String(obj.value).trim();
+      if (v) return v;
+    }
     if (Array.isArray(obj.value) && obj.value[0])
-      return getRadioValue(obj.value, fallback);
+      return fromOption(obj.value[0]) || fallback;
   }
   return fallback;
 }
@@ -1114,21 +1127,52 @@ const sharedSectionCss = css`
      */
     button[class*='option'],
     button[class*='segment'],
-    button[class*='toggle'],
+    button[class*='toggle']:not(.brl-step__toggle),
     button[class*='answer'],
     button[class*='finish'],
-    button[role='tab'],
+    button[role='tab']:not(.bpb-dot):not(.bcat-dot):not(.bcr-dot):not(.brl-tab),
     button.bch-color,
     button.bch-type,
     button.bta-play__cta,
     button.bil-segment__btn,
-    button.brl-step__toggle,
     button.bcr-cover__btn,
     a.fs-btn {
       min-height: 44px !important;
       padding-top: 0.35rem !important;
       padding-bottom: 0.35rem !important;
       font-size: 0.82rem !important;
+    }
+
+    /* Icon controls inside routine cards must stay compact */
+    button.brl-step__toggle,
+    button.brl-handle {
+      min-height: 0 !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      font-size: inherit !important;
+    }
+
+    button.brl-tab {
+      min-height: 36px !important;
+      padding: 0.35rem 0.9rem !important;
+      font-size: 0.8rem !important;
+    }
+
+    /* Carousel dots / icon nav must stay compact on phone */
+    button.bpb-dot,
+    button.bcat-dot,
+    button.bcr-dot {
+      min-height: 0 !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      font-size: 0 !important;
+    }
+
+    button.bpb-nav.fs-tap,
+    button.bcat-nav.fs-tap,
+    button.bcr-nav {
+      min-height: 0 !important;
+      min-width: 0 !important;
     }
 
     /* Form controls that read as large tap targets */

@@ -1,4 +1,4 @@
-import { normalizeCollection, extractImageUrl, extractLink, t } from '../../utils/helpers.js';
+import { normalizeCollection, extractImageUrl, extractLink, getRadioValue, t } from '../../utils/helpers.js';
 import { localizedString, type LocaleValue } from '../../utils/localizedString.js';
 import type { CategoryItem } from './types.js';
 
@@ -28,7 +28,7 @@ export function parseItems(raw: unknown): CategoryItem[] {
 }
 
 export function resolveLayout(raw: unknown): 'slider' | 'grid' {
-  const val = typeof raw === 'string' ? raw.trim().toLowerCase() : '';
+  const val = getRadioValue(raw, 'slider').toLowerCase().trim();
   if (val === 'grid') return 'grid';
   return 'slider';
 }

@@ -393,28 +393,49 @@ export function themeStyleMap(theme: SectionTheme): Record<string, string> {
 }
 
 export function getRadioValue(value: unknown, fallback = ''): string {
+  const fromOption = (item: unknown): string => {
+    if (typeof item === 'string' && item.trim()) return item.trim();
+    if (!item || typeof item !== 'object') return '';
+    const o = item as Record<string, unknown>;
+    // Prefer logical `value` (bag/box/…) over UUID `key`.
+    if (o.value != null && String(o.value).trim()) return String(o.value).trim();
+    if (o.key != null && String(o.key).trim()) return String(o.key).trim();
+    return '';
+  };
+
   if (typeof value === 'string' && value.trim()) return value.trim();
+
   if (Array.isArray(value) && value[0]) {
-    const first = value[0];
-    if (typeof first === 'string') return first;
-    if (first && typeof first === 'object' && 'value' in first) {
-      return String((first as { value: unknown }).value ?? fallback);
-    }
-    if (first && typeof first === 'object' && 'key' in first) {
-      return String((first as { key: unknown }).key ?? fallback);
-    }
+    return fromOption(value[0]) || fallback;
   }
+
   if (value && typeof value === 'object') {
     const obj = value as Record<string, unknown>;
     // Twilight dropdown-list: { selected: [{ value | key }], options, ... }
     if (Array.isArray(obj.selected) && obj.selected[0]) {
-      return getRadioValue(obj.selected, fallback);
+      const picked = fromOption(obj.selected[0]);
+      if (picked) {
+        // If editor stored UUID key, map it back to option.value
+        if (Array.isArray(obj.options)) {
+          for (const opt of obj.options) {
+            if (!opt || typeof opt !== 'object') continue;
+            const row = opt as Record<string, unknown>;
+            const optVal = row.value != null ? String(row.value).trim() : '';
+            const optKey = row.key != null ? String(row.key).trim() : '';
+            if (picked === optVal || picked === optKey) {
+              return optVal || picked;
+            }
+          }
+        }
+        return picked;
+      }
     }
     if ('value' in obj && obj.value != null && !Array.isArray(obj.value)) {
-      return String(obj.value ?? fallback);
+      const v = String(obj.value).trim();
+      if (v) return v;
     }
     if (Array.isArray(obj.value) && obj.value[0]) {
-      return getRadioValue(obj.value, fallback);
+      return fromOption(obj.value[0]) || fallback;
     }
   }
   return fallback;
