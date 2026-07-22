@@ -777,9 +777,11 @@ export const sharedSectionCss = css`
     }
 
     button.brl-tab {
-      min-height: 36px !important;
-      padding: 0.35rem 0.9rem !important;
-      font-size: 0.8rem !important;
+      min-height: 2.25rem !important;
+      min-width: 0 !important;
+      padding: 0.45rem 1.05rem !important;
+      font-size: 0.82rem !important;
+      line-height: 1.2 !important;
     }
 
     /* Carousel dots / icon nav must stay compact on phone */

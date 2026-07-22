@@ -4,8 +4,8 @@ import { css, LitElement, nothing, html } from "lit";
 import { property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { n as normalizeCollection, l as localizedString, g as getRadioValue, j as toNumber, i as isTruthy, e as extractImageUrl, s as sharedSectionCss, t, r as readSectionTheme, p as prefersReducedMotion, o as getPageLocale, c as getUnitValue, a as themeStyleMap } from "./sharedStyles-CPLtr3dp.js";
-import { r as renderCommerceCtaButton } from "./commerceOutcome-D0x70G-K.js";
+import { n as normalizeCollection, l as localizedString, g as getRadioValue, j as toNumber, i as isTruthy, e as extractImageUrl, s as sharedSectionCss, t, r as readSectionTheme, p as prefersReducedMotion, o as getPageLocale, c as getUnitValue, a as themeStyleMap } from "./sharedStyles-Bu7Tok5Z.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BLJKzvei.js";
 const componentStyles = css`
   :host {
     display: block;
@@ -21,44 +21,73 @@ const componentStyles = css`
     gap: 1rem;
   }
 
+  .brl-switcher {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto 1.15rem;
+    display: grid;
+    gap: 0.65rem;
+    justify-items: center;
+  }
+
   .brl-tabs {
-    display: flex;
+    display: inline-flex;
     flex-wrap: wrap;
-    gap: 0.45rem;
+    gap: 0.4rem;
     justify-content: center;
+    align-items: center;
+    padding: 0.3rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 7%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 88%, #fff);
+    box-sizing: border-box;
   }
 
   .brl-tab {
-    min-height: 38px;
-    padding: 0.4rem 1rem;
+    position: relative;
+    z-index: 1;
+    min-height: 2.25rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0.45rem 1.05rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #e5e7eb);
-    background: var(--card-bg, #fff);
+    border: 1px solid transparent;
+    background: transparent;
     color: var(--text-color, #000000);
     font: inherit;
     font-weight: 700;
     font-size: 0.84rem;
+    line-height: 1.2;
     cursor: pointer;
+    white-space: nowrap;
+    box-sizing: border-box;
     transition:
       background 0.2s ease,
       color 0.2s ease,
       border-color 0.2s ease,
-      transform 0.15s ease;
+      box-shadow 0.2s ease;
   }
 
   .brl-tab:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, transparent);
   }
 
   .brl-tab.is-active {
     background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
-    border-color: var(--accent-color, var(--fs-store-primary));
+    border-color: transparent;
     color: #fff;
-    transform: translateY(-1px);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, transparent);
+  }
+
+  .brl-select-wrap {
+    display: none;
+    width: 100%;
   }
 
   .brl-select {
-    display: none;
+    display: block;
     width: 100%;
     padding: 0.7rem 0.85rem;
     border-radius: 14px;
@@ -67,6 +96,7 @@ const componentStyles = css`
     color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
+    box-sizing: border-box;
   }
 
   .brl-intro {
@@ -598,12 +628,18 @@ const componentStyles = css`
   }
 
   @media (max-width: 639px) {
+    .brl-switcher {
+      margin-bottom: 1rem;
+    }
+
     .brl-tabs {
       display: none;
     }
-    .brl-select {
+
+    .brl-select-wrap {
       display: block;
     }
+
     .brl-board--horizontal {
       flex-direction: column;
     }
@@ -1009,24 +1045,31 @@ const _BeautyRoutineLayeringBoard = class _BeautyRoutineLayeringBoard extends Li
               </div>` : nothing}
 
           ${routines.length > 1 ? html`
-                <div class="brl-tabs" role="tablist">
-                  ${routines.map(
+                <div class="brl-switcher">
+                  <div class="brl-tabs" role="tablist" aria-label=${t("اختاري الروتين", "Choose routine")}>
+                    ${routines.map(
       (r) => html`<button
-                      type="button"
-                      role="tab"
-                      class=${classMap({ "brl-tab": !0, "is-active": r.id === routine.id })}
-                      aria-selected=${r.id === routine.id ? "true" : "false"}
-                      @click=${() => this.selectRoutine(r.id)}
-                    >${r.name}</button>`
+                        type="button"
+                        role="tab"
+                        class=${classMap({ "brl-tab": !0, "is-active": r.id === routine.id })}
+                        aria-selected=${r.id === routine.id ? "true" : "false"}
+                        @click=${() => this.selectRoutine(r.id)}
+                      >${r.name}</button>`
     )}
+                  </div>
+                  <label class="brl-select-wrap">
+                    <span class="brl-sr">${t("اختاري الروتين", "Choose routine")}</span>
+                    <select
+                      class="brl-select"
+                      aria-label=${t("اختاري الروتين", "Choose routine")}
+                      @change=${(e) => this.selectRoutine(e.target.value)}
+                    >
+                      ${routines.map(
+      (r) => html`<option value=${r.id} ?selected=${r.id === routine.id}>${r.name}</option>`
+    )}
+                    </select>
+                  </label>
                 </div>
-                <select
-                  class="brl-select"
-                  aria-label=${t("اختاري الروتين", "Choose routine")}
-                  @change=${(e) => this.selectRoutine(e.target.value)}
-                >
-                  ${routines.map((r) => html`<option value=${r.id} ?selected=${r.id === routine.id}>${r.name}</option>`)}
-                </select>
               ` : nothing}
 
           <div class="brl-shell">

@@ -390,24 +390,31 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
 
           ${routines.length > 1
             ? html`
-                <div class="brl-tabs" role="tablist">
-                  ${routines.map(
-                    (r) => html`<button
-                      type="button"
-                      role="tab"
-                      class=${classMap({ 'brl-tab': true, 'is-active': r.id === routine.id })}
-                      aria-selected=${r.id === routine.id ? 'true' : 'false'}
-                      @click=${() => this.selectRoutine(r.id)}
-                    >${r.name}</button>`
-                  )}
+                <div class="brl-switcher">
+                  <div class="brl-tabs" role="tablist" aria-label=${t('اختاري الروتين', 'Choose routine')}>
+                    ${routines.map(
+                      (r) => html`<button
+                        type="button"
+                        role="tab"
+                        class=${classMap({ 'brl-tab': true, 'is-active': r.id === routine.id })}
+                        aria-selected=${r.id === routine.id ? 'true' : 'false'}
+                        @click=${() => this.selectRoutine(r.id)}
+                      >${r.name}</button>`
+                    )}
+                  </div>
+                  <label class="brl-select-wrap">
+                    <span class="brl-sr">${t('اختاري الروتين', 'Choose routine')}</span>
+                    <select
+                      class="brl-select"
+                      aria-label=${t('اختاري الروتين', 'Choose routine')}
+                      @change=${(e: Event) => this.selectRoutine((e.target as HTMLSelectElement).value)}
+                    >
+                      ${routines.map(
+                        (r) => html`<option value=${r.id} ?selected=${r.id === routine.id}>${r.name}</option>`
+                      )}
+                    </select>
+                  </label>
                 </div>
-                <select
-                  class="brl-select"
-                  aria-label=${t('اختاري الروتين', 'Choose routine')}
-                  @change=${(e: Event) => this.selectRoutine((e.target as HTMLSelectElement).value)}
-                >
-                  ${routines.map((r) => html`<option value=${r.id} ?selected=${r.id === routine.id}>${r.name}</option>`)}
-                </select>
               `
             : nothing}
 
