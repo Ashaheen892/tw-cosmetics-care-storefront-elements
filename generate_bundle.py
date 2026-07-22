@@ -12,7 +12,7 @@ import uuid
 from copy import deepcopy
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent
 BUNDLE_PATH = ROOT / "twilight-bundle.json"
 
 PLACEHOLDER = "https://cdn.salla.network/images/themes/default/placeholder.jpg"

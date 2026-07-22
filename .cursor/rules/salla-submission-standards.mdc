@@ -24,40 +24,49 @@ ${localizedString(this.config?.bsg_back_btn as string) || t('السابق', 'Bac
 - قبل الإرسال: `rm -rf dist && pnpm run build`
 - يجب وجود `dist/<component-name>.js` لكل عنصر في `twilight-bundle.json`
 - لا ترفع `dist` مختلطًا من مشروع آخر
-- `prebuild`: `python3 scripts/normalize_uuid_keys.py`
+- `prebuild`: `python3 normalize_uuid_keys.py`
 
 ## 3) حجم الرفع
 
 - ZIP &lt; **1 MB**
-- استبعد: `node_modules/`, `.pnpm-store/`, `.git/`, `notion-screenshots/`, أدوات `scripts/` المحلية، `assets/`, `release/`, لقطات ثقيلة
-- محتوى مقبول: `package.json`, `tsconfig.json`, `vite.config.ts`, `twilight-bundle.json`, `src/`, `dist/`, `public/twilight-bundle.json`, `scripts/normalize_uuid_keys.py`, `scripts/generate*_bundle.py`, `README.md`, `pnpm-workspace.yaml`
+- استبعد: `node_modules/`, `.pnpm-store/`, `.git/`, `notion-screenshots/`, `public/`, `scripts/`, `assets/`, `release/`
+- محتوى مقبول (مثل المرجع الرسمي): `package.json`, `tsconfig.json`, `vite.config.ts`, `twilight-bundle.json`, `src/`, `dist/`, `README.md`, `normalize_uuid_keys.py`, `generate*_bundle.py` إن وُجد
 
 ## 4) مفاتيح الحقول `key`
 
 - كل `"key"` في `twilight-bundle.json` = **UUID v4**
 - أبقِ `"value"` منطقيًا
-- بعد أي generate bundle أعد التطبيع فورًا (`python3 scripts/normalize_uuid_keys.py`)
+- بعد أي generate bundle أعد التطبيع فورًا
 
-## 5) هيكل المشروع (سكربتات البناء على Git)
+## 5) هيكل المشروع (مثل المرجع الرسمي)
+
+طابق [tw-increase-sales-and-professional-presentation](https://github.com/Ashaheen892/tw-increase-sales-and-professional-presentation):
 
 ```
 src/components/...
 src/utils/localizedString.ts
 dist/
-public/twilight-bundle.json   # مطلوب لـ TwilightCI/CDN
-scripts/normalize_uuid_keys.py
-scripts/generate_bundle.py    # أو generate-automotive-bundle.py
 package.json
 tsconfig.json
 vite.config.ts
 twilight-bundle.json
 README.md
 .gitignore
+normalize_uuid_keys.py
 ```
 
-- ارفع `scripts/` لكن فقط سكربتَي البناء الأساسيين؛ تجاهل أدوات capture/upload/debug/Notion محليًا
-- ارفع `public/twilight-bundle.json` فقط (ليس clean-preview)
-- gitignore الإلزامي: `notion-screenshots/`, `release/`, `node_modules/`, `.pnpm-store/`, وأنماط أدوات `scripts/` المحلية
+- لا ترفع `public/` أو `scripts/` على Git (محلي فقط عبر gitignore)
+- gitignore الإلزامي: `notion-screenshots/`, `release/`, `node_modules/`, `.pnpm-store/`, `public/`, `scripts/`
+
+## 6) Checklist قبل الإرسال
+
+```
+- [ ] لا عرض خام لحقول multilanguage
+- [ ] dist نظيف ويغطي كل المكونات
+- [ ] كل key = UUID v4
+- [ ] ZIP < 1MB
+- [ ] twilight-bundle.json في الجذر + dist
+```
 
 ## 6) Checklist قبل الإرسال
 

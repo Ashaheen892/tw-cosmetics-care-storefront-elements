@@ -6,27 +6,32 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# Dependencies
+
+
+# Dependency directories
 node_modules/
 jspm_packages/
 .pnpm-store/
 
-# Lockfiles
+# Yarn Integrity file
+.yarn-integrity
+
+#assets/dist
 package-lock.json
 pnpm-lock.yaml
 yarn.lock.json
 yarn.lock
-
+pnpm-lock.yaml
 .idea
-.DS_Store
-.cursor/*
-!.cursor/rules/
-!.cursor/rules/**
 
-# Diagnostic reports
+# Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# Local-only tooling / artifacts
+.DS_Store
+
+# Local-only (not in official starter layout)
+public/
+scripts/
 notion-screenshots/
 assets/
 release/
@@ -36,24 +41,10 @@ release/
 .auto-notion-*.json
 .mcp-batch-*.json
 USER-GUIDE.md
-
-# Keep scripts/ on git for build helpers; ignore local-only tools inside it
-scripts/capture-*
-scripts/upload-*
-scripts/debug-*
-scripts/clear-chrome-cache.mjs
-scripts/ignore-tty-eio.mjs
-scripts/build-notion-*
-scripts/register-*
-scripts/add-*
-scripts/rebuild-*
-scripts/update-*
-scripts/ensure-*
-scripts/fill-*
-scripts/audit-elements.mjs
-scripts/upgrade-*
 **/clean-preview.html
+patch_image_size_guides.py
 
-# Keep public/twilight-bundle.json tracked for TwilightCI/CDN
-public/*
-!public/twilight-bundle.json
+# Cursor (keep submission rules tracked)
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
