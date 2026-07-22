@@ -20,7 +20,6 @@ src/
       index.ts        # Main component file
       styles.ts       # Component styles (optional)
       types.ts        # Component types (optional)
-      utils.ts        # Component helpers (optional)
   utils/
     localizedString.ts
 dist/
@@ -29,6 +28,7 @@ vite.config.ts
 tsconfig.json
 package.json
 ```
+
 
 ## Built-in Plugins
 
@@ -77,15 +77,3 @@ Every field with `multilanguage: true` must be converted to a single string befo
 - [ ] twilight-bundle.json synced in root + public + dist
 ```
 
-## Submission ZIP
-
-```bash
-rm -rf dist && pnpm run build
-mkdir -p release
-rm -f release/theme.zip
-zip -qr release/theme.zip \
-  package.json tsconfig.json vite.config.ts twilight-bundle.json README.md \
-  src dist public scripts/normalize_uuid_keys.py \
-  -x "*.DS_Store" -x "*node_modules*" -x "*notion-screenshots*" -x "*release*"
-ls -lh release/theme.zip
-```

@@ -1,6 +1,4 @@
 import { defineConfig } from 'vite';
-import fs from 'fs';
-import path from 'path';
 import {
   sallaBuildPlugin,
   sallaDemoPlugin,
@@ -107,26 +105,6 @@ export default defineConfig({
     sallaDemoPlugin({
       js: seedDemoDefaultsJs,
     }),
-    {
-      name: 'clean-preview-live',
-      configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-          const url = req.url?.split('?')[0] || '';
-          if (url === '/clean-preview.html') {
-            const file = path.resolve(process.cwd(), 'scripts/clean-preview.html');
-            res.setHeader('Content-Type', 'text/html; charset=utf-8');
-            res.end(fs.readFileSync(file));
-            return;
-          }
-          if (url === '/twilight-bundle.json') {
-            const file = path.resolve(process.cwd(), 'twilight-bundle.json');
-            res.setHeader('Content-Type', 'application/json; charset=utf-8');
-            res.end(fs.readFileSync(file));
-            return;
-          }
-          next();
-        });
-      },
     },
     {
       name: 'no-cache-headers',
