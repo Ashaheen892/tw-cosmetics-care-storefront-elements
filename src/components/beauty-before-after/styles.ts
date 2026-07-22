@@ -20,7 +20,7 @@ export const componentStyles = css`
     text-align: center;
     font-size: 1rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bba-tabs {
@@ -34,9 +34,9 @@ export const componentStyles = css`
     min-height: 38px;
     padding: 0.4rem 0.95rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.82rem;
     font-weight: 700;
@@ -49,11 +49,11 @@ export const componentStyles = css`
   }
 
   .bba-tab:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bba-tab.is-active {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
@@ -71,8 +71,8 @@ export const componentStyles = css`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
         transparent 65%
       ),
-      color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+      color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, transparent),
       0 18px 40px rgba(120, 44, 82, 0.1);
@@ -134,7 +134,7 @@ export const componentStyles = css`
     width: 3px;
     left: 50%;
     transform: translateX(-50%);
-    background: #fff;
+    background: var(--fs-surface, var(--card-bg, #f0f0f0));
     box-shadow: 0 0 10px rgba(20, 14, 12, 0.28);
   }
 
@@ -146,11 +146,7 @@ export const componentStyles = css`
     width: 46px;
     height: 46px;
     border-radius: 50%;
-    background: linear-gradient(
-      135deg,
-      var(--accent-color, var(--fs-store-primary)),
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
-    );
+    background: var(--accent-color, var(--fs-store-primary));
     border: 3px solid #fff;
     box-shadow: 0 8px 22px rgba(120, 44, 82, 0.28);
     display: grid;
@@ -176,8 +172,8 @@ export const componentStyles = css`
     -webkit-backdrop-filter: blur(8px);
     font-size: 0.74rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 70%, transparent);
+    color: var(--text-color, #000000);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 70%, transparent);
     box-shadow: 0 4px 14px rgba(20, 14, 12, 0.1);
     pointer-events: none;
   }
@@ -246,7 +242,7 @@ export const componentStyles = css`
   .bba-range__label {
     font-size: 0.74rem;
     font-weight: 800;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-align: center;
   }
 
@@ -267,9 +263,9 @@ export const componentStyles = css`
     min-height: 34px;
     padding: 0.3rem 0.85rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.78rem;
     font-weight: 700;
@@ -278,7 +274,7 @@ export const componentStyles = css`
   }
 
   .bba-quick__btn:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
     color: var(--accent-color, var(--fs-store-primary));
   }
 
@@ -294,7 +290,7 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
     color: var(--accent-color, var(--fs-store-primary));
     font-size: 1.1rem;
@@ -308,7 +304,7 @@ export const componentStyles = css`
   .bba-pair-nav__count {
     font-size: 0.8rem;
     font-weight: 800;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     min-width: 3.5rem;
     text-align: center;
   }

@@ -12,7 +12,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { buildSteps, filterShades, parseShades } from './utils.js';
@@ -103,9 +103,6 @@ export default class BeautyShadeFinder extends LitElement {
     this.selectedShadeId = id;
   }
 
-  private label(key: string, ar: string, en: string): string {
-    return localizedString(this.config?.[key] as string) || t(ar, en);
-  }
 
   private renderProgress(total: number) {
     const current = Math.min(this.stepIndex + 1, total);
@@ -125,11 +122,7 @@ export default class BeautyShadeFinder extends LitElement {
   private renderQuestion(step: StepDef) {
     const hint =
       step.key === 'undertone'
-        ? this.label(
-            'bsf_undertone_hint',
-            'نصيحة: الأوردة الخضراء غالبًا دافئة، والزرقاء باردة، والمختلطة محايدة.',
-            'Tip: greenish veins often mean warm, bluish mean cool, mixed mean neutral.'
-          )
+        ? localizedString(this.config?.bsf_undertone_hint as string) || t('نصيحة: الأوردة الخضراء غالبًا دافئة، والزرقاء باردة، والمختلطة محايدة.', 'Tip: greenish veins often mean warm, bluish mean cool, mixed mean neutral.')
         : '';
 
     return html`
@@ -154,9 +147,9 @@ export default class BeautyShadeFinder extends LitElement {
   }
 
   private renderNav(canNext: boolean) {
-    const back = this.label('bsf_back_btn', 'السابق', 'Back');
-    const next = this.label('bsf_next_btn', 'التالي', 'Next');
-    const see = this.label('bsf_see_btn', 'عرض الدرجات', 'See shades');
+    const back = localizedString(this.config?.bsf_back_btn as string) || t('السابق', 'Back');
+    const next = localizedString(this.config?.bsf_next_btn as string) || t('التالي', 'Next');
+    const see = localizedString(this.config?.bsf_see_btn as string) || t('عرض الدرجات', 'See shades');
     const lastQ = this.stepIndex === this.steps.length - 1;
 
     return html`
@@ -248,11 +241,7 @@ export default class BeautyShadeFinder extends LitElement {
     const selected = this.selectedShade;
     const showLink = isTruthy(c.bsf_show_link, true);
     const shape = getRadioValue(c.bsf_swatch_shape, 'circle');
-    const resultsTitle = this.label(
-      'bsf_results_title',
-      'الدرجات المناسبة لكِ',
-      'Shades that suit you'
-    );
+    const resultsTitle = localizedString(this.config?.bsf_results_title as string) || t('الدرجات المناسبة لكِ', 'Shades that suit you');
 
     return html`
       <div class="bsf-results">
@@ -290,11 +279,12 @@ export default class BeautyShadeFinder extends LitElement {
           : html`<p class="fs-empty">${t('لا توجد درجات مطابقة', 'No matching shades')}</p>`}
         <div class="bsf-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-            ${this.label('bsf_back_btn', 'تعديل الإجابات', 'Edit answers')}
+            ${localizedString(this.config?.bsf_back_btn as string) || t('تعديل الإجابات', 'Edit answers')}
           </button>
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
-            ${this.label('bsf_reset_btn', 'ابدئي من جديد', 'Start over')}
+            ${localizedString(this.config?.bsf_reset_btn as string) || t('ابدئي من جديد', 'Start over')}
           </button>
+          ${renderCommerceCtaButton(c, 'bsf_')}
         </div>
       </div>
     `;
@@ -339,7 +329,6 @@ export default class BeautyShadeFinder extends LitElement {
                   ${this.renderNav(answered)}
                 `}
           </div>
-          ${this.onResults ? renderCommerceOutcome({ config: c, prefix: 'bsf_', ready: true }) : nothing}
         </div>
       </section>
     `;

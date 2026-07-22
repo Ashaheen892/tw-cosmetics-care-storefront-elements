@@ -14,10 +14,10 @@ export const componentStyles = css`
     overflow: hidden;
     background: linear-gradient(
       160deg,
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--section-bg, #fbf5f8)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--section-bg, transparent)),
       var(--card-bg, #fff)
     );
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 12px 30px rgba(120, 44, 82, 0.05);
   }
 
@@ -65,7 +65,7 @@ export const componentStyles = css`
     font-weight: 800;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bil-segment {
@@ -76,8 +76,8 @@ export const componentStyles = css`
     width: fit-content;
     max-width: 100%;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
-    border: 1px solid var(--border-color, #f2dde7);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff));
+    border: 1px solid var(--border-color, #e5e7eb);
   }
 
   .bil-segment__btn {
@@ -88,7 +88,7 @@ export const componentStyles = css`
     border-radius: 999px;
     border: none;
     background: transparent;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font: inherit;
     font-weight: 700;
     font-size: 0.82rem;
@@ -97,7 +97,7 @@ export const componentStyles = css`
   }
 
   .bil-segment__btn[aria-pressed='true'] {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, transparent);
   }
@@ -143,7 +143,7 @@ export const componentStyles = css`
     gap: 0.75rem;
     padding: 0.7rem 0.85rem;
     border-radius: 16px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
     cursor: pointer;
     text-align: start;
@@ -156,7 +156,7 @@ export const componentStyles = css`
   }
 
   .bil-card:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #e5e7eb));
     transform: translateY(-1px);
   }
 
@@ -192,7 +192,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.92rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     line-height: 1.3;
   }
 
@@ -212,12 +212,12 @@ export const componentStyles = css`
     font-size: 0.72rem;
     font-weight: 800;
     color: transparent;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 50%, transparent);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 50%, transparent);
     transition: background 0.2s ease, color 0.2s ease;
   }
 
   .bil-card[aria-pressed='true'] .bil-card__check {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
   }
 
@@ -241,9 +241,9 @@ export const componentStyles = css`
     padding: 1.4rem 1rem;
     text-align: center;
     border-radius: 14px;
-    border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #f2dde7));
-    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
-    color: var(--muted-color, #8f7a86);
+    border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #e5e7eb));
+    background: color-mix(in srgb, var(--section-bg, transparent) 55%, var(--card-bg, #fff));
+    color: var(--muted-color, #666666);
     font-size: 0.88rem;
   }
 
@@ -255,7 +255,7 @@ export const componentStyles = css`
     padding: 1.25rem 1.3rem 1.35rem;
     border-radius: 18px;
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 24%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 24%, var(--border-color, #e5e7eb));
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
       0 14px 34px rgba(120, 44, 82, 0.08);
@@ -297,7 +297,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 1.2rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     line-height: 1.3;
   }
 
@@ -316,7 +316,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.9rem;
     line-height: 1.7;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bil-block {
@@ -328,7 +328,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.78rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -347,7 +347,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.86rem;
     line-height: 1.55;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bil-chips {
@@ -367,9 +367,9 @@ export const componentStyles = css`
   }
 
   .bil-chip--soft {
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 45%, var(--card-bg, #fff));
-    color: var(--text-color, #33232e);
-    border-color: color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 45%, var(--card-bg, #fff));
+    color: var(--text-color, #000000);
+    border-color: color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent);
   }
 
   .bil-note {
@@ -380,7 +380,7 @@ export const componentStyles = css`
     border-radius: 14px;
     background: color-mix(in srgb, #e0a100 12%, var(--card-bg, #fff));
     border: 1px solid color-mix(in srgb, #e0a100 34%, transparent);
-    color: color-mix(in srgb, #8a5a00 70%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000));
     font-size: 0.84rem;
     line-height: 1.55;
   }

@@ -12,8 +12,8 @@ export const componentStyles = css`
     gap: 0.25rem;
     padding: 0.28rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 40%, var(--card-bg, #fff));
-    border: 1px solid var(--border-color, #f2dde7);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 40%, var(--card-bg, #fff));
+    border: 1px solid var(--border-color, #e5e7eb);
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -24,7 +24,7 @@ export const componentStyles = css`
     border: none;
     border-radius: 999px;
     background: transparent;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font: inherit;
     font-size: 0.85rem;
     font-weight: 700;
@@ -33,11 +33,11 @@ export const componentStyles = css`
   }
 
   .bwp-toggle__btn:hover {
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bwp-toggle__btn[aria-pressed='true'] {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     box-shadow: 0 4px 12px rgba(43, 33, 28, 0.18);
   }
@@ -47,10 +47,10 @@ export const componentStyles = css`
     border-radius: calc(var(--section-radius, 20px) * 0.85);
     background: linear-gradient(
       165deg,
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, var(--section-bg, #fbf5f8)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, var(--section-bg, transparent)),
       color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 3%, var(--card-bg, #fff))
     );
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     padding: 0.75rem;
   }
 
@@ -76,7 +76,7 @@ export const componentStyles = css`
   .bwp-day {
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 20px) * 0.65);
     background: var(--card-bg, #fff);
     overflow: hidden;
@@ -85,7 +85,7 @@ export const componentStyles = css`
   }
 
   .bwp-day.is-empty {
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 18%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 18%, var(--card-bg, #fff));
   }
 
   .bwp-day__head {
@@ -93,9 +93,9 @@ export const componentStyles = css`
     text-align: start;
     font-size: 0.95rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff));
-    border-bottom: 1px solid var(--border-color, #f2dde7);
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
     letter-spacing: 0.01em;
   }
 
@@ -160,7 +160,7 @@ export const componentStyles = css`
     border: 1px solid color-mix(in srgb, var(--chip-color, var(--accent-color, var(--fs-store-primary))) 28%, transparent);
     font-size: 0.9rem;
     line-height: 1.45;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bwp-chip__dot {
@@ -195,7 +195,7 @@ export const componentStyles = css`
     place-items: center;
     flex: 1;
     min-height: 3rem;
-    font-size: 0.86rem;
+    font-size: 0.9rem;
     font-weight: 700;
     font-style: italic;
     color: color-mix(in srgb, var(--muted-color, #8f7a86) 75%, var(--accent-color, var(--fs-store-primary)));
@@ -225,7 +225,7 @@ export const componentStyles = css`
     align-items: flex-start;
     gap: 0.6rem;
     padding: 0.7rem 0.8rem;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 20px) * 0.55);
     background: var(--card-bg, #fff);
   }
@@ -251,7 +251,7 @@ export const componentStyles = css`
   .bwp-legend__name {
     font-size: 0.92rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -261,7 +261,7 @@ export const componentStyles = css`
 
   .bwp-legend__freq {
     font-size: 0.82rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.5;
     white-space: normal;
   }
@@ -282,7 +282,7 @@ export const componentStyles = css`
     margin-top: 1.35rem;
     text-align: center;
     font-size: 0.84rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
   }
 

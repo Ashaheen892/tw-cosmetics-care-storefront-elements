@@ -13,7 +13,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { getPageLocale, localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -212,7 +212,9 @@ export default class BeautyLightingFinishSimulator extends LitElement {
         ? html`<div class="bls-palette">${light.palette.map((col) => html`<span class="bls-swatch" style=${styleMap({ background: col })} title=${col}></span>`)}</div>`
         : nothing}
       ${light.note ? html`<p class="bls-note">★ ${light.note}</p>` : nothing}
-      ${light.link ? html`<a class="fs-btn fs-btn--ghost bls-link" href=${light.link} target="_blank" rel="noopener noreferrer">${t('اقرئي المزيد', 'Read more')}</a>` : nothing}
+      <div class="fs-actions">
+        ${renderCommerceCtaButton(c, 'bls_', { href: light.link })}
+      </div>
     </div>`;
   }
 
@@ -335,12 +337,14 @@ export default class BeautyLightingFinishSimulator extends LitElement {
         <select id="bls-a" @change=${(e: Event) => (this.cmpA = (e.target as HTMLSelectElement).value)}>
           ${lights.map((l) => html`<option value=${l.id} ?selected=${l.id === a?.id}>${l.name}</option>`)}
         </select>
+        ${renderCommerceCtaButton(c, 'bls_', { href: a?.link })}
       </div>
       <div>
         <label for="bls-b">${t('الحالة الثانية', 'Second state')}</label>
         <select id="bls-b" @change=${(e: Event) => (this.cmpB = (e.target as HTMLSelectElement).value)}>
           ${lights.map((l) => html`<option value=${l.id} ?selected=${l.id === b?.id}>${l.name}</option>`)}
         </select>
+        ${renderCommerceCtaButton(c, 'bls_', { href: b?.link })}
       </div>
     </div>`;
 
@@ -454,7 +458,6 @@ export default class BeautyLightingFinishSimulator extends LitElement {
             : nothing}
 
           ${effectiveMode === 'compare' ? this.renderCompare(lights) : this.renderSingle(lights, locale)}
-          ${renderCommerceOutcome({ config: c, prefix: 'bls_', ready: Boolean(active), selection: active })}
         </div>
       </section>
     `;

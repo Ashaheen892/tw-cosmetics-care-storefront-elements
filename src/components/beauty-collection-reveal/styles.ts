@@ -9,8 +9,8 @@ export const componentStyles = css`
     position: relative;
     border-radius: var(--section-radius, 18px);
     overflow: hidden;
-    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, var(--section-bg, #fbf5f8));
-    border: 1px solid var(--border-color, #f2dde7);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, var(--section-bg, transparent));
+    border: 1px solid var(--border-color, #e5e7eb);
     min-height: 260px;
   }
 
@@ -105,21 +105,13 @@ export const componentStyles = css`
   }
 
   .bcr-cover__btn {
-    min-height: 48px;
-    padding: 0.65rem 1.75rem;
-    background: var(--accent-color, var(--fs-store-primary));
-    border-color: var(--accent-color, var(--fs-store-primary));
-    color: #fff;
-    font-size: 0.95rem;
-    font-weight: 800;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    /* inherits .fs-btn pill system; only lift contrast on dark cover */
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
   }
 
   .bcr-cover__btn:hover,
   .bcr-cover__btn:focus-visible {
-    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 88%, #fff);
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 88%, #fff);
-    color: #fff;
+    filter: brightness(1.06);
   }
 
   /* Split covers for curtain / petals need two halves */
@@ -239,10 +231,34 @@ export const componentStyles = css`
     flex-direction: column;
     height: 100%;
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 18px) - 6px);
     overflow: hidden;
     box-shadow: 0 6px 18px rgba(43, 33, 28, 0.06);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform 0.22s ease,
+      box-shadow 0.22s ease,
+      border-color 0.22s ease;
+  }
+
+  a.bcr-card--link {
+    cursor: pointer;
+  }
+
+  a.bcr-card--link:hover,
+  a.bcr-card--link:focus-visible {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
+    box-shadow: 0 14px 28px rgba(120, 44, 82, 0.14);
+    outline: none;
+  }
+
+  a.bcr-card--link:hover .bcr-card__link,
+  a.bcr-card--link:focus-visible .bcr-card__link {
+    background: var(--accent-color, var(--fs-store-primary));
+    color: #fff;
   }
 
   .bcr-card__media {
@@ -292,14 +308,14 @@ export const componentStyles = css`
     margin: 0;
     font-size: 1rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     line-height: 1.35;
   }
 
   .bcr-card__subtitle {
     margin: 0;
     font-size: 0.85rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.5;
   }
 
@@ -331,7 +347,7 @@ export const componentStyles = css`
     text-align: center;
     font-size: 0.82rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     letter-spacing: 0.01em;
   }
 
@@ -340,6 +356,19 @@ export const componentStyles = css`
     margin-inline-end: 0.35rem;
     color: var(--accent-color, var(--fs-store-primary));
     opacity: 0.75;
+  }
+
+  /* CTA below the scene — never over the cards */
+  .bcr-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    animation: bcr-pop 0.5s ease both;
+  }
+
+  .bcr-cta .fs-btn {
+    min-width: min(260px, 100%);
+    justify-content: center;
   }
 
   @media (prefers-reduced-motion: reduce) {

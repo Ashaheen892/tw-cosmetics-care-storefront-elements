@@ -21,8 +21,8 @@ export const componentStyles = css`
     min-width: 0;
     padding: 1.15rem 1.15rem 1.25rem;
     border-radius: var(--section-radius, 20px);
-    background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, #fbf5f8));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, transparent));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
@@ -30,14 +30,14 @@ export const componentStyles = css`
     margin: 0 0 0.25rem;
     font-size: 1rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bpa-form-card__hint {
     margin: 0 0 1rem;
     font-size: 0.8rem;
     line-height: 1.55;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bpa-form {
@@ -53,7 +53,7 @@ export const componentStyles = css`
   .bpa-field label {
     font-size: 0.82rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bpa-input,
@@ -62,9 +62,9 @@ export const componentStyles = css`
     min-height: 46px;
     padding: 0.65rem 0.8rem;
     border-radius: 14px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -73,7 +73,7 @@ export const componentStyles = css`
   .bpa-input:focus,
   .bpa-select:focus {
     outline: none;
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 55%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 55%, var(--border-color, #e5e7eb));
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 18%, transparent);
   }
 
@@ -92,9 +92,9 @@ export const componentStyles = css`
     min-height: 44px;
     padding: 0.45rem 0.85rem;
     border-radius: 999px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 700;
     font-size: 0.82rem;
@@ -109,16 +109,12 @@ export const componentStyles = css`
   .bpa-cat-chip:hover,
   .bpa-pao-chip:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bpa-cat-chip.is-active,
   .bpa-pao-chip.is-active {
-    background: linear-gradient(
-      135deg,
-      var(--accent-color, var(--fs-store-primary)),
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
-    );
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: transparent;
     color: #fff;
     box-shadow: 0 8px 18px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, transparent);
@@ -139,7 +135,7 @@ export const componentStyles = css`
   .bpa-hero {
     min-width: 0;
     background: var(--card-bg, #fff);
-    border: 1.5px solid color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #f2dde7));
+    border: 1.5px solid color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #e5e7eb));
     border-radius: var(--section-radius, 20px);
     padding: 1.45rem 1.25rem 1.35rem;
     text-align: center;
@@ -174,7 +170,7 @@ export const componentStyles = css`
 
   .bpa-hero--empty {
     border-style: dashed;
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #e5e7eb));
     box-shadow: none;
     background:
       radial-gradient(
@@ -182,7 +178,7 @@ export const componentStyles = css`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, transparent),
         transparent 70%
       ),
-      color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
+      color-mix(in srgb, var(--section-bg, transparent) 55%, var(--card-bg, #fff));
   }
 
   .bpa-hero__placeholder {
@@ -191,7 +187,7 @@ export const componentStyles = css`
     align-items: center;
     gap: 0.7rem;
     padding: 2.4rem 1rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.92rem;
     line-height: 1.65;
   }
@@ -246,7 +242,7 @@ export const componentStyles = css`
 
   .bpa-dial__track {
     fill: none;
-    stroke: color-mix(in srgb, var(--bpa-color, var(--border-color, #f2dde7)) 14%, var(--border-color, #f2dde7));
+    stroke: color-mix(in srgb, var(--bpa-color, var(--border-color, #e5e7eb)) 14%, var(--border-color, #e5e7eb));
     stroke-width: 14;
     opacity: 0.55;
   }
@@ -281,7 +277,7 @@ export const componentStyles = css`
 
   .bpa-dial__unit {
     font-size: 0.86rem;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-weight: 800;
   }
 
@@ -319,20 +315,20 @@ export const componentStyles = css`
     padding: 0.75rem 0.65rem;
     border-radius: 14px;
     background: color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 6%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--bpa-color, var(--border-color, #f2dde7)) 18%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--bpa-color, var(--border-color, #e5e7eb)) 18%, var(--border-color, #e5e7eb));
   }
 
   .bpa-date-cell span {
     display: block;
     font-size: 0.7rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     margin-bottom: 0.25rem;
     font-weight: 700;
   }
 
   .bpa-date-cell b {
     font-size: 0.84rem;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-weight: 800;
     line-height: 1.35;
   }
@@ -354,10 +350,10 @@ export const componentStyles = css`
     padding: 0.8rem 0.9rem;
     border-radius: 14px;
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 7%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--border-color, #e5e7eb));
     font-size: 0.84rem;
     line-height: 1.6;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bpa-tips h4 {
@@ -369,7 +365,7 @@ export const componentStyles = css`
 
   .bpa-tips p {
     margin: 0;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     white-space: pre-line;
   }
 
@@ -385,7 +381,7 @@ export const componentStyles = css`
     max-width: 1080px;
     margin: 1.25rem auto 0;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
     text-align: center;
   }
@@ -397,7 +393,7 @@ export const componentStyles = css`
     padding: 1.15rem;
     border-radius: var(--section-radius, 20px);
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.05);
   }
 
@@ -417,7 +413,7 @@ export const componentStyles = css`
 
   .bpa-saved__note {
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     margin: 0 0 0.9rem;
     line-height: 1.55;
   }
@@ -426,9 +422,9 @@ export const componentStyles = css`
     padding: 1.4rem 1rem;
     text-align: center;
     border-radius: 14px;
-    border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #f2dde7));
-    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
-    color: var(--muted-color, #8f7a86);
+    border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #e5e7eb));
+    background: color-mix(in srgb, var(--section-bg, transparent) 55%, var(--card-bg, #fff));
+    color: var(--muted-color, #666666);
     font-size: 0.88rem;
   }
 
@@ -442,8 +438,8 @@ export const componentStyles = css`
     align-items: flex-start;
     gap: 0.8rem;
     padding: 0.9rem 0.95rem;
-    border: 1px solid color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 32%, var(--border-color, #f2dde7));
-    border-inline-start: 4px solid var(--rec-color, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--rec-color, var(--border-color, #e5e7eb)) 32%, var(--border-color, #e5e7eb));
+    border-inline-start: 4px solid var(--rec-color, var(--border-color, #e5e7eb));
     border-radius: 16px;
     background: color-mix(in srgb, var(--rec-color, transparent) 4%, var(--card-bg, #fff));
     box-shadow: 0 4px 14px rgba(43, 33, 28, 0.04);
@@ -462,8 +458,8 @@ export const componentStyles = css`
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    border: 3px solid color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 32%, transparent);
-    background: color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 12%, var(--card-bg, #fff));
+    border: 3px solid color-mix(in srgb, var(--rec-color, var(--border-color, #e5e7eb)) 32%, transparent);
+    background: color-mix(in srgb, var(--rec-color, var(--border-color, #e5e7eb)) 12%, var(--card-bg, #fff));
   }
 
   .bpa-record__days {
@@ -482,7 +478,7 @@ export const componentStyles = css`
   .bpa-record__name {
     font-weight: 800;
     font-size: 0.92rem;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     margin-bottom: 0.3rem;
   }
 
@@ -492,7 +488,7 @@ export const componentStyles = css`
     align-items: center;
     gap: 0.35rem 0.5rem;
     font-size: 0.74rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bpa-record__pill {
@@ -501,14 +497,14 @@ export const componentStyles = css`
     border-radius: 999px;
     font-size: 0.68rem;
     font-weight: 800;
-    background: color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 16%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--rec-color, var(--border-color, #e5e7eb)) 16%, var(--card-bg, #fff));
     color: var(--rec-color, var(--text-color, #33232e));
   }
 
   .bpa-record__note {
     margin: 0.4rem 0 0;
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.45;
   }
 
@@ -524,7 +520,7 @@ export const componentStyles = css`
     min-height: 40px;
     padding: 0.4rem 0.55rem;
     border-radius: 10px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     font: inherit;
     box-sizing: border-box;
   }
@@ -535,9 +531,9 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 10px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     cursor: pointer;
     flex: 0 0 auto;
     transition: color 0.15s ease, border-color 0.15s ease;
@@ -545,7 +541,7 @@ export const componentStyles = css`
 
   .bpa-icon-btn:hover {
     color: var(--accent-color, var(--fs-store-primary));
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   @media (max-width: 639px) {

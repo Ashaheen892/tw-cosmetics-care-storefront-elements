@@ -47,7 +47,7 @@ export const componentStyles = css`
   .brb-progress__bar {
     height: 6px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 70%, #fff);
     overflow: hidden;
   }
 
@@ -66,7 +66,7 @@ export const componentStyles = css`
   .brb-progress__text {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .brb-question {
@@ -74,8 +74,8 @@ export const componentStyles = css`
     gap: 0.75rem;
     padding: 1.15rem 1.2rem;
     border-radius: var(--section-radius, 16px);
-    background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, #fbf5f8));
-    border: 1px solid var(--border-color, #f2dde7);
+    background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, transparent));
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 8px 24px rgba(194, 82, 127, 0.06);
   }
 
@@ -84,7 +84,7 @@ export const componentStyles = css`
     font-size: 1.12rem;
     font-weight: 800;
     line-height: 1.35;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .brb-chips {
@@ -97,9 +97,9 @@ export const componentStyles = css`
     min-height: 44px;
     padding: 0.55rem 1.05rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
     font-size: 0.9rem;
@@ -109,11 +109,11 @@ export const componentStyles = css`
   }
 
   .brb-chip:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
   }
 
   .brb-chip[aria-pressed='true'] {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
@@ -148,12 +148,12 @@ export const componentStyles = css`
     margin: 0;
     font-size: 1.05rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .brb-routine__count {
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .brb-results__actions {
@@ -176,7 +176,7 @@ export const componentStyles = css`
     padding: 0.75rem;
     border-radius: var(--card-radius, 14px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 6px 18px rgba(43, 33, 28, 0.05);
   }
 
@@ -197,7 +197,7 @@ export const componentStyles = css`
     height: 84px;
     border-radius: calc(var(--card-radius, 14px) * 0.7);
     object-fit: cover;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 45%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 45%, #fff);
   }
 
   .brb-step__body {
@@ -210,13 +210,13 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.98rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .brb-step__desc {
     margin: 0;
     font-size: 0.82rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.5;
   }
 
@@ -227,11 +227,6 @@ export const componentStyles = css`
     margin-top: 0.2rem;
   }
 
-  .brb-step__actions .fs-btn {
-    min-height: 36px;
-    padding: 0.4rem 0.85rem;
-    font-size: 0.8rem;
-  }
 
   .brb-card--sharp {
     --card-radius: 4px;

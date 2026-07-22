@@ -2,7 +2,8 @@ import { css as L, LitElement as I, nothing as b, html as i } from "lit";
 import { property as j, state as M } from "lit/decorators.js";
 import { classMap as E } from "lit/directives/class-map.js";
 import { styleMap as x } from "lit/directives/style-map.js";
-import { n as A, l as f, t as d, i as y, s as F, r as O, p as B, a as N, b as P } from "./sharedStyles-BgfDOkwJ.js";
+import { n as A, l as u, t as d, i as y, s as F, r as N, p as B, a as O } from "./sharedStyles-DKbcXBPy.js";
+import { r as P } from "./commerceOutcome-Dk8p2VWM.js";
 const Z = L`
   :host {
     display: block;
@@ -24,7 +25,7 @@ const Z = L`
     padding: 1.15rem 1.2rem;
     border-radius: var(--section-radius, 20px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
@@ -38,7 +39,7 @@ const Z = L`
     font-size: 0.82rem;
     font-weight: 800;
     letter-spacing: 0.01em;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   /* —— base color chips —— */
@@ -54,10 +55,10 @@ const Z = L`
     gap: 0.55rem;
     min-height: 44px;
     padding: 0.4rem 0.85rem 0.4rem 0.4rem;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: 999px;
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.88rem;
     font-weight: 700;
@@ -67,7 +68,7 @@ const Z = L`
   }
 
   .bch-color:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bch-color[aria-pressed='true'] {
@@ -107,10 +108,10 @@ const Z = L`
     gap: 0.2rem;
     min-height: 64px;
     padding: 0.7rem 0.9rem;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 16px) * 0.65);
-    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, #fff);
-    color: var(--text-color, #33232e);
+    background: color-mix(in srgb, var(--section-bg, transparent) 55%, #fff);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.88rem;
     font-weight: 700;
@@ -126,7 +127,7 @@ const Z = L`
   .bch-type__hint {
     font-size: 0.74rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.35;
   }
 
@@ -135,11 +136,11 @@ const Z = L`
   }
 
   .bch-type:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bch-type[aria-pressed='true'] {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
   }
@@ -157,6 +158,27 @@ const Z = L`
     }
   }
 
+  .bch-cta {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.15rem;
+  }
+
+  .bch-cta__btn {
+    min-height: 38px;
+    min-width: auto;
+    padding: 0.4rem 1.15rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border-radius: 999px;
+    box-shadow: none;
+  }
+
+  .bch-cta__btn:hover {
+    box-shadow: none;
+  }
+
   .bch-preview,
   .bch-zones-wrap {
     display: grid;
@@ -172,7 +194,7 @@ const Z = L`
       color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 12px 32px rgba(43, 33, 28, 0.08);
   }
 
@@ -180,7 +202,7 @@ const Z = L`
     padding: 1.2rem;
     border-radius: calc(var(--section-radius, 16px) * 0.9);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
   }
 
   .bch-preview__label {
@@ -188,7 +210,7 @@ const Z = L`
     font-size: 0.8rem;
     font-weight: 800;
     letter-spacing: 0.02em;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bch-strip {
@@ -218,7 +240,7 @@ const Z = L`
     font-size: 0.76rem;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-transform: uppercase;
     font-variant-numeric: tabular-nums;
   }
@@ -240,8 +262,8 @@ const Z = L`
     align-items: center;
     gap: 0.8rem;
     padding: 0.8rem;
-    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 60%, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    background: color-mix(in srgb, var(--section-bg, transparent) 60%, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 16px) * 0.7);
   }
 
@@ -264,13 +286,13 @@ const Z = L`
   .bch-zone__label {
     font-size: 0.92rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bch-zone__hex {
     font-size: 0.76rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-transform: uppercase;
     font-variant-numeric: tabular-nums;
   }
@@ -279,7 +301,7 @@ const Z = L`
     margin: 0;
     text-align: center;
     font-size: 0.82rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.6;
   }
 
@@ -304,7 +326,7 @@ function q(s) {
 }
 function K(s) {
   return A(s).map((e, r) => {
-    const t = f(e.name), o = H(q(e.hex ?? e.color));
+    const t = u(e.name), o = H(q(e.hex ?? e.color));
     return {
       id: String(e.id ?? e.color_id ?? e.id ?? "").trim() || `color-${r + 1}`,
       name: t,
@@ -333,7 +355,7 @@ function p(s) {
   const e = (s.h % 360 + 360) % 360, r = C(s.s / 100), t = C(s.l / 100), o = (1 - Math.abs(2 * t - 1)) * r, a = o * (1 - Math.abs(e / 60 % 2 - 1)), l = t - o / 2;
   let c = 0, n = 0, h = 0;
   e < 60 ? [c, n, h] = [o, a, 0] : e < 120 ? [c, n, h] = [a, o, 0] : e < 180 ? [c, n, h] = [0, o, a] : e < 240 ? [c, n, h] = [0, a, o] : e < 300 ? [c, n, h] = [a, 0, o] : [c, n, h] = [o, 0, a];
-  const m = (u) => Math.round((u + l) * 255).toString(16).padStart(2, "0");
+  const m = (g) => Math.round((g + l) * 255).toString(16).padStart(2, "0");
   return `#${m(c)}${m(n)}${m(h)}`;
 }
 function C(s) {
@@ -460,7 +482,7 @@ const w = class w extends I {
   }
   renderTypes(e, r) {
     if (!e.length) return b;
-    const t = this.config || {}, o = f(t.bch_harmony_label) || d("2) اختاري نوع التناسق", "2) Choose harmony style");
+    const t = this.config || {}, o = u(t.bch_harmony_label) || d("2) اختاري نوع التناسق", "2) Choose harmony style");
     return i`
       <div class="bch-group">
         <p class="bch-group__label">${o}</p>
@@ -505,9 +527,9 @@ const w = class w extends I {
   }
   renderZones(e, r) {
     const t = this.config || {}, o = [
-      { key: "lips", label: f(t.bch_lips_label) || d("الشفاه", "Lips") },
-      { key: "eyes", label: f(t.bch_eyes_label) || d("العيون", "Eyes") },
-      { key: "cheeks", label: f(t.bch_cheeks_label) || d("الخدود", "Cheeks") }
+      { key: "lips", label: u(t.bch_lips_label) || d("الشفاه", "Lips") },
+      { key: "eyes", label: u(t.bch_eyes_label) || d("العيون", "Eyes") },
+      { key: "cheeks", label: u(t.bch_cheeks_label) || d("الخدود", "Cheeks") }
     ];
     return i`
       <div class="bch-zones">
@@ -532,7 +554,7 @@ const w = class w extends I {
     `;
   }
   render() {
-    const e = this.config || {}, r = O(e, "bch_"), t = r.animate && !B(), o = this.colors, a = f(e.bch_title), l = f(e.bch_desc), c = y(e.bch_show_hex, !0), n = y(e.bch_show_notice, !0), h = f(e.bch_notice) || d(
+    const e = this.config || {}, r = N(e, "bch_"), t = r.animate && !B(), o = this.colors, a = u(e.bch_title), l = u(e.bch_desc), c = y(e.bch_show_hex, !0), n = y(e.bch_show_notice, !0), h = u(e.bch_notice) || d(
       "اقتراحات الألوان إرشادية لمساعدتك على التنسيق.",
       "Color suggestions are guidance to help you coordinate."
     );
@@ -551,11 +573,11 @@ const w = class w extends I {
         "Enable at least one harmony type in the settings."
       )}
       </div>`;
-    const u = this.resolveColor(o), $ = this.resolveHarmony(m), z = (u == null ? void 0 : u.hex) ?? o[0].hex, k = U(z, $), S = V(k, z);
+    const g = this.resolveColor(o), $ = this.resolveHarmony(m), z = (g == null ? void 0 : g.hex) ?? o[0].hex, k = U(z, $), S = V(k, z);
     return i`
       <section
         class=${E({ "fs-section": !0, "fs-animate": t })}
-        style=${x(N(r))}
+        style=${x(O(r))}
         aria-label=${a || d("عجلة تناسق ألوان المكياج", "Makeup color harmony wheel")}
       >
         <div class="fs-container">
@@ -568,7 +590,7 @@ const w = class w extends I {
             <div class="bch-controls">
               <div class="bch-group">
                 <p class="bch-group__label">${d("1) اختاري لون الأساس", "1) Choose a base color")}</p>
-                ${this.renderColors(o, u)}
+                ${this.renderColors(o, g)}
               </div>
               ${this.renderTypes(m, $)}
             </div>
@@ -582,28 +604,30 @@ const w = class w extends I {
                 <p class="bch-preview__label">${d("توزيع على الوجه", "Face placement")}</p>
                 ${this.renderZones(S, c)}
               </div>
+              <div class="bch-cta">
+                ${P(e, "bch_", { className: "bch-cta__btn" })}
+              </div>
             </div>
 
             ${n ? i`<p class="bch-notice">${h}</p>` : b}
           </div>
-          ${P({ config: e, prefix: "bch_", ready: !!u, selection: u })}
         </div>
       </section>
     `;
   }
 };
 w.styles = [F, Z];
-let g = w;
+let f = w;
 _([
   j({ type: Object })
-], g.prototype, "config");
+], f.prototype, "config");
 _([
   M()
-], g.prototype, "selectedColorId");
+], f.prototype, "selectedColorId");
 _([
   M()
-], g.prototype, "harmonyType");
-typeof g < "u" && g.registerSallaComponent("salla-beauty-color-harmony");
+], f.prototype, "harmonyType");
+typeof f < "u" && f.registerSallaComponent("salla-beauty-color-harmony");
 export {
-  g as default
+  f as default
 };

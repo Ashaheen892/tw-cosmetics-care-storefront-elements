@@ -3,6 +3,7 @@ import { property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import {
+  isExternalUrl,
   isTruthy,
   prefersReducedMotion,
   readSectionTheme,
@@ -10,7 +11,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { parseItems, resolveMode, revealStagger, cardCountLabel } from './utils.js';
@@ -106,34 +107,51 @@ export default class BeautyCollectionReveal extends LitElement {
     `;
   }
 
-  private renderCard(item: RevealItem, showLink: boolean) {
-    const hasLink = !!item.link && showLink;
+  private renderCard(item: RevealItem) {
+    const href = item.link || '';
+    const external = href ? isExternalUrl(href) : false;
+    const media = item.image
+      ? html`<div class="bcr-card__media">
+          <img
+            class="bcr-card__img"
+            src=${item.image}
+            alt=${item.title || ''}
+            loading="lazy"
+            decoding="async"
+          />
+          ${item.tag ? html`<span class="bcr-card__tag">${item.tag}</span>` : nothing}
+        </div>`
+      : item.tag
+        ? html`<span class="bcr-card__tag bcr-card__tag--standalone">${item.tag}</span>`
+        : nothing;
+    const body = html`
+      <div class="bcr-card__body">
+        ${item.title ? html`<h3 class="bcr-card__title">${item.title}</h3>` : nothing}
+        ${item.subtitle ? html`<p class="bcr-card__subtitle">${item.subtitle}</p>` : nothing}
+        ${href
+          ? html`<span class="bcr-card__link" aria-hidden="true">
+              ${t('اكتشفي المزيد', 'Discover more')}
+            </span>`
+          : nothing}
+      </div>
+    `;
+
+    if (!href) {
+      return html`<article class="bcr-card bcr-card--static" aria-label=${item.title || t('بطاقة المجموعة', 'Collection card')}>
+        ${media}${body}
+      </article>`;
+    }
+
     return html`
-      <article class="bcr-card">
-        ${item.image
-          ? html`<div class="bcr-card__media">
-              <img
-                class="bcr-card__img"
-                src=${item.image}
-                alt=${item.title || ''}
-                loading="lazy"
-                decoding="async"
-              />
-              ${item.tag ? html`<span class="bcr-card__tag">${item.tag}</span>` : nothing}
-            </div>`
-          : item.tag
-            ? html`<span class="bcr-card__tag bcr-card__tag--standalone">${item.tag}</span>`
-            : nothing}
-        <div class="bcr-card__body">
-          ${item.title ? html`<h3 class="bcr-card__title">${item.title}</h3>` : nothing}
-          ${item.subtitle ? html`<p class="bcr-card__subtitle">${item.subtitle}</p>` : nothing}
-          ${hasLink
-            ? html`<a class="bcr-card__link" href=${item.link}>
-                ${t('اكتشفي المزيد', 'Discover more')}
-              </a>`
-            : nothing}
-        </div>
-      </article>
+      <a
+        class="bcr-card bcr-card--link"
+        href=${href}
+        target=${external ? '_blank' : nothing}
+        rel=${external ? 'noopener noreferrer' : nothing}
+        aria-label=${item.title || t('انتقل إلى المجموعة', 'Go to collection')}
+      >
+        ${media}${body}
+      </a>
     `;
   }
 
@@ -145,7 +163,6 @@ export default class BeautyCollectionReveal extends LitElement {
     const stagger = revealStagger(c);
     const title = localizedString(c.bcr_title as string);
     const desc = localizedString(c.bcr_desc as string);
-    const showLink = isTruthy(c.bcr_show_link, true);
     const items = parseItems(c.bcr_items);
 
     if (!items.length) {
@@ -184,7 +201,7 @@ export default class BeautyCollectionReveal extends LitElement {
                       role="listitem"
                       style=${styleMap({ '--reveal-delay': `${i * stagger}ms` })}
                     >
-                      ${this.renderCard(item, showLink)}
+                      ${this.renderCard(item)}
                     </div>
                   `
                 )}
@@ -195,7 +212,9 @@ export default class BeautyCollectionReveal extends LitElement {
           ${this.revealed
             ? html`<p class="bcr-count" role="status">${cardCountLabel(items.length)}</p>`
             : nothing}
-          ${renderCommerceOutcome({ config: c, prefix: 'bcr_', ready: true })}
+          ${this.revealed || !animate
+            ? html`<div class="bcr-cta">${renderCommerceCtaButton(c, 'bcr_')}</div>`
+            : nothing}
         </div>
       </section>
     `;

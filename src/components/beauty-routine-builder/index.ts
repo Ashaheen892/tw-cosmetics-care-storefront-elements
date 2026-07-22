@@ -11,7 +11,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { buildQuestions, buildRoutine, parseSteps } from './utils.js';
@@ -221,6 +221,7 @@ export default class BeautyRoutineBuilder extends LitElement {
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
             ${localizedString(c.brb_reset_btn as string) || t('إعادة الاختيار', 'Start over')}
           </button>
+          ${renderCommerceCtaButton(c, 'brb_')}
         </div>
       </div>
     `;
@@ -279,7 +280,6 @@ export default class BeautyRoutineBuilder extends LitElement {
                   `}
             </div>
           </div>
-          ${this.onResults ? renderCommerceOutcome({ config: c, prefix: 'brb_', ready: true }) : nothing}
         </div>
       </section>
     `;

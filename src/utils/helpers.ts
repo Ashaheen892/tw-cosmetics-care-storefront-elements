@@ -3,6 +3,7 @@ import {
   localizedString,
   type LocaleValue,
 } from './localizedString.js';
+import { ensureFsThemeWatch, fsThemeVars } from './fsTheme.js';
 
 export type ConfigValue = Record<string, unknown> | null | undefined;
 
@@ -107,12 +108,27 @@ export function isTruthy(val: unknown, fallback = false): boolean {
   return fallback;
 }
 
+/** Store paths for variable-list picks that only carry a type key (no URL). */
+const STATIC_LINK_PATHS: Record<string, string> = {
+  offers_link: '/offers',
+  offers: '/offers',
+  brands_link: '/brands',
+  blog_link: '/blog',
+  blog: '/blog',
+};
+
 export function extractLink(value: unknown): string {
   if (!value) return '';
 
   if (typeof value === 'string') {
     const trimmed = value.trim();
-    return isValidHref(trimmed) ? trimmed : '';
+    if (!isValidHref(trimmed)) return '';
+    // Merchants often paste "www.store.com/x" — make it absolute so the
+    // browser doesn't resolve it as a relative path.
+    if (/^[\w-]+(\.[\w-]+)+([/?#]|$)/.test(trimmed) && !/^https?:\/\//i.test(trimmed)) {
+      return `https://${trimmed}`;
+    }
+    return trimmed;
   }
 
   if (Array.isArray(value)) {
@@ -125,19 +141,33 @@ export function extractLink(value: unknown): string {
 
   if (typeof value === 'object') {
     const obj = value as Record<string, unknown>;
+    // Salla entities (product/category/brand/page pickers) expose `urls.customer`.
+    const urls =
+      obj.urls && typeof obj.urls === 'object'
+        ? (obj.urls as Record<string, unknown>)
+        : undefined;
     const candidates = [
       obj.url,
       obj.href,
+      urls?.customer,
+      urls?.url,
       obj.link,
-      obj.value,
       obj.custom,
       obj.path,
+      // Last: `value` may hold a nested entity, a custom URL, or a bare id.
+      obj.value,
     ];
 
     for (const candidate of candidates) {
       const link = extractLink(candidate);
       if (link) return link;
     }
+
+    // Static picks (offers / blog / brands) carry only a type key.
+    const typeKey = String(obj.type ?? obj.key ?? obj.source ?? '')
+      .toLowerCase()
+      .trim();
+    if (STATIC_LINK_PATHS[typeKey]) return STATIC_LINK_PATHS[typeKey];
   }
 
   return '';
@@ -145,16 +175,23 @@ export function extractLink(value: unknown): string {
 
 export function isValidHref(url: string): boolean {
   if (!url || url === '#') return false;
+  // Bare entity ids (e.g. "296745705") are picker values, never links.
+  if (/^\d+$/.test(url)) return false;
   if (url.startsWith('/') || url.startsWith('#') || url.startsWith('?')) return true;
   if (url.startsWith('mailto:') || url.startsWith('tel:') || url.startsWith('whatsapp:')) {
     return true;
   }
-  try {
-    const parsed = new URL(url, window.location.origin);
-    return ['http:', 'https:', 'mailto:', 'tel:'].includes(parsed.protocol);
-  } catch {
-    return false;
+  if (/^https?:\/\//i.test(url)) {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
   }
+  // Scheme-less domains like "store.sa/offers" — require a dot to avoid
+  // treating arbitrary words/ids as relative URLs.
+  return /^[\w-]+(\.[\w-]+)+([/?#]|$)/.test(url);
 }
 
 export function isExternalUrl(url: string): boolean {
@@ -175,45 +212,6 @@ export function isDirectMediaUrl(url: string): boolean {
   } catch {
     return false;
   }
-}
-
-export function formatPrice(amount: number, currency = 'ر.س'): string {
-  if (!Number.isFinite(amount)) return '';
-  const formatted = amount.toLocaleString(undefined, {
-    minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
-    maximumFractionDigits: 2,
-  });
-  return `${formatted} ${currency}`.trim();
-}
-
-/** Store currency from Salla when available — no merchant currency field needed. */
-export function getStoreCurrency(fallback = 'ر.س'): string {
-  try {
-    const w = window as unknown as {
-      Salla?: {
-        config?: { currency?: { symbol?: string; code?: string } };
-        currency?: { symbol?: string; code?: string };
-      };
-      salla?: {
-        config?: { currency?: { symbol?: string; code?: string } };
-        currency?: { symbol?: string; code?: string };
-      };
-    };
-    const salla = w.Salla || w.salla;
-    const fromConfig =
-      salla?.config?.currency?.symbol ||
-      salla?.config?.currency?.code ||
-      salla?.currency?.symbol ||
-      salla?.currency?.code;
-    if (typeof fromConfig === 'string' && fromConfig.trim()) {
-      return fromConfig.trim();
-    }
-    const attr = document.documentElement.getAttribute('data-currency');
-    if (attr?.trim()) return attr.trim();
-  } catch {
-    // ignore
-  }
-  return fallback;
 }
 
 export function groupByKey<T extends object>(
@@ -343,7 +341,6 @@ export interface SectionTheme {
   /** Standard Salla editor controls (mirror the default element editor). */
   noBottomMargin: boolean;
   hasContainer: boolean;
-  bgOverride: string;
 }
 
 export function readSectionTheme(
@@ -352,17 +349,16 @@ export function readSectionTheme(
   defaults?: Partial<SectionTheme>
 ): SectionTheme {
   const c = config || {};
+  // Colors come from the store theme (primary + light/dark), not merchant pickers.
   return {
-    bg: String(c[`${prefix}bg`] ?? defaults?.bg ?? '#fbf5f8'),
-    text: String(c[`${prefix}text`] ?? defaults?.text ?? '#33232e'),
-    muted: String(c[`${prefix}muted`] ?? defaults?.muted ?? '#8f7a86'),
-    accent: String(c[`${prefix}accent`] ?? defaults?.accent ?? '#c2527f'),
-    card: String(c[`${prefix}card`] ?? defaults?.card ?? '#ffffff'),
-    border: String(c[`${prefix}border`] ?? defaults?.border ?? '#f2dde7'),
-    buttonBg: String(c[`${prefix}button_bg`] ?? defaults?.buttonBg ?? '#c2527f'),
-    buttonColor: String(
-      c[`${prefix}button_color`] ?? defaults?.buttonColor ?? '#ffffff'
-    ),
+    bg: 'transparent',
+    text: '#000000',
+    muted: '#666666',
+    accent: 'var(--color-primary, var(--primary-color, var(--color-main, #64748b)))',
+    card: 'var(--color-white, var(--bg-color, #ffffff))',
+    border: 'var(--color-border, #e5e7eb)',
+    buttonBg: 'var(--color-primary, var(--primary-color, var(--color-main, #64748b)))',
+    buttonColor: '#ffffff',
     radius: `${getUnitValue(c[`${prefix}radius`], defaults?.radius ? Number(String(defaults.radius).replace('px', '')) : 20)}px`,
     spaceDesktop: getUnitValue(
       c[`${prefix}space_desktop`],
@@ -374,33 +370,22 @@ export function readSectionTheme(
     ),
     animate: isTruthy(c[`${prefix}animate`], defaults?.animate ?? true),
     fullWidth: isTruthy(c[`${prefix}full_width`], defaults?.fullWidth ?? false),
-    noBottomMargin: false, // keep default bottom spacing — no merchant toggle
-    hasContainer: true, // always contained — no merchant toggle
-    bgOverride: isTruthy(c.add_component_background_color, false)
-      ? String(c.component_background_color ?? '').trim()
-      : '',
+    noBottomMargin: false,
+    hasContainer: true,
   };
 }
 
 export function themeStyleMap(theme: SectionTheme): Record<string, string> {
   const useContainer = theme.hasContainer !== false;
+  // Ensure light/dark tokens are applied even when :host-context fails (iframe demos).
+  ensureFsThemeWatch();
   return {
-    '--section-bg': theme.bgOverride || theme.bg || 'transparent',
-    '--text-color': theme.text,
-    '--muted-color': theme.muted,
-    '--accent-color': theme.accent || 'var(--color-primary, var(--primary-color, #64748b))', /* raed-bridge */
-    '--card-bg': theme.card,
-    '--border-color': theme.border,
-    '--button-bg': theme.buttonBg || theme.accent || 'var(--color-primary, var(--primary-color, #64748b))',
-    '--button-color': theme.buttonColor,
+    ...fsThemeVars(),
     '--section-radius': theme.radius,
     '--space-desktop': `${theme.spaceDesktop}px`,
     '--space-mobile': `${theme.spaceMobile}px`,
-    // Standard editor controls (default element editor parity):
-    // notmrb → remove the section's bottom spacing.
     '--space-desktop-bottom': theme.noBottomMargin ? '0px' : `${theme.spaceDesktop}px`,
     '--space-mobile-bottom': theme.noBottomMargin ? '0px' : `${theme.spaceMobile}px`,
-    // has_container → constrain width & side padding, otherwise go edge-to-edge.
     '--section-container-max': useContainer ? '1440px' : 'none',
     '--section-container-pad': useContainer ? '16px' : '0px',
     '--section-container-pad-sm': useContainer ? '12px' : '0px',
@@ -444,17 +429,6 @@ export function parseTags(raw: unknown): string[] {
     .filter(Boolean);
 }
 
-export function extractMoneyAmount(val: unknown): number {
-  if (typeof val === 'number' && Number.isFinite(val)) return val;
-  if (typeof val === 'string' && val.trim() !== '') return toNumber(val, 0);
-  if (val && typeof val === 'object') {
-    const obj = val as Record<string, unknown>;
-    if ('amount' in obj) return extractMoneyAmount(obj.amount);
-    if ('value' in obj) return extractMoneyAmount(obj.value);
-  }
-  return 0;
-}
-
 export function extractImageUrl(val: unknown): string {
   if (!val) return '';
   if (typeof val === 'string') {
@@ -479,122 +453,4 @@ export function extractImageUrl(val: unknown): string {
   return '';
 }
 
-export interface SallaProductSnapshot {
-  id: string;
-  name: string;
-  image: string;
-  url: string;
-  price: number;
-  old_price: number;
-  rating: number;
-}
 
-/** Read a 0–5 rating from varied Salla shapes (rating.stars, rating, rate...). */
-export function extractRating(val: unknown): number {
-  if (val == null) return 0;
-  if (typeof val === 'number' && Number.isFinite(val)) {
-    return Math.max(0, Math.min(5, val));
-  }
-  if (typeof val === 'string') return extractRating(toNumber(val, 0));
-  if (typeof val === 'object') {
-    const obj = val as Record<string, unknown>;
-    const candidate =
-      obj.stars ?? obj.rate ?? obj.rating ?? obj.average ?? obj.value;
-    if (candidate != null && candidate !== val) return extractRating(candidate);
-  }
-  return 0;
-}
-
-/** Normalize Salla Products dropdown values (object, array, or selected wrapper). */
-export function extractSallaProduct(raw: unknown): SallaProductSnapshot | null {
-  if (!raw) return null;
-
-  let candidate: unknown = raw;
-
-  if (Array.isArray(raw)) {
-    candidate = raw[0];
-  } else if (typeof raw === 'object') {
-    const obj = raw as Record<string, unknown>;
-    const selected = Array.isArray(obj.selected) ? obj.selected : [];
-    const values = Array.isArray(obj.value) ? obj.value : [];
-
-    // Prefer non-empty selected; otherwise fall through to value (Twilight quirk)
-    if (selected.length) {
-      candidate = selected[0];
-    } else if (values.length) {
-      candidate = typeof values[0] === 'object' && values[0] ? values[0] : values[0];
-    } else if (obj.product && typeof obj.product === 'object') {
-      candidate = obj.product;
-    } else if (obj.value && typeof obj.value === 'object' && !Array.isArray(obj.value)) {
-      // Twilight picker: { label, value: { id, name, image, ... } }
-      candidate = obj.value;
-    }
-  }
-
-  if (candidate != null && (typeof candidate === 'string' || typeof candidate === 'number')) {
-    const id = String(candidate).trim();
-    return id ? { id, name: '', image: '', url: '', price: 0, old_price: 0, rating: 0 } : null;
-  }
-
-  if (!candidate || typeof candidate !== 'object') return null;
-
-  const product = candidate as Record<string, unknown>;
-  let id = String(product.id ?? product.product_id ?? '').trim();
-  if (!id && product.value != null && typeof product.value !== 'object') {
-    id = String(product.value).trim();
-  }
-  if (!id && product.value && typeof product.value === 'object') {
-    const nested = product.value as Record<string, unknown>;
-    id = String(nested.id ?? nested.product_id ?? nested.value ?? '').trim();
-  }
-
-  const name =
-    localizedString(product.name as LocaleValue, '').trim() ||
-    localizedString(product.label as LocaleValue, '').trim() ||
-    localizedString(product.title as LocaleValue, '').trim();
-  const image =
-    extractImageUrl(product.image) ||
-    extractImageUrl(product.main_image) ||
-    extractImageUrl(product.thumbnail) ||
-    extractImageUrl(product.images) ||
-    (product.value && typeof product.value === 'object'
-      ? extractImageUrl((product.value as Record<string, unknown>).image)
-      : '');
-  const url = extractLink(
-    product.url ||
-      product.permalink ||
-      product.link ||
-      (product.value && typeof product.value === 'object'
-        ? (product.value as Record<string, unknown>).url
-        : '')
-  );
-
-  const onSale = isTruthy(product.on_sale) || isTruthy(product.is_on_sale);
-  const salePrice = extractMoneyAmount(
-    product.sale_price ?? product.sale_price_amount ?? product.discounted_price
-  );
-  const regularPrice = extractMoneyAmount(
-    product.regular_price ?? product.regular_price_amount ?? product.price_before
-  );
-  const basePrice = extractMoneyAmount(product.price ?? product.price_amount);
-
-  let price = basePrice;
-  let old_price = 0;
-
-  if (onSale && salePrice > 0) {
-    price = salePrice;
-    old_price = regularPrice > salePrice ? regularPrice : 0;
-  } else if (regularPrice > basePrice && basePrice > 0) {
-    price = basePrice;
-    old_price = regularPrice;
-  } else if (salePrice > 0 && regularPrice > salePrice) {
-    price = salePrice;
-    old_price = regularPrice;
-  }
-
-  const rating = extractRating(product.rating ?? product.rate ?? product.rating_stars);
-
-  if (!id && !name && !image && !url) return null;
-
-  return { id, name, image, url, price, old_price, rating };
-}

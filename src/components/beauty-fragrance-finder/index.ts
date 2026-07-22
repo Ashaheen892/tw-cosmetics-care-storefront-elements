@@ -10,7 +10,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { parseFamilies, resolveLayout } from './utils.js';
@@ -272,13 +272,16 @@ export default class BeautyFragranceFinder extends LitElement {
             </div>`
           : nothing}
 
-        ${family.link
-          ? html`<div class="bff-panel__actions">
+        <div class="bff-panel__actions">
+          ${family.link
+            ? html`
               <a class="fs-btn fs-btn--ghost" href=${family.link} target="_blank" rel="noopener noreferrer">
                 ${t('اقرئي المزيد', 'Read more')}
               </a>
-            </div>`
-          : nothing}
+              `
+            : nothing}
+          ${renderCommerceCtaButton(c, 'bff_')}
+        </div>
       </article>
     `;
   }
@@ -345,7 +348,6 @@ export default class BeautyFragranceFinder extends LitElement {
           </div>
 
           ${showNotice ? html`<p class="bff-notice">${notice}</p>` : nothing}
-          ${renderCommerceOutcome({ config: c, prefix: 'bff_', ready: Boolean(active), selection: active })}
         </div>
       </section>
     `;

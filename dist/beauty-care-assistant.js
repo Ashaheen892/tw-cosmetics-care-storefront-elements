@@ -2,8 +2,9 @@ import { css as M, LitElement as L, nothing as d, html as s } from "lit";
 import { property as T, state as v } from "lit/decorators.js";
 import { classMap as $ } from "lit/directives/class-map.js";
 import { styleMap as k } from "lit/directives/style-map.js";
-import { n as q, l as o, e as S, g as j, c as B, s as D, t as i, r as R, p as E, a as H, b as O } from "./sharedStyles-BgfDOkwJ.js";
-const Q = M`
+import { n as q, l as o, e as S, g as j, b as B, s as D, t as i, r as R, p as E, a as H } from "./sharedStyles-DKbcXBPy.js";
+import { r as Q } from "./commerceOutcome-Dk8p2VWM.js";
+const O = M`
   :host {
     direction: inherit;
   }
@@ -13,7 +14,7 @@ const Q = M`
     margin-inline: auto;
     border-radius: var(--section-radius, 18px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 14px 40px rgba(43, 33, 28, 0.08);
     overflow: hidden;
   }
@@ -24,7 +25,7 @@ const Q = M`
     gap: 0.7rem;
     padding: 0.9rem 1.1rem;
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
-    border-bottom: 1px solid var(--border-color, #f2dde7);
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
   }
 
   .bca-avatar {
@@ -49,12 +50,12 @@ const Q = M`
   .bca-topbar__name {
     font-weight: 700;
     font-size: 0.95rem;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bca-trail__hint {
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bca-body {
@@ -71,7 +72,7 @@ const Q = M`
   .bca-progress {
     height: 6px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, transparent);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 70%, transparent);
     overflow: hidden;
   }
 
@@ -90,7 +91,7 @@ const Q = M`
   .bca-progress__label {
     font-size: 0.78rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bca-trail {
@@ -126,9 +127,9 @@ const Q = M`
     max-width: 9rem;
     padding: 0.35rem 0.65rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.72rem;
     font-weight: 600;
@@ -154,7 +155,7 @@ const Q = M`
 
   .bca-trail__sep {
     margin-inline: 0.25rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.85rem;
     user-select: none;
   }
@@ -164,7 +165,7 @@ const Q = M`
     padding: 0.85rem 1.05rem;
     border-radius: 16px;
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff));
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-size: 1rem;
     line-height: 1.6;
     border-start-start-radius: 4px;
@@ -189,9 +190,9 @@ const Q = M`
     width: 100%;
     padding: 0.7rem 0.9rem;
     border-radius: 14px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
     text-align: start;
@@ -229,7 +230,7 @@ const Q = M`
       color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
-    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, var(--border-color, #e5e7eb));
     box-shadow: 0 10px 28px rgba(194, 82, 127, 0.1);
   }
 
@@ -250,12 +251,12 @@ const Q = M`
     font-size: 1.35rem;
     font-weight: 800;
     line-height: 1.3;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bca-result__desc {
     margin: 0;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
     font-size: 0.95rem;
   }
@@ -370,21 +371,21 @@ function G(a, r) {
   if (!r || !a.length) return 1;
   const t = new Map(a.map((l) => [l.key, l]));
   let e = 1;
-  function n(l, c, f) {
-    const m = t.get(l);
-    if (!m) {
+  function n(l, c, h) {
+    const f = t.get(l);
+    if (!f) {
       e = Math.max(e, c);
       return;
     }
-    if (f.has(l)) {
+    if (h.has(l)) {
       e = Math.max(e, c);
       return;
     }
-    const h = new Set(f);
-    h.add(l);
+    const m = new Set(h);
+    m.add(l);
     let b = !1;
-    for (const p of m.answers)
-      z(p, a) ? (e = Math.max(e, c + 1), b = !0) : p.next && (b = !0, n(p.next, c + 1, h));
+    for (const p of f.answers)
+      z(p, a) ? (e = Math.max(e, c + 1), b = !0) : p.next && (b = !0, n(p.next, c + 1, m));
     b || (e = Math.max(e, c));
   }
   return n(r, 1, /* @__PURE__ */ new Set()), Math.max(e, 1);
@@ -519,6 +520,7 @@ const _ = class _ extends L {
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.restart}>
             ${o(t.bca_restart_btn) || i("إعادة البدء", "Start over")}
           </button>
+          ${Q(t, "bca_")}
         </div>
       </div>
     `;
@@ -538,7 +540,7 @@ const _ = class _ extends L {
     `;
   }
   render() {
-    const r = this.config || {}, t = R(r, "bca_"), e = t.animate && !E(), n = this.questions, l = Y(r), c = o(r.bca_title), f = o(r.bca_desc), m = o(r.bca_assistant_name) || i("خبيرة الجمال", "Beauty expert"), h = o(r.bca_avatar);
+    const r = this.config || {}, t = R(r, "bca_"), e = t.animate && !E(), n = this.questions, l = Y(r), c = o(r.bca_title), h = o(r.bca_desc), f = o(r.bca_assistant_name) || i("خبيرة الجمال", "Beauty expert"), m = o(r.bca_avatar);
     if (!n.length)
       return s`<div class="fs-empty" role="status">
         ${i("أضيفي أسئلة المساعد من إعدادات العنصر", "Add assistant questions in the element settings")}
@@ -551,17 +553,17 @@ const _ = class _ extends L {
         aria-label=${c || i("مساعد اختيار منتجات الجمال", "Beauty care assistant")}
       >
         <div class="fs-container">
-          ${c || f ? s`<div class="fs-header">
+          ${c || h ? s`<div class="fs-header">
                 ${c ? s`<h2 class="fs-title">${c}</h2>` : d}
-                ${f ? s`<p class="fs-desc">${f}</p>` : d}
+                ${h ? s`<p class="fs-desc">${h}</p>` : d}
               </div>` : d}
 
           <div class=${$({ [`bca--${l}`]: !0 })}>
             <div class="bca-shell">
               <div class="bca-topbar">
-                ${h ? s`<img class="bca-avatar" src=${h} alt="" loading="lazy" />` : s`<span class="bca-avatar" aria-hidden="true">✦</span>`}
+                ${m ? s`<img class="bca-avatar" src=${m} alt="" loading="lazy" />` : s`<span class="bca-avatar" aria-hidden="true">✦</span>`}
                 <div class="bca-topbar__meta">
-                  <span class="bca-topbar__name">${m}</span>
+                  <span class="bca-topbar__name">${f}</span>
                   <span class="bca-trail__hint">${i("سأساعدك في اختيار الأنسب لكِ", "I will help you choose")}</span>
                 </div>
               </div>
@@ -604,13 +606,12 @@ const _ = class _ extends L {
               </div>
             </div>
           </div>
-          ${this.result ? O({ config: r, prefix: "bca_", ready: !0 }) : d}
         </div>
       </section>
     `;
   }
 };
-_.styles = [D, Q];
+_.styles = [D, O];
 let u = _;
 g([
   T({ type: Object })

@@ -1,9 +1,9 @@
-import { css as M, LitElement as O, nothing as c, html as a } from "lit";
-import { property as F, state as N } from "lit/decorators.js";
+import { css as M, LitElement as F, nothing as c, html as t } from "lit";
+import { property as N, state as O } from "lit/decorators.js";
 import { classMap as w } from "lit/directives/class-map.js";
 import { styleMap as h } from "lit/directives/style-map.js";
-import { g as b, n as R, l as f, t as i, s as V, r as j, p as W, a as k, i as v, b as H } from "./sharedStyles-BgfDOkwJ.js";
-const I = M`
+import { g as b, n as R, l as f, t as n, s as V, r as j, p as W, a as k, i as v } from "./sharedStyles-DKbcXBPy.js";
+const H = M`
   .bwp-toolbar {
     display: flex;
     justify-content: center;
@@ -15,8 +15,8 @@ const I = M`
     gap: 0.25rem;
     padding: 0.28rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 40%, var(--card-bg, #fff));
-    border: 1px solid var(--border-color, #f2dde7);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 40%, var(--card-bg, #fff));
+    border: 1px solid var(--border-color, #e5e7eb);
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -27,7 +27,7 @@ const I = M`
     border: none;
     border-radius: 999px;
     background: transparent;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font: inherit;
     font-size: 0.85rem;
     font-weight: 700;
@@ -36,11 +36,11 @@ const I = M`
   }
 
   .bwp-toggle__btn:hover {
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bwp-toggle__btn[aria-pressed='true'] {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     color: #fff;
     box-shadow: 0 4px 12px rgba(43, 33, 28, 0.18);
   }
@@ -50,10 +50,10 @@ const I = M`
     border-radius: calc(var(--section-radius, 20px) * 0.85);
     background: linear-gradient(
       165deg,
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, var(--section-bg, #fbf5f8)),
+      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, var(--section-bg, transparent)),
       color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 3%, var(--card-bg, #fff))
     );
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     padding: 0.75rem;
   }
 
@@ -79,7 +79,7 @@ const I = M`
   .bwp-day {
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 20px) * 0.65);
     background: var(--card-bg, #fff);
     overflow: hidden;
@@ -88,7 +88,7 @@ const I = M`
   }
 
   .bwp-day.is-empty {
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 18%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 18%, var(--card-bg, #fff));
   }
 
   .bwp-day__head {
@@ -96,9 +96,9 @@ const I = M`
     text-align: start;
     font-size: 0.95rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff));
-    border-bottom: 1px solid var(--border-color, #f2dde7);
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
     letter-spacing: 0.01em;
   }
 
@@ -163,7 +163,7 @@ const I = M`
     border: 1px solid color-mix(in srgb, var(--chip-color, var(--accent-color, var(--fs-store-primary))) 28%, transparent);
     font-size: 0.9rem;
     line-height: 1.45;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bwp-chip__dot {
@@ -198,7 +198,7 @@ const I = M`
     place-items: center;
     flex: 1;
     min-height: 3rem;
-    font-size: 0.86rem;
+    font-size: 0.9rem;
     font-weight: 700;
     font-style: italic;
     color: color-mix(in srgb, var(--muted-color, #8f7a86) 75%, var(--accent-color, var(--fs-store-primary)));
@@ -228,7 +228,7 @@ const I = M`
     align-items: flex-start;
     gap: 0.6rem;
     padding: 0.7rem 0.8rem;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 20px) * 0.55);
     background: var(--card-bg, #fff);
   }
@@ -254,7 +254,7 @@ const I = M`
   .bwp-legend__name {
     font-size: 0.92rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
@@ -264,7 +264,7 @@ const I = M`
 
   .bwp-legend__freq {
     font-size: 0.82rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.5;
     white-space: normal;
   }
@@ -285,7 +285,7 @@ const I = M`
     margin-top: 1.35rem;
     text-align: center;
     font-size: 0.84rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
   }
 
@@ -355,7 +355,7 @@ const I = M`
       transition: none !important;
     }
   }
-`, U = ["daily", "x3", "x2", "x1", "alternate"], K = ["am", "pm", "both"], P = ["sat", "sun", "mon"], Q = ["week", "am", "pm"], Y = [
+`, I = ["daily", "x3", "x2", "x1", "alternate"], U = ["am", "pm", "both"], K = ["sat", "sun", "mon"], P = ["week", "am", "pm"], Q = [
   { ar: "السبت", en: "Saturday" },
   { ar: "الأحد", en: "Sunday" },
   { ar: "الإثنين", en: "Monday" },
@@ -363,24 +363,24 @@ const I = M`
   { ar: "الأربعاء", en: "Wednesday" },
   { ar: "الخميس", en: "Thursday" },
   { ar: "الجمعة", en: "Friday" }
-], G = { sat: 0, sun: 1, mon: 2 };
-function J(o) {
+], Y = { sat: 0, sun: 1, mon: 2 };
+function G(o) {
   const e = b(o.bwp_start_day, "sat");
-  return P.includes(e) ? e : "sat";
+  return K.includes(e) ? e : "sat";
+}
+function J(o) {
+  const e = b(o.bwp_view_default, "week");
+  return P.includes(e) ? e : "week";
 }
 function X(o) {
-  const e = b(o.bwp_view_default, "week");
-  return Q.includes(e) ? e : "week";
+  const e = b(o, "daily");
+  return I.includes(e) ? e : "daily";
 }
 function Z(o) {
-  const e = b(o, "daily");
-  return U.includes(e) ? e : "daily";
+  const e = b(o, "both");
+  return U.includes(e) ? e : "both";
 }
 function B(o) {
-  const e = b(o, "both");
-  return K.includes(e) ? e : "both";
-}
-function ee(o) {
   return R(o).map((e, r) => {
     const s = f(e.name);
     return {
@@ -388,13 +388,13 @@ function ee(o) {
       name: s,
       color: String(e.color ?? "").trim(),
       icon: String(e.icon ?? "").trim(),
-      slot: B(e.slot),
-      frequency: Z(e.frequency),
+      slot: Z(e.slot),
+      frequency: X(e.frequency),
       note: f(e.note)
     };
   }).filter((e) => !!e.name);
 }
-function re(o) {
+function ee(o) {
   switch (o) {
     case "daily":
       return [0, 1, 2, 3, 4, 5, 6];
@@ -410,50 +410,50 @@ function re(o) {
       return [0, 1, 2, 3, 4, 5, 6];
   }
 }
-function ae(o) {
-  const e = G[o] ?? 0;
+function re(o) {
+  const e = Y[o] ?? 0;
   return Array.from({ length: 7 }, (r, s) => {
-    const t = Y[(e + s) % 7];
-    return i(t.ar, t.en);
+    const a = Q[(e + s) % 7];
+    return n(a.ar, a.en);
   });
 }
 function te() {
-  return i("راحة", "Rest");
+  return n("راحة", "Rest");
 }
-function oe(o) {
+function ae(o) {
   switch (o) {
     case "daily":
-      return i("يوميًا", "Daily");
+      return n("يوميًا", "Daily");
     case "x3":
-      return i("3 مرات أسبوعيًا", "3× per week");
+      return n("3 مرات أسبوعيًا", "3× per week");
     case "x2":
-      return i("مرتين أسبوعيًا", "2× per week");
+      return n("مرتين أسبوعيًا", "2× per week");
     case "x1":
-      return i("مرة أسبوعيًا", "Once a week");
+      return n("مرة أسبوعيًا", "Once a week");
     case "alternate":
-      return i("يوم بعد يوم", "Every other day");
+      return n("يوم بعد يوم", "Every other day");
     default:
-      return i("يوميًا", "Daily");
+      return n("يوميًا", "Daily");
   }
 }
-function ie(o, e, r) {
+function oe(o, e, r) {
   const s = Array.from({ length: 7 }, () => ({
     am: [],
     pm: []
   }));
-  for (const t of o) {
-    const n = t.slot === "am" || t.slot === "both", d = t.slot === "pm" || t.slot === "both";
-    for (const m of re(t.frequency))
-      m < 0 || m > 6 || (n && r !== "pm" && s[m].am.push(t), d && r !== "am" && s[m].pm.push(t));
+  for (const a of o) {
+    const i = a.slot === "am" || a.slot === "both", d = a.slot === "pm" || a.slot === "both";
+    for (const m of ee(a.frequency))
+      m < 0 || m > 6 || (i && r !== "pm" && s[m].am.push(a), d && r !== "am" && s[m].pm.push(a));
   }
   return s;
 }
 var ne = Object.defineProperty, S = (o, e, r, s) => {
-  for (var t = void 0, n = o.length - 1, d; n >= 0; n--)
-    (d = o[n]) && (t = d(e, r, t) || t);
-  return t && ne(e, r, t), t;
+  for (var a = void 0, i = o.length - 1, d; i >= 0; i--)
+    (d = o[i]) && (a = d(e, r, a) || a);
+  return a && ne(e, r, a), a;
 };
-const y = class y extends O {
+const y = class y extends F {
   constructor() {
     super(...arguments), this.config = {}, this.view = "week", this.viewSynced = !1, this.boundLangHandler = () => this.requestUpdate();
   }
@@ -464,50 +464,50 @@ const y = class y extends O {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
   updated(e) {
-    var n;
+    var i;
     if (!e.has("config")) return;
-    const r = b((n = this.config) == null ? void 0 : n.bwp_view_default, "week"), s = e.get("config"), t = s ? b(s.bwp_view_default, "week") : void 0;
-    (!this.viewSynced || t !== r) && (this.view = X(this.config || {}), this.viewSynced = !0);
+    const r = b((i = this.config) == null ? void 0 : i.bwp_view_default, "week"), s = e.get("config"), a = s ? b(s.bwp_view_default, "week") : void 0;
+    (!this.viewSynced || a !== r) && (this.view = J(this.config || {}), this.viewSynced = !0);
   }
   get steps() {
     var e;
-    return ee((e = this.config) == null ? void 0 : e.bwp_steps);
+    return B((e = this.config) == null ? void 0 : e.bwp_steps);
   }
   setView(e) {
     this.view = e;
   }
   renderChip(e) {
     const r = e.icon.startsWith("sicon-");
-    return a`
+    return t`
       <span
         class="bwp-chip"
         style=${h(e.color ? { "--chip-color": e.color } : {})}
       >
         <span class="bwp-chip__dot"></span>
-        ${e.icon ? a`<span class="bwp-chip__icon ${r ? e.icon : ""}">${r ? "" : e.icon}</span>` : c}
+        ${e.icon ? t`<span class="bwp-chip__icon ${r ? e.icon : ""}">${r ? "" : e.icon}</span>` : c}
         <span class="bwp-chip__name" title=${e.name}>${e.name}</span>
       </span>
     `;
   }
   renderSlot(e, r) {
-    return a`
+    return t`
       <div class="bwp-slot">
         <span class="bwp-slot__label">${e}</span>
-        ${r.length ? a`<div class="bwp-chips">${r.map((s) => this.renderChip(s))}</div>` : a`<span class="bwp-slot--empty">${i("لا خطوات", "No steps")}</span>`}
+        ${r.length ? t`<div class="bwp-chips">${r.map((s) => this.renderChip(s))}</div>` : t`<span class="bwp-slot--empty">${n("لا خطوات", "No steps")}</span>`}
       </div>
     `;
   }
   renderToggle() {
     const e = [
-      { id: "week", label: i("الأسبوع الكامل", "Full week") },
-      { id: "am", label: i("صباحًا", "Morning") },
-      { id: "pm", label: i("مساءً", "Evening") }
+      { id: "week", label: n("الأسبوع الكامل", "Full week") },
+      { id: "am", label: n("صباحًا", "Morning") },
+      { id: "pm", label: n("مساءً", "Evening") }
     ];
-    return a`
+    return t`
       <div class="bwp-toolbar">
-        <div class="bwp-toggle" role="group" aria-label=${i("طريقة العرض", "View mode")}>
+        <div class="bwp-toggle" role="group" aria-label=${n("طريقة العرض", "View mode")}>
           ${e.map(
-      (r) => a`
+      (r) => t`
               <button
                 type="button"
                 class="bwp-toggle__btn"
@@ -523,39 +523,39 @@ const y = class y extends O {
     `;
   }
   render() {
-    const e = this.config || {}, r = j(e, "bwp_"), s = r.animate && !W(), t = this.steps, n = f(e.bwp_title), d = f(e.bwp_desc);
-    if (!t.length)
-      return a`
+    const e = this.config || {}, r = j(e, "bwp_"), s = r.animate && !W(), a = this.steps, i = f(e.bwp_title), d = f(e.bwp_desc);
+    if (!a.length)
+      return t`
         <section
           class=${w({ "fs-section": !0, "fs-animate": s })}
           style=${h(k(r))}
-          aria-label=${n || i("مخطط الروتين الأسبوعي", "Weekly routine planner")}
+          aria-label=${i || n("مخطط الروتين الأسبوعي", "Weekly routine planner")}
         >
           <div class="fs-container">
-            ${n || d ? a`<div class="fs-header">
-                  ${n ? a`<h2 class="fs-title">${n}</h2>` : c}
-                  ${d ? a`<p class="fs-desc">${d}</p>` : c}
+            ${i || d ? t`<div class="fs-header">
+                  ${i ? t`<h2 class="fs-title">${i}</h2>` : c}
+                  ${d ? t`<p class="fs-desc">${d}</p>` : c}
                 </div>` : c}
             <div class="fs-empty" role="status">
-              ${i("أضيفي خطوات الروتين من إعدادات العنصر.", "Add routine steps in the element settings.")}
+              ${n("أضيفي خطوات الروتين من إعدادات العنصر.", "Add routine steps in the element settings.")}
             </div>
           </div>
         </section>
       `;
-    const m = J(e), C = ae(m), z = ie(t, m, this.view), L = v(e.bwp_show_view_toggle, !0), T = v(e.bwp_show_legend, !0), E = v(e.bwp_show_notice, !0), D = f(e.bwp_notice) || i(
+    const m = G(e), C = re(m), z = oe(a, m, this.view), L = v(e.bwp_show_view_toggle, !0), T = v(e.bwp_show_legend, !0), E = v(e.bwp_show_notice, !0), D = f(e.bwp_notice) || n(
       "خطة إرشادية؛ عدّليها حسب توصية أخصائي بشرتك.",
       "A guiding plan; adjust it to your skincare specialist’s advice."
-    ), _ = i("صباحًا", "Morning"), x = i("مساءً", "Evening"), q = i("صباحًا ومساءً", "Morning & evening");
-    return a`
+    ), _ = n("صباحًا", "Morning"), x = n("مساءً", "Evening"), q = n("صباحًا ومساءً", "Morning & evening");
+    return t`
       <section
         class=${w({ "fs-section": !0, "fs-animate": s })}
         style=${h(k(r))}
-        aria-label=${n || i("مخطط الروتين الأسبوعي", "Weekly routine planner")}
+        aria-label=${i || n("مخطط الروتين الأسبوعي", "Weekly routine planner")}
       >
         <div class="fs-container">
-          ${n || d ? a`<div class="fs-header">
-                ${n ? a`<h2 class="fs-title">${n}</h2>` : c}
-                ${d ? a`<p class="fs-desc">${d}</p>` : c}
+          ${i || d ? t`<div class="fs-header">
+                ${i ? t`<h2 class="fs-title">${i}</h2>` : c}
+                ${d ? t`<p class="fs-desc">${d}</p>` : c}
               </div>` : c}
 
           ${L ? this.renderToggle() : c}
@@ -564,16 +564,16 @@ const y = class y extends O {
             <div class=${w({ "bwp-grid": !0, [`bwp-grid--${this.view}`]: !0 })} role="list">
               ${C.map((l, u) => {
       const p = z[u], $ = p.am.length > 0 || p.pm.length > 0;
-      return a`
+      return t`
                   <div class=${w({ "bwp-day": !0, "is-empty": !$ })} role="listitem">
                     <div class="bwp-day__head">${l}</div>
                     <div class="bwp-day__body">
-                      ${$ ? this.view === "week" ? a`<div class="bwp-slots bwp-slots--split">
+                      ${$ ? this.view === "week" ? t`<div class="bwp-slots bwp-slots--split">
                               ${this.renderSlot(_, p.am)}
                               ${this.renderSlot(x, p.pm)}
-                            </div>` : a`<div class="bwp-chips">
+                            </div>` : t`<div class="bwp-chips">
                               ${[...p.am, ...p.pm].map((A) => this.renderChip(A))}
-                            </div>` : a`<span class="bwp-day__empty">${te()}</span>`}
+                            </div>` : t`<span class="bwp-day__empty">${te()}</span>`}
                     </div>
                   </div>
                 `;
@@ -581,10 +581,10 @@ const y = class y extends O {
             </div>
           </div>
 
-          ${T ? a`<div class="bwp-legend">
-                ${t.map((l) => {
+          ${T ? t`<div class="bwp-legend">
+                ${a.map((l) => {
       const u = l.icon.startsWith("sicon-"), p = l.slot === "am" ? _ : l.slot === "pm" ? x : q;
-      return a`
+      return t`
                     <div
                       class="bwp-legend__item"
                       style=${h(l.color ? { "--chip-color": l.color } : {})}
@@ -592,11 +592,11 @@ const y = class y extends O {
                       <span class="bwp-legend__swatch"></span>
                       <span class="bwp-legend__text">
                         <span class="bwp-legend__name">
-                          ${l.icon ? a`<span class="${u ? l.icon : ""}">${u ? "" : l.icon}</span>` : c}
+                          ${l.icon ? t`<span class="${u ? l.icon : ""}">${u ? "" : l.icon}</span>` : c}
                           ${l.name}
                         </span>
                         <span class="bwp-legend__freq">
-                          ${oe(l.frequency)}${l.note ? a` · ${l.note}` : c}
+                          ${ae(l.frequency)}${l.note ? t` · ${l.note}` : c}
                         </span>
                       </span>
                       <span class="bwp-legend__slot">${p}</span>
@@ -605,20 +605,19 @@ const y = class y extends O {
     })}
               </div>` : c}
 
-          ${E ? a`<p class="bwp-notice">${D}</p>` : c}
-          ${H({ config: e, prefix: "bwp_", ready: !0 })}
+          ${E ? t`<p class="bwp-notice">${D}</p>` : c}
         </div>
       </section>
     `;
   }
 };
-y.styles = [V, I];
+y.styles = [V, H];
 let g = y;
 S([
-  F({ type: Object })
+  N({ type: Object })
 ], g.prototype, "config");
 S([
-  N()
+  O()
 ], g.prototype, "view");
 typeof g < "u" && g.registerSallaComponent("salla-beauty-weekly-planner");
 export {

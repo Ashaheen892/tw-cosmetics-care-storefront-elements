@@ -1,8 +1,9 @@
-import { css as T, LitElement as E, nothing as p, html as i } from "lit";
+import { css as T, LitElement as E, nothing as d, html as i } from "lit";
 import { property as R, state as x } from "lit/decorators.js";
 import { classMap as w } from "lit/directives/class-map.js";
 import { styleMap as f } from "lit/directives/style-map.js";
-import { n as B, l as b, e as F, g as I, h as z, j as O, s as L, o as M, p as S, i as u, t as c, r as j, a as H, b as X } from "./sharedStyles-BgfDOkwJ.js";
+import { n as B, l as b, e as F, g as I, h as z, j as P, s as L, o as M, p as S, i as u, t as c, r as j, a as H } from "./sharedStyles-DKbcXBPy.js";
+import { r as X } from "./commerceOutcome-Dk8p2VWM.js";
 const D = T`
   .bta-samples {
     display: flex;
@@ -39,7 +40,7 @@ const D = T`
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--sample-color, var(--accent-color, var(--fs-store-primary))) 40%, transparent), 0 8px 18px rgba(43, 33, 28, 0.22);
   }
 
-  .bta-sample__name { font-size: 0.78rem; font-weight: 700; color: var(--text-color, #33232e); text-align: center; }
+  .bta-sample__name { font-size: 0.78rem; font-weight: 700; color: var(--text-color, #000000); text-align: center; }
 
   /* shape variants */
   .bta-samples--drops .bta-sample__blob { border-radius: 50% 50% 50% 8px; transform: rotate(45deg); }
@@ -66,8 +67,8 @@ const D = T`
     aspect-ratio: 4 / 3;
     border-radius: var(--section-radius, 16px);
     overflow: hidden;
-    background: var(--bta-area, color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff)));
-    border: 1px solid var(--border-color, #f2dde7);
+    background: var(--bta-area, color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff)));
+    border: 1px solid var(--border-color, #e5e7eb);
     display: grid;
     place-items: center;
     touch-action: none;
@@ -93,7 +94,7 @@ const D = T`
     bottom: 3.5rem;
     text-align: center;
     font-size: 0.74rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     pointer-events: none;
   }
 
@@ -148,8 +149,8 @@ const D = T`
   }
 
   .bta-details { display: grid; gap: 0.85rem; }
-  .bta-details__name { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-color, #33232e); }
-  .bta-details__desc { margin: 0; color: var(--muted-color, #8f7a86); line-height: 1.65; font-size: 0.9rem; }
+  .bta-details__name { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-color, #000000); }
+  .bta-details__desc { margin: 0; color: var(--muted-color, #666666); line-height: 1.65; font-size: 0.9rem; }
 
   .bta-indicators { display: grid; gap: 0.55rem; }
 
@@ -162,11 +163,11 @@ const D = T`
   }
 
   .bta-ind { display: grid; grid-template-columns: 7.5rem 1fr auto; align-items: center; gap: 0.6rem; font-size: 0.8rem; }
-  .bta-ind__label { color: var(--muted-color, #8f7a86); font-weight: 700; }
+  .bta-ind__label { color: var(--muted-color, #666666); font-weight: 700; }
   .bta-ind__val { color: var(--meter-color, var(--accent-color, var(--fs-store-primary))); font-weight: 800; font-variant-numeric: tabular-nums; }
 
   .bta-dots { display: inline-flex; gap: 0.28rem; }
-  .bta-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; background: color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent); }
+  .bta-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; background: color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent); }
   .bta-dot.is-on { background: var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
   .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
   .bta-circle.is-on { background: var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
@@ -177,15 +178,15 @@ const D = T`
     height: 1.5rem;
     border-radius: 3rem 3rem 0 0;
     background:
-      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, var(--fs-store-primary))) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
+      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, var(--fs-store-primary))) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent) 0);
   }
 
   .bta-facts { display: grid; gap: 0.4rem; font-size: 0.84rem; }
   .bta-fact { display: flex; gap: 0.4rem; }
-  .bta-fact b { color: var(--text-color, #33232e); font-weight: 700; flex: 0 0 auto; }
-  .bta-fact span { color: var(--muted-color, #8f7a86); }
+  .bta-fact b { color: var(--text-color, #000000); font-weight: 700; flex: 0 0 auto; }
+  .bta-fact span { color: var(--muted-color, #666666); }
 
-  .bta-note { margin: 0; font-size: 0.82rem; color: color-mix(in srgb, #8a5a00 65%, var(--text-color, #33232e)); }
+  .bta-note { margin: 0; font-size: 0.82rem; color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000)); }
 
   .bta-toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1.25rem; }
 
@@ -193,7 +194,7 @@ const D = T`
   .bta-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }
   .bta-compare__col {
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: var(--section-radius, 16px);
     padding: 1rem;
     display: grid;
@@ -204,9 +205,9 @@ const D = T`
     width: 100%;
     padding: 0.5rem 0.6rem;
     border-radius: 10px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
   }
@@ -221,7 +222,7 @@ const D = T`
   @media (prefers-reduced-motion: reduce) {
     .bta-smear, .bta-sample__blob, .bta-play__cta { transition: none !important; }
   }
-`, N = ["drops", "circles", "swatches", "slides", "blobs", "bubbles"], G = ["bars", "dots", "circles", "semicircle"], _ = (l) => z(O(l, 0), 0, 5);
+`, N = ["drops", "circles", "swatches", "slides", "blobs", "bubbles"], G = ["bars", "dots", "circles", "semicircle"], _ = (l) => z(P(l, 0), 0, 5);
 function U(l) {
   return B(l).map((e, r) => ({
     id: String(e.id ?? e.tex_id ?? "").trim() || `texture-${r + 1}`,
@@ -321,18 +322,18 @@ const k = class k extends E {
     return t.length ? i`<div class="bta-indicators" style=${f({ "--meter-color": e.color })}>
       ${t.map((s) => {
       const n = s.value / 5 * 100;
-      let m;
-      return r === "dots" || r === "circles" ? m = i`<span class="bta-dots">
+      let p;
+      return r === "dots" || r === "circles" ? p = i`<span class="bta-dots">
             ${[1, 2, 3, 4, 5].map(
         (h) => i`<span class=${w({ [r === "dots" ? "bta-dot" : "bta-circle"]: !0, "is-on": h <= s.value })}></span>`
       )}
-          </span>` : r === "semicircle" ? m = i`<span class="bta-gauge" style=${f({ "--p": String(s.value / 5) })}></span>` : m = i`<span class="fs-meter"><span style=${f({ width: `${n}%` })}></span></span>`, i`<div class="bta-ind">
+          </span>` : r === "semicircle" ? p = i`<span class="bta-gauge" style=${f({ "--p": String(s.value / 5) })}></span>` : p = i`<span class="fs-meter"><span style=${f({ width: `${n}%` })}></span></span>`, i`<div class="bta-ind">
           <span class="bta-ind__label">${s.label}</span>
-          ${m}
+          ${p}
           <span class=${w({ "bta-ind__val": !0, "is-higher": !!(a != null && a[s.key]) })}>${s.value}/5</span>
         </div>`;
     })}
-    </div>` : p;
+    </div>` : d;
   }
   renderFacts(e) {
     const r = [
@@ -344,10 +345,10 @@ const k = class k extends E {
     ].filter(([, a]) => !!a);
     return r.length ? i`<div class="bta-facts">
       ${r.map(([a, t]) => i`<div class="bta-fact"><b>${a}:</b><span>${t}</span></div>`)}
-    </div>` : p;
+    </div>` : d;
   }
   renderExplore(e) {
-    const r = this.config || {}, a = this.active(e), t = C(r), s = u(r.bta_show_indicators, !0), n = u(r.bta_enable_spread, !0), m = u(r.bta_show_images, !0), h = u(r.bta_show_tips, !0), d = u(r.bta_show_notes, !0), o = this.motionDisabled() ? 0 : Math.max(0, O(r.bta_spread_speed, 500));
+    const r = this.config || {}, a = this.active(e), t = C(r), s = u(r.bta_show_indicators, !0), n = u(r.bta_enable_spread, !0), p = u(r.bta_show_images, !0), h = u(r.bta_show_tips, !0), m = u(r.bta_show_notes, !0), o = this.motionDisabled() ? 0 : Math.max(0, P(r.bta_spread_speed, 500));
     return i`<div class="bta-stage" style=${f({ "--sample-color": a.color, "--meter-color": a.color })}>
       <div
         class="bta-play"
@@ -357,45 +358,45 @@ const k = class k extends E {
       v.buttons && this.onPlayPointer(v);
     } : void 0}
       >
-        ${m && a.image ? i`<img class="bta-play__img" src=${a.image} alt=${a.name} loading="lazy" decoding="async" />` : i`<span class="bta-smear"></span>`}
+        ${p && a.image ? i`<img class="bta-play__img" src=${a.image} alt=${a.name} loading="lazy" decoding="async" />` : i`<span class="bta-smear"></span>`}
         ${n ? i`<button type="button" class="bta-play__cta" @click=${() => this.toggleSpread()}>
               <span class="bta-play__cta-icon" aria-hidden="true">${this.spread > 0.5 ? "↺" : "▶"}</span>
               ${this.spread > 0.5 ? c("إعادة", "Reset") : c("طبّقي القوام", "Apply texture")}
-            </button>` : p}
-        ${n && !a.image ? i`<span class="bta-play__hint">${c("اسحبي داخل المساحة لرؤية الانتشار", "Drag inside the area to see it spread")}</span>` : p}
+            </button>` : d}
+        ${n && !a.image ? i`<span class="bta-play__hint">${c("اسحبي داخل المساحة لرؤية الانتشار", "Drag inside the area to see it spread")}</span>` : d}
       </div>
 
       <div class="bta-details">
         <h3 class="bta-details__name">${a.name}</h3>
-        ${a.desc ? i`<p class="bta-details__desc">${a.desc}</p>` : p}
-        ${s ? this.renderIndicators(a, t) : p}
+        ${a.desc ? i`<p class="bta-details__desc">${a.desc}</p>` : d}
+        ${s ? this.renderIndicators(a, t) : d}
         ${this.renderFacts(a)}
-        ${h && a.tips ? i`<p class="bta-details__desc">💡 ${a.tips}</p>` : p}
-        ${d && a.note ? i`<p class="bta-note">★ ${a.note}</p>` : p}
+        ${h && a.tips ? i`<p class="bta-details__desc">💡 ${a.tips}</p>` : d}
+        ${m && a.note ? i`<p class="bta-note">★ ${a.note}</p>` : d}
       </div>
     </div>`;
   }
   renderCompare(e) {
-    const r = this.config || {}, a = C(r), t = e.find((o) => o.id === this.cmpA) || e[0], s = e.find((o) => o.id === this.cmpB) || e[1] || e[0], n = ["lightness", "thickness", "absorption", "hydration", "gloss", "greasiness"], m = {}, h = {};
+    const r = this.config || {}, a = C(r), t = e.find((o) => o.id === this.cmpA) || e[0], s = e.find((o) => o.id === this.cmpB) || e[1] || e[0], n = ["lightness", "thickness", "absorption", "hydration", "gloss", "greasiness"], p = {}, h = {};
     for (const o of n)
-      t[o] > s[o] ? m[o] = !0 : s[o] > t[o] && (h[o] = !0);
-    const d = (o, v, P, A) => i`
+      t[o] > s[o] ? p[o] = !0 : s[o] > t[o] && (h[o] = !0);
+    const m = (o, v, A, O) => i`
       <div>
-        <label style="font-size:0.76rem;font-weight:700;color:var(--muted-color);display:block;margin-bottom:0.25rem">${A}</label>
-        <select id=${o} @change=${($) => P($.target.value)}>
+        <label style="font-size:0.76rem;font-weight:700;color:var(--muted-color);display:block;margin-bottom:0.25rem">${O}</label>
+        <select id=${o} @change=${($) => A($.target.value)}>
           ${e.map(($) => i`<option value=${$.id} ?selected=${$.id === (v == null ? void 0 : v.id)}>${$.name}</option>`)}
         </select>
       </div>
     `;
     return i`
       <div class="bta-compare__picks">
-        ${d("bta-a", t, (o) => this.cmpA = o, c("القوام الأول", "First texture"))}
-        ${d("bta-b", s, (o) => this.cmpB = o, c("القوام الثاني", "Second texture"))}
+        ${m("bta-a", t, (o) => this.cmpA = o, c("القوام الأول", "First texture"))}
+        ${m("bta-b", s, (o) => this.cmpB = o, c("القوام الثاني", "Second texture"))}
       </div>
       <div class="bta-compare">
         <div class="bta-compare__col" style=${f({ "--sample-color": t.color, "--meter-color": t.color })}>
           <h3 class="bta-details__name">${t.name}</h3>
-          ${this.renderIndicators(t, a, m)}
+          ${this.renderIndicators(t, a, p)}
           ${this.renderFacts(t)}
         </div>
         <div class="bta-compare__col" style=${f({ "--sample-color": s.color, "--meter-color": s.color })}>
@@ -407,7 +408,7 @@ const k = class k extends E {
     `;
   }
   render() {
-    const e = this.config || {}, r = j(e, "bta_"), a = r.animate && !S(), t = this.textures, s = b(e.bta_title), n = b(e.bta_desc), m = q(e), h = u(e.bta_enable_compare, !0) && t.length >= 2, d = t.length ? this.active(t) : null;
+    const e = this.config || {}, r = j(e, "bta_"), a = r.animate && !S(), t = this.textures, s = b(e.bta_title), n = b(e.bta_desc), p = q(e), h = u(e.bta_enable_compare, !0) && t.length >= 2, m = t.length ? this.active(t) : null;
     return t.length ? i`
       <section
         class=${w({ "fs-section": !0, "fs-animate": a })}
@@ -420,17 +421,17 @@ const k = class k extends E {
       >
         <div class="fs-container">
           ${s || n ? i`<div class="fs-header">
-                ${s ? i`<h2 class="fs-title">${s}</h2>` : p}
-                ${n ? i`<p class="fs-desc">${n}</p>` : p}
-              </div>` : p}
+                ${s ? i`<h2 class="fs-title">${s}</h2>` : d}
+                ${n ? i`<p class="fs-desc">${n}</p>` : d}
+              </div>` : d}
 
-          <div class=${w({ "bta-samples": !0, [`bta-samples--${m}`]: !0 })} role="tablist">
+          <div class=${w({ "bta-samples": !0, [`bta-samples--${p}`]: !0 })} role="tablist">
             ${t.map(
       (o) => i`<button
                 type="button"
                 role="tab"
-                class=${w({ "bta-sample": !0, "is-active": o.id === (d == null ? void 0 : d.id) && !this.compareOpen })}
-                aria-selected=${o.id === (d == null ? void 0 : d.id) ? "true" : "false"}
+                class=${w({ "bta-sample": !0, "is-active": o.id === (m == null ? void 0 : m.id) && !this.compareOpen })}
+                aria-selected=${o.id === (m == null ? void 0 : m.id) ? "true" : "false"}
                 style=${f({ "--sample-color": o.color })}
                 @click=${() => {
         this.compareOpen = !1, this.select(o.id);
@@ -444,7 +445,8 @@ const k = class k extends E {
 
           ${this.compareOpen && h ? this.renderCompare(t) : this.renderExplore(t)}
 
-          ${h ? i`<div class="bta-toolbar">
+          <div class="bta-toolbar">
+            ${h ? i`
                 <button
                   type="button"
                   class=${this.compareOpen ? "fs-btn fs-btn--ghost" : "fs-btn"}
@@ -455,8 +457,9 @@ const k = class k extends E {
                   class=${this.compareOpen ? "fs-btn" : "fs-btn fs-btn--ghost"}
                   @click=${() => this.compareOpen = !0}
                 >${c("مقارنة قوامين", "Compare two")}</button>
-              </div>` : p}
-          ${X({ config: e, prefix: "bta_", ready: !!d, selection: d })}
+                ` : d}
+            ${X(e, "bta_")}
+          </div>
         </div>
       </section>
     ` : i`<div class="fs-empty" role="status">

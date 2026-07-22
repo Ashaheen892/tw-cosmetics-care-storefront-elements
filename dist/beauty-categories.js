@@ -1,8 +1,10 @@
 import { css as v, LitElement as x, html as i, nothing as p } from "lit";
 import { property as w } from "lit/decorators.js";
 import { classMap as h } from "lit/directives/class-map.js";
-import { styleMap as y } from "lit/directives/style-map.js";
-import { t as n, n as _, c as k, e as $, l as b, s as L, r as C, p as S, a as j, b as z } from "./sharedStyles-BgfDOkwJ.js";
+import { ref as y } from "lit/directives/ref.js";
+import { styleMap as _ } from "lit/directives/style-map.js";
+import { t as n, n as k, b as $, e as L, l as b, s as S, r as C, p as j, a as z } from "./sharedStyles-DKbcXBPy.js";
+import { e as M } from "./dragScroll-9IoXWKvk.js";
 const q = v`
   :host {
     display: block;
@@ -61,7 +63,7 @@ const q = v`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, #fff),
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, #fff)
       );
-    border: 3px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, #fff);
+    border: 3px solid color-mix(in srgb, var(--border-color, #e5e7eb) 80%, #fff);
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
       0 10px 24px rgba(120, 44, 82, 0.1);
@@ -116,7 +118,7 @@ const q = v`
     font-size: 0.86rem;
     font-weight: 800;
     text-align: center;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     line-height: 1.35;
     max-width: 110px;
     display: -webkit-box;
@@ -185,29 +187,31 @@ const q = v`
   { title: n("العطور", "Fragrances"), image: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80", link: "" },
   { title: n("العناية بالشعر", "Haircare"), image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80", link: "" }
 ];
-function M(s) {
-  const r = _(s).map((e) => ({
-    title: b(e.title || e.name, ""),
-    image: $(e.image),
-    link: k(e.link ?? e.url)
-  })).filter((e) => e.title || e.image);
-  return r.length ? r.map((e, t) => ({
-    ...e,
-    image: e.image || l[t % l.length].image,
-    title: e.title || l[t % l.length].title
-  })) : l.map((e) => ({ ...e }));
+function E(o) {
+  const r = k(o).map((t) => ({
+    title: b(t.title || t.name, ""),
+    image: L(t.image),
+    link: $(t.link ?? t.url)
+  })).filter((t) => t.title || t.image);
+  return r.length ? r.map((t, a) => ({
+    ...t,
+    image: t.image || l[a % l.length].image,
+    title: t.title || l[a % l.length].title
+  })) : l.map((t) => ({ ...t }));
 }
-function E(s) {
-  return (typeof s == "string" ? s.trim().toLowerCase() : "") === "grid" ? "grid" : "slider";
+function H(o) {
+  return (typeof o == "string" ? o.trim().toLowerCase() : "") === "grid" ? "grid" : "slider";
 }
-var H = Object.defineProperty, O = (s, a, r, e) => {
-  for (var t = void 0, c = s.length - 1, m; c >= 0; c--)
-    (m = s[c]) && (t = m(a, r, t) || t);
-  return t && H(a, r, t), t;
+var T = Object.defineProperty, D = (o, e, r, t) => {
+  for (var a = void 0, c = o.length - 1, m; c >= 0; c--)
+    (m = o[c]) && (a = m(e, r, a) || a);
+  return a && T(e, r, a), a;
 };
 const f = class f extends x {
   constructor() {
-    super(...arguments), this.config = {}, this.boundLangHandler = () => this.requestUpdate();
+    super(...arguments), this.config = {}, this.boundLangHandler = () => this.requestUpdate(), this.bindTrack = (e) => {
+      e instanceof HTMLElement && !e.classList.contains("bcat-wrap--grid") && M(e);
+    };
   }
   connectedCallback() {
     super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler);
@@ -216,41 +220,43 @@ const f = class f extends x {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
   render() {
-    const a = this.config || {}, r = C(a, "bcat_"), e = r.animate && !S(), t = b(a.bcat_title), c = b(a.bcat_desc), m = E(a.bcat_layout), g = M(a.bcat_items);
+    const e = this.config || {}, r = C(e, "bcat_"), t = r.animate && !j(), a = b(e.bcat_title), c = b(e.bcat_desc), m = H(e.bcat_layout), g = E(e.bcat_items);
     return g.length ? i`
       <section
-        class=${h({ "fs-section": !0, "fs-animate": e })}
-        style=${y(j(r))}
-        aria-label=${t || n("التصنيفات", "Categories")}
+        class=${h({ "fs-section": !0, "fs-animate": t })}
+        style=${_(z(r))}
+        aria-label=${a || n("التصنيفات", "Categories")}
       >
         <div class="fs-container">
-          ${t || c ? i`<div class="fs-header">
-                ${t ? i`<h2 class="fs-title">${t}</h2>` : p}
+          ${a || c ? i`<div class="fs-header">
+                ${a ? i`<h2 class="fs-title">${a}</h2>` : p}
                 ${c ? i`<p class="fs-desc">${c}</p>` : p}
               </div>` : p}
 
-          <div class=${h({ "bcat-wrap": !0, "bcat-wrap--grid": m === "grid" })} role="list">
+          <div
+            class=${h({ "bcat-wrap": !0, "bcat-wrap--grid": m === "grid" })}
+            role="list"
+            ${y(this.bindTrack)}
+          >
             ${g.map(
-      (o) => i`
+      (s) => i`
                 <a
                   class="bcat-item"
                   role="listitem"
-                  href=${o.link || "#"}
+                  href=${s.link || "#"}
                   @click=${(u) => {
-        o.link || u.preventDefault();
+        s.link || u.preventDefault();
       }}
-                  aria-label=${o.title}
+                  aria-label=${s.title}
                 >
-                  <div class="bcat-disc" aria-hidden=${o.image ? "false" : "true"}>
-                    ${o.image ? i`<img class="bcat-disc__img" src=${o.image} alt="" loading="lazy" decoding="async" />` : i`<span class="bcat-disc__placeholder" aria-hidden="true">✦</span>`}
+                  <div class="bcat-disc" aria-hidden=${s.image ? "false" : "true"}>
+                    ${s.image ? i`<img class="bcat-disc__img" src=${s.image} alt="" loading="lazy" decoding="async" />` : i`<span class="bcat-disc__placeholder" aria-hidden="true">✦</span>`}
                   </div>
-                  ${o.title ? i`<p class="bcat-label">${o.title}</p>` : p}
+                  ${s.title ? i`<p class="bcat-label">${s.title}</p>` : p}
                 </a>
               `
     )}
           </div>
-
-          ${z({ config: a, prefix: "bcat_", ready: !0 })}
         </div>
       </section>
     ` : i`<div class="fs-empty" role="status">
@@ -258,9 +264,9 @@ const f = class f extends x {
       </div>`;
   }
 };
-f.styles = [L, q];
+f.styles = [S, q];
 let d = f;
-O([
+D([
   w({ type: Object })
 ], d.prototype, "config");
 typeof d < "u" && d.registerSallaComponent("salla-beauty-categories");

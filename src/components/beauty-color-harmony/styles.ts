@@ -21,7 +21,7 @@ export const componentStyles = css`
     padding: 1.15rem 1.2rem;
     border-radius: var(--section-radius, 20px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
@@ -35,7 +35,7 @@ export const componentStyles = css`
     font-size: 0.82rem;
     font-weight: 800;
     letter-spacing: 0.01em;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   /* —— base color chips —— */
@@ -51,10 +51,10 @@ export const componentStyles = css`
     gap: 0.55rem;
     min-height: 44px;
     padding: 0.4rem 0.85rem 0.4rem 0.4rem;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: 999px;
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.88rem;
     font-weight: 700;
@@ -64,7 +64,7 @@ export const componentStyles = css`
   }
 
   .bch-color:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bch-color[aria-pressed='true'] {
@@ -104,10 +104,10 @@ export const componentStyles = css`
     gap: 0.2rem;
     min-height: 64px;
     padding: 0.7rem 0.9rem;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 16px) * 0.65);
-    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, #fff);
-    color: var(--text-color, #33232e);
+    background: color-mix(in srgb, var(--section-bg, transparent) 55%, #fff);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.88rem;
     font-weight: 700;
@@ -123,7 +123,7 @@ export const componentStyles = css`
   .bch-type__hint {
     font-size: 0.74rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.35;
   }
 
@@ -132,11 +132,11 @@ export const componentStyles = css`
   }
 
   .bch-type:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bch-type[aria-pressed='true'] {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
   }
@@ -154,6 +154,27 @@ export const componentStyles = css`
     }
   }
 
+  .bch-cta {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.15rem;
+  }
+
+  .bch-cta__btn {
+    min-height: 38px;
+    min-width: auto;
+    padding: 0.4rem 1.15rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border-radius: 999px;
+    box-shadow: none;
+  }
+
+  .bch-cta__btn:hover {
+    box-shadow: none;
+  }
+
   .bch-preview,
   .bch-zones-wrap {
     display: grid;
@@ -169,7 +190,7 @@ export const componentStyles = css`
       color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 12px 32px rgba(43, 33, 28, 0.08);
   }
 
@@ -177,7 +198,7 @@ export const componentStyles = css`
     padding: 1.2rem;
     border-radius: calc(var(--section-radius, 16px) * 0.9);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
   }
 
   .bch-preview__label {
@@ -185,7 +206,7 @@ export const componentStyles = css`
     font-size: 0.8rem;
     font-weight: 800;
     letter-spacing: 0.02em;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bch-strip {
@@ -215,7 +236,7 @@ export const componentStyles = css`
     font-size: 0.76rem;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-transform: uppercase;
     font-variant-numeric: tabular-nums;
   }
@@ -237,8 +258,8 @@ export const componentStyles = css`
     align-items: center;
     gap: 0.8rem;
     padding: 0.8rem;
-    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 60%, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    background: color-mix(in srgb, var(--section-bg, transparent) 60%, #fff);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 16px) * 0.7);
   }
 
@@ -261,13 +282,13 @@ export const componentStyles = css`
   .bch-zone__label {
     font-size: 0.92rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bch-zone__hex {
     font-size: 0.76rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-transform: uppercase;
     font-variant-numeric: tabular-nums;
   }
@@ -276,7 +297,7 @@ export const componentStyles = css`
     margin: 0;
     text-align: center;
     font-size: 0.82rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.6;
   }
 

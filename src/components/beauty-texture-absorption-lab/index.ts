@@ -12,7 +12,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { getPageLocale, localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -282,8 +282,9 @@ export default class BeautyTextureAbsorptionLab extends LitElement {
 
           ${this.compareOpen && enableCompare ? this.renderCompare(textures) : this.renderExplore(textures)}
 
-          ${enableCompare
-            ? html`<div class="bta-toolbar">
+          <div class="bta-toolbar">
+            ${enableCompare
+              ? html`
                 <button
                   type="button"
                   class=${this.compareOpen ? 'fs-btn fs-btn--ghost' : 'fs-btn'}
@@ -294,9 +295,10 @@ export default class BeautyTextureAbsorptionLab extends LitElement {
                   class=${this.compareOpen ? 'fs-btn' : 'fs-btn fs-btn--ghost'}
                   @click=${() => (this.compareOpen = true)}
                 >${t('مقارنة قوامين', 'Compare two')}</button>
-              </div>`
-            : nothing}
-          ${renderCommerceOutcome({ config: c, prefix: 'bta_', ready: Boolean(active), selection: active })}
+                `
+              : nothing}
+            ${renderCommerceCtaButton(c, 'bta_')}
+          </div>
         </div>
       </section>
     `;

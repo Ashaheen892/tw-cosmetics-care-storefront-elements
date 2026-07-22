@@ -11,7 +11,7 @@ export const componentStyles = css`
     padding: 0.25rem;
     border-radius: 999px;
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
   }
 
   .bls-mode-toggle__btn {
@@ -20,7 +20,7 @@ export const componentStyles = css`
     border: none;
     border-radius: 999px;
     background: transparent;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font: inherit;
     font-size: 0.84rem;
     font-weight: 700;
@@ -61,8 +61,8 @@ export const componentStyles = css`
   .bls-controls-card {
     padding: 1rem 1rem 1.1rem;
     border-radius: var(--section-radius, 20px);
-    background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, #fbf5f8));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, transparent));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
@@ -74,14 +74,14 @@ export const componentStyles = css`
   .bls-controls + .bls-controls {
     margin-top: 0.9rem;
     padding-top: 0.9rem;
-    border-top: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent);
   }
 
   .bls-controls__label {
     font-size: 0.76rem;
     font-weight: 800;
     letter-spacing: 0.03em;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     margin-bottom: 0.15rem;
   }
 
@@ -104,9 +104,9 @@ export const componentStyles = css`
     min-height: 48px;
     padding: 0.55rem 0.7rem;
     border-radius: calc(var(--section-radius, 20px) * 0.65);
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 700;
     font-size: 0.86rem;
@@ -121,7 +121,7 @@ export const componentStyles = css`
 
   .bls-chip:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--bls-active, var(--accent-color, var(--fs-store-primary))) 40%, var(--border-color, #e5e7eb));
   }
 
   .bls-chip.is-active {
@@ -178,9 +178,9 @@ export const componentStyles = css`
     min-height: 40px;
     padding: 0.4rem 0.8rem;
     border-radius: 999px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 700;
     font-size: 0.8rem;
@@ -228,7 +228,7 @@ export const componentStyles = css`
     max-height: min(620px, 78vh);
     border-radius: calc(var(--section-radius, 20px) - 2px);
     overflow: hidden;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 45%, #1a1216);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 45%, #1a1216);
     border: 3px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, #fff);
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.12),
@@ -320,7 +320,7 @@ export const componentStyles = css`
     display: grid;
     gap: 0.85rem;
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: var(--section-radius, 20px);
     padding: 1rem 1.1rem 1.1rem;
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.05);
@@ -328,14 +328,14 @@ export const componentStyles = css`
 
   .bls-desc {
     margin: 0;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     line-height: 1.7;
     font-size: 0.92rem;
   }
 
   .bls-color-effect {
     margin: 0;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.85rem;
     font-weight: 600;
   }
@@ -354,7 +354,7 @@ export const componentStyles = css`
   }
 
   .bls-indicator__label {
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-weight: 700;
   }
 
@@ -381,7 +381,7 @@ export const componentStyles = css`
   .bls-note {
     margin: 0;
     font-size: 0.82rem;
-    color: color-mix(in srgb, #8a5a00 65%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000));
     line-height: 1.55;
   }
 
@@ -405,7 +405,7 @@ export const componentStyles = css`
   .bls-compare-picks label {
     font-size: 0.76rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     display: block;
     margin-bottom: 0.25rem;
   }
@@ -415,11 +415,16 @@ export const componentStyles = css`
     min-height: 44px;
     padding: 0.55rem 0.7rem;
     border-radius: 12px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
+  }
+
+  .bls-compare-picks .fs-btn {
+    width: 100%;
+    margin-top: 0.5rem;
   }
 
   .bls-cmp-side {
@@ -474,7 +479,7 @@ export const componentStyles = css`
     inset-inline-start: var(--bls-pos, 50%);
     width: 3px;
     transform: translateX(-50%);
-    background: #fff;
+    background: var(--fs-surface, var(--card-bg, #f0f0f0));
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
     pointer-events: none;
     z-index: 3;
@@ -495,11 +500,7 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: linear-gradient(
-      135deg,
-      var(--accent-color, var(--fs-store-primary)),
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
-    );
+    background: var(--accent-color, var(--fs-store-primary));
     border: 3px solid #fff;
     color: #fff;
     font-size: 0.95rem;
@@ -551,7 +552,7 @@ export const componentStyles = css`
     bottom: 0;
     inset-inline-start: 50%;
     width: 2px;
-    background: #fff;
+    background: var(--fs-surface, var(--card-bg, #f0f0f0));
   }
 
   .bls-cmp-tag {

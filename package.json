@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "node scripts/clear-chrome-cache.mjs && node --import ./scripts/ignore-tty-eio.mjs ./node_modules/vite/bin/vite.js",
+        "prebuild": "python3 scripts/normalize_uuid_keys.py",
         "build": "vite build",
         "preview": "node scripts/clear-chrome-cache.mjs && node --import ./scripts/ignore-tty-eio.mjs ./node_modules/vite/bin/vite.js preview",
         "preview:clean": "vite --host 127.0.0.1 --port 5173",
@@ -30,7 +31,6 @@
     },
     "private": true,
     "dependencies": {
-        "lit": "^3.3.2",
-        "swiper": "^11.2.10"
+        "lit": "^3.3.2"
     }
 }

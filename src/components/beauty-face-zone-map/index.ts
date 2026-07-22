@@ -13,7 +13,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -239,11 +239,9 @@ export default class BeautyFaceZoneMap extends LitElement {
 
         ${zone.warning ? html`<div class="bfz-warn"><span aria-hidden="true">⚠︎</span><span>${zone.warning}</span></div>` : nothing}
 
-        ${zone.link
-          ? html`<a class="fs-btn" href=${zone.link} target="_blank" rel="noopener noreferrer">
-              ${t('اقرئي المزيد', 'Read more')}
-            </a>`
-          : nothing}
+        <div class="fs-actions">
+          ${renderCommerceCtaButton(c, 'bfz_', { href: zone.link })}
+        </div>
       </div>
     `;
   }
@@ -343,7 +341,6 @@ export default class BeautyFaceZoneMap extends LitElement {
           </div>
 
           ${showNotice ? html`<p class="bfz-notice">${notice}</p>` : nothing}
-          ${renderCommerceOutcome({ config: c, prefix: 'bfz_', ready: Boolean(active), selection: active })}
         </div>
       </section>
     `;

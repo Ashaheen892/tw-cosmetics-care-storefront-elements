@@ -1,7 +1,8 @@
 import { css as P, LitElement as V, html as c, nothing as l } from "lit";
 import { property as U, state as u } from "lit/decorators.js";
 import { styleMap as y } from "lit/directives/style-map.js";
-import { g as C, n as I, j as v, l as g, s as j, k as F, o as Y, m as G, t as a, i as x, r as H, a as B, b as W } from "./sharedStyles-BgfDOkwJ.js";
+import { g as N, n as I, j as v, l as g, s as j, k as F, o as Y, m as G, t as a, i as x, r as B, a as H } from "./sharedStyles-DKbcXBPy.js";
+import { r as W } from "./commerceOutcome-Dk8p2VWM.js";
 const q = P`
   .bpa-shell {
     display: grid;
@@ -23,8 +24,8 @@ const q = P`
     min-width: 0;
     padding: 1.15rem 1.15rem 1.25rem;
     border-radius: var(--section-radius, 20px);
-    background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, #fbf5f8));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    background: color-mix(in srgb, var(--card-bg, #fff) 90%, var(--section-bg, transparent));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
@@ -32,14 +33,14 @@ const q = P`
     margin: 0 0 0.25rem;
     font-size: 1rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bpa-form-card__hint {
     margin: 0 0 1rem;
     font-size: 0.8rem;
     line-height: 1.55;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bpa-form {
@@ -55,7 +56,7 @@ const q = P`
   .bpa-field label {
     font-size: 0.82rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bpa-input,
@@ -64,9 +65,9 @@ const q = P`
     min-height: 46px;
     padding: 0.65rem 0.8rem;
     border-radius: 14px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -75,7 +76,7 @@ const q = P`
   .bpa-input:focus,
   .bpa-select:focus {
     outline: none;
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 55%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 55%, var(--border-color, #e5e7eb));
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 18%, transparent);
   }
 
@@ -94,9 +95,9 @@ const q = P`
     min-height: 44px;
     padding: 0.45rem 0.85rem;
     border-radius: 999px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 700;
     font-size: 0.82rem;
@@ -111,16 +112,12 @@ const q = P`
   .bpa-cat-chip:hover,
   .bpa-pao-chip:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bpa-cat-chip.is-active,
   .bpa-pao-chip.is-active {
-    background: linear-gradient(
-      135deg,
-      var(--accent-color, var(--fs-store-primary)),
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
-    );
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: transparent;
     color: #fff;
     box-shadow: 0 8px 18px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, transparent);
@@ -141,7 +138,7 @@ const q = P`
   .bpa-hero {
     min-width: 0;
     background: var(--card-bg, #fff);
-    border: 1.5px solid color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #f2dde7));
+    border: 1.5px solid color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #e5e7eb));
     border-radius: var(--section-radius, 20px);
     padding: 1.45rem 1.25rem 1.35rem;
     text-align: center;
@@ -176,7 +173,7 @@ const q = P`
 
   .bpa-hero--empty {
     border-style: dashed;
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #e5e7eb));
     box-shadow: none;
     background:
       radial-gradient(
@@ -184,7 +181,7 @@ const q = P`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, transparent),
         transparent 70%
       ),
-      color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
+      color-mix(in srgb, var(--section-bg, transparent) 55%, var(--card-bg, #fff));
   }
 
   .bpa-hero__placeholder {
@@ -193,7 +190,7 @@ const q = P`
     align-items: center;
     gap: 0.7rem;
     padding: 2.4rem 1rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.92rem;
     line-height: 1.65;
   }
@@ -248,7 +245,7 @@ const q = P`
 
   .bpa-dial__track {
     fill: none;
-    stroke: color-mix(in srgb, var(--bpa-color, var(--border-color, #f2dde7)) 14%, var(--border-color, #f2dde7));
+    stroke: color-mix(in srgb, var(--bpa-color, var(--border-color, #e5e7eb)) 14%, var(--border-color, #e5e7eb));
     stroke-width: 14;
     opacity: 0.55;
   }
@@ -283,7 +280,7 @@ const q = P`
 
   .bpa-dial__unit {
     font-size: 0.86rem;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-weight: 800;
   }
 
@@ -321,20 +318,20 @@ const q = P`
     padding: 0.75rem 0.65rem;
     border-radius: 14px;
     background: color-mix(in srgb, var(--bpa-color, var(--accent-color, var(--fs-store-primary))) 6%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--bpa-color, var(--border-color, #f2dde7)) 18%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--bpa-color, var(--border-color, #e5e7eb)) 18%, var(--border-color, #e5e7eb));
   }
 
   .bpa-date-cell span {
     display: block;
     font-size: 0.7rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     margin-bottom: 0.25rem;
     font-weight: 700;
   }
 
   .bpa-date-cell b {
     font-size: 0.84rem;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-weight: 800;
     line-height: 1.35;
   }
@@ -356,10 +353,10 @@ const q = P`
     padding: 0.8rem 0.9rem;
     border-radius: 14px;
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 7%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--border-color, #e5e7eb));
     font-size: 0.84rem;
     line-height: 1.6;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bpa-tips h4 {
@@ -371,7 +368,7 @@ const q = P`
 
   .bpa-tips p {
     margin: 0;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     white-space: pre-line;
   }
 
@@ -387,7 +384,7 @@ const q = P`
     max-width: 1080px;
     margin: 1.25rem auto 0;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
     text-align: center;
   }
@@ -399,7 +396,7 @@ const q = P`
     padding: 1.15rem;
     border-radius: var(--section-radius, 20px);
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.05);
   }
 
@@ -419,7 +416,7 @@ const q = P`
 
   .bpa-saved__note {
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     margin: 0 0 0.9rem;
     line-height: 1.55;
   }
@@ -428,9 +425,9 @@ const q = P`
     padding: 1.4rem 1rem;
     text-align: center;
     border-radius: 14px;
-    border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #f2dde7));
-    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
-    color: var(--muted-color, #8f7a86);
+    border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #e5e7eb));
+    background: color-mix(in srgb, var(--section-bg, transparent) 55%, var(--card-bg, #fff));
+    color: var(--muted-color, #666666);
     font-size: 0.88rem;
   }
 
@@ -444,8 +441,8 @@ const q = P`
     align-items: flex-start;
     gap: 0.8rem;
     padding: 0.9rem 0.95rem;
-    border: 1px solid color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 32%, var(--border-color, #f2dde7));
-    border-inline-start: 4px solid var(--rec-color, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--rec-color, var(--border-color, #e5e7eb)) 32%, var(--border-color, #e5e7eb));
+    border-inline-start: 4px solid var(--rec-color, var(--border-color, #e5e7eb));
     border-radius: 16px;
     background: color-mix(in srgb, var(--rec-color, transparent) 4%, var(--card-bg, #fff));
     box-shadow: 0 4px 14px rgba(43, 33, 28, 0.04);
@@ -464,8 +461,8 @@ const q = P`
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    border: 3px solid color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 32%, transparent);
-    background: color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 12%, var(--card-bg, #fff));
+    border: 3px solid color-mix(in srgb, var(--rec-color, var(--border-color, #e5e7eb)) 32%, transparent);
+    background: color-mix(in srgb, var(--rec-color, var(--border-color, #e5e7eb)) 12%, var(--card-bg, #fff));
   }
 
   .bpa-record__days {
@@ -484,7 +481,7 @@ const q = P`
   .bpa-record__name {
     font-weight: 800;
     font-size: 0.92rem;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     margin-bottom: 0.3rem;
   }
 
@@ -494,7 +491,7 @@ const q = P`
     align-items: center;
     gap: 0.35rem 0.5rem;
     font-size: 0.74rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bpa-record__pill {
@@ -503,14 +500,14 @@ const q = P`
     border-radius: 999px;
     font-size: 0.68rem;
     font-weight: 800;
-    background: color-mix(in srgb, var(--rec-color, var(--border-color, #f2dde7)) 16%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--rec-color, var(--border-color, #e5e7eb)) 16%, var(--card-bg, #fff));
     color: var(--rec-color, var(--text-color, #33232e));
   }
 
   .bpa-record__note {
     margin: 0.4rem 0 0;
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.45;
   }
 
@@ -526,7 +523,7 @@ const q = P`
     min-height: 40px;
     padding: 0.4rem 0.55rem;
     border-radius: 10px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     font: inherit;
     box-sizing: border-box;
   }
@@ -537,9 +534,9 @@ const q = P`
     display: grid;
     place-items: center;
     border-radius: 10px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     cursor: pointer;
     flex: 0 0 auto;
     transition: color 0.15s ease, border-color 0.15s ease;
@@ -547,7 +544,7 @@ const q = P`
 
   .bpa-icon-btn:hover {
     color: var(--accent-color, var(--fs-store-primary));
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   @media (max-width: 639px) {
@@ -564,38 +561,38 @@ const q = P`
     }
   }
 `, $ = 864e5;
-function K(i, r) {
-  const e = new Date(i.getTime()), n = e.getDate();
-  e.setDate(1), e.setMonth(e.getMonth() + r);
-  const o = new Date(e.getFullYear(), e.getMonth() + 1, 0).getDate();
-  return e.setDate(Math.min(n, o)), e;
+function K(i, e) {
+  const r = new Date(i.getTime()), n = r.getDate();
+  r.setDate(1), r.setMonth(r.getMonth() + e);
+  const t = new Date(r.getFullYear(), r.getMonth() + 1, 0).getDate();
+  return r.setDate(Math.min(n, t)), r;
 }
 function L(i) {
-  const r = new Date(i.getTime());
-  return r.setHours(0, 0, 0, 0), r;
+  const e = new Date(i.getTime());
+  return e.setHours(0, 0, 0, 0), e;
 }
 function R(i) {
   if (!i) return null;
-  const r = i.split("-").map(Number);
-  if (r.length !== 3 || r.some((s) => !Number.isFinite(s))) return null;
-  const [e, n, o] = r, t = new Date(e, n - 1, o);
-  return Number.isNaN(t.getTime()) ? null : L(t);
+  const e = i.split("-").map(Number);
+  if (e.length !== 3 || e.some((s) => !Number.isFinite(s))) return null;
+  const [r, n, t] = e, o = new Date(r, n - 1, t);
+  return Number.isNaN(o.getTime()) ? null : L(o);
 }
 function w(i) {
-  const r = (e) => String(e).padStart(2, "0");
-  return `${i.getFullYear()}-${r(i.getMonth() + 1)}-${r(i.getDate())}`;
+  const e = (r) => String(r).padStart(2, "0");
+  return `${i.getFullYear()}-${e(i.getMonth() + 1)}-${e(i.getDate())}`;
 }
-function T(i, r, e) {
-  const n = L(/* @__PURE__ */ new Date()), o = K(i, r), t = Math.max(1, Math.round((o.getTime() - i.getTime()) / $)), s = Math.round((o.getTime() - n.getTime()) / $), f = Math.round((n.getTime() - i.getTime()) / $), m = Math.max(0, Math.min(1, f / t));
+function T(i, e, r) {
+  const n = L(/* @__PURE__ */ new Date()), t = K(i, e), o = Math.max(1, Math.round((t.getTime() - i.getTime()) / $)), s = Math.round((t.getTime() - n.getTime()) / $), h = Math.round((n.getTime() - i.getTime()) / $), m = Math.max(0, Math.min(1, h / o));
   let b = "safe";
-  return s <= 0 ? b = "expired" : s <= e && (b = "warn"), { expiry: o, daysRemaining: s, totalDays: t, elapsedRatio: m, state: b };
+  return s <= 0 ? b = "expired" : s <= r && (b = "warn"), { expiry: t, daysRemaining: s, totalDays: o, elapsedRatio: m, state: b };
 }
-function S(i, r, e) {
-  const n = (o) => String(o).padStart(2, "0");
-  if (r === "short") return `${n(i.getDate())}/${n(i.getMonth() + 1)}/${i.getFullYear()}`;
-  if (r === "iso") return w(i);
+function S(i, e, r) {
+  const n = (t) => String(t).padStart(2, "0");
+  if (e === "short") return `${n(i.getDate())}/${n(i.getMonth() + 1)}/${i.getFullYear()}`;
+  if (e === "iso") return w(i);
   try {
-    return new Intl.DateTimeFormat(e === "en" ? "en-GB" : "ar", {
+    return new Intl.DateTimeFormat(r === "en" ? "en-GB" : "ar", {
       day: "numeric",
       month: "long",
       year: "numeric"
@@ -605,78 +602,78 @@ function S(i, r, e) {
   }
 }
 function J(i) {
-  return I(i).map((r, e) => ({
-    id: String(r.id ?? r.cat_id ?? "").trim() || `cat-${e + 1}`,
-    name: g(r.name),
-    icon: String(r.icon ?? "").trim(),
-    paoMonths: Math.max(0, v(r.pao_months, 0))
-  })).filter((r) => r.name);
+  return I(i).map((e, r) => ({
+    id: String(e.id ?? e.cat_id ?? "").trim() || `cat-${r + 1}`,
+    name: g(e.name),
+    icon: String(e.icon ?? "").trim(),
+    paoMonths: Math.max(0, v(e.pao_months, 0))
+  })).filter((e) => e.name);
 }
 function Q(i) {
-  return I(i).map((e) => ({
-    months: Math.max(1, v(e.months, 0)),
-    label: g(e.label)
-  })).filter((e) => e.months > 0);
+  return I(i).map((r) => ({
+    months: Math.max(1, v(r.months, 0)),
+    label: g(r.label)
+  })).filter((r) => r.months > 0);
 }
 function X(i) {
-  return C(i.bpa_input_mode, "direct") === "category" ? "category" : "direct";
+  return N(i.bpa_input_mode, "direct") === "category" ? "category" : "direct";
 }
 function E(i) {
-  const r = C(i.bpa_date_format, "long");
-  return ["long", "short", "iso"].includes(r) ? r : "long";
+  const e = N(i.bpa_date_format, "long");
+  return ["long", "short", "iso"].includes(e) ? e : "long";
 }
-function Z(i, r) {
-  return i.label ? i.label : r === "en" ? `${i.months} months` : `${i.months} شهرًا`;
+function Z(i, e) {
+  return i.label ? i.label : e === "en" ? `${i.months} months` : `${i.months} شهرًا`;
 }
-function rr(i, r) {
-  const e = (t) => String(t).padStart(2, "0"), n = (t) => `${t.getFullYear()}${e(t.getMonth() + 1)}${e(t.getDate())}`, o = new Date(r.getTime() + $);
+function ee(i, e) {
+  const r = (o) => String(o).padStart(2, "0"), n = (o) => `${o.getFullYear()}${r(o.getMonth() + 1)}${r(o.getDate())}`, t = new Date(e.getTime() + $);
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//beauty-pao-calculator//EN",
     "BEGIN:VEVENT",
     `UID:${Date.now()}@beauty-pao`,
-    `DTSTART;VALUE=DATE:${n(r)}`,
-    `DTEND;VALUE=DATE:${n(o)}`,
+    `DTSTART;VALUE=DATE:${n(e)}`,
+    `DTEND;VALUE=DATE:${n(t)}`,
     `SUMMARY:${i.replace(/\r?\n/g, " ")}`,
     "END:VEVENT",
     "END:VCALENDAR"
   ].join(`\r
 `);
 }
-var er = Object.defineProperty, h = (i, r, e, n) => {
-  for (var o = void 0, t = i.length - 1, s; t >= 0; t--)
-    (s = i[t]) && (o = s(r, e, o) || o);
-  return o && er(r, e, o), o;
+var re = Object.defineProperty, f = (i, e, r, n) => {
+  for (var t = void 0, o = i.length - 1, s; o >= 0; o--)
+    (s = i[o]) && (t = s(e, r, t) || t);
+  return t && re(e, r, t), t;
 };
-const N = "tw-beauty-pao-records", z = class z extends V {
+const C = "tw-beauty-pao-records", z = class z extends V {
   constructor() {
     super(...arguments), this.config = {}, this.catId = "", this.pao = 0, this.openDate = "", this.recName = "", this.note = "", this.records = [], this.editingId = "", this.boundLangHandler = () => this.requestUpdate();
   }
   connectedCallback() {
-    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.records = F(N, []), this.openDate = w(/* @__PURE__ */ new Date());
+    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.records = F(C, []), this.openDate = w(/* @__PURE__ */ new Date());
   }
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(r) {
-    var e;
-    r.has("config") && !this.pao && (this.pao = Math.max(0, v((e = this.config) == null ? void 0 : e.bpa_default_pao, 0)));
+  updated(e) {
+    var r;
+    e.has("config") && !this.pao && (this.pao = Math.max(0, v((r = this.config) == null ? void 0 : r.bpa_default_pao, 0)));
   }
   get locale() {
     return Y() === "en" ? "en" : "ar";
   }
   persist() {
-    G(N, this.records);
+    G(C, this.records);
   }
-  onCategory(r, e) {
-    this.catId = r, e > 0 && (this.pao = e);
+  onCategory(e, r) {
+    this.catId = e, r > 0 && (this.pao = r);
   }
   saveRecord() {
-    var o;
+    var t;
     if (!R(this.openDate) || this.pao <= 0) return;
-    const e = Math.max(1, v((o = this.config) == null ? void 0 : o.bpa_max_records, 12));
-    if (this.records.length >= e) return;
+    const r = Math.max(1, v((t = this.config) == null ? void 0 : t.bpa_max_records, 12));
+    if (this.records.length >= r) return;
     const n = {
       id: `rec-${Date.now()}`,
       name: this.recName.trim() || (this.locale === "en" ? "Product" : "منتج"),
@@ -687,30 +684,30 @@ const N = "tw-beauty-pao-records", z = class z extends V {
     };
     this.records = [n, ...this.records], this.persist(), this.recName = "", this.note = "";
   }
-  deleteRecord(r) {
-    this.records = this.records.filter((e) => e.id !== r), this.persist();
+  deleteRecord(e) {
+    this.records = this.records.filter((r) => r.id !== e), this.persist();
   }
   clearRecords() {
     this.records = [], this.persist();
   }
-  renameRecord(r, e) {
-    this.records = this.records.map((n) => n.id === r ? { ...n, name: e.trim() || n.name } : n), this.persist();
+  renameRecord(e, r) {
+    this.records = this.records.map((n) => n.id === e ? { ...n, name: r.trim() || n.name } : n), this.persist();
   }
-  downloadIcs(r, e) {
-    const n = rr(r, e), o = new Blob([n], { type: "text/calendar;charset=utf-8" }), t = URL.createObjectURL(o), s = document.createElement("a");
-    s.href = t, s.download = "beauty-pao.ics", document.body.appendChild(s), s.click(), document.body.removeChild(s), setTimeout(() => URL.revokeObjectURL(t), 1e3);
+  downloadIcs(e, r) {
+    const n = ee(e, r), t = new Blob([n], { type: "text/calendar;charset=utf-8" }), o = URL.createObjectURL(t), s = document.createElement("a");
+    s.href = o, s.download = "beauty-pao.ics", document.body.appendChild(s), s.click(), document.body.removeChild(s), setTimeout(() => URL.revokeObjectURL(o), 1e3);
   }
-  stateColor(r) {
-    const e = this.config || {};
-    return String(r === "expired" ? e.bpa_expired_color ?? "#cf4b4b" : r === "warn" ? e.bpa_warn_color ?? "#e0a100" : e.bpa_safe_color ?? "#2f9e63");
+  stateColor(e) {
+    const r = this.config || {};
+    return String(e === "expired" ? r.bpa_expired_color ?? "#cf4b4b" : e === "warn" ? r.bpa_warn_color ?? "#e0a100" : r.bpa_safe_color ?? "#2f9e63");
   }
-  stateLabel(r, e) {
+  stateLabel(e, r) {
     const n = this.config || {};
-    return r === "expired" ? g(n.bpa_state_expired) || a("انتهت المدة التقريبية", "Approximate period ended") : r === "warn" ? g(n.bpa_state_warn) || a(`قرب الانتهاء — باقٍ ${e} يومًا`, `Ending soon — ${e} days left`) : g(n.bpa_state_safe) || a(`صالح للاستخدام — باقٍ ${e} يومًا`, `Good to use — ${e} days left`);
+    return e === "expired" ? g(n.bpa_state_expired) || a("انتهت المدة التقريبية", "Approximate period ended") : e === "warn" ? g(n.bpa_state_warn) || a(`قرب الانتهاء — باقٍ ${r} يومًا`, `Ending soon — ${r} days left`) : g(n.bpa_state_safe) || a(`صالح للاستخدام — باقٍ ${r} يومًا`, `Good to use — ${r} days left`);
   }
   renderResult() {
-    const r = this.config || {}, e = R(this.openDate);
-    if (!e || this.pao <= 0)
+    const e = this.config || {}, r = R(this.openDate);
+    if (!r || this.pao <= 0)
       return c`<div class="bpa-hero bpa-hero--empty" role="status">
         <div class="bpa-hero__placeholder">
           <span class="bpa-hero__placeholder-icon" aria-hidden="true">◷</span>
@@ -723,21 +720,21 @@ const N = "tw-beauty-pao-records", z = class z extends V {
         </div>
       </div>`;
     const n = /* @__PURE__ */ new Date();
-    if (n.setHours(0, 0, 0, 0), e.getTime() > n.getTime())
+    if (n.setHours(0, 0, 0, 0), r.getTime() > n.getTime())
       return c`<div class="bpa-hero bpa-hero--empty" role="alert">
         <div class="bpa-error">
           ${a("تاريخ الفتح في المستقبل. اختاري تاريخًا صحيحًا.", "The open date is in the future. Please pick a valid date.")}
         </div>
       </div>`;
-    const o = Math.max(1, v(r.bpa_warn_days, 30)), t = T(e, this.pao, o), s = E(r), f = this.stateColor(t.state), m = 92, b = 2 * Math.PI * m, d = t.state === "expired" ? 0 : Math.max(0, Math.min(1, t.daysRemaining / Math.max(1, t.totalDays))), _ = b * (1 - d), k = x(r.bpa_enable_calendar, !0), D = g(r.bpa_storage_tips), M = g(r.bpa_stop_signals), A = a("انتهاء صلاحية منتج التجميل", "Beauty product expiry"), O = Math.abs(t.daysRemaining);
+    const t = Math.max(1, v(e.bpa_warn_days, 30)), o = T(r, this.pao, t), s = E(e), h = this.stateColor(o.state), m = 92, b = 2 * Math.PI * m, d = o.state === "expired" ? 0 : Math.max(0, Math.min(1, o.daysRemaining / Math.max(1, o.totalDays))), _ = b * (1 - d), k = x(e.bpa_enable_calendar, !0), D = g(e.bpa_storage_tips), M = g(e.bpa_stop_signals), A = a("انتهاء صلاحية منتج التجميل", "Beauty product expiry"), O = Math.abs(o.daysRemaining);
     return c`<div
-      class="bpa-hero bpa-hero--${t.state}"
-      style=${y({ "--bpa-color": f })}
+      class="bpa-hero bpa-hero--${o.state}"
+      style=${y({ "--bpa-color": h })}
     >
       <div
         class="bpa-dial"
         role="img"
-        aria-label=${this.stateLabel(t.state, Math.max(0, t.daysRemaining))}
+        aria-label=${this.stateLabel(o.state, Math.max(0, o.daysRemaining))}
       >
         <svg viewBox="0 0 210 210" aria-hidden="true">
           <circle class="bpa-dial__disc" cx="105" cy="105" r="80"></circle>
@@ -753,20 +750,20 @@ const N = "tw-beauty-pao-records", z = class z extends V {
         <div class="bpa-dial__center">
           <div class="bpa-dial__days">${O}</div>
           <div class="bpa-dial__unit">
-            ${t.daysRemaining >= 0 ? a("يوم متبقٍ", "days left") : a("يوم مضى", "days over")}
+            ${o.daysRemaining >= 0 ? a("يوم متبقٍ", "days left") : a("يوم مضى", "days over")}
           </div>
-          ${t.state !== "expired" ? c`<div class="bpa-dial__ratio">
+          ${o.state !== "expired" ? c`<div class="bpa-dial__ratio">
                 ${a(`${Math.round(d * 100)}٪ من المدة`, `${Math.round(d * 100)}% of period`)}
               </div>` : l}
         </div>
       </div>
 
-      <span class="bpa-state bpa-state--${t.state}">${this.stateLabel(t.state, Math.max(0, t.daysRemaining))}</span>
+      <span class="bpa-state bpa-state--${o.state}">${this.stateLabel(o.state, Math.max(0, o.daysRemaining))}</span>
 
       <div class="bpa-dates">
         <div class="bpa-date-cell">
           <span>${a("تاريخ الفتح", "Opened")}</span>
-          <b>${S(e, s, this.locale)}</b>
+          <b>${S(r, s, this.locale)}</b>
         </div>
         <div class="bpa-date-cell">
           <span>${a("المدة", "Period")}</span>
@@ -774,7 +771,7 @@ const N = "tw-beauty-pao-records", z = class z extends V {
         </div>
         <div class="bpa-date-cell">
           <span>${a("ينتهي تقريبًا", "Approx. end")}</span>
-          <b>${S(t.expiry, s, this.locale)}</b>
+          <b>${S(o.expiry, s, this.locale)}</b>
         </div>
       </div>
 
@@ -784,17 +781,18 @@ const N = "tw-beauty-pao-records", z = class z extends V {
           </div>` : l}
 
       <div class="bpa-result-actions">
-        ${k ? c`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.downloadIcs(A, t.expiry)}>
+        ${k ? c`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.downloadIcs(A, o.expiry)}>
               ${a("إضافة إلى التقويم", "Add to calendar")}
             </button>` : l}
-        ${x(r.bpa_enable_storage, !0) ? c`<button type="button" class="fs-btn" @click=${() => this.saveRecord()}>${a("حفظ هذه العبوة", "Save this product")}</button>` : l}
+        ${x(e.bpa_enable_storage, !0) ? c`<button type="button" class="fs-btn" @click=${() => this.saveRecord()}>${a("حفظ هذه العبوة", "Save this product")}</button>` : l}
+        ${W(e, "bpa_")}
       </div>
     </div>`;
   }
   renderSaved() {
-    const r = this.config || {};
-    if (!x(r.bpa_enable_storage, !0)) return l;
-    const e = E(r), n = Math.max(1, v(r.bpa_warn_days, 30));
+    const e = this.config || {};
+    if (!x(e.bpa_enable_storage, !0)) return l;
+    const r = E(e), n = Math.max(1, v(e.bpa_warn_days, 30));
     return c`<div class="bpa-saved">
       <div class="bpa-saved__head">
         <h3 class="bpa-saved__title">${a("عبواتي المحفوظة", "My saved products")}</h3>
@@ -802,37 +800,37 @@ const N = "tw-beauty-pao-records", z = class z extends V {
       </div>
       <p class="bpa-saved__note">${a("البيانات محفوظة على جهازك فقط ولا تُرسل إلى أي خادم.", "Data is stored on your device only and never sent to any server.")}</p>
       ${this.records.length ? c`<div class="bpa-records">
-            ${this.records.map((o) => {
-      const t = R(o.open), s = t ? T(t, o.pao, n) : null, f = s ? this.stateColor(s.state) : "var(--muted-color)", m = (s == null ? void 0 : s.state) ?? "unknown", b = s ? s.daysRemaining >= 0 ? a(`${s.daysRemaining} يوم`, `${s.daysRemaining} days`) : a(`منتهٍ ${Math.abs(s.daysRemaining)} يوم`, `Expired ${Math.abs(s.daysRemaining)}d ago`) : "";
+            ${this.records.map((t) => {
+      const o = R(t.open), s = o ? T(o, t.pao, n) : null, h = s ? this.stateColor(s.state) : "var(--muted-color)", m = (s == null ? void 0 : s.state) ?? "unknown", b = s ? s.daysRemaining >= 0 ? a(`${s.daysRemaining} يوم`, `${s.daysRemaining} days`) : a(`منتهٍ ${Math.abs(s.daysRemaining)} يوم`, `Expired ${Math.abs(s.daysRemaining)}d ago`) : "";
       return c`<article
                 class="bpa-record bpa-record--${m}"
-                style=${y({ "--rec-color": f })}
+                style=${y({ "--rec-color": h })}
               >
                 <div class="bpa-record__status" aria-hidden="true">
                   <span class="bpa-record__ring"></span>
                   ${s ? c`<span class="bpa-record__days">${Math.abs(s.daysRemaining)}</span>` : l}
                 </div>
                 <div class="bpa-record__body">
-                  ${this.editingId === o.id ? c`<input
+                  ${this.editingId === t.id ? c`<input
                         class="bpa-record__edit"
-                        .value=${o.name}
+                        .value=${t.name}
                         aria-label=${a("اسم العبوة", "Product name")}
                         @change=${(d) => {
-        this.renameRecord(o.id, d.target.value), this.editingId = "";
+        this.renameRecord(t.id, d.target.value), this.editingId = "";
       }}
-                      />` : c`<div class="bpa-record__name">${o.name}</div>`}
+                      />` : c`<div class="bpa-record__name">${t.name}</div>`}
                   <div class="bpa-record__meta">
-                    ${s && t ? c`<span class="bpa-record__pill bpa-record__pill--${m}">
+                    ${s && o ? c`<span class="bpa-record__pill bpa-record__pill--${m}">
                           ${s.state === "expired" ? a("منتهٍ", "Expired") : s.state === "warn" ? a("قرب الانتهاء", "Ending soon") : a("صالح", "Good")}
                         </span>` : l}
                     ${b ? c`<span>${b}</span>` : l}
-                    ${s && t ? c`<span>· ${a("ينتهي", "Ends")} ${S(s.expiry, e, this.locale)}</span>` : l}
+                    ${s && o ? c`<span>· ${a("ينتهي", "Ends")} ${S(s.expiry, r, this.locale)}</span>` : l}
                   </div>
-                  ${o.note ? c`<p class="bpa-record__note">${o.note}</p>` : l}
+                  ${t.note ? c`<p class="bpa-record__note">${t.note}</p>` : l}
                 </div>
                 <div class="bpa-record__actions">
-                  <button type="button" class="bpa-icon-btn" aria-label=${a("تعديل الاسم", "Rename")} @click=${() => this.editingId = this.editingId === o.id ? "" : o.id}>✎</button>
-                  <button type="button" class="bpa-icon-btn" aria-label=${a("حذف", "Delete")} @click=${() => this.deleteRecord(o.id)}>🗑</button>
+                  <button type="button" class="bpa-icon-btn" aria-label=${a("تعديل الاسم", "Rename")} @click=${() => this.editingId = this.editingId === t.id ? "" : t.id}>✎</button>
+                  <button type="button" class="bpa-icon-btn" aria-label=${a("حذف", "Delete")} @click=${() => this.deleteRecord(t.id)}>🗑</button>
                 </div>
               </article>`;
     })}
@@ -840,20 +838,20 @@ const N = "tw-beauty-pao-records", z = class z extends V {
     </div>`;
   }
   render() {
-    const r = this.config || {}, e = H(r, "bpa_"), n = g(r.bpa_title), o = g(r.bpa_desc), t = X(r), s = J(r.bpa_categories), f = Q(r.bpa_pao_options), m = g(r.bpa_notice) || a(
+    const e = this.config || {}, r = B(e, "bpa_"), n = g(e.bpa_title), t = g(e.bpa_desc), o = X(e), s = J(e.bpa_categories), h = Q(e.bpa_pao_options), m = g(e.bpa_notice) || a(
       "النتيجة تقديرية وتعتمد على تاريخ الفتح والمدة المكتوبة على العبوة. اتبعي تعليمات الشركة المصنّعة وتوقّفي عن الاستخدام عند تغيّر الرائحة أو اللون أو القوام.",
       "The result is approximate and based on the open date and the period printed on the packaging. Follow the manufacturer instructions and stop using if the smell, color or texture changes."
-    ), b = t === "category" && s.length > 0;
+    ), b = o === "category" && s.length > 0;
     return c`
       <section
         class="fs-section"
-        style=${y(B(e))}
+        style=${y(H(r))}
         aria-label=${n || a("حاسبة مدة الاستخدام بعد الفتح", "PAO & expiry calculator")}
       >
         <div class="fs-container">
-          ${n || o ? c`<div class="fs-header">
+          ${n || t ? c`<div class="fs-header">
                 ${n ? c`<h2 class="fs-title">${n}</h2>` : l}
-                ${o ? c`<p class="fs-desc">${o}</p>` : l}
+                ${t ? c`<p class="fs-desc">${t}</p>` : l}
               </div>` : l}
 
           <div class="bpa-shell">
@@ -892,8 +890,8 @@ const N = "tw-beauty-pao-records", z = class z extends V {
 
                 <div class="bpa-field">
                   <label>${a("مدة الاستخدام بعد الفتح", "Period after opening")}</label>
-                  ${f.length ? c`<div class="bpa-pao-chips" role="group" aria-label=${a("مدد الاستخدام", "Use periods")}>
-                        ${f.map(
+                  ${h.length ? c`<div class="bpa-pao-chips" role="group" aria-label=${a("مدد الاستخدام", "Use periods")}>
+                        ${h.map(
       (d) => c`<button
                             type="button"
                             class=${`bpa-pao-chip${this.pao === d.months ? " is-active" : ""}`}
@@ -926,7 +924,7 @@ const N = "tw-beauty-pao-records", z = class z extends V {
                   />
                 </div>
 
-                ${x(r.bpa_enable_name, !0) ? c`<div class="bpa-field">
+                ${x(e.bpa_enable_name, !0) ? c`<div class="bpa-field">
                       <label for="bpa-name">${a("اسم العبوة (اختياري)", "Product name (optional)")}</label>
                       <input
                         id="bpa-name"
@@ -937,7 +935,7 @@ const N = "tw-beauty-pao-records", z = class z extends V {
                       />
                     </div>` : l}
 
-                ${x(r.bpa_enable_note, !1) ? c`<div class="bpa-field">
+                ${x(e.bpa_enable_note, !1) ? c`<div class="bpa-field">
                       <label for="bpa-note">${a("ملاحظة (اختياري)", "Note (optional)")}</label>
                       <input
                         id="bpa-note"
@@ -955,7 +953,6 @@ const N = "tw-beauty-pao-records", z = class z extends V {
           ${this.renderSaved()}
 
           <p class="bpa-notice">${m}</p>
-          ${W({ config: r, prefix: "bpa_", ready: !0 })}
         </div>
       </section>
     `;
@@ -963,28 +960,28 @@ const N = "tw-beauty-pao-records", z = class z extends V {
 };
 z.styles = [j, q];
 let p = z;
-h([
+f([
   U({ type: Object })
 ], p.prototype, "config");
-h([
+f([
   u()
 ], p.prototype, "catId");
-h([
+f([
   u()
 ], p.prototype, "pao");
-h([
+f([
   u()
 ], p.prototype, "openDate");
-h([
+f([
   u()
 ], p.prototype, "recName");
-h([
+f([
   u()
 ], p.prototype, "note");
-h([
+f([
   u()
 ], p.prototype, "records");
-h([
+f([
   u()
 ], p.prototype, "editingId");
 typeof p < "u" && p.registerSallaComponent("salla-beauty-pao-expiry-calculator");

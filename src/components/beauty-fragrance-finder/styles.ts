@@ -21,8 +21,8 @@ export const componentStyles = css`
     min-width: 0;
     padding: 1rem 1rem 1.1rem;
     border-radius: var(--section-radius, 20px);
-    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, transparent));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
@@ -31,7 +31,7 @@ export const componentStyles = css`
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.04em;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bff-chips {
@@ -60,10 +60,10 @@ export const componentStyles = css`
     gap: 0.65rem;
     min-height: 52px;
     padding: 0.55rem 0.7rem;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 20px) * 0.65);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.9rem;
     font-weight: 700;
@@ -80,7 +80,7 @@ export const componentStyles = css`
 
   .bff-chip:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 45%, var(--border-color, #e5e7eb));
     box-shadow: 0 8px 18px rgba(43, 33, 28, 0.08);
   }
 
@@ -124,7 +124,7 @@ export const componentStyles = css`
   .bff-chip__hint {
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -206,7 +206,7 @@ export const componentStyles = css`
       border-radius: 50%;
       background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
       border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, transparent);
-      color: var(--muted-color, #8f7a86);
+      color: var(--muted-color, #666666);
       font-size: 0.72rem;
       font-weight: 700;
       padding: 0.5rem;
@@ -224,7 +224,7 @@ export const componentStyles = css`
     padding: 1.15rem;
     border-radius: var(--section-radius, 20px);
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #e5e7eb));
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 12%, transparent),
       0 16px 36px rgba(120, 44, 82, 0.09);
@@ -285,8 +285,8 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--card-bg, #fff) 70%, var(--section-bg, #fbf5f8));
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: color-mix(in srgb, var(--card-bg, #fff) 70%, var(--section-bg, transparent));
     color: var(--accent-color, var(--fs-store-primary));
     font-size: 1.05rem;
     cursor: pointer;
@@ -295,21 +295,21 @@ export const componentStyles = css`
 
   .bff-nav__btn:hover {
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bff-hero__title {
     margin: 0 0 0.4rem;
     font-size: clamp(1.35rem, 3.2vw, 1.75rem);
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     line-height: 1.2;
     letter-spacing: -0.01em;
   }
 
   .bff-hero__desc {
     margin: 0 0 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.7;
     font-size: 0.93rem;
   }
@@ -340,7 +340,7 @@ export const componentStyles = css`
         color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 28%, transparent),
         transparent 55%
       ),
-      color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+      color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff));
     aspect-ratio: 4 / 5;
     max-height: 280px;
   }
@@ -386,15 +386,15 @@ export const componentStyles = css`
         color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 10%, transparent),
         transparent 70%
       ),
-      color-mix(in srgb, var(--section-bg, #fbf5f8) 65%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #f2dde7));
+      color-mix(in srgb, var(--section-bg, transparent) 65%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #e5e7eb));
   }
 
   .bff-pyramid__intro {
     margin: 0 0 0.55rem;
     font-size: 0.76rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-align: center;
   }
 
@@ -451,7 +451,7 @@ export const componentStyles = css`
   .bff-note {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     background: color-mix(in srgb, var(--card-bg, #fff) 82%, transparent);
     padding: 0.22rem 0.65rem;
     border-radius: 999px;
@@ -470,7 +470,7 @@ export const componentStyles = css`
 
   .bff-tier__empty {
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   @media (max-width: 480px) {
@@ -501,19 +501,19 @@ export const componentStyles = css`
     padding: 0.75rem 0.85rem;
     border-radius: 14px;
     background: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 7%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #e5e7eb));
   }
 
   .bff-fact__label {
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bff-fact__value {
     font-size: 0.92rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bff-panel__actions {
@@ -528,7 +528,7 @@ export const componentStyles = css`
     margin: 1.25rem auto 0;
     text-align: center;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
   }
 

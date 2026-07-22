@@ -55,8 +55,8 @@ export const componentStyles = css`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
         transparent 60%
       ),
-      color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+      color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, transparent),
       0 18px 40px rgba(120, 44, 82, 0.08);
@@ -91,15 +91,15 @@ export const componentStyles = css`
     justify-content: center;
     text-align: center;
     padding: 1.5rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.88rem;
     line-height: 1.55;
     background: repeating-linear-gradient(
       -45deg,
-      color-mix(in srgb, var(--border-color, #f2dde7) 25%, var(--card-bg, #fff)),
-      color-mix(in srgb, var(--border-color, #f2dde7) 25%, var(--card-bg, #fff)) 10px,
-      color-mix(in srgb, var(--border-color, #f2dde7) 12%, var(--card-bg, #fff)) 10px,
-      color-mix(in srgb, var(--border-color, #f2dde7) 12%, var(--card-bg, #fff)) 20px
+      color-mix(in srgb, var(--border-color, #e5e7eb) 25%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--border-color, #e5e7eb) 25%, var(--card-bg, #fff)) 10px,
+      color-mix(in srgb, var(--border-color, #e5e7eb) 12%, var(--card-bg, #fff)) 10px,
+      color-mix(in srgb, var(--border-color, #e5e7eb) 12%, var(--card-bg, #fff)) 20px
     );
   }
 
@@ -131,9 +131,9 @@ export const componentStyles = css`
     min-height: 36px;
     padding: 0.35rem 0.85rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.8rem;
     font-weight: 700;
@@ -143,11 +143,11 @@ export const componentStyles = css`
   }
 
   .bfz-legend__btn:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
   }
 
   .bfz-legend__btn.is-active {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
@@ -269,9 +269,9 @@ export const componentStyles = css`
     white-space: nowrap;
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     background: color-mix(in srgb, var(--card-bg, #fff) 92%, transparent);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent);
     padding: 0.15rem 0.45rem;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(43, 33, 28, 0.08);
@@ -282,7 +282,7 @@ export const componentStyles = css`
   .bfz-panel {
     min-width: 0;
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     border-radius: var(--section-radius, 20px);
     padding: 1.2rem 1.25rem 1.35rem;
     box-shadow:
@@ -313,7 +313,7 @@ export const componentStyles = css`
     font-size: clamp(1.1rem, 2vw, 1.3rem);
     font-weight: 800;
     line-height: 1.3;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bfz-nav {
@@ -328,8 +328,8 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, transparent));
     color: var(--accent-color, var(--fs-store-primary));
     font-size: 1.05rem;
     cursor: pointer;
@@ -339,7 +339,7 @@ export const componentStyles = css`
   .bfz-nav__btn:hover,
   .bfz-nav__btn:focus-visible {
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
     outline: none;
   }
 
@@ -354,7 +354,7 @@ export const componentStyles = css`
 
   .bfz-panel__desc {
     margin: 0;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.7;
     font-size: 0.92rem;
   }
@@ -386,7 +386,7 @@ export const componentStyles = css`
     font-size: 0.8rem;
     font-weight: 800;
     letter-spacing: 0.02em;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -417,9 +417,9 @@ export const componentStyles = css`
     padding-inline: 2.45rem 0.75rem;
     font-size: 0.88rem;
     line-height: 1.55;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 5%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent);
     border-radius: 12px;
   }
 
@@ -451,7 +451,7 @@ export const componentStyles = css`
   .bfz-tips li {
     position: relative;
     padding-inline-start: 1.15rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.86rem;
     line-height: 1.55;
   }
@@ -475,7 +475,7 @@ export const componentStyles = css`
     border-radius: 14px;
     background: color-mix(in srgb, #e0a100 12%, var(--card-bg, #fff));
     border: 1px solid color-mix(in srgb, #e0a100 34%, transparent);
-    color: color-mix(in srgb, #8a5a00 70%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000));
     font-size: 0.84rem;
     line-height: 1.55;
   }
@@ -489,7 +489,7 @@ export const componentStyles = css`
     margin: 1.35rem 0 0;
     text-align: center;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.6;
   }
 
@@ -588,13 +588,13 @@ export const componentStyles = css`
     margin: 0 0 0.4rem;
     font-size: 1.05rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bfz-empty-state__text {
     margin: 0;
     font-size: 0.86rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
   }
 

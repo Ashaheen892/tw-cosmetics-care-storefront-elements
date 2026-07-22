@@ -32,3 +32,6 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # Local Notion capture / preview assets
 notion-screenshots/
 
+
+# Submission archives
+release/

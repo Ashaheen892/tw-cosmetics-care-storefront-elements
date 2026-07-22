@@ -1,17 +1,18 @@
-import { css as L, LitElement as R, html as s, nothing as p } from "lit";
-import { property as P, state as S } from "lit/decorators.js";
+import { css as R, LitElement as A, html as s, nothing as p } from "lit";
+import { property as P, state as C } from "lit/decorators.js";
 import { classMap as h } from "lit/directives/class-map.js";
 import { styleMap as f } from "lit/directives/style-map.js";
-import { n as C, l as n, t, g as T, s as E, r as V, p as B, i as O, a as z, b as N } from "./sharedStyles-BgfDOkwJ.js";
-const M = L`
+import { n as S, l as n, t, g as T, s as E, r as V, p as B, i as N, a as z } from "./sharedStyles-DKbcXBPy.js";
+import { r as O } from "./commerceOutcome-Dk8p2VWM.js";
+const M = R`
   .bac-picker {
     display: grid;
     gap: 0;
     margin-top: 1.5rem;
     padding: 1rem;
     border-radius: var(--section-radius, 16px);
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 18%, var(--card-bg, #fff));
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 18%, var(--card-bg, #fff));
   }
 
   .bac-slot {
@@ -26,7 +27,7 @@ const M = L`
     font-weight: 800;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bac-divider {
@@ -39,7 +40,7 @@ const M = L`
   .bac-divider__line {
     flex: 1;
     height: 1px;
-    background: var(--border-color, #f2dde7);
+    background: var(--border-color, #e5e7eb);
   }
 
   .bac-divider__icon {
@@ -50,8 +51,8 @@ const M = L`
     place-items: center;
     border-radius: 50%;
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
-    color: var(--muted-color, #8f7a86);
+    border: 1px solid var(--border-color, #e5e7eb);
+    color: var(--muted-color, #666666);
     font-size: 0.75rem;
     font-weight: 800;
   }
@@ -69,9 +70,9 @@ const M = L`
     min-height: 44px;
     padding: 0.5rem 0.85rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.86rem;
     font-weight: 600;
@@ -82,7 +83,7 @@ const M = L`
   }
 
   .bac-chip:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
   }
 
   .bac-chip:active {
@@ -121,7 +122,7 @@ const M = L`
     margin: 0 0 0.35rem;
     font-size: 0.95rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     text-align: center;
   }
 
@@ -180,10 +181,10 @@ const M = L`
     gap: 0.4rem;
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff));
     font-size: 0.84rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bac-pair__dot {
@@ -196,14 +197,14 @@ const M = L`
   }
 
   .bac-pair__vs {
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-weight: 800;
     font-size: 0.9rem;
   }
 
   .bac-verdict__note {
     margin: 0;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-size: 0.94rem;
     line-height: 1.65;
     text-align: start;
@@ -235,7 +236,7 @@ const M = L`
     margin: 0;
     font-size: 0.86rem;
     line-height: 1.55;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-weight: 600;
   }
 
@@ -262,14 +263,14 @@ const M = L`
     margin: 0;
     font-size: 0.88rem;
     line-height: 1.6;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bac-notice {
     margin-top: 1.25rem;
     text-align: center;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.6;
   }
 
@@ -292,7 +293,7 @@ function D(l) {
   return j.includes(e) ? e : "compatible";
 }
 function H(l) {
-  return C(l).map((e, i) => {
+  return S(l).map((e, i) => {
     const o = n(e.name);
     return {
       id: String(e.id ?? e.active_id ?? "").trim() || `active-${i + 1}`,
@@ -303,7 +304,7 @@ function H(l) {
   }).filter((e) => e.name);
 }
 function U(l) {
-  return C(l).map((e) => ({
+  return S(l).map((e) => ({
     a: String(e.a ?? "").trim(),
     b: String(e.b ?? "").trim(),
     level: D(e.level),
@@ -384,7 +385,7 @@ const I = {
   avoid: "✕",
   unknown: "?",
   same: "↔"
-}, k = class k extends R {
+}, k = class k extends A {
   constructor() {
     super(...arguments), this.config = {}, this.selectedA = "", this.selectedB = "", this.boundLangHandler = () => this.requestUpdate();
   }
@@ -444,14 +445,14 @@ const I = {
       avoid: n(r.bac_label_avoid) || t("تجنّبي الدمج", "Avoid"),
       unknown: n(r.bac_label_unknown) || t("لا قاعدة / غير معروف", "No rule / unknown"),
       same: t("نفس المكوّن", "Same ingredient")
-    }, v = F(this.rules, i, o, _), { level: d, note: x, tip: u, timing: m } = v, A = I[d], w = n(r.bac_result_title);
+    }, v = F(this.rules, i, o, _), { level: d, note: x, tip: u, timing: m } = v, L = I[d], w = n(r.bac_result_title);
     return s`
       <div
         class=${h({ "bac-verdict": !0, [`bac-verdict--${d}`]: !0 })}
         role="region"
         aria-live="polite"
         aria-label=${g[d]}
-        style=${f({ "--verdict-color": A })}
+        style=${f({ "--verdict-color": L })}
       >
         ${w ? s`<h3 class="bac-verdict__title">${w}</h3>` : p}
         <div class="bac-verdict__hero">
@@ -490,11 +491,12 @@ const I = {
               <span class="bac-timing__label">${t("التوقيت", "Timing")}</span>
               <p class="bac-timing__text">${m}</p>
             </div>` : p}
+        ${O(r, "bac_")}
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, i = V(e, "bac_"), o = i.animate && !B(), r = this.actives, a = n(e.bac_title), c = n(e.bac_desc), _ = O(e.bac_show_notice, !0), g = n(e.bac_notice) || t(
+    const e = this.config || {}, i = V(e, "bac_"), o = i.animate && !B(), r = this.actives, a = n(e.bac_title), c = n(e.bac_desc), _ = N(e.bac_show_notice, !0), g = n(e.bac_notice) || t(
       "هذه المعلومات توعوية عامة ولا تُغني عن استشارة مختص العناية بالبشرة.",
       "This information is general and educational and does not replace advice from a skincare professional."
     );
@@ -538,7 +540,6 @@ const I = {
           </div>
 
           ${_ ? s`<p class="bac-notice">${g}</p>` : p}
-          ${N({ config: e, prefix: "bac_", ready: !!this.selectedA, selection: this.selectedA })}
         </div>
       </section>
     `;
@@ -550,10 +551,10 @@ $([
   P({ type: Object })
 ], b.prototype, "config");
 $([
-  S()
+  C()
 ], b.prototype, "selectedA");
 $([
-  S()
+  C()
 ], b.prototype, "selectedB");
 typeof b < "u" && b.registerSallaComponent("salla-beauty-actives-compatibility");
 export {

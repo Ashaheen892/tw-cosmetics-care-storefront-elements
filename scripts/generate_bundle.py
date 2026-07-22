@@ -314,7 +314,7 @@ def boolean(fid, label, value=True, desc=None, conditions=None):
     )
 
 
-def variable_list(fid, label="الرابط", conditions=None):
+def variable_list(fid, label="الرابط", conditions=None, required=False, desc=None):
     return with_conditions(
         {
             "type": "items",
@@ -322,46 +322,12 @@ def variable_list(fid, label="الرابط", conditions=None):
             "label": label,
             "id": fid,
             "value": None,
-            "description": None,
-            "required": False,
+            "description": desc,
+            "required": required,
             "format": "variable-list",
             "searchable": True,
             "source": "offers_link",
             "sources": deepcopy(LINK_SOURCES),
-            "key": u(),
-        },
-        conditions,
-    )
-
-
-def products_picker(
-    fid,
-    label="اختر المنتج",
-    *,
-    multichoice=True,
-    required=False,
-    max_length=24,
-    min_length=0,
-    desc=None,
-    conditions=None,
-):
-    """Raed/Saji product picker with no preselected sample products."""
-    return with_conditions(
-        {
-            "id": fid,
-            "icon": "sicon-keyboard_arrow_down",
-            "type": "items",
-            "label": label,
-            "format": "dropdown-list",
-            "source": "products",
-            "options": [],
-            "required": required,
-            "selected": [],
-            "maxLength": max_length,
-            "minLength": min_length,
-            "searchable": True,
-            "description": desc,
-            "multichoice": multichoice,
             "key": u(),
         },
         conditions,
@@ -411,20 +377,8 @@ def collection(fid, label, fields, value, min_len=0, max_len=60, required=False,
 
 
 def theme_fields(p, *, accent="#c2527f", bg="#fbf5f8", card="#ffffff"):
-    return [
-        static_title(f"{p}theme_title", "الألوان والتنسيق"),
-        color(f"{p}bg", "لون الخلفية", bg),
-        color(f"{p}text", "لون النص", "#33232e"),
-        color(f"{p}muted", "لون النص الثانوي", "#8f7a86"),
-        color(f"{p}accent", "اللون الرئيسي", accent),
-        color(f"{p}card", "لون البطاقات", card),
-        color(f"{p}border", "لون الحدود", "#f2dde7"),
-        color(f"{p}button_bg", "خلفية الأزرار", accent),
-        color(f"{p}button_color", "لون نص الأزرار", "#ffffff"),
-        number(f"{p}radius", "تدوير الحواف", 20, 0, 40, "px"),
-        boolean(f"{p}animate", "تفعيل الحركات والانتقالات", True,
-                "يتوقف تلقائياً عند تفعيل خيار تقليل الحركة في الجهاز."),
-    ]
+    """Section colors inherit store primary + light/dark theme — no merchant pickers."""
+    return []
 
 
 def quiz_nav_fields(p):
@@ -439,171 +393,114 @@ def quiz_nav_fields(p):
 
 
 def commerce_fields(p):
-    """Dynamic Salla product sources + optional conversion CTA.
-
-    Sources: latest (default) | sales | selected | categories | brands
-    Prefer scripts/upgrade-commerce-dynamic.py for in-place bundle upgrades.
-    """
-    show = f"{p}show_products"
-    source = f"{p}products_source"
+    """CTA-only conversion fields (no product slider / picker)."""
     return [
-        static_title(f"{p}commerce_title", "التوصيات والتحويل التجاري"),
-        boolean(
-            show,
-            "تفعيل عرض المنتجات",
-            False,
-            "معطّل افتراضيًا. عند التفعيل تُعرض المنتجات حسب المصدر المختار.",
-        ),
-        dropdown_manual(
-            source,
-            "نوع مصدر المنتجات",
-            [
-                ("أحدث المنتجات", "latest"),
-                ("الأكثر مبيعًا", "sales"),
-                ("منتجات مختارة", "selected"),
-                ("منتجات من تصنيف", "categories"),
-                ("الماركات التجارية", "brands"),
-            ],
-            "latest",
-            icon="sicon-t-shirt",
-            desc="الافتراضي: أحدث المنتجات.",
-            conditions=cond_eq(show, True),
-        ),
-        products_picker(
-            f"{p}chosen_products",
-            "المنتجات المختارة",
-            multichoice=True,
-            max_length=24,
-            desc="منتجات سلة الحقيقية — بدون عينات وهمية.",
-            conditions=cond_eq(source, "selected"),
-        ),
-        with_conditions(
-            {
-                "id": f"{p}categories",
-                "icon": "sicon-keyboard_arrow_down",
-                "type": "items",
-                "label": "التصنيف",
-                "format": "dropdown-list",
-                "source": "categories",
-                "options": [],
-                "required": False,
-                "selected": [],
-                "searchable": True,
-                "key": u(),
-            },
-            cond_eq(source, "categories"),
-        ),
-        with_conditions(
-            {
-                "id": f"{p}product_brands",
-                "icon": "sicon-keyboard_arrow_down",
-                "type": "items",
-                "label": "الماركات التجارية",
-                "format": "dropdown-list",
-                "source": "brands",
-                "options": [],
-                "required": False,
-                "selected": [],
-                "searchable": True,
-                "description": "عرض منتجات من الماركات التجارية.",
-                "key": u(),
-            },
-            cond_eq(source, "brands"),
-        ),
-        number(
-            f"{p}products_limit",
-            "عدد المنتجات المعروضة",
-            8,
-            1,
-            24,
-            "",
-            "الحد الأقصى لعرض المنتجات.",
-            conditions=cond_eq(show, True),
-        ),
-        multilang(
-            f"{p}products_title",
-            "عنوان قسم المنتجات",
-            "منتجات مختارة لك",
-            "Selected for you",
-            conditions=cond_eq(show, True),
-        ),
-        boolean(f"{p}show_cta", "عرض زر رابط بعد النتيجة", False),
+        static_title(f"{p}commerce_title", "زر التسوق"),
         variable_list(
             f"{p}result_link",
             "رابط زر التسوق",
-            conditions=cond_eq(f"{p}show_cta", True),
+            desc="الزر ظاهر دائمًا داخل العنصر؛ حدّد الرابط الذي ينتقل إليه العميل (الافتراضي: الصفحة الرئيسية للمتجر).",
         ),
         multilang(
             f"{p}cta_label",
             "نص زر التسوق",
             "تسوق الآن",
             "Shop now",
-            conditions=cond_eq(f"{p}show_cta", True),
         ),
     ]
 
 
 def append_commerce_fields(components):
-    """Append real-product controls and remove legacy fake product collections."""
+    """Ensure CTA fields on interactive components; strip CTA from display-only ones."""
+    product_suffixes = (
+        "show_products",
+        "products_source",
+        "chosen_products",
+        "products_limit",
+        "products_title",
+        "show_view_all",
+        "view_all_label",
+        "view_all_link",
+        "product_shadow",
+        "hide_add_btn",
+        "show_product_options",
+        "slides_per_view",
+        "products",
+        "product_source",
+        "product_brands",
+        "product_categories",
+        "show_cta",
+        "cta_link",
+    )
+    with_cta = {
+        "beauty-shade-finder": "bsf_",
+        "beauty-routine-builder": "brb_",
+        "beauty-ingredient-lab": "bil_",
+        "beauty-care-assistant": "bca_",
+        "beauty-collection-reveal": "bcr_",
+        "beauty-face-zone-map": "bfz_",
+        "beauty-routine-layering-board": "brl_",
+        "beauty-lighting-finish-simulator": "bls_",
+        "beauty-pao-expiry-calculator": "bpa_",
+        "beauty-texture-absorption-lab": "bta_",
+        "beauty-actives-compatibility": "bac_",
+        "beauty-fragrance-finder": "bff_",
+        "beauty-spf-guide": "bsg_",
+        "beauty-color-harmony": "bch_",
+    }
+    no_cta = {
+        "beauty-weekly-planner": "bwp_",
+        "beauty-categories": "bcat_",
+        "beauty-before-after": "bba_",
+        "beauty-promo-banners": "bpb_",
+    }
+    cta_suffixes = ("commerce_title", "result_link", "cta_label", "show_cta", "cta_link")
+
     for comp in components:
-        prefix = {
-            "beauty-shade-finder": "bsf_",
-            "beauty-routine-builder": "brb_",
-            "beauty-ingredient-lab": "bil_",
-            "beauty-care-assistant": "bca_",
-            "beauty-collection-reveal": "bcr_",
-            "beauty-face-zone-map": "bfz_",
-            "beauty-routine-layering-board": "brl_",
-            "beauty-lighting-finish-simulator": "bls_",
-            "beauty-pao-expiry-calculator": "bpa_",
-            "beauty-texture-absorption-lab": "bta_",
-            "beauty-actives-compatibility": "bac_",
-            "beauty-fragrance-finder": "bff_",
-            "beauty-spf-guide": "bsg_",
-            "beauty-color-harmony": "bch_",
-            "beauty-weekly-planner": "bwp_",
-            "beauty-categories": "bcat_",
-            "beauty-before-after": "bba_",
-            "beauty-promo-banners": "bpb_",
-        }[comp["name"]]
-        comp["fields"] = [
-            field
-            for field in comp["fields"]
-            if not (
-                field.get("id") == f"{prefix}products"
-                and field.get("format") == "collection"
+        name = comp["name"]
+        if name in with_cta:
+            prefix = with_cta[name]
+            drop_ids = {f"{prefix}{s}" for s in product_suffixes}
+            filtered = []
+            for field in comp["fields"]:
+                fid = field.get("id") or ""
+                if fid in drop_ids:
+                    continue
+                if fid == f"{prefix}products" and field.get("format") == "collection":
+                    continue
+                filtered.append(field)
+            comp["fields"] = filtered
+            existing = {field.get("id") for field in comp["fields"]}
+            comp["fields"].extend(
+                field for field in commerce_fields(prefix) if field.get("id") not in existing
             )
-        ]
-        existing = {field.get("id") for field in comp["fields"]}
-        comp["fields"].extend(
-            field for field in commerce_fields(prefix) if field.get("id") not in existing
-        )
+        elif name in no_cta:
+            prefix = no_cta[name]
+            drop = {f"{prefix}{s}" for s in (*product_suffixes, *cta_suffixes)}
+            comp["fields"] = [
+                f
+                for f in comp["fields"]
+                if (f.get("id") or "") not in drop
+                and not (
+                    (f.get("id") or "") == f"{prefix}products"
+                    and f.get("format") == "collection"
+                )
+            ]
 
 
 def editor_controls():
-    """Standard Salla element editor controls, mirroring the default element
-    editor used across native storefront elements (
-    background). Prepended to every component so merchants get the exact same
-    top-of-editor experience they expect from built-in elements."""
-    return [
-        boolean(
-            "add_component_background_color", "إضافة لون خلفية للعنصر", False,
-            "فعّل هذا الخيار لتخصيص لون خلفية كامل للعنصر.",
-        ),
-        color(
-            "component_background_color", "لون خلفية العنصر", "#FCF5F0",
-            "اختر لونًا مناسبًا يتناسق مع هوية متجرك.",
-            conditions=cond_eq("add_component_background_color", True),
-        ),
-    ]
+    """Editor chrome controls removed — inherit store theme only."""
+    return []
+
 
 
 def prepend_editor_controls(components):
     for c in components:
         existing = {f.get("id") for f in c.get("fields", [])}
-        if "add_component_background_color" in existing:
+        extra = editor_controls()
+        if not extra:
             continue
-        c["fields"] = editor_controls() + c["fields"]
+        c["fields"] = extra + c["fields"]
 
 
 def component(name, title, icon, fields, image_url=PLACEHOLDER):
@@ -650,8 +547,8 @@ TEXTURE_OPTS = [("سيروم", "serum"), ("جل", "gel"), ("كريم", "cream"),
 # ---------------------------------------------------------------------------
 
 def _dd(label, value):
-    """Dropdown value shape used inside collection sample rows."""
-    return {"selected": [{"key": value, "label": label, "value": value}]}
+    """Dropdown value shape used inside collection sample rows (array, not {selected})."""
+    return [{"key": value, "label": label, "value": value}]
 
 
 def build_shade_finder():
@@ -883,17 +780,17 @@ def build_routine_builder():
     ]
     sample = [
         {"step_name": {"en": "Cleanser", "ar": "المنظف"}, "step_desc": {"en": "Gently cleanses and prepares the skin.", "ar": "ينظّف البشرة بلطف ويهيئها."},
-         "image": ROUTINE_STEP_IMAGES[0], "order": 1, "level": {"selected": [{"key": "quick", "label": "روتين سريع", "value": "quick"}]}},
+         "image": ROUTINE_STEP_IMAGES[0], "order": 1, "level": _dd("روتين سريع", "quick")},
         {"step_name": {"en": "Toner", "ar": "التونر"}, "step_desc": {"en": "Balances skin after cleansing.", "ar": "يوازن البشرة بعد التنظيف."},
-         "image": ROUTINE_STEP_IMAGES[1], "order": 2, "level": {"selected": [{"key": "basic", "label": "روتين أساسي", "value": "basic"}]}},
+         "image": ROUTINE_STEP_IMAGES[1], "order": 2, "level": _dd("روتين أساسي", "basic")},
         {"step_name": {"en": "Serum", "ar": "السيروم"}, "step_desc": {"en": "A focused treatment for your skin need.", "ar": "علاج مركّز حسب حاجة بشرتك."},
-         "image": ROUTINE_STEP_IMAGES[2], "order": 3, "level": {"selected": [{"key": "basic", "label": "روتين أساسي", "value": "basic"}]}},
+         "image": ROUTINE_STEP_IMAGES[2], "order": 3, "level": _dd("روتين أساسي", "basic")},
         {"step_name": {"en": "Moisturizer", "ar": "المرطب"}, "step_desc": {"en": "Hydrates and locks in moisture.", "ar": "يرطّب ويحبس الترطيب."},
-         "image": ROUTINE_STEP_IMAGES[3], "order": 4, "level": {"selected": [{"key": "quick", "label": "روتين سريع", "value": "quick"}]}},
+         "image": ROUTINE_STEP_IMAGES[3], "order": 4, "level": _dd("روتين سريع", "quick")},
         {"step_name": {"en": "Sunscreen", "ar": "واقي الشمس"}, "step_desc": {"en": "Essential daily protection in the morning.", "ar": "حماية يومية ضرورية صباحاً."},
-         "image": ROUTINE_STEP_IMAGES[4], "order": 5, "level": {"selected": [{"key": "quick", "label": "روتين سريع", "value": "quick"}]}, "time": {"selected": [{"key": "morning", "label": "صباحي", "value": "morning"}]}},
+         "image": ROUTINE_STEP_IMAGES[4], "order": 5, "level": _dd("روتين سريع", "quick"), "time": _dd("صباحي", "morning")},
         {"step_name": {"en": "Eye cream", "ar": "كريم العين"}, "step_desc": {"en": "Cares for the delicate eye area.", "ar": "يعتني بمنطقة العين الدقيقة."},
-         "image": ROUTINE_STEP_IMAGES[5], "order": 6, "level": {"selected": [{"key": "complete", "label": "روتين متكامل", "value": "complete"}]}},
+         "image": ROUTINE_STEP_IMAGES[5], "order": 6, "level": _dd("روتين متكامل", "complete")},
     ]
     return component(
         "beauty-routine-builder", "منشئ روتين العناية", "sicon-list",
@@ -949,7 +846,7 @@ def build_ingredient_lab():
                       "en": "Deep hydration, Radiance, Plumps fine lines"},
          "skin_types": {"ar": "جافة, عادية, حساسة", "en": "Dry, Normal, Sensitive"},
          "usage_time": {"ar": "صباحاً ومساءً", "en": "Morning & evening"},
-         "texture": {"selected": [{"key": "serum", "label": "سيروم", "value": "serum"}]}},
+         "texture": _dd("سيروم", "serum")},
         {"name": {"ar": "النياسيناميد", "en": "Niacinamide"}, "color": "#c9a24b",
          "image": INGREDIENT_IMAGES[1],
          "desc": {"ar": "يوحّد لون البشرة ويقلّل ظهور المسام.", "en": ""},
@@ -957,7 +854,7 @@ def build_ingredient_lab():
                       "en": "Even tone, Minimizes pores, Oil control"},
          "skin_types": {"ar": "دهنية, مختلطة", "en": "Oily, Combination"},
          "usage_time": {"ar": "صباحاً ومساءً", "en": "Morning & evening"},
-         "texture": {"selected": [{"key": "gel", "label": "جل", "value": "gel"}]}},
+         "texture": _dd("جل", "gel")},
         {"name": {"ar": "فيتامين C", "en": "Vitamin C"}, "color": "#e08a3c",
          "image": INGREDIENT_IMAGES[2],
          "desc": {"ar": "مضاد أكسدة يمنح إشراقة ويقلّل التصبغات.", "en": ""},
@@ -965,7 +862,7 @@ def build_ingredient_lab():
                       "en": "Brightening, Fades dark spots, Protection"},
          "skin_types": {"ar": "جميع أنواع البشرة", "en": "All skin types"},
          "usage_time": {"ar": "صباحاً", "en": "Morning"},
-         "texture": {"selected": [{"key": "cream", "label": "كريم", "value": "cream"}]}},
+         "texture": _dd("كريم", "cream")},
         {"name": {"ar": "الريتينول", "en": "Retinol"}, "color": "#b06a8a",
          "image": INGREDIENT_IMAGES[3],
          "desc": {"ar": "يجدّد البشرة ويقلّل الخطوط الدقيقة.", "en": ""},
@@ -975,7 +872,7 @@ def build_ingredient_lab():
          "usage_time": {"ar": "مساءً", "en": "Evening"},
          "note": {"ar": "استخدمي واقي الشمس نهاراً عند استعماله.",
                   "en": "Use sunscreen during the day when using it."},
-         "texture": {"selected": [{"key": "oil", "label": "زيت", "value": "oil"}]}},
+         "texture": _dd("زيت", "oil")},
     ]
     return component(
         "beauty-ingredient-lab", "مختبر المكونات والقوام", "sicon-star2",
@@ -1072,7 +969,12 @@ def build_collection_reveal():
         multilang(f"{p}items.subtitle", "وصف مختصر", "", "", "textarea", "260"),
         image(f"{p}items.image", "صورة البطاقة"),
         multilang(f"{p}items.tag", "وسم مختصر (اختياري)", "", ""),
-        variable_list(f"{p}items.link", "رابط صفحة أو مقال (اختياري)"),
+        variable_list(
+            f"{p}items.link",
+            "رابط البطاقة",
+            required=True,
+            desc="مطلوب: صفحة التصنيف أو المجموعة أو المنتج التي تنتقل إليها البطاقة.",
+        ),
     ]
     item_sample = [
         {"title": {"en": "Cleanse", "ar": "التنظيف"},
@@ -1108,7 +1010,6 @@ def build_collection_reveal():
                              ("ستارة حريرية تنسحب", "curtain"), ("منصة دائرية", "carousel")], "box"),
             number(f"{p}speed", "سرعة ظهور البطاقات (مللي ثانية بين كل بطاقة)", 140, 0, 600, ""),
             boolean(f"{p}auto_start", "بدء الكشف تلقائياً عند الظهور", False),
-            boolean(f"{p}show_link", "إظهار روابط البطاقات إن وُجدت", True),
             *theme_fields(p),
         ],
     )
@@ -1145,7 +1046,11 @@ def build_face_zone_map():
         multilang(f"{p}zones.tips", "نصائح (كل نصيحة في سطر)", "", "", "textarea", "500"),
         multilang(f"{p}zones.warning", "تنبيه (اختياري)", "", "", "text", "200"),
         image(f"{p}zones.image", "صورة توضيحية (اختياري)"),
-        variable_list(f"{p}zones.link", "رابط صفحة أو مقال (اختياري)"),
+        variable_list(
+            f"{p}zones.link",
+            "رابط زر التسوق لهذه المنطقة",
+            desc="يظهر زر «تسوق الآن» داخل تفاصيل المنطقة ويستخدم هذا الرابط. إن تُرك فارغًا يُستخدم الرابط العام.",
+        ),
     ]
     sample = [
         {"zone_id": "forehead", "name": {"ar": "الجبهة", "en": "Forehead"}, "x": 50, "y": 18,
@@ -1293,7 +1198,6 @@ def build_layering_board():
             boolean(f"{p}enable_retry", "تفعيل إعادة المحاولة", True),
             multilang(f"{p}success_msg", "رسالة النجاح", "أحسنتِ! هذا هو الترتيب الصحيح.", "Well done! Correct order.", "text", "200"),
             multilang(f"{p}retry_msg", "رسالة المحاولة", "قريب! عدّلي الترتيب وحاولي مجددًا.", "Close! Adjust and try again.", "text", "200"),
-            number(f"{p}card_radius", "تدوير البطاقات", 14, 0, 32, "px"),
             color(f"{p}step_color", "لون الخطوة الافتراضي", "#c2527f"),
             color(f"{p}success_color", "لون النجاح", "#2f9e63"),
             color(f"{p}error_color", "لون الخطأ", "#cf4b4b"),
@@ -1317,7 +1221,11 @@ def build_lighting_simulator():
         number(f"{p}lights.contrast", "التباين", 3, 0, 5, ""),
         text(f"{p}lights.palette", "لوحة ألوان (أكواد HEX مفصولة بفاصلة)", ""),
         multilang(f"{p}lights.note", "ملاحظة (اختياري)", "", "", "text", "200"),
-        variable_list(f"{p}lights.link", "رابط (اختياري)"),
+        variable_list(
+            f"{p}lights.link",
+            "رابط زر التسوق لهذه الحالة",
+            desc="يظهر زر «تسوق الآن» مع الحالة ويستخدم هذا الرابط. إن تُرك فارغًا يُستخدم الرابط العام.",
+        ),
     ]
     sample = [
         {"light_id": "daylight", "name": {"ar": "ضوء النهار", "en": "Daylight"}, "finish": "natural",
@@ -1978,6 +1886,8 @@ def build_beauty_promo_banners():
                       'عروض موسمية ومختارات جديدة لمتجر العناية.',
                       'Seasonal offers and new picks for your beauty store.',
                       'textarea', '200'),
+            boolean(f'{p}autoplay', 'تشغيل تلقائي للبنرات', True,
+                    'تنقّل تلقائي بين البنرات كل 5 ثوانٍ.'),
             static_title(f'{p}items_title', 'البنرات'),
             collection(f'{p}items', 'بنر', item_fields, sample),
             *theme_fields(p),

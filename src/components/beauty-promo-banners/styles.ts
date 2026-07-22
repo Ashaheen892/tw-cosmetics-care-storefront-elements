@@ -24,8 +24,8 @@ export const componentStyles = css`
     min-height: 220px;
     display: flex;
     align-items: flex-end;
-    background: linear-gradient(135deg, #fdeef5, #f9e4ed);
-    border: 1px solid var(--border-color, #f2dde7);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff));
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 8px 24px rgba(194, 82, 127, 0.08);
     text-decoration: none;
     color: inherit;
@@ -74,35 +74,40 @@ export const componentStyles = css`
     font-size: 1.15rem;
     font-weight: 800;
     line-height: 1.3;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bpb-card__subtitle {
     margin: 0;
     font-size: 0.85rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.5;
   }
 
   .bpb-card__cta {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     align-self: flex-start;
-    gap: 0.35rem;
+    gap: 0.4rem;
     margin-top: 0.4rem;
-    padding: 0.5rem 1.1rem;
+    min-height: 44px;
+    padding: 0.65rem 1.25rem;
+    border: 1.5px solid transparent;
     border-radius: 999px;
-    background: var(--accent-color, #c2527f);
-    color: #fff;
-    font-size: 0.82rem;
+    background: var(--button-bg, var(--fs-store-primary));
+    color: var(--button-color, #fff);
+    font-size: 0.9rem;
     font-weight: 700;
+    line-height: 1.2;
     text-decoration: none;
-    box-shadow: 0 4px 14px rgba(194, 82, 127, 0.22);
-    transition: filter 0.2s ease;
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, transparent);
+    transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
 
   .bpb-card__cta:hover {
-    filter: brightness(1.08);
+    filter: brightness(1.05);
+    transform: translateY(-1px);
   }
 
   @media (max-width: 639px) {

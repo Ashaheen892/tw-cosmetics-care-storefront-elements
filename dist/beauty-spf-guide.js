@@ -1,9 +1,10 @@
-import { css as B, LitElement as V, html as r, nothing as c } from "lit";
-import { property as H, state as v } from "lit/decorators.js";
-import { classMap as C } from "lit/directives/class-map.js";
+import { css as H, LitElement as j, html as r, nothing as d } from "lit";
+import { property as D, state as v } from "lit/decorators.js";
+import { classMap as z } from "lit/directives/class-map.js";
 import { styleMap as u } from "lit/directives/style-map.js";
-import { n as y, l as a, h as f, j as x, t as o, s as j, i as P, r as D, p as K, a as z, b as A } from "./sharedStyles-BgfDOkwJ.js";
-const F = B`
+import { n as y, l as a, h as m, j as x, t as o, s as K, i as M, r as A, p as F, a as N } from "./sharedStyles-DKbcXBPy.js";
+import { r as U } from "./commerceOutcome-Dk8p2VWM.js";
+const O = H`
   :host {
     display: block;
     direction: inherit;
@@ -30,7 +31,7 @@ const F = B`
   .bsg-progress__bar {
     height: 6px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 70%, #fff);
     overflow: hidden;
   }
 
@@ -49,12 +50,12 @@ const F = B`
   .bsg-progress__text {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bsg-progress__step {
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-step {
@@ -63,7 +64,7 @@ const F = B`
     padding: 1.15rem 1.2rem;
     border-radius: var(--section-radius, 16px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 8px 24px rgba(194, 82, 127, 0.06);
   }
 
@@ -72,14 +73,14 @@ const F = B`
     font-size: 1.12rem;
     font-weight: 800;
     line-height: 1.35;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-step__hint {
     margin: 0;
     font-size: 0.86rem;
     line-height: 1.55;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bsg-options {
@@ -99,9 +100,9 @@ const F = B`
     min-height: 48px;
     padding: 0.75rem 0.9rem;
     border-radius: calc(var(--section-radius, 16px) * 0.75);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     text-align: start;
     cursor: pointer;
@@ -111,7 +112,7 @@ const F = B`
   }
 
   .bsg-option:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
   }
 
   .bsg-option[aria-pressed='true'] {
@@ -143,7 +144,7 @@ const F = B`
   .bsg-option__desc {
     font-size: 0.78rem;
     font-weight: 500;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.45;
   }
 
@@ -175,7 +176,7 @@ const F = B`
     padding: 1.25rem 1.2rem 1.35rem;
     border-radius: var(--section-radius, 16px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 10px 30px rgba(43, 33, 28, 0.07);
   }
 
@@ -183,7 +184,7 @@ const F = B`
     margin: 0;
     font-size: 1.05rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-results__summary {
@@ -199,10 +200,10 @@ const F = B`
     padding: 0.35rem 0.7rem;
     border-radius: 999px;
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #e5e7eb));
     font-size: 0.82rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-results__pill .bsg-swatch {
@@ -228,13 +229,13 @@ const F = B`
       color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, var(--border-color, #e5e7eb));
   }
 
   .bsg-duration__label {
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bsg-duration__value {
@@ -261,7 +262,7 @@ const F = B`
   .bsg-meter {
     height: 10px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 65%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 65%, #fff);
     overflow: hidden;
   }
 
@@ -280,7 +281,7 @@ const F = B`
   .bsg-meter-caption {
     margin: 0;
     font-size: 0.72rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.5;
   }
 
@@ -309,14 +310,14 @@ const F = B`
     margin: 0;
     font-size: 0.92rem;
     font-weight: 800;
-    color: color-mix(in srgb, #8a5a00 65%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000));
     line-height: 1.5;
   }
 
   .bsg-reapply__note {
     margin: 0;
     font-size: 0.82rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.55;
   }
 
@@ -329,7 +330,7 @@ const F = B`
     margin: 0 0 0.15rem;
     font-size: 0.82rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-tips ul {
@@ -337,7 +338,7 @@ const F = B`
     padding-inline-start: 1.15rem;
     display: grid;
     gap: 0.35rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.86rem;
     line-height: 1.55;
   }
@@ -352,13 +353,13 @@ const F = B`
     margin: 0;
     text-align: center;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.6;
   }
 
   .bsg-notice--inline {
     padding-top: 0.25rem;
-    border-top: 1px solid var(--border-color, #f2dde7);
+    border-top: 1px solid var(--border-color, #e5e7eb);
   }
 
   @media (max-width: 639px) {
@@ -378,58 +379,58 @@ const F = B`
     }
   }
 `;
-function U(n) {
+function q(n) {
   const e = ["phototype", "spf"];
   return n && e.push("condition"), e;
 }
-function O(n) {
+function Y(n) {
   return y(n).map((e, s) => {
     const t = a(e.name);
     return {
       id: String(e.id ?? e.pt_id ?? "").trim() || `pt-${s + 1}`,
       name: t,
       desc: a(e.desc),
-      baseMinutes: f(x(e.base_minutes, 15), 1, 240),
+      baseMinutes: m(x(e.base_minutes, 15), 1, 240),
       color: String(e.color ?? "").trim()
     };
   }).filter((e) => e.name);
 }
-function q(n) {
+function J(n) {
   return y(n).map((e) => {
-    const s = f(Math.round(x(e.spf, 30)), 1, 100), t = a(e.label) || `SPF ${s}`;
+    const s = m(Math.round(x(e.spf, 30)), 1, 100), t = a(e.label) || `SPF ${s}`;
     return { spf: s, label: t };
   }).filter((e) => e.spf > 0);
 }
-function Y(n) {
+function Q(n) {
   return y(n).map((e, s) => {
     const t = a(e.name);
     return {
       id: String(e.id ?? e.cond_id ?? "").trim() || `cond-${s + 1}`,
       name: t,
-      factor: f(x(e.factor, 1), 0.1, 3),
+      factor: m(x(e.factor, 1), 0.1, 3),
       desc: a(e.desc)
     };
   }).filter((e) => e.name);
 }
-function J(n) {
+function W(n) {
   return y(n).map((e) => a(e.tip)).filter(Boolean);
 }
-function Q(n, e, s) {
-  return f(n * e * s, 0, 1e5);
+function X(n, e, s) {
+  return m(n * e * s, 0, 1e5);
 }
-function W(n) {
+function Z(n) {
   const e = Math.max(0, Math.round(n)), s = Math.floor(e / 60), t = e % 60, i = o("س", "h"), l = o("د", "m");
   return s <= 0 ? `${t}${l}` : t <= 0 ? `${s}${i}` : `${s}${i} ${t}${l}`;
 }
 function _(n, e) {
   return n === "phototype" ? a(e.bsg_phototype_label) || o("نوع البشرة", "Skin phototype") : n === "spf" ? a(e.bsg_spf_label) || o("عامل الحماية SPF", "SPF value") : a(e.bsg_condition_label) || o("ظروف التعرّض", "Exposure condition");
 }
-var X = Object.defineProperty, m = (n, e, s, t) => {
-  for (var i = void 0, l = n.length - 1, p; l >= 0; l--)
-    (p = n[l]) && (i = p(e, s, i) || i);
-  return i && X(e, s, i), i;
+var G = Object.defineProperty, f = (n, e, s, t) => {
+  for (var i = void 0, l = n.length - 1, c; l >= 0; l--)
+    (c = n[l]) && (i = c(e, s, i) || i);
+  return i && G(e, s, i), i;
 };
-const Z = 480, $ = class $ extends V {
+const ee = 480, $ = class $ extends j {
   constructor() {
     super(...arguments), this.config = {}, this.selectedPtId = "", this.selectedSpf = 0, this.selectedCondId = "", this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate(), this.boundKeyHandler = (e) => this.onKeyDown(e);
   }
@@ -444,18 +445,18 @@ const Z = 480, $ = class $ extends V {
   }
   get phototypes() {
     var e;
-    return O((e = this.config) == null ? void 0 : e.bsg_phototypes);
+    return Y((e = this.config) == null ? void 0 : e.bsg_phototypes);
   }
   get spfValues() {
     var e;
-    return q((e = this.config) == null ? void 0 : e.bsg_spf_values);
+    return J((e = this.config) == null ? void 0 : e.bsg_spf_values);
   }
   get conditions() {
     var e;
-    return Y((e = this.config) == null ? void 0 : e.bsg_conditions);
+    return Q((e = this.config) == null ? void 0 : e.bsg_conditions);
   }
   get plan() {
-    return U(this.conditions.length > 0);
+    return q(this.conditions.length > 0);
   }
   get onResults() {
     return this.stepIndex >= this.plan.length;
@@ -466,10 +467,6 @@ const Z = 480, $ = class $ extends V {
   get canNext() {
     const e = this.currentStep;
     return e ? e === "phototype" ? !!this.selectedPtId : e === "spf" ? this.selectedSpf > 0 : e === "condition" ? !!this.selectedCondId : !1 : !1;
-  }
-  label(e, s, t) {
-    var i;
-    return a((i = this.config) == null ? void 0 : i[e]) || o(s, t);
   }
   goNext() {
     this.stepIndex < this.plan.length && (this.stepIndex += 1);
@@ -516,7 +513,7 @@ const Z = 480, $ = class $ extends V {
                 <span class="bsg-swatch" aria-hidden="true"></span>
                 <span class="bsg-option__body">
                   <span class="bsg-option__name">${t.name}</span>
-                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : c}
+                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : d}
                 </span>
               </button>
             `;
@@ -567,7 +564,7 @@ const Z = 480, $ = class $ extends V {
               >
                 <span class="bsg-option__body">
                   <span class="bsg-option__name">${t.name}</span>
-                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : c}
+                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : d}
                 </span>
               </button>
             `;
@@ -577,7 +574,8 @@ const Z = 480, $ = class $ extends V {
     `;
   }
   renderNav() {
-    const e = this.label("bsg_back_btn", "السابق", "Back"), s = this.label("bsg_next_btn", "التالي", "Next"), t = this.label("bsg_see_btn", "عرض التقدير", "See estimate"), i = this.stepIndex === this.plan.length - 1;
+    var l, c, p;
+    const e = a((l = this.config) == null ? void 0 : l.bsg_back_btn) || o("السابق", "Back"), s = a((c = this.config) == null ? void 0 : c.bsg_next_btn) || o("التالي", "Next"), t = a((p = this.config) == null ? void 0 : p.bsg_see_btn) || o("عرض التقدير", "See estimate"), i = this.stepIndex === this.plan.length - 1;
     return r`
       <div class="bsg-nav">
         ${this.stepIndex > 0 ? r`<button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
@@ -596,38 +594,39 @@ const Z = 480, $ = class $ extends V {
   }
   renderCurrentStep() {
     const e = this.currentStep;
-    return e ? e === "phototype" ? this.renderPhototypeStep(this.phototypes) : e === "spf" ? this.renderSpfStep(this.spfValues) : this.renderConditionStep(this.conditions) : c;
+    return e ? e === "phototype" ? this.renderPhototypeStep(this.phototypes) : e === "spf" ? this.renderSpfStep(this.spfValues) : this.renderConditionStep(this.conditions) : d;
   }
   renderResults() {
-    const e = this.config || {}, s = this.phototypes, t = this.spfValues, i = this.conditions, l = J(e.bsg_tips), p = s.find((h) => h.id === this.selectedPtId) ?? null, d = t.find((h) => h.spf === this.selectedSpf) ?? null, g = i.find((h) => h.id === this.selectedCondId) ?? null, M = (g == null ? void 0 : g.factor) ?? 1, w = Q((p == null ? void 0 : p.baseMinutes) ?? 0, (d == null ? void 0 : d.spf) ?? 0, M), k = f(w / Z * 100, 0, 100), R = P(e.bsg_show_meter, !0), N = P(e.bsg_show_notice, !0), S = f(Math.round(x(e.bsg_reapply_minutes, 120)), 1, 1e5), I = a(e.bsg_reapply_note), E = a(e.bsg_result_title) || o("توصياتك", "Your guidance"), L = a(e.bsg_notice) || o("هذه إرشادات توعوية عامة وليست نصيحة طبية.", "This is general educational guidance, not medical advice."), T = o(
+    var C, P;
+    const e = this.config || {}, s = this.phototypes, t = this.spfValues, i = this.conditions, l = W(e.bsg_tips), c = s.find((h) => h.id === this.selectedPtId) ?? null, p = t.find((h) => h.spf === this.selectedSpf) ?? null, g = i.find((h) => h.id === this.selectedCondId) ?? null, R = (g == null ? void 0 : g.factor) ?? 1, w = X((c == null ? void 0 : c.baseMinutes) ?? 0, (p == null ? void 0 : p.spf) ?? 0, R), k = m(w / ee * 100, 0, 100), E = M(e.bsg_show_meter, !0), L = M(e.bsg_show_notice, !0), S = m(Math.round(x(e.bsg_reapply_minutes, 120)), 1, 1e5), I = a(e.bsg_reapply_note), B = a(e.bsg_result_title) || o("توصياتك", "Your guidance"), T = a(e.bsg_notice) || o("هذه إرشادات توعوية عامة وليست نصيحة طبية.", "This is general educational guidance, not medical advice."), V = o(
       `أعيدي التطبيق كل ${S} دقيقة`,
       `Reapply every ${S} min`
     );
     return r`
       <div class="bsg-results" aria-live="polite">
-        <h3 class="bsg-results__title">${E}</h3>
+        <h3 class="bsg-results__title">${B}</h3>
 
         <div class="bsg-results__summary">
-          ${p ? r`<span class="bsg-results__pill">
+          ${c ? r`<span class="bsg-results__pill">
                 <span
                   class="bsg-swatch"
                   aria-hidden="true"
-                  style=${u(p.color ? { "--bsg-swatch": p.color } : {})}
+                  style=${u(c.color ? { "--bsg-swatch": c.color } : {})}
                 ></span>
-                ${p.name}
-              </span>` : c}
-          ${d ? r`<span class="bsg-results__pill">${d.label}</span>` : c}
-          ${g ? r`<span class="bsg-results__pill">${g.name}</span>` : c}
+                ${c.name}
+              </span>` : d}
+          ${p ? r`<span class="bsg-results__pill">${p.label}</span>` : d}
+          ${g ? r`<span class="bsg-results__pill">${g.name}</span>` : d}
         </div>
 
         <div class="bsg-duration bsg-duration--hero">
           <span class="bsg-duration__label">
             ${o("تقدير تقريبي لمدة التعرّض الآمن", "Rough safe-exposure estimate")}
           </span>
-          <span class="bsg-duration__value">${W(w)}</span>
+          <span class="bsg-duration__value">${Z(w)}</span>
         </div>
 
-        ${R ? r`<div class="bsg-meter-wrap bsg-meter-wrap--hero">
+        ${E ? r`<div class="bsg-meter-wrap bsg-meter-wrap--hero">
               <div
                 class="bsg-meter"
                 role="progressbar"
@@ -641,12 +640,12 @@ const Z = 480, $ = class $ extends V {
               <p class="bsg-meter-caption">
                 ${o("مؤشر توضيحي فقط — التقدير يقلّ في ظروف الانعكاس العالي.", "Illustrative only — the estimate drops in high-reflection conditions.")}
               </p>
-            </div>` : c}
+            </div>` : d}
 
         <div class="bsg-reapply">
           <span class="bsg-reapply__icon" aria-hidden="true">☀︎</span>
           <div class="bsg-reapply__body">
-            <p class="bsg-reapply__main">${T}</p>
+            <p class="bsg-reapply__main">${V}</p>
             ${I ? r`<p class="bsg-reapply__note">${I}</p>` : r`<p class="bsg-reapply__note">${o("أعيدي التطبيق بعد السباحة أو التعرّق.", "Reapply after swimming or sweating.")}</p>`}
           </div>
         </div>
@@ -654,28 +653,29 @@ const Z = 480, $ = class $ extends V {
         ${l.length ? r`<div class="bsg-tips">
               <p class="bsg-tips__title">${o("نصائح", "Tips")}</p>
               <ul>${l.map((h) => r`<li>${h}</li>`)}</ul>
-            </div>` : c}
+            </div>` : d}
 
         <div class="bsg-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-            ${this.label("bsg_back_btn", "تعديل الاختيارات", "Edit choices")}
+            ${a((C = this.config) == null ? void 0 : C.bsg_back_btn) || o("تعديل الاختيارات", "Edit choices")}
           </button>
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
-            ${this.label("bsg_reset_btn", "ابدئي من جديد", "Start over")}
+            ${a((P = this.config) == null ? void 0 : P.bsg_reset_btn) || o("ابدئي من جديد", "Start over")}
           </button>
+          ${U(e, "bsg_")}
         </div>
 
-        ${N ? r`<p class="bsg-notice bsg-notice--inline">${L}</p>` : c}
+        ${L ? r`<p class="bsg-notice bsg-notice--inline">${T}</p>` : d}
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, s = D(e, "bsg_"), t = s.animate && !K(), i = this.phototypes, l = this.spfValues, p = this.plan, d = a(e.bsg_title), g = a(e.bsg_desc);
+    const e = this.config || {}, s = A(e, "bsg_"), t = s.animate && !F(), i = this.phototypes, l = this.spfValues, c = this.plan, p = a(e.bsg_title), g = a(e.bsg_desc);
     return !i.length || !l.length ? r`
         <section
-          class=${C({ "fs-section": !0, "fs-animate": t })}
-          style=${u(z(s))}
-          aria-label=${d || o("دليل الحماية من الشمس", "Sun protection guide")}
+          class=${z({ "fs-section": !0, "fs-animate": t })}
+          style=${u(N(s))}
+          aria-label=${p || o("دليل الحماية من الشمس", "Sun protection guide")}
         >
           <div class="fs-container">
             <div class="fs-empty" role="status">
@@ -685,49 +685,44 @@ const Z = 480, $ = class $ extends V {
         </section>
       ` : r`
       <section
-        class=${C({ "fs-section": !0, "fs-animate": t })}
-        style=${u(z(s))}
-        aria-label=${d || o("دليل الحماية من الشمس", "Sun protection guide")}
+        class=${z({ "fs-section": !0, "fs-animate": t })}
+        style=${u(N(s))}
+        aria-label=${p || o("دليل الحماية من الشمس", "Sun protection guide")}
         tabindex="0"
       >
         <div class="fs-container">
-          ${d || g ? r`<div class="fs-header">
-                ${d ? r`<h2 class="fs-title">${d}</h2>` : c}
-                ${g ? r`<p class="fs-desc">${g}</p>` : c}
-              </div>` : c}
+          ${p || g ? r`<div class="fs-header">
+                ${p ? r`<h2 class="fs-title">${p}</h2>` : d}
+                ${g ? r`<p class="fs-desc">${g}</p>` : d}
+              </div>` : d}
 
           <div class="bsg-wrap">
-            ${this.renderProgress(p.length)}
+            ${this.renderProgress(c.length)}
             ${this.onResults ? this.renderResults() : r`
                   ${this.renderCurrentStep()}
                   ${this.renderNav()}
                 `}
           </div>
-          ${this.onResults ? A({
-      config: e,
-      prefix: "bsg_",
-      ready: !0
-    }) : c}
         </div>
       </section>
     `;
   }
 };
-$.styles = [j, F];
+$.styles = [K, O];
 let b = $;
-m([
-  H({ type: Object })
+f([
+  D({ type: Object })
 ], b.prototype, "config");
-m([
+f([
   v()
 ], b.prototype, "selectedPtId");
-m([
+f([
   v()
 ], b.prototype, "selectedSpf");
-m([
+f([
   v()
 ], b.prototype, "selectedCondId");
-m([
+f([
   v()
 ], b.prototype, "stepIndex");
 typeof b < "u" && b.registerSallaComponent("salla-beauty-spf-guide");

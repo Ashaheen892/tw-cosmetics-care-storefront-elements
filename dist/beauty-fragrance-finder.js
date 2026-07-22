@@ -1,9 +1,10 @@
 import { css as L, LitElement as I, nothing as s, html as a } from "lit";
-import { property as R, state as z } from "lit/decorators.js";
-import { classMap as g } from "lit/directives/class-map.js";
-import { styleMap as v } from "lit/directives/style-map.js";
-import { n as C, l as f, c as A, e as E, f as j, g as F, s as H, p as w, t as c, i as S, r as N, a as P, b as M } from "./sharedStyles-BgfDOkwJ.js";
-const O = L`
+import { property as C, state as z } from "lit/decorators.js";
+import { classMap as h } from "lit/directives/class-map.js";
+import { styleMap as g } from "lit/directives/style-map.js";
+import { n as R, l as f, b as A, e as E, f as j, g as F, s as H, p as w, t as c, i as S, r as N, a as P } from "./sharedStyles-DKbcXBPy.js";
+import { r as M } from "./commerceOutcome-Dk8p2VWM.js";
+const Y = L`
   .bff-shell {
     display: grid;
     gap: 1.35rem;
@@ -24,8 +25,8 @@ const O = L`
     min-width: 0;
     padding: 1rem 1rem 1.1rem;
     border-radius: var(--section-radius, 20px);
-    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, transparent));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 10px 28px rgba(120, 44, 82, 0.06);
   }
 
@@ -34,7 +35,7 @@ const O = L`
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.04em;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bff-chips {
@@ -63,10 +64,10 @@ const O = L`
     gap: 0.65rem;
     min-height: 52px;
     padding: 0.55rem 0.7rem;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     border-radius: calc(var(--section-radius, 20px) * 0.65);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.9rem;
     font-weight: 700;
@@ -83,7 +84,7 @@ const O = L`
 
   .bff-chip:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 45%, var(--border-color, #e5e7eb));
     box-shadow: 0 8px 18px rgba(43, 33, 28, 0.08);
   }
 
@@ -127,7 +128,7 @@ const O = L`
   .bff-chip__hint {
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -209,7 +210,7 @@ const O = L`
       border-radius: 50%;
       background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
       border: 1px dashed color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, transparent);
-      color: var(--muted-color, #8f7a86);
+      color: var(--muted-color, #666666);
       font-size: 0.72rem;
       font-weight: 700;
       padding: 0.5rem;
@@ -227,7 +228,7 @@ const O = L`
     padding: 1.15rem;
     border-radius: var(--section-radius, 20px);
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 28%, var(--border-color, #e5e7eb));
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 12%, transparent),
       0 16px 36px rgba(120, 44, 82, 0.09);
@@ -288,8 +289,8 @@ const O = L`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--card-bg, #fff) 70%, var(--section-bg, #fbf5f8));
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: color-mix(in srgb, var(--card-bg, #fff) 70%, var(--section-bg, transparent));
     color: var(--accent-color, var(--fs-store-primary));
     font-size: 1.05rem;
     cursor: pointer;
@@ -298,21 +299,21 @@ const O = L`
 
   .bff-nav__btn:hover {
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bff-hero__title {
     margin: 0 0 0.4rem;
     font-size: clamp(1.35rem, 3.2vw, 1.75rem);
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     line-height: 1.2;
     letter-spacing: -0.01em;
   }
 
   .bff-hero__desc {
     margin: 0 0 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.7;
     font-size: 0.93rem;
   }
@@ -343,7 +344,7 @@ const O = L`
         color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 28%, transparent),
         transparent 55%
       ),
-      color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+      color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff));
     aspect-ratio: 4 / 5;
     max-height: 280px;
   }
@@ -389,15 +390,15 @@ const O = L`
         color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 10%, transparent),
         transparent 70%
       ),
-      color-mix(in srgb, var(--section-bg, #fbf5f8) 65%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #f2dde7));
+      color-mix(in srgb, var(--section-bg, transparent) 65%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #e5e7eb));
   }
 
   .bff-pyramid__intro {
     margin: 0 0 0.55rem;
     font-size: 0.76rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-align: center;
   }
 
@@ -454,7 +455,7 @@ const O = L`
   .bff-note {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     background: color-mix(in srgb, var(--card-bg, #fff) 82%, transparent);
     padding: 0.22rem 0.65rem;
     border-radius: 999px;
@@ -473,7 +474,7 @@ const O = L`
 
   .bff-tier__empty {
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   @media (max-width: 480px) {
@@ -504,19 +505,19 @@ const O = L`
     padding: 0.75rem 0.85rem;
     border-radius: 14px;
     background: color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 7%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--fam-color, var(--accent-color, var(--fs-store-primary))) 18%, var(--border-color, #e5e7eb));
   }
 
   .bff-fact__label {
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bff-fact__value {
     font-size: 0.92rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bff-panel__actions {
@@ -531,7 +532,7 @@ const O = L`
     margin: 1.25rem auto 0;
     text-align: center;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
   }
 
@@ -545,13 +546,13 @@ const O = L`
       transform: none !important;
     }
   }
-`, Y = ["wheel", "grid", "list"];
+`, O = ["wheel", "grid", "list"];
 function y(d) {
   const e = f(d, "");
   return e ? e.split(/\r?\n|،|;|,/).map((r) => r.trim()).filter(Boolean) : [];
 }
 function q(d) {
-  return C(d).map((e, r) => {
+  return R(d).map((e, r) => {
     const t = f(e.name);
     return {
       id: String(e.id ?? e.family_id ?? "").trim() || `family-${r + 1}`,
@@ -572,7 +573,7 @@ function q(d) {
 }
 function D(d) {
   const e = F(d.bff_layout, "grid");
-  return Y.includes(e) ? e : "grid";
+  return O.includes(e) ? e : "grid";
 }
 var U = Object.defineProperty, $ = (d, e, r, t) => {
   for (var i = void 0, o = d.length - 1, n; o >= 0; o--)
@@ -646,8 +647,8 @@ const W = [0, 400, 800], k = class k extends I {
     return r === "wheel" && (p["--i-angle"] = `${360 / Math.max(i, 1) * t}deg`), a`
       <button
         type="button"
-        class=${g({ "bff-chip": !0, "is-active": o })}
-        style=${v(p)}
+        class=${h({ "bff-chip": !0, "is-active": o })}
+        style=${g(p)}
         aria-pressed=${o ? "true" : "false"}
         aria-controls="bff-detail"
         title=${e.name}
@@ -668,7 +669,7 @@ const W = [0, 400, 800], k = class k extends I {
     const o = this.revealStep >= i, n = w();
     return a`
       <div
-        class=${g({
+        class=${h({
       "bff-tier": !0,
       [`bff-tier--${e}`]: !0,
       "is-visible": o,
@@ -682,8 +683,8 @@ const W = [0, 400, 800], k = class k extends I {
               ${t.map(
       (l, p) => a`
                   <span
-                    class=${g({ "bff-note": !0, "is-visible": o, "is-instant": n })}
-                    style=${v(n ? {} : { "--note-i": String(p) })}
+                    class=${h({ "bff-note": !0, "is-visible": o, "is-instant": n })}
+                    style=${g(n ? {} : { "--note-i": String(p) })}
                     >${l}</span
                   >
                 `
@@ -693,10 +694,10 @@ const W = [0, 400, 800], k = class k extends I {
     `;
   }
   renderDetail(e, r) {
-    const t = this.config || {}, i = r.length > 1, o = S(t.bff_show_pyramid, !0), n = e.icon.startsWith("sicon-"), l = f(t.bff_pyramid_top_label) || c("المقدمة", "Top"), p = f(t.bff_pyramid_heart_label) || c("القلب", "Heart"), m = f(t.bff_pyramid_base_label) || c("الأساس", "Base"), h = f(t.bff_season_label) || c("أنسب موسم", "Best season"), u = f(t.bff_occasion_label) || c("أنسب مناسبة", "Occasion"), x = e.top.length || e.heart.length || e.base.length, _ = e.color ? { "--fam-color": e.color } : {};
+    const t = this.config || {}, i = r.length > 1, o = S(t.bff_show_pyramid, !0), n = e.icon.startsWith("sicon-"), l = f(t.bff_pyramid_top_label) || c("المقدمة", "Top"), p = f(t.bff_pyramid_heart_label) || c("القلب", "Heart"), m = f(t.bff_pyramid_base_label) || c("الأساس", "Base"), v = f(t.bff_season_label) || c("أنسب موسم", "Best season"), u = f(t.bff_occasion_label) || c("أنسب مناسبة", "Occasion"), x = e.top.length || e.heart.length || e.base.length, _ = e.color ? { "--fam-color": e.color } : {};
     return a`
-      <article class="bff-story" id="bff-detail" role="region" aria-live="polite" style=${v(_)}>
-        <div class=${g({ "bff-hero": !0, "bff-hero--media": !!e.image })}>
+      <article class="bff-story" id="bff-detail" role="region" aria-live="polite" style=${g(_)}>
+        <div class=${h({ "bff-hero": !0, "bff-hero--media": !!e.image })}>
           <div class="bff-hero__body">
             <div class="bff-hero__top">
               ${e.icon ? a`<span class="bff-hero__icon" aria-hidden="true">
@@ -744,7 +745,7 @@ const W = [0, 400, 800], k = class k extends I {
 
         ${e.season || e.occasion ? a`<div class="bff-facts">
               ${e.season ? a`<div class="bff-fact">
-                    <span class="bff-fact__label">${h}</span>
+                    <span class="bff-fact__label">${v}</span>
                     <span class="bff-fact__value">${e.season}</span>
                   </div>` : s}
               ${e.occasion ? a`<div class="bff-fact">
@@ -753,11 +754,14 @@ const W = [0, 400, 800], k = class k extends I {
                   </div>` : s}
             </div>` : s}
 
-        ${e.link ? a`<div class="bff-panel__actions">
+        <div class="bff-panel__actions">
+          ${e.link ? a`
               <a class="fs-btn fs-btn--ghost" href=${e.link} target="_blank" rel="noopener noreferrer">
                 ${c("اقرئي المزيد", "Read more")}
               </a>
-            </div>` : s}
+              ` : s}
+          ${M(t, "bff_")}
+        </div>
       </article>
     `;
   }
@@ -770,11 +774,11 @@ const W = [0, 400, 800], k = class k extends I {
       return a`<div class="fs-empty" role="status">
         ${c("أضيفي عائلات عطرية من إعدادات العنصر.", "Add fragrance families in the element settings.")}
       </div>`;
-    const h = this.resolveActive(i), u = i.length;
+    const v = this.resolveActive(i), u = i.length;
     return a`
       <section
-        class=${g({ "fs-section": !0, "fs-animate": t })}
-        style=${v(P(r))}
+        class=${h({ "fs-section": !0, "fs-animate": t })}
+        style=${g(P(r))}
         aria-label=${o || c("محدد عائلة العطر", "Fragrance family finder")}
       >
         <div class="fs-container">
@@ -787,33 +791,32 @@ const W = [0, 400, 800], k = class k extends I {
             <aside class="bff-selector">
               <p class="bff-selector__label">${c("اختاري عائلة عطرية", "Pick a fragrance family")}</p>
               <div
-                class=${g({
+                class=${h({
       "bff-chips": !0,
       [`bff-chips--${l}`]: !0
     })}
                 role="group"
                 aria-label=${c("عائلات العطر", "Fragrance families")}
-                style=${v(l === "wheel" ? { "--wheel-r": "120px" } : {})}
+                style=${g(l === "wheel" ? { "--wheel-r": "120px" } : {})}
               >
                 ${l === "wheel" ? a`<div class="bff-wheel-core">${c("عائلات", "Families")}</div>` : s}
                 ${i.map((x, _) => this.renderChip(x, l, _, u))}
               </div>
             </aside>
 
-            ${h ? this.renderDetail(h, i) : s}
+            ${v ? this.renderDetail(v, i) : s}
           </div>
 
           ${p ? a`<p class="bff-notice">${m}</p>` : s}
-          ${M({ config: e, prefix: "bff_", ready: !!h, selection: h })}
         </div>
       </section>
     `;
   }
 };
-k.styles = [H, O];
+k.styles = [H, Y];
 let b = k;
 $([
-  R({ type: Object })
+  C({ type: Object })
 ], b.prototype, "config");
 $([
   z()

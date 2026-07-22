@@ -1,6 +1,7 @@
 import { html, LitElement, nothing } from 'lit';
 import { property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { ref } from 'lit/directives/ref.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import {
   prefersReducedMotion,
@@ -9,7 +10,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { enableDragScroll } from '../../utils/dragScroll.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { parseItems, resolveLayout } from './utils.js';
@@ -31,6 +32,12 @@ export default class BeautyCategories extends LitElement {
     window.removeEventListener('language-changed', this.boundLangHandler);
     super.disconnectedCallback();
   }
+
+  private bindTrack = (el?: Element) => {
+    if (el instanceof HTMLElement && !el.classList.contains('bcat-wrap--grid')) {
+      enableDragScroll(el);
+    }
+  };
 
   render() {
     const c = this.config || {};
@@ -61,7 +68,11 @@ export default class BeautyCategories extends LitElement {
               </div>`
             : nothing}
 
-          <div class=${classMap({ 'bcat-wrap': true, 'bcat-wrap--grid': layout === 'grid' })} role="list">
+          <div
+            class=${classMap({ 'bcat-wrap': true, 'bcat-wrap--grid': layout === 'grid' })}
+            role="list"
+            ${ref(this.bindTrack)}
+          >
             ${items.map(
               (item) => html`
                 <a
@@ -83,8 +94,6 @@ export default class BeautyCategories extends LitElement {
               `
             )}
           </div>
-
-          ${renderCommerceOutcome({ config: c, prefix: 'bcat_', ready: true })}
         </div>
       </section>
     `;

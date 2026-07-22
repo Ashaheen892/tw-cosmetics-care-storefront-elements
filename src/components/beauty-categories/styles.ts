@@ -58,7 +58,7 @@ export const componentStyles = css`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, #fff),
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 6%, #fff)
       );
-    border: 3px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, #fff);
+    border: 3px solid color-mix(in srgb, var(--border-color, #e5e7eb) 80%, #fff);
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
       0 10px 24px rgba(120, 44, 82, 0.1);
@@ -113,7 +113,7 @@ export const componentStyles = css`
     font-size: 0.86rem;
     font-weight: 800;
     text-align: center;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     line-height: 1.35;
     max-width: 110px;
     display: -webkit-box;

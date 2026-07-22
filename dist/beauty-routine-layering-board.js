@@ -2,7 +2,8 @@ import { css as A, LitElement as E, nothing as s, html as a } from "lit";
 import { property as q, state as u } from "lit/decorators.js";
 import { classMap as $ } from "lit/directives/class-map.js";
 import { styleMap as k } from "lit/directives/style-map.js";
-import { n as j, l as h, g as M, j as T, i as w, e as U, s as H, t as i, r as K, p as Q, o as W, d as Y, a as G, b as V } from "./sharedStyles-BgfDOkwJ.js";
+import { n as j, l as f, g as M, j as T, i as w, e as U, s as H, t as i, r as K, p as Q, o as W, c as Y, a as G } from "./sharedStyles-DKbcXBPy.js";
+import { r as V } from "./commerceOutcome-Dk8p2VWM.js";
 const F = A`
   :host {
     display: block;
@@ -29,9 +30,9 @@ const F = A`
     min-height: 38px;
     padding: 0.4rem 1rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 700;
     font-size: 0.84rem;
@@ -44,11 +45,11 @@ const F = A`
   }
 
   .brl-tab:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .brl-tab.is-active {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
@@ -59,9 +60,9 @@ const F = A`
     width: 100%;
     padding: 0.7rem 0.85rem;
     border-radius: 14px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
   }
@@ -77,7 +78,7 @@ const F = A`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff)),
         var(--card-bg, #fff)
       );
-    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 16%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 16%, var(--border-color, #e5e7eb));
     box-shadow: 0 8px 22px rgba(120, 44, 82, 0.05);
   }
 
@@ -85,14 +86,14 @@ const F = A`
     margin: 0;
     font-size: 0.92rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .brl-intro__text {
     margin: 0;
     font-size: 0.84rem;
     line-height: 1.55;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .brl-intro__row {
@@ -124,7 +125,7 @@ const F = A`
   .brl-progress__bar {
     height: 6px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 70%, #fff);
     overflow: hidden;
   }
 
@@ -132,18 +133,14 @@ const F = A`
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(
-      90deg,
-      var(--accent-color, var(--fs-store-primary)),
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
-    );
+    background: var(--accent-color, var(--fs-store-primary));
     transition: width 0.3s ease;
   }
 
   .brl-progress__text {
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-align: center;
   }
 
@@ -153,8 +150,8 @@ const F = A`
     gap: 0.7rem;
     padding: 0.85rem;
     border-radius: var(--section-radius, 20px);
-    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 85%, #fff);
+    background: color-mix(in srgb, var(--section-bg, transparent) 55%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 85%, #fff);
   }
 
   .brl-board--horizontal {
@@ -177,7 +174,7 @@ const F = A`
     gap: 0.75rem;
     align-items: stretch;
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     border-inline-start: 4px solid var(--step-color, var(--accent-color, var(--fs-store-primary)));
     border-radius: var(--brl-card-radius, 16px);
     padding: 0.8rem 0.9rem;
@@ -199,7 +196,7 @@ const F = A`
   }
 
   .brl-step.is-over {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
     box-shadow:
       0 0 0 3px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, transparent),
       0 10px 24px rgba(120, 44, 82, 0.08);
@@ -242,7 +239,7 @@ const F = A`
     align-self: center;
     object-fit: cover;
     border-radius: 12px;
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent);
     background: color-mix(in srgb, var(--step-color, var(--accent-color, var(--fs-store-primary))) 12%, #fff);
   }
 
@@ -262,7 +259,7 @@ const F = A`
     margin: 0;
     font-size: 0.98rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -282,7 +279,7 @@ const F = A`
 
   .brl-step__short {
     margin: 0;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.84rem;
     line-height: 1.5;
   }
@@ -293,21 +290,21 @@ const F = A`
     gap: 0.35rem 0.7rem;
     margin-top: 0.2rem;
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .brl-meta b {
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-weight: 700;
   }
 
   .brl-step__long {
     margin: 0.45rem 0 0;
     padding-top: 0.55rem;
-    border-top: 1px dashed var(--border-color, #f2dde7);
+    border-top: 1px dashed var(--border-color, #e5e7eb);
     font-size: 0.85rem;
     line-height: 1.6;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .brl-step__note {
@@ -317,7 +314,7 @@ const F = A`
     font-size: 0.8rem;
     line-height: 1.5;
     background: color-mix(in srgb, #e0a100 12%, var(--card-bg, #fff));
-    color: color-mix(in srgb, #8a5a00 70%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000));
   }
 
   .brl-step__toggle {
@@ -326,8 +323,8 @@ const F = A`
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, transparent));
     color: var(--accent-color, var(--fs-store-primary));
     cursor: pointer;
     font-size: 1rem;
@@ -338,7 +335,7 @@ const F = A`
   .brl-step__toggle:hover,
   .brl-step__toggle[aria-expanded='true'] {
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #e5e7eb));
   }
 
   .brl-handles {
@@ -355,9 +352,9 @@ const F = A`
     display: grid;
     place-items: center;
     border-radius: 10px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     cursor: pointer;
     font-size: 0.8rem;
     touch-action: none;
@@ -365,7 +362,7 @@ const F = A`
   }
 
   .brl-handle:hover:not(:disabled) {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
     color: var(--accent-color, var(--fs-store-primary));
   }
 
@@ -385,7 +382,7 @@ const F = A`
     align-items: center;
     gap: 0.15rem;
     cursor: grab;
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #e5e7eb));
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff));
     color: var(--accent-color, var(--fs-store-primary));
   }
@@ -491,7 +488,7 @@ const F = A`
     top: -0.7rem;
     height: 0.7rem;
     width: 2px;
-    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #e5e7eb));
   }
   .brl-board--path .brl-step:first-child::before,
   .brl-board--circles .brl-step:first-child::before {
@@ -503,7 +500,7 @@ const F = A`
     border-radius: 16px;
     text-align: center;
     font-weight: 700;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     display: grid;
     gap: 0.35rem;
     justify-items: center;
@@ -526,7 +523,7 @@ const F = A`
 
   .brl-feedback--win {
     background: color-mix(in srgb, var(--success-color, #2f9e63) 12%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--success-color, #2f9e63) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--success-color, #2f9e63) 45%, var(--border-color, #e5e7eb));
     color: var(--success-color, #2f9e63);
   }
 
@@ -536,7 +533,7 @@ const F = A`
 
   .brl-feedback--retry {
     background: color-mix(in srgb, var(--error-color, #cf4b4b) 10%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--error-color, #cf4b4b) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--error-color, #cf4b4b) 40%, var(--border-color, #e5e7eb));
     color: var(--error-color, #cf4b4b);
   }
 
@@ -547,7 +544,7 @@ const F = A`
   .brl-feedback__score {
     display: block;
     font-size: 0.82rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-weight: 600;
   }
 
@@ -608,15 +605,15 @@ function J(c) {
     const o = M(r.period, "both");
     return {
       id: String(r.id ?? r.step_id ?? "").trim() || `step-${t + 1}`,
-      title: h(r.step_title),
+      title: f(r.step_title),
       icon: String(r.icon ?? "").trim(),
       image: U(r.image),
-      descShort: h(r.desc_short),
-      descLong: h(r.desc_long),
-      timing: h(r.timing),
-      wait: h(r.wait),
-      amount: h(r.amount),
-      note: h(r.note),
+      descShort: f(r.desc_short),
+      descLong: f(r.desc_long),
+      timing: f(r.timing),
+      wait: f(r.wait),
+      amount: f(r.amount),
+      note: f(r.note),
       color: String(r.color ?? "").trim(),
       optional: w(r.optional, !1),
       period: X.includes(o) ? o : "both",
@@ -627,7 +624,7 @@ function J(c) {
 function Z(c) {
   return j(c).map((r, t) => ({
     id: String(r.id ?? r.routine_id ?? "").trim() || `routine-${t + 1}`,
-    name: h(r.name) || `${t + 1}`,
+    name: f(r.name) || `${t + 1}`,
     steps: J(r.steps)
   })).filter((r) => r.steps.length);
 }
@@ -871,14 +868,14 @@ const O = class O extends E {
     `;
   }
   render() {
-    const r = this.config || {}, t = K(r, "brl_"), o = t.animate && !Q(), e = this.routines, n = h(r.brl_title), d = h(r.brl_desc), v = B(r), z = W() === "en" ? "en" : "ar", I = `${Y(r.brl_card_radius, 14)}px`;
+    const r = this.config || {}, t = K(r, "brl_"), o = t.animate && !Q(), e = this.routines, n = f(r.brl_title), d = f(r.brl_desc), v = B(r), z = W() === "en" ? "en" : "ar", I = `${Y(r.brl_card_radius, 14)}px`;
     if (!e.length)
       return a`<div class="fs-empty" role="status">
         ${i("أضيفي روتينًا واحدًا على الأقل مع خطواته من إعدادات العنصر.", "Add at least one routine with its steps in the element settings.")}
       </div>`;
     const l = this.currentRoutine(e);
     if (!l) return s;
-    const p = v === "quiz" && this.checked && this.order.every((b, S) => b === _(l.steps).map((y) => y.id)[S]), g = h(r.brl_success_msg) || i("أحسنتِ! هذا هو الترتيب الصحيح.", "Well done! This is the correct order."), x = h(r.brl_retry_msg) || i("قريب! عدّلي الترتيب وحاولي مجددًا.", "Close! Adjust the order and try again.");
+    const p = v === "quiz" && this.checked && this.order.every((b, S) => b === _(l.steps).map((y) => y.id)[S]), g = f(r.brl_success_msg) || i("أحسنتِ! هذا هو الترتيب الصحيح.", "Well done! This is the correct order."), x = f(r.brl_retry_msg) || i("قريب! عدّلي الترتيب وحاولي مجددًا.", "Close! Adjust the order and try again.");
     return a`
       <section
         class=${$({ "fs-section": !0, "fs-animate": o })}
@@ -932,53 +929,55 @@ const O = class O extends E {
                   </span>
                 </div>` : s}
 
-            ${v === "quiz" ? a`<div class="brl-actions">
+            <div class="brl-actions">
+              ${v === "quiz" ? a`
                   ${w(r.brl_enable_check, !0) && !this.revealed ? a`<button type="button" class="fs-btn" @click=${() => this.verify(l)}>${i("تحقّقي من الترتيب", "Check order")}</button>` : s}
                   ${w(r.brl_enable_retry, !0) ? a`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.retry(l)}>${i("إعادة المحاولة", "Try again")}</button>` : s}
                   ${w(r.brl_show_answer, !0) ? a`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.showAnswer(l)}>${i("إظهار الترتيب الصحيح", "Show correct order")}</button>` : s}
-                </div>` : s}
+                  ` : s}
+              ${V(r, "brl_")}
+            </div>
           </div>
 
           <span class="brl-sr" role="status" aria-live="polite">${this.announce}</span>
-          ${V({ config: r, prefix: "brl_", ready: !0 })}
         </div>
       </section>
     `;
   }
 };
 O.styles = [H, F];
-let f = O;
+let h = O;
 m([
   q({ type: Object })
-], f.prototype, "config");
+], h.prototype, "config");
 m([
   u()
-], f.prototype, "routineId");
+], h.prototype, "routineId");
 m([
   u()
-], f.prototype, "expandedId");
+], h.prototype, "expandedId");
 m([
   u()
-], f.prototype, "order");
+], h.prototype, "order");
 m([
   u()
-], f.prototype, "orderKey");
+], h.prototype, "orderKey");
 m([
   u()
-], f.prototype, "checked");
+], h.prototype, "checked");
 m([
   u()
-], f.prototype, "revealed");
+], h.prototype, "revealed");
 m([
   u()
-], f.prototype, "draggingId");
+], h.prototype, "draggingId");
 m([
   u()
-], f.prototype, "overId");
+], h.prototype, "overId");
 m([
   u()
-], f.prototype, "announce");
-typeof f < "u" && f.registerSallaComponent("salla-beauty-routine-layering-board");
+], h.prototype, "announce");
+typeof h < "u" && h.registerSallaComponent("salla-beauty-routine-layering-board");
 export {
-  f as default
+  h as default
 };

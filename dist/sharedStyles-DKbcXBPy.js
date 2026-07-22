@@ -1,10 +1,340 @@
-import { css } from 'lit';
-
-/**
- * Shared section chrome + mobile/tablet baselines.
- * Breakpoints: phone ≤639 · tablet ≤959 · desktop ≥960
- */
-export const sharedSectionCss = css`
+import { css as z } from "lit";
+function v() {
+  var t, r, e;
+  try {
+    const o = typeof Salla < "u" ? (r = (t = Salla == null ? void 0 : Salla.lang) == null ? void 0 : t.getLocale) == null ? void 0 : r.call(t) : void 0, a = (e = document.documentElement.lang) == null ? void 0 : e.split("-")[0];
+    return String(o || a || "ar").toLowerCase();
+  } catch {
+    return "ar";
+  }
+}
+function k(t, r = "") {
+  if (t == null)
+    return r;
+  if (typeof t == "string")
+    return t.trim() || r;
+  if (typeof t == "number")
+    return String(t);
+  if (typeof t == "object") {
+    const e = t, a = [v(), "ar", "en", ...Object.keys(e)];
+    for (const f of a) {
+      const s = e[f];
+      if (typeof s == "string" && s.trim())
+        return s.trim();
+    }
+  }
+  return r;
+}
+const d = "var(--color-primary, var(--primary-color, var(--color-main, #64748b)))";
+function l() {
+  var e;
+  if (typeof document > "u") return "light";
+  const t = document.documentElement, r = (t.getAttribute("data-theme") || t.getAttribute("data-mode") || "").toLowerCase();
+  if (r === "dark") return "dark";
+  if (r === "light") return "light";
+  if (t.classList.contains("dark") || (e = document.body) != null && e.classList.contains("dark"))
+    return "dark";
+  try {
+    const o = localStorage.getItem("salla_demo_theme");
+    if (o === "dark" || o === "light") return o;
+  } catch {
+  }
+  return "light";
+}
+function w(t = l()) {
+  const r = t === "dark";
+  return {
+    "--fs-store-primary": d,
+    "--accent-color": d,
+    "--button-bg": d,
+    "--button-color": "#ffffff",
+    "--text-color": r ? "#ffffff" : "#000000",
+    "--muted-color": r ? "#aaaaaa" : "#666666",
+    "--card-bg": r ? "#0f0f0f" : "#ffffff",
+    "--fs-surface": r ? "#0a0a0a" : "#f0f0f0",
+    "--border-color": r ? "rgba(255, 255, 255, 0.12)" : "#e5e7eb",
+    "--section-bg": "transparent"
+  };
+}
+function _(t, r) {
+  for (const [e, o] of Object.entries(r))
+    t.style.setProperty(e, o);
+  t.setAttribute("data-fs-theme", l());
+}
+function m(t, r) {
+  t.querySelectorAll(".fs-section").forEach((e) => {
+    _(e, r);
+  });
+}
+function S(t = l()) {
+  if (typeof document > "u") return;
+  const r = w(t);
+  m(document, r), document.querySelectorAll("*").forEach((e) => {
+    const o = e, a = o.shadowRoot;
+    a && a.querySelector(".fs-section") && (_(o, r), m(a, r));
+  });
+}
+let p = !1, i = null;
+function n() {
+  i && clearTimeout(i), i = setTimeout(() => {
+    i = null, S();
+  }, 50);
+}
+function A() {
+  if (!(p || typeof document > "u")) {
+    p = !0, n();
+    try {
+      new MutationObserver(n).observe(document.documentElement, {
+        attributes: !0,
+        attributeFilter: ["data-theme", "data-mode", "class"]
+      }), document.body && new MutationObserver(n).observe(document.body, {
+        attributes: !0,
+        attributeFilter: ["class", "data-theme", "data-mode"]
+      });
+    } catch {
+    }
+    window.addEventListener("storage", (t) => {
+      t.key === "salla_demo_theme" && n();
+    });
+    try {
+      new MutationObserver((t) => {
+        t.some((r) => r.addedNodes.length) && n();
+      }).observe(document.documentElement, { childList: !0, subtree: !0 });
+    } catch {
+    }
+  }
+}
+function j(t) {
+  return Object.entries(t || {}).reduce((r, [e, o]) => {
+    const a = e.includes(".") ? e.split(".").pop() : e;
+    return r[a] = o, r;
+  }, {});
+}
+function b(t, r = "") {
+  const e = typeof t == "string" || typeof t == "number" ? String(t).trim() : k(t, "").trim();
+  return e && e.toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 48) || r;
+}
+function L(t, r = "") {
+  if (t && typeof t == "object" && !Array.isArray(t)) {
+    const e = t, o = String(e.en ?? "").trim(), a = String(e.ar ?? "").trim();
+    return b(o || a, r);
+  }
+  return b(t, r);
+}
+function M(t, r, e = "item") {
+  const o = String(t.id ?? t.value ?? t.key ?? "").trim();
+  return o || L(t.name ?? t.title ?? t.label ?? t.brand ?? t.model, "") || `${e}-${r + 1}`;
+}
+function I(t) {
+  return Array.isArray(t) ? t.filter((r) => !!r && typeof r == "object").map((r, e) => {
+    const o = j(r), a = o;
+    return String(a.id ?? "").trim() || (a.id = M(a, e)), o;
+  }) : [];
+}
+function c(t, r = 0) {
+  return typeof t == "number" && Number.isFinite(t) ? t : typeof t == "string" && t.trim() !== "" && Number.isFinite(Number(t)) ? Number(t) : t && typeof t == "object" && "value" in t ? c(t.value, r) : r;
+}
+function N(t, r = 0) {
+  if (typeof t == "number" && Number.isFinite(t)) return t;
+  if (typeof t == "string" && t.trim() !== "") {
+    const e = Number(t.replace(",", "."));
+    return Number.isFinite(e) ? e : r;
+  }
+  return r;
+}
+function F(t, r, e) {
+  return Math.min(e, Math.max(r, t));
+}
+function h(t, r = !1) {
+  if (typeof t == "boolean") return t;
+  if (typeof t == "string") {
+    const e = t.toLowerCase().trim();
+    if (["true", "1", "yes", "on"].includes(e)) return !0;
+    if (["false", "0", "no", "off", ""].includes(e)) return !1;
+  }
+  return typeof t == "number" ? t !== 0 : r;
+}
+const u = {
+  offers_link: "/offers",
+  offers: "/offers",
+  brands_link: "/brands",
+  blog_link: "/blog",
+  blog: "/blog"
+};
+function g(t) {
+  if (!t) return "";
+  if (typeof t == "string") {
+    const r = t.trim();
+    return T(r) ? /^[\w-]+(\.[\w-]+)+([/?#]|$)/.test(r) && !/^https?:\/\//i.test(r) ? `https://${r}` : r : "";
+  }
+  if (Array.isArray(t)) {
+    for (const r of t) {
+      const e = g(r);
+      if (e) return e;
+    }
+    return "";
+  }
+  if (typeof t == "object") {
+    const r = t, e = r.urls && typeof r.urls == "object" ? r.urls : void 0, o = [
+      r.url,
+      r.href,
+      e == null ? void 0 : e.customer,
+      e == null ? void 0 : e.url,
+      r.link,
+      r.custom,
+      r.path,
+      // Last: `value` may hold a nested entity, a custom URL, or a bare id.
+      r.value
+    ];
+    for (const f of o) {
+      const s = g(f);
+      if (s) return s;
+    }
+    const a = String(r.type ?? r.key ?? r.source ?? "").toLowerCase().trim();
+    if (u[a]) return u[a];
+  }
+  return "";
+}
+function T(t) {
+  if (!t || t === "#" || /^\d+$/.test(t)) return !1;
+  if (t.startsWith("/") || t.startsWith("#") || t.startsWith("?") || t.startsWith("mailto:") || t.startsWith("tel:") || t.startsWith("whatsapp:"))
+    return !0;
+  if (/^https?:\/\//i.test(t))
+    try {
+      return new URL(t), !0;
+    } catch {
+      return !1;
+    }
+  return /^[\w-]+(\.[\w-]+)+([/?#]|$)/.test(t);
+}
+function E(t) {
+  try {
+    return new URL(t, window.location.origin).origin !== window.location.origin;
+  } catch {
+    return !1;
+  }
+}
+function $(t) {
+  if (!t || typeof t != "string") return !1;
+  try {
+    const r = new URL(t, window.location.origin);
+    return !!["http:", "https:"].includes(r.protocol);
+  } catch {
+    return !1;
+  }
+}
+function W(t, r, e, o) {
+  return v() === "en" ? r : t;
+}
+function O(t, r) {
+  try {
+    const e = localStorage.getItem(t);
+    return e ? JSON.parse(e) : r;
+  } catch {
+    return r;
+  }
+}
+function R(t, r) {
+  try {
+    localStorage.setItem(t, JSON.stringify(r));
+  } catch {
+  }
+}
+function U() {
+  try {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch {
+    return !1;
+  }
+}
+function D(t, r, e) {
+  const o = t || {};
+  return {
+    bg: "transparent",
+    text: "#000000",
+    muted: "#666666",
+    accent: "var(--color-primary, var(--primary-color, var(--color-main, #64748b)))",
+    card: "var(--color-white, var(--bg-color, #ffffff))",
+    border: "var(--color-border, #e5e7eb)",
+    buttonBg: "var(--color-primary, var(--primary-color, var(--color-main, #64748b)))",
+    buttonColor: "#ffffff",
+    radius: `${c(o[`${r}radius`], 20)}px`,
+    spaceDesktop: c(
+      o[`${r}space_desktop`],
+      48
+    ),
+    spaceMobile: c(
+      o[`${r}space_mobile`],
+      28
+    ),
+    animate: h(o[`${r}animate`], !0),
+    fullWidth: h(o[`${r}full_width`], !1),
+    noBottomMargin: !1,
+    hasContainer: !0
+  };
+}
+function q(t) {
+  const r = t.hasContainer !== !1;
+  return A(), {
+    ...w(),
+    "--section-radius": t.radius,
+    "--space-desktop": `${t.spaceDesktop}px`,
+    "--space-mobile": `${t.spaceMobile}px`,
+    "--space-desktop-bottom": t.noBottomMargin ? "0px" : `${t.spaceDesktop}px`,
+    "--space-mobile-bottom": t.noBottomMargin ? "0px" : `${t.spaceMobile}px`,
+    "--section-container-max": r ? "1440px" : "none",
+    "--section-container-pad": r ? "16px" : "0px",
+    "--section-container-pad-sm": r ? "12px" : "0px"
+  };
+}
+function x(t, r = "") {
+  if (typeof t == "string" && t.trim()) return t.trim();
+  if (Array.isArray(t) && t[0]) {
+    const e = t[0];
+    if (typeof e == "string") return e;
+    if (e && typeof e == "object" && "value" in e)
+      return String(e.value ?? r);
+    if (e && typeof e == "object" && "key" in e)
+      return String(e.key ?? r);
+  }
+  if (t && typeof t == "object") {
+    const e = t;
+    if (Array.isArray(e.selected) && e.selected[0])
+      return x(e.selected, r);
+    if ("value" in e && e.value != null && !Array.isArray(e.value))
+      return String(e.value ?? r);
+    if (Array.isArray(e.value) && e.value[0])
+      return x(e.value, r);
+  }
+  return r;
+}
+function B(t) {
+  const r = k(t, "");
+  return r ? r.split(/[,،|/]/).map((e) => e.trim()).filter(Boolean) : [];
+}
+function y(t) {
+  if (!t) return "";
+  if (typeof t == "string") {
+    const r = t.trim();
+    return $(r) || r.startsWith("/") ? r : "";
+  }
+  if (Array.isArray(t)) {
+    for (const r of t) {
+      const e = y(r);
+      if (e) return e;
+    }
+    return "";
+  }
+  if (typeof t == "object") {
+    const r = t, e = [r.url, r.src, r.image, r.thumbnail, r.original];
+    for (const o of e) {
+      const a = y(o);
+      if (a) return a;
+    }
+  }
+  return "";
+}
+const P = z`
   :host {
     direction: inherit;
     width: 100%;
@@ -811,3 +1141,24 @@ export const sharedSectionCss = css`
 
   }
 `;
+export {
+  q as a,
+  g as b,
+  c,
+  E as d,
+  y as e,
+  B as f,
+  x as g,
+  F as h,
+  h as i,
+  N as j,
+  O as k,
+  k as l,
+  R as m,
+  I as n,
+  v as o,
+  U as p,
+  D as r,
+  P as s,
+  W as t
+};

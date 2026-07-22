@@ -10,7 +10,6 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import { parsePairs, clampPosition, defaultSingleImages } from './utils.js';
@@ -285,8 +284,6 @@ export default class BeautyBeforeAfter extends LitElement {
                 : nothing}
             </div>
           </div>
-
-          ${renderCommerceOutcome({ config: c, prefix: 'bba_', ready: true })}
         </div>
       </section>
     `;

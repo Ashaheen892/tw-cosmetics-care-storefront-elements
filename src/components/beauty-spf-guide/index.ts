@@ -12,7 +12,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -98,9 +98,6 @@ export default class BeautySpfGuide extends LitElement {
     return false;
   }
 
-  private label(key: string, ar: string, en: string): string {
-    return localizedString(this.config?.[key] as string) || t(ar, en);
-  }
 
   private goNext(): void {
     if (this.stepIndex < this.plan.length) this.stepIndex += 1;
@@ -237,9 +234,9 @@ export default class BeautySpfGuide extends LitElement {
   }
 
   private renderNav() {
-    const back = this.label('bsg_back_btn', 'السابق', 'Back');
-    const next = this.label('bsg_next_btn', 'التالي', 'Next');
-    const see = this.label('bsg_see_btn', 'عرض التقدير', 'See estimate');
+    const back = localizedString(this.config?.bsg_back_btn as string) || t('السابق', 'Back');
+    const next = localizedString(this.config?.bsg_next_btn as string) || t('التالي', 'Next');
+    const see = localizedString(this.config?.bsg_see_btn as string) || t('عرض التقدير', 'See estimate');
     const lastStep = this.stepIndex === this.plan.length - 1;
 
     return html`
@@ -365,11 +362,12 @@ export default class BeautySpfGuide extends LitElement {
 
         <div class="bsg-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-            ${this.label('bsg_back_btn', 'تعديل الاختيارات', 'Edit choices')}
+            ${localizedString(this.config?.bsg_back_btn as string) || t('تعديل الاختيارات', 'Edit choices')}
           </button>
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
-            ${this.label('bsg_reset_btn', 'ابدئي من جديد', 'Start over')}
+            ${localizedString(this.config?.bsg_reset_btn as string) || t('ابدئي من جديد', 'Start over')}
           </button>
+          ${renderCommerceCtaButton(c, 'bsg_')}
         </div>
 
         ${showNotice ? html`<p class="bsg-notice bsg-notice--inline">${notice}</p>` : nothing}
@@ -429,13 +427,6 @@ export default class BeautySpfGuide extends LitElement {
                   ${this.renderNav()}
                 `}
           </div>
-          ${this.onResults
-            ? renderCommerceOutcome({
-                config: c,
-                prefix: 'bsg_',
-                ready: true,
-              })
-            : nothing}
         </div>
       </section>
     `;

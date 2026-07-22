@@ -1,9 +1,10 @@
-import { css as O, LitElement as N, nothing as i, html as r } from "lit";
+import { css as N, LitElement as O, nothing as s, html as t } from "lit";
 import { property as Z, state as j } from "lit/decorators.js";
 import { classMap as v } from "lit/directives/class-map.js";
 import { styleMap as _ } from "lit/directives/style-map.js";
-import { n as R, l as m, c as U, e as W, f as q, h as y, j as u, g as w, s as F, k as G, m as K, t as s, i as h, r as V, p as X, a as B, b as J } from "./sharedStyles-BgfDOkwJ.js";
-const Q = O`
+import { n as R, l as p, b as U, e as W, f as q, h as y, j as u, g as w, s as F, k as G, m as K, t as i, i as h, r as V, p as X, a as B } from "./sharedStyles-DKbcXBPy.js";
+import { r as J } from "./commerceOutcome-Dk8p2VWM.js";
+const Q = N`
   :host {
     display: block;
     direction: inherit;
@@ -58,8 +59,8 @@ const Q = O`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
         transparent 60%
       ),
-      color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+      color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, transparent),
       0 18px 40px rgba(120, 44, 82, 0.08);
@@ -94,15 +95,15 @@ const Q = O`
     justify-content: center;
     text-align: center;
     padding: 1.5rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.88rem;
     line-height: 1.55;
     background: repeating-linear-gradient(
       -45deg,
-      color-mix(in srgb, var(--border-color, #f2dde7) 25%, var(--card-bg, #fff)),
-      color-mix(in srgb, var(--border-color, #f2dde7) 25%, var(--card-bg, #fff)) 10px,
-      color-mix(in srgb, var(--border-color, #f2dde7) 12%, var(--card-bg, #fff)) 10px,
-      color-mix(in srgb, var(--border-color, #f2dde7) 12%, var(--card-bg, #fff)) 20px
+      color-mix(in srgb, var(--border-color, #e5e7eb) 25%, var(--card-bg, #fff)),
+      color-mix(in srgb, var(--border-color, #e5e7eb) 25%, var(--card-bg, #fff)) 10px,
+      color-mix(in srgb, var(--border-color, #e5e7eb) 12%, var(--card-bg, #fff)) 10px,
+      color-mix(in srgb, var(--border-color, #e5e7eb) 12%, var(--card-bg, #fff)) 20px
     );
   }
 
@@ -134,9 +135,9 @@ const Q = O`
     min-height: 36px;
     padding: 0.35rem 0.85rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.8rem;
     font-weight: 700;
@@ -146,11 +147,11 @@ const Q = O`
   }
 
   .bfz-legend__btn:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
   }
 
   .bfz-legend__btn.is-active {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
@@ -272,9 +273,9 @@ const Q = O`
     white-space: nowrap;
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     background: color-mix(in srgb, var(--card-bg, #fff) 92%, transparent);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent);
     padding: 0.15rem 0.45rem;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(43, 33, 28, 0.08);
@@ -285,7 +286,7 @@ const Q = O`
   .bfz-panel {
     min-width: 0;
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     border-radius: var(--section-radius, 20px);
     padding: 1.2rem 1.25rem 1.35rem;
     box-shadow:
@@ -316,7 +317,7 @@ const Q = O`
     font-size: clamp(1.1rem, 2vw, 1.3rem);
     font-weight: 800;
     line-height: 1.3;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bfz-nav {
@@ -331,8 +332,8 @@ const Q = O`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, transparent));
     color: var(--accent-color, var(--fs-store-primary));
     font-size: 1.05rem;
     cursor: pointer;
@@ -342,7 +343,7 @@ const Q = O`
   .bfz-nav__btn:hover,
   .bfz-nav__btn:focus-visible {
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
     outline: none;
   }
 
@@ -357,7 +358,7 @@ const Q = O`
 
   .bfz-panel__desc {
     margin: 0;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.7;
     font-size: 0.92rem;
   }
@@ -389,7 +390,7 @@ const Q = O`
     font-size: 0.8rem;
     font-weight: 800;
     letter-spacing: 0.02em;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -420,9 +421,9 @@ const Q = O`
     padding-inline: 2.45rem 0.75rem;
     font-size: 0.88rem;
     line-height: 1.55;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 5%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent);
     border-radius: 12px;
   }
 
@@ -454,7 +455,7 @@ const Q = O`
   .bfz-tips li {
     position: relative;
     padding-inline-start: 1.15rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.86rem;
     line-height: 1.55;
   }
@@ -478,7 +479,7 @@ const Q = O`
     border-radius: 14px;
     background: color-mix(in srgb, #e0a100 12%, var(--card-bg, #fff));
     border: 1px solid color-mix(in srgb, #e0a100 34%, transparent);
-    color: color-mix(in srgb, #8a5a00 70%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000));
     font-size: 0.84rem;
     line-height: 1.55;
   }
@@ -492,7 +493,7 @@ const Q = O`
     margin: 1.35rem 0 0;
     text-align: center;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.6;
   }
 
@@ -591,13 +592,13 @@ const Q = O`
     margin: 0 0 0.4rem;
     font-size: 1.05rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bfz-empty-state__text {
     margin: 0;
     font-size: 0.86rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
   }
 
@@ -653,26 +654,26 @@ const Q = O`
   }
 `, ee = ["pulse", "ring", "number", "icon", "area", "label"];
 function S(d) {
-  const e = m(d, "");
+  const e = p(d, "");
   return e ? e.split(/\r?\n|،|;|,/).map((a) => a.trim()).filter(Boolean) : [];
 }
 function re(d) {
   return R(d).map((e, a) => {
-    const t = m(e.name), o = m(e.title) || t;
+    const r = p(e.name), o = p(e.title) || r;
     return {
       id: String(e.id ?? e.zone_id ?? "").trim() || `zone-${a + 1}`,
-      name: t,
+      name: r,
       x: y(u(e.x, 50), 0, 100),
       y: y(u(e.y, 50), 0, 100),
       dotSize: y(u(e.dot_size, 30), 12, 120),
       dotColor: String(e.dot_color ?? "").trim(),
       icon: String(e.icon ?? "").trim(),
       title: o,
-      desc: m(e.desc),
+      desc: p(e.desc),
       tags: q(e.tags),
       steps: S(e.steps),
       tips: S(e.tips),
-      warning: m(e.warning),
+      warning: p(e.warning),
       image: W(e.image),
       link: U(e.link)
     };
@@ -688,12 +689,12 @@ function ae(d) {
 function oe(d, e = "3/4") {
   return (w(d.bfz_aspect, e) || e).replace("/", " / ");
 }
-var ie = Object.defineProperty, $ = (d, e, a, t) => {
+var se = Object.defineProperty, $ = (d, e, a, r) => {
   for (var o = void 0, c = d.length - 1, n; c >= 0; c--)
     (n = d[c]) && (o = n(e, a, o) || o);
-  return o && ie(e, a, o), o;
+  return o && se(e, a, o), o;
 };
-const L = "tw-bfz-coach-seen", k = class k extends N {
+const L = "tw-bfz-coach-seen", k = class k extends O {
   constructor() {
     super(...arguments), this.config = {}, this.activeId = "", this.showCoach = !1, this.boundLangHandler = () => this.requestUpdate();
   }
@@ -715,31 +716,31 @@ const L = "tw-bfz-coach-seen", k = class k extends N {
   }
   /** Merchant preset, otherwise the first zone — never leave the panel empty. */
   defaultZoneId(e) {
-    var t, o;
+    var r, o;
     if (!e.length) return "";
-    const a = String(((t = this.config) == null ? void 0 : t.bfz_default_zone) ?? "").trim();
+    const a = String(((r = this.config) == null ? void 0 : r.bfz_default_zone) ?? "").trim();
     return a && e.some((c) => c.id === a) ? a : ((o = e[0]) == null ? void 0 : o.id) ?? "";
   }
   resolveActive(e) {
     if (!e.length || this.activeId === "__none__") return null;
     if (this.activeId) {
-      const t = e.find((o) => o.id === this.activeId);
-      if (t) return t;
+      const r = e.find((o) => o.id === this.activeId);
+      if (r) return r;
     }
     const a = this.defaultZoneId(e);
-    return e.find((t) => t.id === a) ?? e[0] ?? null;
+    return e.find((r) => r.id === a) ?? e[0] ?? null;
   }
   select(e) {
     this.activeId = e, this.dismissCoach();
   }
   step(e, a) {
     var n;
-    const t = this.resolveActive(e), c = ((t ? e.findIndex((f) => f.id === t.id) : -1) + a + e.length) % e.length;
+    const r = this.resolveActive(e), c = ((r ? e.findIndex((f) => f.id === r.id) : -1) + a + e.length) % e.length;
     this.activeId = ((n = e[c]) == null ? void 0 : n.id) ?? "", this.dismissCoach();
   }
-  renderDot(e, a, t, o, c, n, f) {
-    const l = f === e.id, p = e.name || e.title, x = a === "label" || c, z = t || n;
-    return r`
+  renderDot(e, a, r, o, c, n, f) {
+    const l = f === e.id, b = e.name || e.title, x = a === "label" || c, z = r || n;
+    return t`
       <button
         type="button"
         class=${v({
@@ -756,23 +757,23 @@ const L = "tw-bfz-coach-seen", k = class k extends N {
     })}
         aria-pressed=${l ? "true" : "false"}
         aria-controls="bfz-detail"
-        aria-label=${p}
-        title=${p}
+        aria-label=${b}
+        title=${b}
         @click=${() => this.select(e.id)}
       >
-        ${z ? r`<span class="bfz-dot__pulse" aria-hidden="true"></span>` : i}
-        ${a === "number" ? r`<span>${o + 1}</span>` : a === "icon" && e.icon ? r`<span class=${e.icon.startsWith("sicon-") ? e.icon : ""}>${e.icon.startsWith("sicon-") ? "" : e.icon}</span>` : i}
-        ${x ? r`<span class="bfz-dot__label">${p}</span>` : i}
+        ${z ? t`<span class="bfz-dot__pulse" aria-hidden="true"></span>` : s}
+        ${a === "number" ? t`<span>${o + 1}</span>` : a === "icon" && e.icon ? t`<span class=${e.icon.startsWith("sicon-") ? e.icon : ""}>${e.icon.startsWith("sicon-") ? "" : e.icon}</span>` : s}
+        ${x ? t`<span class="bfz-dot__label">${b}</span>` : s}
       </button>
     `;
   }
   renderEmptyPanel(e) {
-    return r`<div class="bfz-panel bfz-panel--empty" id="bfz-detail" role="region">
+    return t`<div class="bfz-panel bfz-panel--empty" id="bfz-detail" role="region">
       <div class="bfz-empty-state">
         <span class="bfz-empty-state__icon" aria-hidden="true">◎</span>
-        <h3 class="bfz-empty-state__title">${s("اختاري منطقة", "Pick a zone")}</h3>
+        <h3 class="bfz-empty-state__title">${i("اختاري منطقة", "Pick a zone")}</h3>
         <p class="bfz-empty-state__text">
-          ${s(
+          ${i(
       "اضغطي على أي نقطة في الخريطة لعرض خطوات العناية والنصائح الخاصة بكل منطقة.",
       "Tap any hotspot on the map to see care steps and tips for that zone."
     )}
@@ -781,20 +782,20 @@ const L = "tw-bfz-coach-seen", k = class k extends N {
     </div>`;
   }
   renderLegend(e, a) {
-    return e.length < 2 ? i : r`
-      <div class="bfz-legend" role="tablist" aria-label=${s("مناطق الوجه", "Face zones")}>
+    return e.length < 2 ? s : t`
+      <div class="bfz-legend" role="tablist" aria-label=${i("مناطق الوجه", "Face zones")}>
         ${e.map(
-      (t) => r`
+      (r) => t`
             <button
               type="button"
               role="tab"
-              class=${v({ "bfz-legend__btn": !0, "is-active": a === t.id })}
-              style=${_(t.dotColor ? { "--dot-color": t.dotColor } : {})}
-              aria-selected=${a === t.id ? "true" : "false"}
-              @click=${() => this.select(t.id)}
+              class=${v({ "bfz-legend__btn": !0, "is-active": a === r.id })}
+              style=${_(r.dotColor ? { "--dot-color": r.dotColor } : {})}
+              aria-selected=${a === r.id ? "true" : "false"}
+              @click=${() => this.select(r.id)}
             >
               <span class="bfz-legend__swatch" aria-hidden="true"></span>
-              <span>${t.name || t.title}</span>
+              <span>${r.name || r.title}</span>
             </button>
           `
     )}
@@ -804,114 +805,113 @@ const L = "tw-bfz-coach-seen", k = class k extends N {
   renderDetail(e, a) {
     if (!e)
       return this.renderEmptyPanel(a);
-    const t = this.config || {}, o = h(t.bfz_show_nav, !0) && this.zones.length > 1, c = s("خطوات العناية", "Care steps"), n = s("نصائح", "Tips"), f = this.zones.findIndex((l) => l.id === e.id);
-    return r`
+    const r = this.config || {}, o = h(r.bfz_show_nav, !0) && this.zones.length > 1, c = i("خطوات العناية", "Care steps"), n = i("نصائح", "Tips"), f = this.zones.findIndex((l) => l.id === e.id);
+    return t`
       <div class="bfz-panel" id="bfz-detail" role="region" aria-live="polite">
         <div class="bfz-panel__head">
           <div>
             <p class="bfz-panel__eyebrow">
-              ${s("منطقة العناية", "Care zone")}${f >= 0 ? ` · ${f + 1}/${this.zones.length}` : ""}
+              ${i("منطقة العناية", "Care zone")}${f >= 0 ? ` · ${f + 1}/${this.zones.length}` : ""}
             </p>
             <h3 class="bfz-panel__title">${e.title || e.name}</h3>
           </div>
           <div class="bfz-nav">
-            ${a === "sheet" ? r`<button
+            ${a === "sheet" ? t`<button
                   type="button"
                   class="bfz-nav__btn bfz-sheet-close"
-                  aria-label=${s("إغلاق", "Close")}
+                  aria-label=${i("إغلاق", "Close")}
                   @click=${() => this.activeId = "__none__"}
-                >✕</button>` : i}
-            ${o ? r`
-                  <button type="button" class="bfz-nav__btn" aria-label=${s("السابق", "Previous")} @click=${() => this.step(this.zones, -1)}>‹</button>
-                  <button type="button" class="bfz-nav__btn" aria-label=${s("التالي", "Next")} @click=${() => this.step(this.zones, 1)}>›</button>
-                ` : i}
+                >✕</button>` : s}
+            ${o ? t`
+                  <button type="button" class="bfz-nav__btn" aria-label=${i("السابق", "Previous")} @click=${() => this.step(this.zones, -1)}>‹</button>
+                  <button type="button" class="bfz-nav__btn" aria-label=${i("التالي", "Next")} @click=${() => this.step(this.zones, 1)}>›</button>
+                ` : s}
           </div>
         </div>
 
-        ${e.image ? r`<img class="bfz-panel__img" src=${e.image} alt="" loading="lazy" decoding="async" />` : i}
-        ${e.desc ? r`<p class="bfz-panel__desc">${e.desc}</p>` : i}
+        ${e.image ? t`<img class="bfz-panel__img" src=${e.image} alt="" loading="lazy" decoding="async" />` : s}
+        ${e.desc ? t`<p class="bfz-panel__desc">${e.desc}</p>` : s}
 
-        ${e.tags.length ? r`<div class="bfz-tags">${e.tags.map((l) => r`<span class="bfz-tag">${l}</span>`)}</div>` : i}
+        ${e.tags.length ? t`<div class="bfz-tags">${e.tags.map((l) => t`<span class="bfz-tag">${l}</span>`)}</div>` : s}
 
-        ${e.steps.length ? r`<div class="bfz-block">
+        ${e.steps.length ? t`<div class="bfz-block">
               <h4 class="bfz-block__title">${c}</h4>
-              <ol class="bfz-steps">${e.steps.map((l) => r`<li>${l}</li>`)}</ol>
-            </div>` : i}
+              <ol class="bfz-steps">${e.steps.map((l) => t`<li>${l}</li>`)}</ol>
+            </div>` : s}
 
-        ${e.tips.length ? r`<div class="bfz-block">
+        ${e.tips.length ? t`<div class="bfz-block">
               <h4 class="bfz-block__title">${n}</h4>
-              <ul class="bfz-tips">${e.tips.map((l) => r`<li>${l}</li>`)}</ul>
-            </div>` : i}
+              <ul class="bfz-tips">${e.tips.map((l) => t`<li>${l}</li>`)}</ul>
+            </div>` : s}
 
-        ${e.warning ? r`<div class="bfz-warn"><span aria-hidden="true">⚠︎</span><span>${e.warning}</span></div>` : i}
+        ${e.warning ? t`<div class="bfz-warn"><span aria-hidden="true">⚠︎</span><span>${e.warning}</span></div>` : s}
 
-        ${e.link ? r`<a class="fs-btn" href=${e.link} target="_blank" rel="noopener noreferrer">
-              ${s("اقرئي المزيد", "Read more")}
-            </a>` : i}
+        <div class="fs-actions">
+          ${J(r, "bfz_", { href: e.link })}
+        </div>
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, a = V(e, "bfz_"), t = a.animate && !X(), o = this.zones, c = m(e.bfz_face_image), n = m(e.bfz_title), f = m(e.bfz_desc), l = te(e), p = ae(e), x = h(e.bfz_pulse, !0) && t, z = Math.max(600, u(e.bfz_pulse_speed, 2200)), D = h(e.bfz_reverse, !1), T = h(e.bfz_show_names, !1), A = oe(e), b = this.resolveActive(o), E = h(e.bfz_show_notice, !0), M = m(e.bfz_notice) || s("المعلومات المعروضة توعوية ولا تُعد تشخيصًا طبيًا.", "The information shown is educational and is not a medical diagnosis."), C = (b == null ? void 0 : b.id) ?? "", I = this.showCoach && !b;
+    const e = this.config || {}, a = V(e, "bfz_"), r = a.animate && !X(), o = this.zones, c = p(e.bfz_face_image), n = p(e.bfz_title), f = p(e.bfz_desc), l = te(e), b = ae(e), x = h(e.bfz_pulse, !0) && r, z = Math.max(600, u(e.bfz_pulse_speed, 2200)), D = h(e.bfz_reverse, !1), T = h(e.bfz_show_names, !1), A = oe(e), m = this.resolveActive(o), E = h(e.bfz_show_notice, !0), M = p(e.bfz_notice) || i("المعلومات المعروضة توعوية ولا تُعد تشخيصًا طبيًا.", "The information shown is educational and is not a medical diagnosis."), C = (m == null ? void 0 : m.id) ?? "", I = this.showCoach && !m;
     if (!o.length)
-      return r`<div class="fs-empty" role="status">
-        ${s("أضيفي مناطق الوجه من إعدادات العنصر لعرض الخريطة التفاعلية.", "Add face zones in the element settings to show the interactive map.")}
+      return t`<div class="fs-empty" role="status">
+        ${i("أضيفي مناطق الوجه من إعدادات العنصر لعرض الخريطة التفاعلية.", "Add face zones in the element settings to show the interactive map.")}
       </div>`;
-    const P = p === "sheet" && !!b;
-    return r`
+    const P = b === "sheet" && !!m;
+    return t`
       <section
-        class=${v({ "fs-section": !0, "fs-animate": t })}
+        class=${v({ "fs-section": !0, "fs-animate": r })}
         style=${_({
       ...B(a),
       "--bfz-aspect": A,
       "--bfz-pulse-speed": `${z}ms`
     })}
-        aria-label=${n || s("خريطة مناطق الوجه والعناية", "Face care zone map")}
+        aria-label=${n || i("خريطة مناطق الوجه والعناية", "Face care zone map")}
       >
         <div class="fs-container">
-          ${n || f ? r`<div class="fs-header">
-                ${n ? r`<h2 class="fs-title">${n}</h2>` : i}
-                ${f ? r`<p class="fs-desc">${f}</p>` : i}
-              </div>` : i}
+          ${n || f ? t`<div class="fs-header">
+                ${n ? t`<h2 class="fs-title">${n}</h2>` : s}
+                ${f ? t`<p class="fs-desc">${f}</p>` : s}
+              </div>` : s}
 
           <div
             class=${v({
       "bfz-layout": !0,
       "bfz-layout--reverse": D,
-      "bfz-layout--sheet": p === "sheet"
+      "bfz-layout--sheet": b === "sheet"
     })}
           >
             <div class="bfz-stage-wrap">
               <div class="bfz-stage">
-                ${c ? r`<img class="bfz-stage__img" src=${c} alt="" loading="lazy" decoding="async" />` : r`<div class="bfz-stage__missing" role="img" aria-label=${s("صورة وجه غير متوفرة", "Face image not available")}>
+                ${c ? t`<img class="bfz-stage__img" src=${c} alt="" loading="lazy" decoding="async" />` : t`<div class="bfz-stage__missing" role="img" aria-label=${i("صورة وجه غير متوفرة", "Face image not available")}>
                       <span class="bfz-stage__missing-icon" aria-hidden="true">👤</span>
-                      <p>${s("أضيفي صورة وجه من الإعدادات", "Add a face image in settings")}</p>
+                      <p>${i("أضيفي صورة وجه من الإعدادات", "Add a face image in settings")}</p>
                     </div>`}
                 ${o.map(
-      (Y, H) => this.renderDot(Y, l, x, H, T, I && t, C)
+      (Y, H) => this.renderDot(Y, l, x, H, T, I && r, C)
     )}
               </div>
 
               ${this.renderLegend(o, C)}
 
-              ${I ? r`<div class="bfz-coach" role="status">
-                    <p class="bfz-coach__text">${s("اضغطي على منطقة في الخريطة", "Tap a zone on the map")}</p>
-                    <button type="button" class="bfz-coach__dismiss" aria-label=${s("إخفاء", "Dismiss")} @click=${() => this.dismissCoach()}>✕</button>
-                  </div>` : i}
+              ${I ? t`<div class="bfz-coach" role="status">
+                    <p class="bfz-coach__text">${i("اضغطي على منطقة في الخريطة", "Tap a zone on the map")}</p>
+                    <button type="button" class="bfz-coach__dismiss" aria-label=${i("إخفاء", "Dismiss")} @click=${() => this.dismissCoach()}>✕</button>
+                  </div>` : s}
             </div>
 
-            ${p === "sheet" ? r`
-                  ${P ? r`<button
+            ${b === "sheet" ? t`
+                  ${P ? t`<button
                         class="bfz-sheet-backdrop"
-                        aria-label=${s("إغلاق", "Close")}
+                        aria-label=${i("إغلاق", "Close")}
                         @click=${() => this.activeId = "__none__"}
-                      ></button>` : i}
-                  ${this.renderDetail(b, p)}
-                ` : this.renderDetail(b, p)}
+                      ></button>` : s}
+                  ${this.renderDetail(m, b)}
+                ` : this.renderDetail(m, b)}
           </div>
 
-          ${E ? r`<p class="bfz-notice">${M}</p>` : i}
-          ${J({ config: e, prefix: "bfz_", ready: !!b, selection: b })}
+          ${E ? t`<p class="bfz-notice">${M}</p>` : s}
         </div>
       </section>
     `;

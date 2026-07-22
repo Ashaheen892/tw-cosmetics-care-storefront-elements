@@ -26,9 +26,9 @@ export const componentStyles = css`
     min-height: 38px;
     padding: 0.4rem 1rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 700;
     font-size: 0.84rem;
@@ -41,11 +41,11 @@ export const componentStyles = css`
   }
 
   .brl-tab:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .brl-tab.is-active {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
@@ -56,9 +56,9 @@ export const componentStyles = css`
     width: 100%;
     padding: 0.7rem 0.85rem;
     border-radius: 14px;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
   }
@@ -74,7 +74,7 @@ export const componentStyles = css`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff)),
         var(--card-bg, #fff)
       );
-    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 16%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 16%, var(--border-color, #e5e7eb));
     box-shadow: 0 8px 22px rgba(120, 44, 82, 0.05);
   }
 
@@ -82,14 +82,14 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.92rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .brl-intro__text {
     margin: 0;
     font-size: 0.84rem;
     line-height: 1.55;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .brl-intro__row {
@@ -121,7 +121,7 @@ export const componentStyles = css`
   .brl-progress__bar {
     height: 6px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 70%, #fff);
     overflow: hidden;
   }
 
@@ -129,18 +129,14 @@ export const componentStyles = css`
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(
-      90deg,
-      var(--accent-color, var(--fs-store-primary)),
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
-    );
+    background: var(--accent-color, var(--fs-store-primary));
     transition: width 0.3s ease;
   }
 
   .brl-progress__text {
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-align: center;
   }
 
@@ -150,8 +146,8 @@ export const componentStyles = css`
     gap: 0.7rem;
     padding: 0.85rem;
     border-radius: var(--section-radius, 20px);
-    background: color-mix(in srgb, var(--section-bg, #fbf5f8) 55%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 85%, #fff);
+    background: color-mix(in srgb, var(--section-bg, transparent) 55%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 85%, #fff);
   }
 
   .brl-board--horizontal {
@@ -174,7 +170,7 @@ export const componentStyles = css`
     gap: 0.75rem;
     align-items: stretch;
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     border-inline-start: 4px solid var(--step-color, var(--accent-color, var(--fs-store-primary)));
     border-radius: var(--brl-card-radius, 16px);
     padding: 0.8rem 0.9rem;
@@ -196,7 +192,7 @@ export const componentStyles = css`
   }
 
   .brl-step.is-over {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
     box-shadow:
       0 0 0 3px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, transparent),
       0 10px 24px rgba(120, 44, 82, 0.08);
@@ -239,7 +235,7 @@ export const componentStyles = css`
     align-self: center;
     object-fit: cover;
     border-radius: 12px;
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent);
     background: color-mix(in srgb, var(--step-color, var(--accent-color, var(--fs-store-primary))) 12%, #fff);
   }
 
@@ -259,7 +255,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.98rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -279,7 +275,7 @@ export const componentStyles = css`
 
   .brl-step__short {
     margin: 0;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.84rem;
     line-height: 1.5;
   }
@@ -290,21 +286,21 @@ export const componentStyles = css`
     gap: 0.35rem 0.7rem;
     margin-top: 0.2rem;
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .brl-meta b {
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-weight: 700;
   }
 
   .brl-step__long {
     margin: 0.45rem 0 0;
     padding-top: 0.55rem;
-    border-top: 1px dashed var(--border-color, #f2dde7);
+    border-top: 1px dashed var(--border-color, #e5e7eb);
     font-size: 0.85rem;
     line-height: 1.6;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .brl-step__note {
@@ -314,7 +310,7 @@ export const componentStyles = css`
     font-size: 0.8rem;
     line-height: 1.5;
     background: color-mix(in srgb, #e0a100 12%, var(--card-bg, #fff));
-    color: color-mix(in srgb, #8a5a00 70%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000));
   }
 
   .brl-step__toggle {
@@ -323,8 +319,8 @@ export const componentStyles = css`
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, transparent));
     color: var(--accent-color, var(--fs-store-primary));
     cursor: pointer;
     font-size: 1rem;
@@ -335,7 +331,7 @@ export const componentStyles = css`
   .brl-step__toggle:hover,
   .brl-step__toggle[aria-expanded='true'] {
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #e5e7eb));
   }
 
   .brl-handles {
@@ -352,9 +348,9 @@ export const componentStyles = css`
     display: grid;
     place-items: center;
     border-radius: 10px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     cursor: pointer;
     font-size: 0.8rem;
     touch-action: none;
@@ -362,7 +358,7 @@ export const componentStyles = css`
   }
 
   .brl-handle:hover:not(:disabled) {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
     color: var(--accent-color, var(--fs-store-primary));
   }
 
@@ -382,7 +378,7 @@ export const componentStyles = css`
     align-items: center;
     gap: 0.15rem;
     cursor: grab;
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #e5e7eb));
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff));
     color: var(--accent-color, var(--fs-store-primary));
   }
@@ -488,7 +484,7 @@ export const componentStyles = css`
     top: -0.7rem;
     height: 0.7rem;
     width: 2px;
-    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 25%, var(--border-color, #e5e7eb));
   }
   .brl-board--path .brl-step:first-child::before,
   .brl-board--circles .brl-step:first-child::before {
@@ -500,7 +496,7 @@ export const componentStyles = css`
     border-radius: 16px;
     text-align: center;
     font-weight: 700;
-    border: 1.5px solid var(--border-color, #f2dde7);
+    border: 1.5px solid var(--border-color, #e5e7eb);
     display: grid;
     gap: 0.35rem;
     justify-items: center;
@@ -523,7 +519,7 @@ export const componentStyles = css`
 
   .brl-feedback--win {
     background: color-mix(in srgb, var(--success-color, #2f9e63) 12%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--success-color, #2f9e63) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--success-color, #2f9e63) 45%, var(--border-color, #e5e7eb));
     color: var(--success-color, #2f9e63);
   }
 
@@ -533,7 +529,7 @@ export const componentStyles = css`
 
   .brl-feedback--retry {
     background: color-mix(in srgb, var(--error-color, #cf4b4b) 10%, var(--card-bg, #fff));
-    border-color: color-mix(in srgb, var(--error-color, #cf4b4b) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--error-color, #cf4b4b) 40%, var(--border-color, #e5e7eb));
     color: var(--error-color, #cf4b4b);
   }
 
@@ -544,7 +540,7 @@ export const componentStyles = css`
   .brl-feedback__score {
     display: block;
     font-size: 0.82rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-weight: 600;
   }
 

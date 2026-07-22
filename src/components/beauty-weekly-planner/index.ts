@@ -11,7 +11,6 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -238,7 +237,6 @@ export default class BeautyWeeklyPlanner extends LitElement {
             : nothing}
 
           ${showNotice ? html`<p class="bwp-notice">${notice}</p>` : nothing}
-          ${renderCommerceOutcome({ config: c, prefix: 'bwp_', ready: true })}
         </div>
       </section>
     `;

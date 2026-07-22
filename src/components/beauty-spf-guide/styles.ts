@@ -27,7 +27,7 @@ export const componentStyles = css`
   .bsg-progress__bar {
     height: 6px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 70%, #fff);
     overflow: hidden;
   }
 
@@ -46,12 +46,12 @@ export const componentStyles = css`
   .bsg-progress__text {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bsg-progress__step {
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-step {
@@ -60,7 +60,7 @@ export const componentStyles = css`
     padding: 1.15rem 1.2rem;
     border-radius: var(--section-radius, 16px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 8px 24px rgba(194, 82, 127, 0.06);
   }
 
@@ -69,14 +69,14 @@ export const componentStyles = css`
     font-size: 1.12rem;
     font-weight: 800;
     line-height: 1.35;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-step__hint {
     margin: 0;
     font-size: 0.86rem;
     line-height: 1.55;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bsg-options {
@@ -96,9 +96,9 @@ export const componentStyles = css`
     min-height: 48px;
     padding: 0.75rem 0.9rem;
     border-radius: calc(var(--section-radius, 16px) * 0.75);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     text-align: start;
     cursor: pointer;
@@ -108,7 +108,7 @@ export const componentStyles = css`
   }
 
   .bsg-option:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
   }
 
   .bsg-option[aria-pressed='true'] {
@@ -140,7 +140,7 @@ export const componentStyles = css`
   .bsg-option__desc {
     font-size: 0.78rem;
     font-weight: 500;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.45;
   }
 
@@ -172,7 +172,7 @@ export const componentStyles = css`
     padding: 1.25rem 1.2rem 1.35rem;
     border-radius: var(--section-radius, 16px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 10px 30px rgba(43, 33, 28, 0.07);
   }
 
@@ -180,7 +180,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 1.05rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-results__summary {
@@ -196,10 +196,10 @@ export const componentStyles = css`
     padding: 0.35rem 0.7rem;
     border-radius: 999px;
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #e5e7eb));
     font-size: 0.82rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-results__pill .bsg-swatch {
@@ -225,13 +225,13 @@ export const componentStyles = css`
       color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 30%, var(--border-color, #e5e7eb));
   }
 
   .bsg-duration__label {
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bsg-duration__value {
@@ -258,7 +258,7 @@ export const componentStyles = css`
   .bsg-meter {
     height: 10px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 65%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 65%, #fff);
     overflow: hidden;
   }
 
@@ -277,7 +277,7 @@ export const componentStyles = css`
   .bsg-meter-caption {
     margin: 0;
     font-size: 0.72rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.5;
   }
 
@@ -306,14 +306,14 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.92rem;
     font-weight: 800;
-    color: color-mix(in srgb, #8a5a00 65%, var(--text-color, #33232e));
+    color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000));
     line-height: 1.5;
   }
 
   .bsg-reapply__note {
     margin: 0;
     font-size: 0.82rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.55;
   }
 
@@ -326,7 +326,7 @@ export const componentStyles = css`
     margin: 0 0 0.15rem;
     font-size: 0.82rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsg-tips ul {
@@ -334,7 +334,7 @@ export const componentStyles = css`
     padding-inline-start: 1.15rem;
     display: grid;
     gap: 0.35rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.86rem;
     line-height: 1.55;
   }
@@ -349,13 +349,13 @@ export const componentStyles = css`
     margin: 0;
     text-align: center;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.6;
   }
 
   .bsg-notice--inline {
     padding-top: 0.25rem;
-    border-top: 1px solid var(--border-color, #f2dde7);
+    border-top: 1px solid var(--border-color, #e5e7eb);
   }
 
   @media (max-width: 639px) {

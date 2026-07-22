@@ -7,8 +7,8 @@ export const componentStyles = css`
     margin-top: 1.5rem;
     padding: 1rem;
     border-radius: var(--section-radius, 16px);
-    border: 1px solid var(--border-color, #f2dde7);
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 18%, var(--card-bg, #fff));
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 18%, var(--card-bg, #fff));
   }
 
   .bac-slot {
@@ -23,7 +23,7 @@ export const componentStyles = css`
     font-weight: 800;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bac-divider {
@@ -36,7 +36,7 @@ export const componentStyles = css`
   .bac-divider__line {
     flex: 1;
     height: 1px;
-    background: var(--border-color, #f2dde7);
+    background: var(--border-color, #e5e7eb);
   }
 
   .bac-divider__icon {
@@ -47,8 +47,8 @@ export const componentStyles = css`
     place-items: center;
     border-radius: 50%;
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
-    color: var(--muted-color, #8f7a86);
+    border: 1px solid var(--border-color, #e5e7eb);
+    color: var(--muted-color, #666666);
     font-size: 0.75rem;
     font-weight: 800;
   }
@@ -66,9 +66,9 @@ export const componentStyles = css`
     min-height: 44px;
     padding: 0.5rem 0.85rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.86rem;
     font-weight: 600;
@@ -79,7 +79,7 @@ export const componentStyles = css`
   }
 
   .bac-chip:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
   }
 
   .bac-chip:active {
@@ -118,7 +118,7 @@ export const componentStyles = css`
     margin: 0 0 0.35rem;
     font-size: 0.95rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     text-align: center;
   }
 
@@ -177,10 +177,10 @@ export const componentStyles = css`
     gap: 0.4rem;
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff));
     font-size: 0.84rem;
     font-weight: 700;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bac-pair__dot {
@@ -193,14 +193,14 @@ export const componentStyles = css`
   }
 
   .bac-pair__vs {
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-weight: 800;
     font-size: 0.9rem;
   }
 
   .bac-verdict__note {
     margin: 0;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-size: 0.94rem;
     line-height: 1.65;
     text-align: start;
@@ -232,7 +232,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.86rem;
     line-height: 1.55;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-weight: 600;
   }
 
@@ -259,14 +259,14 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.88rem;
     line-height: 1.6;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bac-notice {
     margin-top: 1.25rem;
     text-align: center;
     font-size: 0.8rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.6;
   }
 

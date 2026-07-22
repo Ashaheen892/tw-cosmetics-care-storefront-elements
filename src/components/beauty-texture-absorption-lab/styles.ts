@@ -36,7 +36,7 @@ export const componentStyles = css`
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--sample-color, var(--accent-color, var(--fs-store-primary))) 40%, transparent), 0 8px 18px rgba(43, 33, 28, 0.22);
   }
 
-  .bta-sample__name { font-size: 0.78rem; font-weight: 700; color: var(--text-color, #33232e); text-align: center; }
+  .bta-sample__name { font-size: 0.78rem; font-weight: 700; color: var(--text-color, #000000); text-align: center; }
 
   /* shape variants */
   .bta-samples--drops .bta-sample__blob { border-radius: 50% 50% 50% 8px; transform: rotate(45deg); }
@@ -63,8 +63,8 @@ export const componentStyles = css`
     aspect-ratio: 4 / 3;
     border-radius: var(--section-radius, 16px);
     overflow: hidden;
-    background: var(--bta-area, color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff)));
-    border: 1px solid var(--border-color, #f2dde7);
+    background: var(--bta-area, color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff)));
+    border: 1px solid var(--border-color, #e5e7eb);
     display: grid;
     place-items: center;
     touch-action: none;
@@ -90,7 +90,7 @@ export const componentStyles = css`
     bottom: 3.5rem;
     text-align: center;
     font-size: 0.74rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     pointer-events: none;
   }
 
@@ -145,8 +145,8 @@ export const componentStyles = css`
   }
 
   .bta-details { display: grid; gap: 0.85rem; }
-  .bta-details__name { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-color, #33232e); }
-  .bta-details__desc { margin: 0; color: var(--muted-color, #8f7a86); line-height: 1.65; font-size: 0.9rem; }
+  .bta-details__name { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-color, #000000); }
+  .bta-details__desc { margin: 0; color: var(--muted-color, #666666); line-height: 1.65; font-size: 0.9rem; }
 
   .bta-indicators { display: grid; gap: 0.55rem; }
 
@@ -159,11 +159,11 @@ export const componentStyles = css`
   }
 
   .bta-ind { display: grid; grid-template-columns: 7.5rem 1fr auto; align-items: center; gap: 0.6rem; font-size: 0.8rem; }
-  .bta-ind__label { color: var(--muted-color, #8f7a86); font-weight: 700; }
+  .bta-ind__label { color: var(--muted-color, #666666); font-weight: 700; }
   .bta-ind__val { color: var(--meter-color, var(--accent-color, var(--fs-store-primary))); font-weight: 800; font-variant-numeric: tabular-nums; }
 
   .bta-dots { display: inline-flex; gap: 0.28rem; }
-  .bta-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; background: color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent); }
+  .bta-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; background: color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent); }
   .bta-dot.is-on { background: var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
   .bta-circle { width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 2px solid var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
   .bta-circle.is-on { background: var(--meter-color, var(--accent-color, var(--fs-store-primary))); }
@@ -174,15 +174,15 @@ export const componentStyles = css`
     height: 1.5rem;
     border-radius: 3rem 3rem 0 0;
     background:
-      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, var(--fs-store-primary))) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #f2dde7) 80%, transparent) 0);
+      conic-gradient(from 270deg at 50% 100%, var(--meter-color, var(--accent-color, var(--fs-store-primary))) calc(var(--p) * 180deg), color-mix(in srgb, var(--border-color, #e5e7eb) 80%, transparent) 0);
   }
 
   .bta-facts { display: grid; gap: 0.4rem; font-size: 0.84rem; }
   .bta-fact { display: flex; gap: 0.4rem; }
-  .bta-fact b { color: var(--text-color, #33232e); font-weight: 700; flex: 0 0 auto; }
-  .bta-fact span { color: var(--muted-color, #8f7a86); }
+  .bta-fact b { color: var(--text-color, #000000); font-weight: 700; flex: 0 0 auto; }
+  .bta-fact span { color: var(--muted-color, #666666); }
 
-  .bta-note { margin: 0; font-size: 0.82rem; color: color-mix(in srgb, #8a5a00 65%, var(--text-color, #33232e)); }
+  .bta-note { margin: 0; font-size: 0.82rem; color: color-mix(in srgb, var(--fs-caution, #e0a100) 45%, var(--text-color, #000000)); }
 
   .bta-toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1.25rem; }
 
@@ -190,7 +190,7 @@ export const componentStyles = css`
   .bta-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }
   .bta-compare__col {
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     border-radius: var(--section-radius, 16px);
     padding: 1rem;
     display: grid;
@@ -201,9 +201,9 @@ export const componentStyles = css`
     width: 100%;
     padding: 0.5rem 0.6rem;
     border-radius: 10px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
   }

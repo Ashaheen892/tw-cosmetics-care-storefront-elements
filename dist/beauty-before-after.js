@@ -1,9 +1,9 @@
-import { css as R, LitElement as V, html as s, nothing as l } from "lit";
+import { css as C, LitElement as V, html as n, nothing as l } from "lit";
 import { property as q, state as _ } from "lit/decorators.js";
 import { classMap as x } from "lit/directives/class-map.js";
 import { styleMap as k } from "lit/directives/style-map.js";
-import { t as i, n as I, l as d, e as v, s as L, r as S, p as A, a as E, b as T } from "./sharedStyles-BgfDOkwJ.js";
-const j = R`
+import { t as i, n as I, l as p, e as v, s as L, r as S, p as A, a as E } from "./sharedStyles-DKbcXBPy.js";
+const T = C`
   :host {
     display: block;
     direction: inherit;
@@ -23,7 +23,7 @@ const j = R`
     text-align: center;
     font-size: 1rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bba-tabs {
@@ -37,9 +37,9 @@ const j = R`
     min-height: 38px;
     padding: 0.4rem 0.95rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.82rem;
     font-weight: 700;
@@ -52,11 +52,11 @@ const j = R`
   }
 
   .bba-tab:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
   }
 
   .bba-tab.is-active {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
@@ -74,8 +74,8 @@ const j = R`
         color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, transparent),
         transparent 65%
       ),
-      color-mix(in srgb, var(--border-color, #f2dde7) 35%, var(--card-bg, #fff));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+      color-mix(in srgb, var(--border-color, #e5e7eb) 35%, var(--card-bg, #fff));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, transparent),
       0 18px 40px rgba(120, 44, 82, 0.1);
@@ -137,7 +137,7 @@ const j = R`
     width: 3px;
     left: 50%;
     transform: translateX(-50%);
-    background: #fff;
+    background: var(--fs-surface, var(--card-bg, #f0f0f0));
     box-shadow: 0 0 10px rgba(20, 14, 12, 0.28);
   }
 
@@ -149,11 +149,7 @@ const j = R`
     width: 46px;
     height: 46px;
     border-radius: 50%;
-    background: linear-gradient(
-      135deg,
-      var(--accent-color, var(--fs-store-primary)),
-      color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 65%, #5a2f4d)
-    );
+    background: var(--accent-color, var(--fs-store-primary));
     border: 3px solid #fff;
     box-shadow: 0 8px 22px rgba(120, 44, 82, 0.28);
     display: grid;
@@ -179,8 +175,8 @@ const j = R`
     -webkit-backdrop-filter: blur(8px);
     font-size: 0.74rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 70%, transparent);
+    color: var(--text-color, #000000);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 70%, transparent);
     box-shadow: 0 4px 14px rgba(20, 14, 12, 0.1);
     pointer-events: none;
   }
@@ -249,7 +245,7 @@ const j = R`
   .bba-range__label {
     font-size: 0.74rem;
     font-weight: 800;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     text-align: center;
   }
 
@@ -270,9 +266,9 @@ const j = R`
     min-height: 34px;
     padding: 0.3rem 0.85rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.78rem;
     font-weight: 700;
@@ -281,7 +277,7 @@ const j = R`
   }
 
   .bba-quick__btn:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 40%, var(--border-color, #e5e7eb));
     color: var(--accent-color, var(--fs-store-primary));
   }
 
@@ -297,7 +293,7 @@ const j = R`
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
     color: var(--accent-color, var(--fs-store-primary));
     font-size: 1.1rem;
@@ -311,7 +307,7 @@ const j = R`
   .bba-pair-nav__count {
     font-size: 0.8rem;
     font-weight: 800;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     min-width: 3.5rem;
     text-align: center;
   }
@@ -348,13 +344,13 @@ const j = R`
   after_label: i("بعد", "After"),
   title: i("النتيجة بعد أسبوعين", "2-week results")
 };
-function B(p) {
-  const a = I(p).map((t) => ({
+function j(d) {
+  const a = I(d).map((t) => ({
     before_image: v(t.before_image),
     after_image: v(t.after_image),
-    before_label: d(t.before_label, ""),
-    after_label: d(t.after_label, ""),
-    title: d(t.title, "")
+    before_label: p(t.before_label, ""),
+    after_label: p(t.after_label, ""),
+    title: p(t.title, "")
   })).filter((t) => t.before_image || t.after_image || t.title);
   return a.length ? a.map((t) => ({
     ...t,
@@ -365,16 +361,16 @@ function B(p) {
     title: t.title || f.title
   })) : [{ ...f }];
 }
-function H() {
+function B() {
   return { before: z, after: P };
 }
-function u(p) {
-  return Math.max(0, Math.min(100, p));
+function u(d) {
+  return Math.max(0, Math.min(100, d));
 }
-var O = Object.defineProperty, g = (p, e, a, t) => {
-  for (var r = void 0, o = p.length - 1, n; o >= 0; o--)
-    (n = p[o]) && (r = n(e, a, r) || r);
-  return r && O(e, a, r), r;
+var H = Object.defineProperty, g = (d, e, a, t) => {
+  for (var r = void 0, o = d.length - 1, s; o >= 0; o--)
+    (s = d[o]) && (r = s(e, a, r) || r);
+  return r && H(e, a, r), r;
 };
 const w = class w extends V {
   constructor() {
@@ -415,7 +411,7 @@ const w = class w extends V {
     this.position = u(Number(e.target.value)), this.hintVisible = !1;
   }
   resolvePairs() {
-    const e = this.config || {}, a = B(e.bba_items), t = H(), r = v(e.bba_before_image) || d(e.bba_before_image) || t.before, o = v(e.bba_after_image) || d(e.bba_after_image) || t.after;
+    const e = this.config || {}, a = j(e.bba_items), t = B(), r = v(e.bba_before_image) || p(e.bba_before_image) || t.before, o = v(e.bba_after_image) || p(e.bba_after_image) || t.after;
     return a.length ? a : [
       {
         before_image: r,
@@ -427,44 +423,44 @@ const w = class w extends V {
     ];
   }
   render() {
-    const e = this.config || {}, a = S(e, "bba_"), t = a.animate && !A(), r = d(e.bba_title), o = d(e.bba_desc), n = this.resolvePairs();
-    if (!n.length)
-      return s`<div class="fs-empty" role="status">
+    const e = this.config || {}, a = S(e, "bba_"), t = a.animate && !A(), r = p(e.bba_title), o = p(e.bba_desc), s = this.resolvePairs();
+    if (!s.length)
+      return n`<div class="fs-empty" role="status">
         ${i("أضيفي صور قبل وبعد من إعدادات العنصر", "Add before & after images in element settings")}
       </div>`;
-    const m = Math.min(this.activeIndex, n.length - 1), c = n[m], M = `${100 - this.position}%`, C = `${this.position}%`, y = c.before_label || i("قبل", "Before"), $ = c.after_label || i("بعد", "After");
-    return s`
+    const m = Math.min(this.activeIndex, s.length - 1), c = s[m], M = `${100 - this.position}%`, D = `${this.position}%`, y = c.before_label || i("قبل", "Before"), $ = c.after_label || i("بعد", "After");
+    return n`
       <section
         class=${x({ "fs-section": !0, "fs-animate": t })}
         style=${k(E(a))}
         aria-label=${r || i("قبل وبعد", "Before & After")}
       >
         <div class="fs-container">
-          ${r || o ? s`<div class="fs-header">
-                ${r ? s`<h2 class="fs-title">${r}</h2>` : l}
-                ${o ? s`<p class="fs-desc">${o}</p>` : l}
+          ${r || o ? n`<div class="fs-header">
+                ${r ? n`<h2 class="fs-title">${r}</h2>` : l}
+                ${o ? n`<p class="fs-desc">${o}</p>` : l}
               </div>` : l}
 
           <div class="bba-shell">
-            ${n.length > 1 ? s`<div class="bba-tabs" role="tablist" aria-label=${i("نتائج المقارنة", "Comparison results")}>
-                  ${n.map(
-      (D, h) => s`<button
+            ${s.length > 1 ? n`<div class="bba-tabs" role="tablist" aria-label=${i("نتائج المقارنة", "Comparison results")}>
+                  ${s.map(
+      (R, h) => n`<button
                       type="button"
                       role="tab"
                       class=${x({ "bba-tab": !0, "is-active": h === m })}
                       aria-selected=${h === m ? "true" : "false"}
                       @click=${() => this.goTo(h)}
                     >
-                      ${D.title || i(`نتيجة ${h + 1}`, `Result ${h + 1}`)}
+                      ${R.title || i(`نتيجة ${h + 1}`, `Result ${h + 1}`)}
                     </button>`
     )}
                 </div>` : l}
 
-            ${c.title && n.length === 1 ? s`<p class="bba-case-title">${c.title}</p>` : l}
+            ${c.title && s.length === 1 ? n`<p class="bba-case-title">${c.title}</p>` : l}
 
             <div
               class=${x({ "bba-viewer": !0, "is-dragging": this.dragging })}
-              style=${k({ "--clip-right": M, "--handle-left": C })}
+              style=${k({ "--clip-right": M, "--handle-left": D })}
               role="slider"
               tabindex="0"
               aria-valuemin="0"
@@ -482,10 +478,10 @@ const w = class w extends V {
               @keydown=${this.onKeyDown}
             >
               <div class="bba-viewer__layer bba-viewer__after">
-                ${c.after_image ? s`<img class="bba-viewer__img" src=${c.after_image} alt="" loading="lazy" decoding="async" />` : l}
+                ${c.after_image ? n`<img class="bba-viewer__img" src=${c.after_image} alt="" loading="lazy" decoding="async" />` : l}
               </div>
               <div class="bba-viewer__layer bba-viewer__before">
-                ${c.before_image ? s`<img class="bba-viewer__img" src=${c.before_image} alt="" loading="lazy" decoding="async" />` : l}
+                ${c.before_image ? n`<img class="bba-viewer__img" src=${c.before_image} alt="" loading="lazy" decoding="async" />` : l}
               </div>
 
               <div class="bba-handle" aria-hidden="true">
@@ -498,7 +494,7 @@ const w = class w extends V {
               <span class="bba-chip bba-chip--before">${y}</span>
               <span class="bba-chip bba-chip--after">${$}</span>
 
-              ${this.hintVisible && !this.dragging ? s`<div class="bba-hint" aria-hidden="true">
+              ${this.hintVisible && !this.dragging ? n`<div class="bba-hint" aria-hidden="true">
                     <span class="bba-hint__icon">⇔</span>
                     <span>${i("اسحبي للمقارنة", "Drag to compare")}</span>
                   </div>` : l}
@@ -537,31 +533,29 @@ const w = class w extends V {
                 </button>
               </div>
 
-              ${n.length > 1 ? s`<div class="bba-pair-nav">
+              ${s.length > 1 ? n`<div class="bba-pair-nav">
                     <button
                       type="button"
                       class="bba-pair-nav__btn"
                       aria-label=${i("السابق", "Previous")}
-                      @click=${() => this.stepPair(n.length, -1)}
+                      @click=${() => this.stepPair(s.length, -1)}
                     >‹</button>
-                    <span class="bba-pair-nav__count">${m + 1} / ${n.length}</span>
+                    <span class="bba-pair-nav__count">${m + 1} / ${s.length}</span>
                     <button
                       type="button"
                       class="bba-pair-nav__btn"
                       aria-label=${i("التالي", "Next")}
-                      @click=${() => this.stepPair(n.length, 1)}
+                      @click=${() => this.stepPair(s.length, 1)}
                     >›</button>
                   </div>` : l}
             </div>
           </div>
-
-          ${T({ config: e, prefix: "bba_", ready: !0 })}
         </div>
       </section>
     `;
   }
 };
-w.styles = [L, j];
+w.styles = [L, T];
 let b = w;
 g([
   q({ type: Object })

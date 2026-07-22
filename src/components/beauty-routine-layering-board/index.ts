@@ -11,7 +11,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { getPageLocale, localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -413,8 +413,9 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
                 </div>`
               : nothing}
 
-            ${mode === 'quiz'
-              ? html`<div class="brl-actions">
+            <div class="brl-actions">
+              ${mode === 'quiz'
+                ? html`
                   ${isTruthy(c.brl_enable_check, true) && !this.revealed
                     ? html`<button type="button" class="fs-btn" @click=${() => this.verify(routine)}>${t('تحقّقي من الترتيب', 'Check order')}</button>`
                     : nothing}
@@ -424,12 +425,13 @@ export default class BeautyRoutineLayeringBoard extends LitElement {
                   ${isTruthy(c.brl_show_answer, true)
                     ? html`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.showAnswer(routine)}>${t('إظهار الترتيب الصحيح', 'Show correct order')}</button>`
                     : nothing}
-                </div>`
-              : nothing}
+                  `
+                : nothing}
+              ${renderCommerceCtaButton(c, 'brl_')}
+            </div>
           </div>
 
           <span class="brl-sr" role="status" aria-live="polite">${this.announce}</span>
-          ${renderCommerceOutcome({ config: c, prefix: 'brl_', ready: true })}
         </div>
       </section>
     `;

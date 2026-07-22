@@ -11,7 +11,7 @@ import {
   toNumber,
 } from '../../utils/helpers.js';
 import { getPageLocale, localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -252,6 +252,7 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
         ${isTruthy(c.bpa_enable_storage, true)
           ? html`<button type="button" class="fs-btn" @click=${() => this.saveRecord()}>${t('حفظ هذه العبوة', 'Save this product')}</button>`
           : nothing}
+        ${renderCommerceCtaButton(c, 'bpa_')}
       </div>
     </div>`;
   }
@@ -473,7 +474,6 @@ export default class BeautyPaoExpiryCalculator extends LitElement {
           ${this.renderSaved()}
 
           <p class="bpa-notice">${notice}</p>
-          ${renderCommerceOutcome({ config: c, prefix: 'bpa_', ready: true })}
         </div>
       </section>
     `;

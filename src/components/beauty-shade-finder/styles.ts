@@ -27,7 +27,7 @@ export const componentStyles = css`
   .bsf-progress__bar {
     height: 6px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 70%, #fff);
     overflow: hidden;
   }
 
@@ -46,7 +46,7 @@ export const componentStyles = css`
   .bsf-progress__text {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bsf-question {
@@ -55,7 +55,7 @@ export const componentStyles = css`
     padding: 1.15rem 1.2rem;
     border-radius: var(--section-radius, 16px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 8px 24px rgba(194, 82, 127, 0.06);
   }
 
@@ -64,18 +64,33 @@ export const componentStyles = css`
     font-size: 1.12rem;
     font-weight: 800;
     line-height: 1.35;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsf-question__hint {
     margin: 0;
     font-size: 0.88rem;
     line-height: 1.55;
-    color: var(--muted-color, #8f7a86);
-    padding: 0.65rem 0.8rem;
+    color: var(--text-color, #000000);
+    padding: 0.7rem 0.85rem;
     border-radius: 12px;
-    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 8%, #fff);
+    background: color-mix(
+      in srgb,
+      var(--accent-color, var(--fs-store-primary)) 14%,
+      var(--fs-surface, var(--card-bg, #f0f0f0))
+    );
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 75%, transparent);
     border-inline-start: 3px solid var(--accent-color, var(--fs-store-primary));
+  }
+
+  :host([data-fs-theme='dark']) .bsf-question__hint {
+    color: #ffffff;
+    background: color-mix(
+      in srgb,
+      var(--accent-color, var(--fs-store-primary)) 18%,
+      var(--fs-surface, #0a0a0a)
+    );
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
   .bsf-chips {
@@ -86,11 +101,11 @@ export const componentStyles = css`
 
   .bsf-chip {
     min-height: 44px;
-    padding: 0.55rem 1.05rem;
+    padding: 0.55rem 1.1rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
-    background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    border: 1.5px solid var(--border-color, #e5e7eb);
+    background: var(--fs-surface, var(--card-bg, #f0f0f0));
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
     font-size: 0.9rem;
@@ -100,11 +115,11 @@ export const componentStyles = css`
   }
 
   .bsf-chip:hover {
-    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #f2dde7));
+    border-color: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 45%, var(--border-color, #e5e7eb));
   }
 
   .bsf-chip[aria-pressed='true'] {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     border-color: var(--accent-color, var(--fs-store-primary));
     color: #fff;
     transform: translateY(-1px);
@@ -129,8 +144,8 @@ export const componentStyles = css`
     align-items: start;
     padding: 1.25rem;
     border-radius: var(--section-radius, 20px);
-    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, #fbf5f8));
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    background: color-mix(in srgb, var(--card-bg, #fff) 88%, var(--section-bg, transparent));
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 12px 30px rgba(120, 44, 82, 0.05);
   }
 
@@ -146,7 +161,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 1.08rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsf-results__count {
@@ -177,7 +192,7 @@ export const componentStyles = css`
     padding: 0.85rem;
     border-radius: 16px;
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 85%, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 85%, #fff);
     max-height: min(420px, 55vh);
     overflow-y: auto;
     scrollbar-width: thin;
@@ -202,7 +217,7 @@ export const componentStyles = css`
     padding: 3px;
     border-radius: 999px;
     box-sizing: border-box;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, #fff);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 70%, #fff);
     transition:
       background 0.2s ease,
       box-shadow 0.2s ease,
@@ -232,12 +247,12 @@ export const componentStyles = css`
 
   .bsf-swatch:hover .bsf-swatch__ring {
     transform: translateY(-2px) scale(1.04);
-    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #f2dde7));
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 35%, var(--border-color, #e5e7eb));
   }
 
   .bsf-swatch.is-active .bsf-swatch__ring,
   .bsf-swatch[aria-pressed='true'] .bsf-swatch__ring {
-    background: var(--accent-color, var(--fs-store-primary));
+    background: var(--button-bg, var(--accent-color, var(--fs-store-primary)));
     box-shadow:
       0 0 0 4px color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 18%, transparent),
       0 8px 18px rgba(120, 44, 82, 0.16);
@@ -248,7 +263,7 @@ export const componentStyles = css`
     width: 100%;
     font-size: 0.7rem;
     font-weight: 700;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.25;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -266,7 +281,7 @@ export const componentStyles = css`
     padding: 1rem 1.05rem 1.1rem;
     border-radius: calc(var(--section-radius, 20px) * 0.85);
     background: var(--card-bg, #fff);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 90%, #fff);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 90%, #fff);
     box-shadow: 0 10px 26px rgba(120, 44, 82, 0.06);
   }
 
@@ -277,14 +292,14 @@ export const componentStyles = css`
       inset 0 1px 0 rgba(255, 255, 255, 0.28),
       inset 0 -36px 48px rgba(0, 0, 0, 0.14),
       0 8px 20px rgba(43, 33, 28, 0.1);
-    border: 1px solid color-mix(in srgb, var(--border-color, #f2dde7) 55%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border-color, #e5e7eb) 55%, transparent);
   }
 
   .bsf-detail__name {
     margin: 0;
     font-size: 1.08rem;
     font-weight: 800;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bsf-detail__number {
@@ -297,7 +312,7 @@ export const componentStyles = css`
     margin: 0;
     font-size: 0.9rem;
     line-height: 1.6;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bsf-detail__chips {

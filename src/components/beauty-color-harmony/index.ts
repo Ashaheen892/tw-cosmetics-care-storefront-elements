@@ -10,7 +10,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -263,11 +263,13 @@ export default class BeautyColorHarmony extends LitElement {
                 <p class="bch-preview__label">${t('توزيع على الوجه', 'Face placement')}</p>
                 ${this.renderZones(zones, showHex)}
               </div>
+              <div class="bch-cta">
+                ${renderCommerceCtaButton(c, 'bch_', { className: 'bch-cta__btn' })}
+              </div>
             </div>
 
             ${showNotice ? html`<p class="bch-notice">${notice}</p>` : nothing}
           </div>
-          ${renderCommerceOutcome({ config: c, prefix: 'bch_', ready: Boolean(activeColor), selection: activeColor })}
         </div>
       </section>
     `;

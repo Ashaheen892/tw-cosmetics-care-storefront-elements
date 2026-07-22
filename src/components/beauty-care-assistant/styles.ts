@@ -10,7 +10,7 @@ export const componentStyles = css`
     margin-inline: auto;
     border-radius: var(--section-radius, 18px);
     background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     box-shadow: 0 14px 40px rgba(43, 33, 28, 0.08);
     overflow: hidden;
   }
@@ -21,7 +21,7 @@ export const componentStyles = css`
     gap: 0.7rem;
     padding: 0.9rem 1.1rem;
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--card-bg, #fff));
-    border-bottom: 1px solid var(--border-color, #f2dde7);
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
   }
 
   .bca-avatar {
@@ -46,12 +46,12 @@ export const componentStyles = css`
   .bca-topbar__name {
     font-weight: 700;
     font-size: 0.95rem;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bca-trail__hint {
     font-size: 0.76rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bca-body {
@@ -68,7 +68,7 @@ export const componentStyles = css`
   .bca-progress {
     height: 6px;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--border-color, #f2dde7) 70%, transparent);
+    background: color-mix(in srgb, var(--border-color, #e5e7eb) 70%, transparent);
     overflow: hidden;
   }
 
@@ -87,7 +87,7 @@ export const componentStyles = css`
   .bca-progress__label {
     font-size: 0.78rem;
     font-weight: 600;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
   }
 
   .bca-trail {
@@ -123,9 +123,9 @@ export const componentStyles = css`
     max-width: 9rem;
     padding: 0.35rem 0.65rem;
     border-radius: 999px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-size: 0.72rem;
     font-weight: 600;
@@ -151,7 +151,7 @@ export const componentStyles = css`
 
   .bca-trail__sep {
     margin-inline: 0.25rem;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     font-size: 0.85rem;
     user-select: none;
   }
@@ -161,7 +161,7 @@ export const componentStyles = css`
     padding: 0.85rem 1.05rem;
     border-radius: 16px;
     background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 10%, var(--card-bg, #fff));
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font-size: 1rem;
     line-height: 1.6;
     border-start-start-radius: 4px;
@@ -186,9 +186,9 @@ export const componentStyles = css`
     width: 100%;
     padding: 0.7rem 0.9rem;
     border-radius: 14px;
-    border: 1px solid var(--border-color, #f2dde7);
+    border: 1px solid var(--border-color, #e5e7eb);
     background: var(--card-bg, #fff);
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
     font: inherit;
     font-weight: 600;
     text-align: start;
@@ -226,7 +226,7 @@ export const componentStyles = css`
       color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 14%, var(--card-bg, #fff)),
       var(--card-bg, #fff)
     );
-    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, var(--border-color, #f2dde7));
+    border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 28%, var(--border-color, #e5e7eb));
     box-shadow: 0 10px 28px rgba(194, 82, 127, 0.1);
   }
 
@@ -247,12 +247,12 @@ export const componentStyles = css`
     font-size: 1.35rem;
     font-weight: 800;
     line-height: 1.3;
-    color: var(--text-color, #33232e);
+    color: var(--text-color, #000000);
   }
 
   .bca-result__desc {
     margin: 0;
-    color: var(--muted-color, #8f7a86);
+    color: var(--muted-color, #666666);
     line-height: 1.65;
     font-size: 0.95rem;
   }

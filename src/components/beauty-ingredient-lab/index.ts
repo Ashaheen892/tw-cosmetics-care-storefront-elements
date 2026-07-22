@@ -10,7 +10,7 @@ import {
   themeStyleMap,
 } from '../../utils/helpers.js';
 import { localizedString } from '../../utils/localizedString.js';
-import { renderCommerceOutcome } from '../../utils/commerceOutcome.js';
+import { renderCommerceCtaButton } from '../../utils/commerceOutcome.js';
 import { sharedSectionCss } from '../../utils/sharedStyles.js';
 import { componentStyles } from './styles.js';
 import {
@@ -133,9 +133,12 @@ export default class BeautyIngredientLab extends LitElement {
 
         ${ingredient.note ? html`<div class="bil-note"><span aria-hidden="true">⚠︎</span><span>${ingredient.note}</span></div> ` : nothing}
 
-        ${ingredient.link && showLink
-          ? html`<a class="fs-btn fs-btn--ghost bil-link" href=${ingredient.link}>${t('اعرفي المزيد', 'Learn more')}</a>`
-          : nothing}
+        <div class="fs-actions">
+          ${ingredient.link && showLink
+            ? html`<a class="fs-btn fs-btn--ghost bil-link" href=${ingredient.link}>${t('اعرفي المزيد', 'Learn more')}</a>`
+            : nothing}
+          ${renderCommerceCtaButton(this.config || {}, 'bil_')}
+        </div>
       </div>
     `;
   }
@@ -239,7 +242,6 @@ export default class BeautyIngredientLab extends LitElement {
               ${selected ? this.renderDetail(selected, showLink) : nothing}
             </div>
           </div>
-          ${renderCommerceOutcome({ config: c, prefix: 'bil_', ready: Boolean(selected), selection: selected })}
         </div>
       </section>
     `;
