@@ -5,10 +5,10 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "prebuild": "python3 normalize_uuid_keys.py",
+        "prebuild": "python3 scripts/normalize_uuid_keys.py",
         "build": "vite build",
         "preview": "vite preview",
-        "generate:bundle": "python3 generate_bundle.py",
+        "generate:bundle": "python3 scripts/generate_bundle.py",
         "audit:salla": "python3 audit_salla_submission.py"
     },
     "devDependencies": {

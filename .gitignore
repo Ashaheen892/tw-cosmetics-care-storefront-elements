@@ -26,9 +26,7 @@ yarn.lock
 # Diagnostic reports
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# Local-only (not in reference starter)
-public/
-scripts/
+# Local-only tooling / artifacts
 notion-screenshots/
 assets/
 release/
@@ -38,4 +36,24 @@ release/
 .auto-notion-*.json
 .mcp-batch-*.json
 USER-GUIDE.md
+
+# Keep scripts/ on git for build helpers; ignore local-only tools inside it
+scripts/capture-*
+scripts/upload-*
+scripts/debug-*
+scripts/clear-chrome-cache.mjs
+scripts/ignore-tty-eio.mjs
+scripts/build-notion-*
+scripts/register-*
+scripts/add-*
+scripts/rebuild-*
+scripts/update-*
+scripts/ensure-*
+scripts/fill-*
+scripts/audit-elements.mjs
+scripts/upgrade-*
 **/clean-preview.html
+
+# Keep public/twilight-bundle.json tracked for TwilightCI/CDN
+public/*
+!public/twilight-bundle.json

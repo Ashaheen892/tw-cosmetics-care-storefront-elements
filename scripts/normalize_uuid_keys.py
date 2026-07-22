@@ -7,7 +7,7 @@ import json
 import uuid
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 TARGETS = (
     ROOT / "twilight-bundle.json",
     ROOT / "public" / "twilight-bundle.json",

@@ -116,9 +116,6 @@ def estimate_zip_bytes(root: Path) -> int:
         "README.md",
         ".gitignore",
         "pnpm-workspace.yaml",
-        "normalize_uuid_keys.py",
-        "generate_bundle.py",
-        "generate-automotive-bundle.py",
         "audit_salla_submission.py",
     ]
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
@@ -126,7 +123,12 @@ def estimate_zip_bytes(root: Path) -> int:
             fp = root / name
             if fp.is_file():
                 zf.write(fp, name)
-        for folder in ("src", "dist"):
+        essential_scripts = {
+            "normalize_uuid_keys.py",
+            "generate_bundle.py",
+            "generate-automotive-bundle.py",
+        }
+        for folder in ("src", "dist", "scripts", "public"):
             base = root / folder
             if not base.exists():
                 continue
@@ -135,7 +137,12 @@ def estimate_zip_bytes(root: Path) -> int:
                     continue
                 if "clean-preview" in fp.name:
                     continue
-                zf.write(fp, str(fp.relative_to(root)))
+                rel = fp.relative_to(root)
+                if folder == "scripts" and fp.name not in essential_scripts:
+                    continue
+                if folder == "public" and fp.name != "twilight-bundle.json":
+                    continue
+                zf.write(fp, str(rel))
     return len(buf.getvalue())
 
 
@@ -160,10 +167,10 @@ def main() -> int:
         fail("missing src/utils/localizedString.ts")
         errors += 1
 
-    if (root / "normalize_uuid_keys.py").exists():
-        ok("normalize_uuid_keys.py at project root")
+    if (root / "scripts" / "normalize_uuid_keys.py").exists():
+        ok("scripts/normalize_uuid_keys.py present")
     else:
-        fail("missing normalize_uuid_keys.py at project root")
+        fail("missing scripts/normalize_uuid_keys.py")
         errors += 1
 
     ml_ids = multilanguage_ids(bundle)

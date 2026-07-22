@@ -1,24 +1,12 @@
----
-description: Salla Twilight element-kit submission gates (multilanguage, dist, zip, UUID). Apply to all tw-*-elements / tw-*-storefront-elements kits and any new kit.
-alwaysApply: true
----
-
 # معايير قبول سلة — حزم عناصر Twilight
 
-طبّق هذه المتطلبات على أي عنصر جديد، أي مشروع `tw-*-elements` / `tw-*-storefront-elements`، وقبل إعادة الإرسال للمراجعة.
-
-## 0) نوع الحزمة (مهم)
-
-هذه **حزم عناصر Lit/Vite** وليست ثيمًا كاملًا.
-لا تنفّذ تعليمات ترقية الثيم الكامل:
-`npm install @salla.sa/twilight` / `twilight-components` / `npm run prod`.
-البناء الصحيح: `pnpm run build` فقط.
+طبّق هذه المتطلبات على أي عنصر جديد أو قبل إعادة إرسال الحزمة للمراجعة.
 
 ## 1) تعدد اللغات
 
-- كل حقل `multilanguage: true` يجب تحويله إلى نص واحد قبل العرض عبر `localizedString(...)`.
-- لا تعرض كائن `{ ar, en }` مباشرة داخل Lit/HTML.
-- لا تعتمد على `this.label()`؛ اجعل التحويل صريحًا في مكان العرض (أو في utils عند بناء الصفوف ثم اعرض النص الناتج فقط).
+- كل حقل `multilanguage: true` يجب تحويله إلى نص واحد قبل العرض عبر `localizedString(...)` (أو مكافئ مركزي).
+- لا تعرض كائن `{ ar, en }` مباشرة داخل Lit/HTML — يسبب رفض سلة (Objects are not valid as a React child).
+- لا تعتمد على دالة وسيطة مثل `this.label()`؛ اجعل التحويل صريحًا في مكان العرض.
 
 ```ts
 // ❌ BAD
@@ -36,39 +24,40 @@ ${localizedString(this.config?.bsg_back_btn as string) || t('السابق', 'Bac
 - قبل الإرسال: `rm -rf dist && pnpm run build`
 - يجب وجود `dist/<component-name>.js` لكل عنصر في `twilight-bundle.json`
 - لا ترفع `dist` مختلطًا من مشروع آخر
-- `prebuild`: `python3 normalize_uuid_keys.py`
+- `prebuild`: `python3 scripts/normalize_uuid_keys.py`
 
 ## 3) حجم الرفع
 
 - ZIP &lt; **1 MB**
-- استبعد: `node_modules/`, `.pnpm-store/`, `.git/`, `notion-screenshots/`, `public/`, `scripts/` المحلية، `assets/`, `release/`, لقطات ثقيلة
-- محتوى مقبول: `package.json`, `tsconfig.json`, `vite.config.ts`, `twilight-bundle.json`, `src/`, `dist/`, `README.md`, `normalize_uuid_keys.py`, `generate*_bundle.py` إن وُجد، `pnpm-workspace.yaml`
+- استبعد: `node_modules/`, `.pnpm-store/`, `.git/`, `notion-screenshots/`, أدوات `scripts/` المحلية، `assets/`, `release/`, لقطات ثقيلة
+- محتوى مقبول: `package.json`, `tsconfig.json`, `vite.config.ts`, `twilight-bundle.json`, `src/`, `dist/`, `public/twilight-bundle.json`, `scripts/normalize_uuid_keys.py`, `scripts/generate*_bundle.py`, `README.md`, `pnpm-workspace.yaml`
 
 ## 4) مفاتيح الحقول `key`
 
 - كل `"key"` في `twilight-bundle.json` = **UUID v4**
 - أبقِ `"value"` منطقيًا
-- بعد أي generate bundle أعد التطبيع فورًا
+- بعد أي generate bundle أعد التطبيع فورًا (`python3 scripts/normalize_uuid_keys.py`)
 
-## 5) هيكل المشروع (مثل المرجع الرسمي)
-
-طابق [tw-increase-sales-and-professional-presentation](https://github.com/Ashaheen892/tw-increase-sales-and-professional-presentation):
+## 5) هيكل المشروع (سكربتات البناء على Git)
 
 ```
 src/components/...
 src/utils/localizedString.ts
 dist/
+public/twilight-bundle.json   # مطلوب لـ TwilightCI/CDN
+scripts/normalize_uuid_keys.py
+scripts/generate_bundle.py    # أو generate-automotive-bundle.py
 package.json
 tsconfig.json
 vite.config.ts
 twilight-bundle.json
 README.md
 .gitignore
-normalize_uuid_keys.py   # مطلوب لقبول سلة
 ```
 
-- لا ترفع `public/` أو `scripts/` على Git (محلي فقط عبر gitignore)
-- gitignore الإلزامي: `notion-screenshots/`, `release/`, `node_modules/`, `.pnpm-store/`, `.cursor/`, `public/`, `scripts/`
+- ارفع `scripts/` لكن فقط سكربتَي البناء الأساسيين؛ تجاهل أدوات capture/upload/debug/Notion محليًا
+- ارفع `public/twilight-bundle.json` فقط (ليس clean-preview)
+- gitignore الإلزامي: `notion-screenshots/`, `release/`, `node_modules/`, `.pnpm-store/`, وأنماط أدوات `scripts/` المحلية
 
 ## 6) Checklist قبل الإرسال
 
@@ -77,18 +66,9 @@ normalize_uuid_keys.py   # مطلوب لقبول سلة
 - [ ] dist نظيف ويغطي كل المكونات
 - [ ] كل key = UUID v4
 - [ ] ZIP < 1MB
-- [ ] twilight-bundle.json متزامن (root + dist بعد البناء)
-- [ ] pnpm run audit:salla يمر (إن وُجد)
+- [ ] twilight-bundle.json متزامن في root + public + dist
+- [ ] scripts/normalize_uuid_keys.py على Git
 ```
-
-## 7) مشروع جديد
-
-عند إنشاء حزمة عناصر جديدة:
-1. انسخ هيكل المرجع أعلاه
-2. انسخ `src/utils/localizedString.ts` و`normalize_uuid_keys.py`
-3. أضف قاعدة `.cursor/rules/salla-submission-standards.mdc` (alwaysApply)
-4. أضف سكربت `audit_salla_submission.py` و`"audit:salla"` في package.json
-5. لا تضف `public/` أو سكربتات capture إلى Git
 
 ## 8) إرشادات مقاسات الصور (حقول image)
 
@@ -116,4 +96,3 @@ normalize_uuid_keys.py   # مطلوب لقبول سلة
 لا تستخدم `enableDragScroll` أو `translateX` يدوي للسلايدرات.
 
 **استثناء:** عناصر المقارنة قبل/بعد (range / clip) ليست carousel — تبقى مخصصة.
-
