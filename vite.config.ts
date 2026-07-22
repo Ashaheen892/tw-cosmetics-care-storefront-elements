@@ -105,7 +105,6 @@ export default defineConfig({
     sallaDemoPlugin({
       js: seedDemoDefaultsJs,
     }),
-    },
     {
       name: 'no-cache-headers',
       configureServer(server) {

@@ -1,0 +1,92 @@
+---
+description: Salla Twilight element-kit submission gates (multilanguage, dist, zip, UUID). Apply to all tw-*-elements / tw-*-storefront-elements kits and any new kit.
+alwaysApply: true
+---
+
+# معايير قبول سلة — حزم عناصر Twilight
+
+طبّق هذه المتطلبات على أي عنصر جديد، أي مشروع `tw-*-elements` / `tw-*-storefront-elements`، وقبل إعادة الإرسال للمراجعة.
+
+## 0) نوع الحزمة (مهم)
+
+هذه **حزم عناصر Lit/Vite** وليست ثيمًا كاملًا.
+لا تنفّذ تعليمات ترقية الثيم الكامل:
+`npm install @salla.sa/twilight` / `twilight-components` / `npm run prod`.
+البناء الصحيح: `pnpm run build` فقط.
+
+## 1) تعدد اللغات
+
+- كل حقل `multilanguage: true` يجب تحويله إلى نص واحد قبل العرض عبر `localizedString(...)`.
+- لا تعرض كائن `{ ar, en }` مباشرة داخل Lit/HTML.
+- لا تعتمد على `this.label()`؛ اجعل التحويل صريحًا في مكان العرض (أو في utils عند بناء الصفوف ثم اعرض النص الناتج فقط).
+
+```ts
+// ❌ BAD
+${this.config?.bsg_back_btn}
+${this.label('bsg_back_btn', 'السابق', 'Back')}
+
+// ✅ GOOD
+${localizedString(this.config?.bsg_back_btn as string) || t('السابق', 'Back')}
+```
+
+في البناء: أبقِ اسم `localizedString` ظاهرًا في `dist` (مثلاً `esbuild.minifyIdentifiers: false` أو `keepNames: true`) حتى يمر فحص سلة.
+
+## 2) بناء الإنتاج
+
+- قبل الإرسال: `rm -rf dist && pnpm run build`
+- يجب وجود `dist/<component-name>.js` لكل عنصر في `twilight-bundle.json`
+- لا ترفع `dist` مختلطًا من مشروع آخر
+- `prebuild`: `python3 normalize_uuid_keys.py`
+
+## 3) حجم الرفع
+
+- ZIP &lt; **1 MB**
+- استبعد: `node_modules/`, `.pnpm-store/`, `.git/`, `notion-screenshots/`, `public/`, `scripts/` المحلية، `assets/`, `release/`, لقطات ثقيلة
+- محتوى مقبول: `package.json`, `tsconfig.json`, `vite.config.ts`, `twilight-bundle.json`, `src/`, `dist/`, `README.md`, `normalize_uuid_keys.py`, `generate*_bundle.py` إن وُجد، `pnpm-workspace.yaml`
+
+## 4) مفاتيح الحقول `key`
+
+- كل `"key"` في `twilight-bundle.json` = **UUID v4**
+- أبقِ `"value"` منطقيًا
+- بعد أي generate bundle أعد التطبيع فورًا
+
+## 5) هيكل المشروع (مثل المرجع الرسمي)
+
+طابق [tw-increase-sales-and-professional-presentation](https://github.com/Ashaheen892/tw-increase-sales-and-professional-presentation):
+
+```
+src/components/...
+src/utils/localizedString.ts
+dist/
+package.json
+tsconfig.json
+vite.config.ts
+twilight-bundle.json
+README.md
+.gitignore
+normalize_uuid_keys.py   # مطلوب لقبول سلة
+```
+
+- لا ترفع `public/` أو `scripts/` على Git (محلي فقط عبر gitignore)
+- gitignore الإلزامي: `notion-screenshots/`, `release/`, `node_modules/`, `.pnpm-store/`, `.cursor/`, `public/`, `scripts/`
+
+## 6) Checklist قبل الإرسال
+
+```
+- [ ] لا عرض خام لحقول multilanguage
+- [ ] dist نظيف ويغطي كل المكونات
+- [ ] كل key = UUID v4
+- [ ] ZIP < 1MB
+- [ ] twilight-bundle.json متزامن (root + dist بعد البناء)
+- [ ] pnpm run audit:salla يمر (إن وُجد)
+```
+
+## 7) مشروع جديد
+
+عند إنشاء حزمة عناصر جديدة:
+1. انسخ هيكل المرجع أعلاه
+2. انسخ `src/utils/localizedString.ts` و`normalize_uuid_keys.py`
+3. أضف قاعدة `.cursor/rules/salla-submission-standards.mdc` (alwaysApply)
+4. أضف سكربت `audit_salla_submission.py` و`"audit:salla"` في package.json
+5. لا تضف `public/` أو سكربتات capture إلى Git
+

@@ -8,7 +8,8 @@
         "prebuild": "python3 normalize_uuid_keys.py",
         "build": "vite build",
         "preview": "vite preview",
-        "generate:bundle": "python3 generate_bundle.py"
+        "generate:bundle": "python3 generate_bundle.py",
+        "audit:salla": "python3 audit_salla_submission.py"
     },
     "devDependencies": {
         "@salla.sa/twilight-bundles": "^0.1.0",
