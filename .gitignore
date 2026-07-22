@@ -24,34 +24,16 @@ yarn.lock
 # Diagnostic reports
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# Local Notion / preview captures
+# Local-only (not in reference starter)
+public/
+scripts/
 notion-screenshots/
-assets/element-previews/
-
-# Submission archives & scratch
+assets/
 release/
 .ref-tmp/
 .ref.zip
 *.zip
 .auto-notion-*.json
 .mcp-batch-*.json
-
-# Local-only docs / previews
 USER-GUIDE.md
 **/clean-preview.html
-
-# Local tooling scripts (keep normalize_uuid_keys.py + generate*_bundle.py tracked)
-scripts/capture-*.mjs
-scripts/upload-*.mjs
-scripts/build-notion-guides.mjs
-scripts/clear-chrome-cache.mjs
-scripts/ignore-tty-eio.mjs
-scripts/debug-*.mjs
-scripts/audit-*.mjs
-scripts/ensure-preview-defaults.py
-scripts/fill-default-media.py
-scripts/add-*.py
-scripts/rebuild-*.py
-scripts/register-*.py
-scripts/update-*.py
-scripts/upgrade-commerce-dynamic.py
