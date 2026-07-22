@@ -1,9 +1,11 @@
-import { css as M, LitElement as F, nothing as c, html as t } from "lit";
-import { property as N, state as O } from "lit/decorators.js";
-import { classMap as w } from "lit/directives/class-map.js";
-import { styleMap as h } from "lit/directives/style-map.js";
-import { g as b, n as R, l as f, t as n, s as V, r as j, p as W, a as k, i as v } from "./sharedStyles-DKbcXBPy.js";
-const H = M`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, nothing, html } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { g as getRadioValue, n as normalizeCollection, l as localizedString, t, s as sharedSectionCss, r as readSectionTheme, p as prefersReducedMotion, a as themeStyleMap, i as isTruthy } from "./sharedStyles-2kfPtH3m.js";
+const componentStyles = css`
   .bwp-toolbar {
     display: flex;
     justify-content: center;
@@ -355,7 +357,7 @@ const H = M`
       transition: none !important;
     }
   }
-`, I = ["daily", "x3", "x2", "x1", "alternate"], U = ["am", "pm", "both"], K = ["sat", "sun", "mon"], P = ["week", "am", "pm"], Q = [
+`, FREQUENCIES = ["daily", "x3", "x2", "x1", "alternate"], SLOTS = ["am", "pm", "both"], START_DAYS = ["sat", "sun", "mon"], VIEWS = ["week", "am", "pm"], CANONICAL_WEEK = [
   { ar: "السبت", en: "Saturday" },
   { ar: "الأحد", en: "Sunday" },
   { ar: "الإثنين", en: "Monday" },
@@ -363,39 +365,44 @@ const H = M`
   { ar: "الأربعاء", en: "Wednesday" },
   { ar: "الخميس", en: "Thursday" },
   { ar: "الجمعة", en: "Friday" }
-], Y = { sat: 0, sun: 1, mon: 2 };
-function G(o) {
-  const e = b(o.bwp_start_day, "sat");
-  return K.includes(e) ? e : "sat";
+], START_OFFSET = { sat: 0, sun: 1, mon: 2 };
+function resolveStartDay(config) {
+  const value = getRadioValue(config.bwp_start_day, "sat");
+  return START_DAYS.includes(value) ? value : "sat";
 }
-function J(o) {
-  const e = b(o.bwp_view_default, "week");
-  return P.includes(e) ? e : "week";
+__name(resolveStartDay, "resolveStartDay");
+function resolveView(config) {
+  const value = getRadioValue(config.bwp_view_default, "week");
+  return VIEWS.includes(value) ? value : "week";
 }
-function X(o) {
-  const e = b(o, "daily");
-  return I.includes(e) ? e : "daily";
+__name(resolveView, "resolveView");
+function resolveFrequency(raw) {
+  const value = getRadioValue(raw, "daily");
+  return FREQUENCIES.includes(value) ? value : "daily";
 }
-function Z(o) {
-  const e = b(o, "both");
-  return U.includes(e) ? e : "both";
+__name(resolveFrequency, "resolveFrequency");
+function resolveSlot(raw) {
+  const value = getRadioValue(raw, "both");
+  return SLOTS.includes(value) ? value : "both";
 }
-function B(o) {
-  return R(o).map((e, r) => {
-    const s = f(e.name);
+__name(resolveSlot, "resolveSlot");
+function parseSteps(raw) {
+  return normalizeCollection(raw).map((s, i) => {
+    const name = localizedString(s.name);
     return {
-      id: String(e.id ?? e.step_id ?? "").trim() || `step-${r + 1}`,
-      name: s,
-      color: String(e.color ?? "").trim(),
-      icon: String(e.icon ?? "").trim(),
-      slot: Z(e.slot),
-      frequency: X(e.frequency),
-      note: f(e.note)
+      id: String(s.id ?? s.step_id ?? "").trim() || `step-${i + 1}`,
+      name,
+      color: String(s.color ?? "").trim(),
+      icon: String(s.icon ?? "").trim(),
+      slot: resolveSlot(s.slot),
+      frequency: resolveFrequency(s.frequency),
+      note: localizedString(s.note)
     };
-  }).filter((e) => !!e.name);
+  }).filter((s) => !!s.name);
 }
-function ee(o) {
-  switch (o) {
+__name(parseSteps, "parseSteps");
+function frequencyDays(freq) {
+  switch (freq) {
     case "daily":
       return [0, 1, 2, 3, 4, 5, 6];
     case "x3":
@@ -410,50 +417,55 @@ function ee(o) {
       return [0, 1, 2, 3, 4, 5, 6];
   }
 }
-function re(o) {
-  const e = Y[o] ?? 0;
-  return Array.from({ length: 7 }, (r, s) => {
-    const a = Q[(e + s) % 7];
-    return n(a.ar, a.en);
+__name(frequencyDays, "frequencyDays");
+function weekdayNames(startDay) {
+  const offset = START_OFFSET[startDay] ?? 0;
+  return Array.from({ length: 7 }, (_, i) => {
+    const day = CANONICAL_WEEK[(offset + i) % 7];
+    return t(day.ar, day.en);
   });
 }
-function te() {
-  return n("راحة", "Rest");
+__name(weekdayNames, "weekdayNames");
+function emptyDayLabel() {
+  return t("راحة", "Rest");
 }
-function ae(o) {
-  switch (o) {
+__name(emptyDayLabel, "emptyDayLabel");
+function frequencyLabel(freq) {
+  switch (freq) {
     case "daily":
-      return n("يوميًا", "Daily");
+      return t("يوميًا", "Daily");
     case "x3":
-      return n("3 مرات أسبوعيًا", "3× per week");
+      return t("3 مرات أسبوعيًا", "3× per week");
     case "x2":
-      return n("مرتين أسبوعيًا", "2× per week");
+      return t("مرتين أسبوعيًا", "2× per week");
     case "x1":
-      return n("مرة أسبوعيًا", "Once a week");
+      return t("مرة أسبوعيًا", "Once a week");
     case "alternate":
-      return n("يوم بعد يوم", "Every other day");
+      return t("يوم بعد يوم", "Every other day");
     default:
-      return n("يوميًا", "Daily");
+      return t("يوميًا", "Daily");
   }
 }
-function oe(o, e, r) {
-  const s = Array.from({ length: 7 }, () => ({
+__name(frequencyLabel, "frequencyLabel");
+function buildSchedule(steps, _startDay, view) {
+  const schedule = Array.from({ length: 7 }, () => ({
     am: [],
     pm: []
   }));
-  for (const a of o) {
-    const i = a.slot === "am" || a.slot === "both", d = a.slot === "pm" || a.slot === "both";
-    for (const m of ee(a.frequency))
-      m < 0 || m > 6 || (i && r !== "pm" && s[m].am.push(a), d && r !== "am" && s[m].pm.push(a));
+  for (const step of steps) {
+    const inAm = step.slot === "am" || step.slot === "both", inPm = step.slot === "pm" || step.slot === "both";
+    for (const day of frequencyDays(step.frequency))
+      day < 0 || day > 6 || (inAm && view !== "pm" && schedule[day].am.push(step), inPm && view !== "am" && schedule[day].pm.push(step));
   }
-  return s;
+  return schedule;
 }
-var ne = Object.defineProperty, S = (o, e, r, s) => {
-  for (var a = void 0, i = o.length - 1, d; i >= 0; i--)
-    (d = o[i]) && (a = d(e, r, a) || a);
-  return a && ne(e, r, a), a;
-};
-const y = class y extends F {
+__name(buildSchedule, "buildSchedule");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyWeeklyPlanner = class _BeautyWeeklyPlanner extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.view = "week", this.viewSynced = !1, this.boundLangHandler = () => this.requestUpdate();
   }
@@ -463,58 +475,58 @@ const y = class y extends F {
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    var i;
-    if (!e.has("config")) return;
-    const r = b((i = this.config) == null ? void 0 : i.bwp_view_default, "week"), s = e.get("config"), a = s ? b(s.bwp_view_default, "week") : void 0;
-    (!this.viewSynced || a !== r) && (this.view = J(this.config || {}), this.viewSynced = !0);
+  updated(changed) {
+    var _a;
+    if (!changed.has("config")) return;
+    const nextDefault = getRadioValue((_a = this.config) == null ? void 0 : _a.bwp_view_default, "week"), prev = changed.get("config"), prevDefault = prev ? getRadioValue(prev.bwp_view_default, "week") : void 0;
+    (!this.viewSynced || prevDefault !== nextDefault) && (this.view = resolveView(this.config || {}), this.viewSynced = !0);
   }
   get steps() {
-    var e;
-    return B((e = this.config) == null ? void 0 : e.bwp_steps);
+    var _a;
+    return parseSteps((_a = this.config) == null ? void 0 : _a.bwp_steps);
   }
-  setView(e) {
-    this.view = e;
+  setView(view) {
+    this.view = view;
   }
-  renderChip(e) {
-    const r = e.icon.startsWith("sicon-");
-    return t`
+  renderChip(step) {
+    const isSicon = step.icon.startsWith("sicon-");
+    return html`
       <span
         class="bwp-chip"
-        style=${h(e.color ? { "--chip-color": e.color } : {})}
+        style=${styleMap(step.color ? { "--chip-color": step.color } : {})}
       >
         <span class="bwp-chip__dot"></span>
-        ${e.icon ? t`<span class="bwp-chip__icon ${r ? e.icon : ""}">${r ? "" : e.icon}</span>` : c}
-        <span class="bwp-chip__name" title=${e.name}>${e.name}</span>
+        ${step.icon ? html`<span class="bwp-chip__icon ${isSicon ? step.icon : ""}">${isSicon ? "" : step.icon}</span>` : nothing}
+        <span class="bwp-chip__name" title=${step.name}>${step.name}</span>
       </span>
     `;
   }
-  renderSlot(e, r) {
-    return t`
+  renderSlot(label, steps) {
+    return html`
       <div class="bwp-slot">
-        <span class="bwp-slot__label">${e}</span>
-        ${r.length ? t`<div class="bwp-chips">${r.map((s) => this.renderChip(s))}</div>` : t`<span class="bwp-slot--empty">${n("لا خطوات", "No steps")}</span>`}
+        <span class="bwp-slot__label">${label}</span>
+        ${steps.length ? html`<div class="bwp-chips">${steps.map((s) => this.renderChip(s))}</div>` : html`<span class="bwp-slot--empty">${t("لا خطوات", "No steps")}</span>`}
       </div>
     `;
   }
   renderToggle() {
-    const e = [
-      { id: "week", label: n("الأسبوع الكامل", "Full week") },
-      { id: "am", label: n("صباحًا", "Morning") },
-      { id: "pm", label: n("مساءً", "Evening") }
+    const options = [
+      { id: "week", label: t("الأسبوع الكامل", "Full week") },
+      { id: "am", label: t("صباحًا", "Morning") },
+      { id: "pm", label: t("مساءً", "Evening") }
     ];
-    return t`
+    return html`
       <div class="bwp-toolbar">
-        <div class="bwp-toggle" role="group" aria-label=${n("طريقة العرض", "View mode")}>
-          ${e.map(
-      (r) => t`
+        <div class="bwp-toggle" role="group" aria-label=${t("طريقة العرض", "View mode")}>
+          ${options.map(
+      (opt) => html`
               <button
                 type="button"
                 class="bwp-toggle__btn"
-                aria-pressed=${this.view === r.id ? "true" : "false"}
-                @click=${() => this.setView(r.id)}
+                aria-pressed=${this.view === opt.id ? "true" : "false"}
+                @click=${() => this.setView(opt.id)}
               >
-                ${r.label}
+                ${opt.label}
               </button>
             `
     )}
@@ -523,57 +535,57 @@ const y = class y extends F {
     `;
   }
   render() {
-    const e = this.config || {}, r = j(e, "bwp_"), s = r.animate && !W(), a = this.steps, i = f(e.bwp_title), d = f(e.bwp_desc);
-    if (!a.length)
-      return t`
+    const c = this.config || {}, theme = readSectionTheme(c, "bwp_"), animate = theme.animate && !prefersReducedMotion(), steps = this.steps, title = localizedString(c.bwp_title), desc = localizedString(c.bwp_desc);
+    if (!steps.length)
+      return html`
         <section
-          class=${w({ "fs-section": !0, "fs-animate": s })}
-          style=${h(k(r))}
-          aria-label=${i || n("مخطط الروتين الأسبوعي", "Weekly routine planner")}
+          class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+          style=${styleMap(themeStyleMap(theme))}
+          aria-label=${title || t("مخطط الروتين الأسبوعي", "Weekly routine planner")}
         >
           <div class="fs-container">
-            ${i || d ? t`<div class="fs-header">
-                  ${i ? t`<h2 class="fs-title">${i}</h2>` : c}
-                  ${d ? t`<p class="fs-desc">${d}</p>` : c}
-                </div>` : c}
+            ${title || desc ? html`<div class="fs-header">
+                  ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                  ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+                </div>` : nothing}
             <div class="fs-empty" role="status">
-              ${n("أضيفي خطوات الروتين من إعدادات العنصر.", "Add routine steps in the element settings.")}
+              ${t("أضيفي خطوات الروتين من إعدادات العنصر.", "Add routine steps in the element settings.")}
             </div>
           </div>
         </section>
       `;
-    const m = G(e), C = re(m), z = oe(a, m, this.view), L = v(e.bwp_show_view_toggle, !0), T = v(e.bwp_show_legend, !0), E = v(e.bwp_show_notice, !0), D = f(e.bwp_notice) || n(
+    const startDay = resolveStartDay(c), days = weekdayNames(startDay), schedule = buildSchedule(steps, startDay, this.view), showToggle = isTruthy(c.bwp_show_view_toggle, !0), showLegend = isTruthy(c.bwp_show_legend, !0), showNotice = isTruthy(c.bwp_show_notice, !0), notice = localizedString(c.bwp_notice) || t(
       "خطة إرشادية؛ عدّليها حسب توصية أخصائي بشرتك.",
       "A guiding plan; adjust it to your skincare specialist’s advice."
-    ), _ = n("صباحًا", "Morning"), x = n("مساءً", "Evening"), q = n("صباحًا ومساءً", "Morning & evening");
-    return t`
+    ), amLabel = t("صباحًا", "Morning"), pmLabel = t("مساءً", "Evening"), bothLabel = t("صباحًا ومساءً", "Morning & evening");
+    return html`
       <section
-        class=${w({ "fs-section": !0, "fs-animate": s })}
-        style=${h(k(r))}
-        aria-label=${i || n("مخطط الروتين الأسبوعي", "Weekly routine planner")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("مخطط الروتين الأسبوعي", "Weekly routine planner")}
       >
         <div class="fs-container">
-          ${i || d ? t`<div class="fs-header">
-                ${i ? t`<h2 class="fs-title">${i}</h2>` : c}
-                ${d ? t`<p class="fs-desc">${d}</p>` : c}
-              </div>` : c}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
-          ${L ? this.renderToggle() : c}
+          ${showToggle ? this.renderToggle() : nothing}
 
           <div class="bwp-grid-scroll">
-            <div class=${w({ "bwp-grid": !0, [`bwp-grid--${this.view}`]: !0 })} role="list">
-              ${C.map((l, u) => {
-      const p = z[u], $ = p.am.length > 0 || p.pm.length > 0;
-      return t`
-                  <div class=${w({ "bwp-day": !0, "is-empty": !$ })} role="listitem">
-                    <div class="bwp-day__head">${l}</div>
+            <div class=${classMap({ "bwp-grid": !0, [`bwp-grid--${this.view}`]: !0 })} role="list">
+              ${days.map((dayName, i) => {
+      const cell = schedule[i], hasContent = cell.am.length > 0 || cell.pm.length > 0;
+      return html`
+                  <div class=${classMap({ "bwp-day": !0, "is-empty": !hasContent })} role="listitem">
+                    <div class="bwp-day__head">${dayName}</div>
                     <div class="bwp-day__body">
-                      ${$ ? this.view === "week" ? t`<div class="bwp-slots bwp-slots--split">
-                              ${this.renderSlot(_, p.am)}
-                              ${this.renderSlot(x, p.pm)}
-                            </div>` : t`<div class="bwp-chips">
-                              ${[...p.am, ...p.pm].map((A) => this.renderChip(A))}
-                            </div>` : t`<span class="bwp-day__empty">${te()}</span>`}
+                      ${hasContent ? this.view === "week" ? html`<div class="bwp-slots bwp-slots--split">
+                              ${this.renderSlot(amLabel, cell.am)}
+                              ${this.renderSlot(pmLabel, cell.pm)}
+                            </div>` : html`<div class="bwp-chips">
+                              ${[...cell.am, ...cell.pm].map((s) => this.renderChip(s))}
+                            </div>` : html`<span class="bwp-day__empty">${emptyDayLabel()}</span>`}
                     </div>
                   </div>
                 `;
@@ -581,45 +593,45 @@ const y = class y extends F {
             </div>
           </div>
 
-          ${T ? t`<div class="bwp-legend">
-                ${a.map((l) => {
-      const u = l.icon.startsWith("sicon-"), p = l.slot === "am" ? _ : l.slot === "pm" ? x : q;
-      return t`
+          ${showLegend ? html`<div class="bwp-legend">
+                ${steps.map((step) => {
+      const isSicon = step.icon.startsWith("sicon-"), slotText = step.slot === "am" ? amLabel : step.slot === "pm" ? pmLabel : bothLabel;
+      return html`
                     <div
                       class="bwp-legend__item"
-                      style=${h(l.color ? { "--chip-color": l.color } : {})}
+                      style=${styleMap(step.color ? { "--chip-color": step.color } : {})}
                     >
                       <span class="bwp-legend__swatch"></span>
                       <span class="bwp-legend__text">
                         <span class="bwp-legend__name">
-                          ${l.icon ? t`<span class="${u ? l.icon : ""}">${u ? "" : l.icon}</span>` : c}
-                          ${l.name}
+                          ${step.icon ? html`<span class="${isSicon ? step.icon : ""}">${isSicon ? "" : step.icon}</span>` : nothing}
+                          ${step.name}
                         </span>
                         <span class="bwp-legend__freq">
-                          ${ae(l.frequency)}${l.note ? t` · ${l.note}` : c}
+                          ${frequencyLabel(step.frequency)}${step.note ? html` · ${step.note}` : nothing}
                         </span>
                       </span>
-                      <span class="bwp-legend__slot">${p}</span>
+                      <span class="bwp-legend__slot">${slotText}</span>
                     </div>
                   `;
     })}
-              </div>` : c}
+              </div>` : nothing}
 
-          ${E ? t`<p class="bwp-notice">${D}</p>` : c}
+          ${showNotice ? html`<p class="bwp-notice">${notice}</p>` : nothing}
         </div>
       </section>
     `;
   }
 };
-y.styles = [V, H];
-let g = y;
-S([
-  N({ type: Object })
-], g.prototype, "config");
-S([
-  O()
-], g.prototype, "view");
-typeof g < "u" && g.registerSallaComponent("salla-beauty-weekly-planner");
+__name(_BeautyWeeklyPlanner, "BeautyWeeklyPlanner"), _BeautyWeeklyPlanner.styles = [sharedSectionCss, componentStyles];
+let BeautyWeeklyPlanner = _BeautyWeeklyPlanner;
+__decorateClass([
+  property({ type: Object })
+], BeautyWeeklyPlanner.prototype, "config");
+__decorateClass([
+  state()
+], BeautyWeeklyPlanner.prototype, "view");
+typeof BeautyWeeklyPlanner < "u" && BeautyWeeklyPlanner.registerSallaComponent("salla-beauty-weekly-planner");
 export {
-  g as default
+  BeautyWeeklyPlanner as default
 };

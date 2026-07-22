@@ -362,10 +362,12 @@ export default class BeautySpfGuide extends LitElement {
 
         <div class="bsg-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-            ${localizedString(this.config?.bsg_back_btn as string) || t('تعديل الاختيارات', 'Edit choices')}
+            ${localizedString(this.config?.bsg_back_btn as string) ||
+            t('تعديل الاختيارات', 'Edit choices')}
           </button>
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
-            ${localizedString(this.config?.bsg_reset_btn as string) || t('ابدئي من جديد', 'Start over')}
+            ${localizedString(this.config?.bsg_reset_btn as string) ||
+            t('ابدئي من جديد', 'Start over')}
           </button>
           ${renderCommerceCtaButton(c, 'bsg_')}
         </div>

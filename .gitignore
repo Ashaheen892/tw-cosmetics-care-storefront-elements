@@ -6,32 +6,52 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-
-
-# Dependency directories
+# Dependencies
 node_modules/
 jspm_packages/
 .pnpm-store/
 
-# Yarn Integrity file
-.yarn-integrity
-
-#assets/dist
+# Lockfiles
 package-lock.json
 pnpm-lock.yaml
 yarn.lock.json
 yarn.lock
-pnpm-lock.yaml
-.idea
 
-# Diagnostic reports (https://nodejs.org/api/report.html)
+.idea
+.DS_Store
+.cursor/
+
+# Diagnostic reports
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-.DS_Store
-
-# Local Notion capture / preview assets
+# Local Notion / preview captures
 notion-screenshots/
+assets/element-previews/
 
-
-# Submission archives
+# Submission archives & scratch
 release/
+.ref-tmp/
+.ref.zip
+*.zip
+.auto-notion-*.json
+.mcp-batch-*.json
+
+# Local-only docs / previews
+USER-GUIDE.md
+**/clean-preview.html
+
+# Local tooling scripts (keep normalize_uuid_keys.py + generate*_bundle.py tracked)
+scripts/capture-*.mjs
+scripts/upload-*.mjs
+scripts/build-notion-guides.mjs
+scripts/clear-chrome-cache.mjs
+scripts/ignore-tty-eio.mjs
+scripts/debug-*.mjs
+scripts/audit-*.mjs
+scripts/ensure-preview-defaults.py
+scripts/fill-default-media.py
+scripts/add-*.py
+scripts/rebuild-*.py
+scripts/register-*.py
+scripts/update-*.py
+scripts/upgrade-commerce-dynamic.py

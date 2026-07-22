@@ -1,10 +1,12 @@
-import { css as A, LitElement as E, nothing as s, html as a } from "lit";
-import { property as q, state as u } from "lit/decorators.js";
-import { classMap as $ } from "lit/directives/class-map.js";
-import { styleMap as k } from "lit/directives/style-map.js";
-import { n as j, l as f, g as M, j as T, i as w, e as U, s as H, t as i, r as K, p as Q, o as W, c as Y, a as G } from "./sharedStyles-DKbcXBPy.js";
-import { r as V } from "./commerceOutcome-Dk8p2VWM.js";
-const F = A`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, nothing, html } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, l as localizedString, g as getRadioValue, j as toNumber, i as isTruthy, e as extractImageUrl, s as sharedSectionCss, t, r as readSectionTheme, p as prefersReducedMotion, o as getPageLocale, c as getUnitValue, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   :host {
     display: block;
     direction: inherit;
@@ -599,75 +601,83 @@ const F = A`
       animation: none;
     }
   }
-`, N = ["layers", "drops", "bottles", "stairs", "path", "circles"], X = ["morning", "evening", "both"];
-function J(c) {
-  return j(c).map((r, t) => {
-    const o = M(r.period, "both");
+`, SHAPES = ["layers", "drops", "bottles", "stairs", "path", "circles"], PERIODS = ["morning", "evening", "both"];
+function parseSteps(raw) {
+  return normalizeCollection(raw).map((s, i) => {
+    const period = getRadioValue(s.period, "both");
     return {
-      id: String(r.id ?? r.step_id ?? "").trim() || `step-${t + 1}`,
-      title: f(r.step_title),
-      icon: String(r.icon ?? "").trim(),
-      image: U(r.image),
-      descShort: f(r.desc_short),
-      descLong: f(r.desc_long),
-      timing: f(r.timing),
-      wait: f(r.wait),
-      amount: f(r.amount),
-      note: f(r.note),
-      color: String(r.color ?? "").trim(),
-      optional: w(r.optional, !1),
-      period: X.includes(o) ? o : "both",
-      correctOrder: T(r.correct_order, t + 1)
+      id: String(s.id ?? s.step_id ?? "").trim() || `step-${i + 1}`,
+      title: localizedString(s.step_title),
+      icon: String(s.icon ?? "").trim(),
+      image: extractImageUrl(s.image),
+      descShort: localizedString(s.desc_short),
+      descLong: localizedString(s.desc_long),
+      timing: localizedString(s.timing),
+      wait: localizedString(s.wait),
+      amount: localizedString(s.amount),
+      note: localizedString(s.note),
+      color: String(s.color ?? "").trim(),
+      optional: isTruthy(s.optional, !1),
+      period: PERIODS.includes(period) ? period : "both",
+      correctOrder: toNumber(s.correct_order, i + 1)
     };
-  }).filter((r) => r.title);
+  }).filter((s) => s.title);
 }
-function Z(c) {
-  return j(c).map((r, t) => ({
-    id: String(r.id ?? r.routine_id ?? "").trim() || `routine-${t + 1}`,
-    name: f(r.name) || `${t + 1}`,
-    steps: J(r.steps)
+__name(parseSteps, "parseSteps");
+function parseRoutines(raw) {
+  return normalizeCollection(raw).map((r, i) => ({
+    id: String(r.id ?? r.routine_id ?? "").trim() || `routine-${i + 1}`,
+    name: localizedString(r.name) || `${i + 1}`,
+    steps: parseSteps(r.steps)
   })).filter((r) => r.steps.length);
 }
-function _(c) {
-  return [...c].sort((r, t) => r.correctOrder - t.correctOrder);
+__name(parseRoutines, "parseRoutines");
+function sortedByCorrect(steps) {
+  return [...steps].sort((a, b) => a.correctOrder - b.correctOrder);
 }
-function P(c) {
-  const r = c.map((e) => e.id);
-  if (r.length < 2) return r;
-  const t = _(c).map((e) => e.id);
-  let o = [...r];
-  for (let e = 0; e < 6; e += 1) {
-    for (let n = o.length - 1; n > 0; n -= 1) {
-      const d = Math.floor(Math.random() * (n + 1));
-      [o[n], o[d]] = [o[d], o[n]];
+__name(sortedByCorrect, "sortedByCorrect");
+function shuffleOrder(steps) {
+  const ids = steps.map((s) => s.id);
+  if (ids.length < 2) return ids;
+  const correct = sortedByCorrect(steps).map((s) => s.id);
+  let out = [...ids];
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    for (let i = out.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
     }
-    if (o.some((n, d) => n !== t[d])) return o;
+    if (out.some((id, idx) => id !== correct[idx])) return out;
   }
-  return o = [...t.slice(1), t[0]], o;
+  return out = [...correct.slice(1), correct[0]], out;
 }
-function B(c) {
-  return M(c.brl_mode, "guide") === "quiz" ? "quiz" : "guide";
+__name(shuffleOrder, "shuffleOrder");
+function resolveMode(config) {
+  return getRadioValue(config.brl_mode, "guide") === "quiz" ? "quiz" : "guide";
 }
-function C(c) {
-  const r = M(c.brl_shape, "layers");
-  return N.includes(r) ? r : "layers";
+__name(resolveMode, "resolveMode");
+function resolveShape(config) {
+  const value = getRadioValue(config.brl_shape, "layers");
+  return SHAPES.includes(value) ? value : "layers";
 }
-function L(c) {
-  return M(c.brl_direction, "vertical") === "horizontal" ? "horizontal" : "vertical";
+__name(resolveShape, "resolveShape");
+function resolveDirection(config) {
+  return getRadioValue(config.brl_direction, "vertical") === "horizontal" ? "horizontal" : "vertical";
 }
-function R(c, r) {
+__name(resolveDirection, "resolveDirection");
+function periodLabel(period, locale) {
   return {
     morning: ["صباحي", "Morning"],
     evening: ["مسائي", "Evening"],
     both: ["صباحي ومسائي", "AM / PM"]
-  }[c][r === "en" ? 1 : 0];
+  }[period][locale === "en" ? 1 : 0];
 }
-var rr = Object.defineProperty, m = (c, r, t, o) => {
-  for (var e = void 0, n = c.length - 1, d; n >= 0; n--)
-    (d = c[n]) && (e = d(r, t, e) || e);
-  return e && rr(r, t, e), e;
-};
-const O = class O extends E {
+__name(periodLabel, "periodLabel");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyRoutineLayeringBoard = class _BeautyRoutineLayeringBoard extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.routineId = "", this.expandedId = "", this.order = [], this.orderKey = "", this.checked = !1, this.revealed = !1, this.draggingId = "", this.overId = "", this.announce = "", this.boundLangHandler = () => this.requestUpdate();
   }
@@ -677,265 +687,265 @@ const O = class O extends E {
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(r) {
-    r.has("config") && (this.routineId = "", this.resetQuiz());
+  updated(changed) {
+    changed.has("config") && (this.routineId = "", this.resetQuiz());
   }
   get routines() {
-    var r;
-    return Z((r = this.config) == null ? void 0 : r.brl_routines);
+    var _a;
+    return parseRoutines((_a = this.config) == null ? void 0 : _a.brl_routines);
   }
-  currentRoutine(r) {
-    var o;
-    if (!r.length) return null;
-    const t = String(((o = this.config) == null ? void 0 : o.brl_default_routine) ?? "").trim();
-    return r.find((e) => e.id === this.routineId) || r.find((e) => e.id === t) || r[0];
+  currentRoutine(routines) {
+    var _a;
+    if (!routines.length) return null;
+    const preset = String(((_a = this.config) == null ? void 0 : _a.brl_default_routine) ?? "").trim();
+    return routines.find((r) => r.id === this.routineId) || routines.find((r) => r.id === preset) || routines[0];
   }
   resetQuiz() {
     this.checked = !1, this.revealed = !1, this.expandedId = "", this.orderKey = "", this.order = [], this.draggingId = "", this.overId = "";
   }
-  ensureOrder(r) {
-    return (this.orderKey !== r.id || this.order.length !== r.steps.length) && (this.order = P(r.steps), this.orderKey = r.id, this.checked = !1, this.revealed = !1), this.order;
+  ensureOrder(routine) {
+    return (this.orderKey !== routine.id || this.order.length !== routine.steps.length) && (this.order = shuffleOrder(routine.steps), this.orderKey = routine.id, this.checked = !1, this.revealed = !1), this.order;
   }
-  selectRoutine(r) {
-    r !== this.routineId && (this.routineId = r, this.resetQuiz());
+  selectRoutine(id) {
+    id !== this.routineId && (this.routineId = id, this.resetQuiz());
   }
-  toggleExpand(r) {
-    this.expandedId = this.expandedId === r ? "" : r;
+  toggleExpand(id) {
+    this.expandedId = this.expandedId === id ? "" : id;
   }
   // —— quiz reordering ——
-  moveStep(r, t) {
-    const o = r + t;
-    if (o < 0 || o >= this.order.length) return;
-    const e = [...this.order];
-    [e[r], e[o]] = [e[o], e[r]], this.order = e, this.checked = !1, this.announceOrder();
+  moveStep(index, dir) {
+    const target = index + dir;
+    if (target < 0 || target >= this.order.length) return;
+    const next = [...this.order];
+    [next[index], next[target]] = [next[target], next[index]], this.order = next, this.checked = !1, this.announceOrder();
   }
-  moveIdTo(r, t) {
-    const o = this.order.indexOf(r);
-    if (o < 0 || o === t) return;
-    const e = [...this.order];
-    e.splice(o, 1), e.splice(t, 0, r), this.order = e;
+  moveIdTo(id, targetIndex) {
+    const from = this.order.indexOf(id);
+    if (from < 0 || from === targetIndex) return;
+    const next = [...this.order];
+    next.splice(from, 1), next.splice(targetIndex, 0, id), this.order = next;
   }
-  onPointerDown(r, t) {
-    var o, e;
-    this.revealed || (this.draggingId = t, (e = (o = r.currentTarget).setPointerCapture) == null || e.call(o, r.pointerId));
+  onPointerDown(e, id) {
+    var _a, _b;
+    this.revealed || (this.draggingId = id, (_b = (_a = e.currentTarget).setPointerCapture) == null || _b.call(_a, e.pointerId));
   }
-  onPointerMove(r) {
-    var n;
+  onPointerMove(e) {
+    var _a;
     if (!this.draggingId) return;
-    const t = (n = this.shadowRoot) == null ? void 0 : n.elementFromPoint(r.clientX, r.clientY), o = t == null ? void 0 : t.closest("[data-step]"), e = (o == null ? void 0 : o.getAttribute("data-step")) || "";
-    this.overId = e && e !== this.draggingId ? e : "", !(!e || e === this.draggingId) && this.moveIdTo(this.draggingId, this.order.indexOf(e));
+    const el = (_a = this.shadowRoot) == null ? void 0 : _a.elementFromPoint(e.clientX, e.clientY), row = el == null ? void 0 : el.closest("[data-step]"), overId = (row == null ? void 0 : row.getAttribute("data-step")) || "";
+    this.overId = overId && overId !== this.draggingId ? overId : "", !(!overId || overId === this.draggingId) && this.moveIdTo(this.draggingId, this.order.indexOf(overId));
   }
   onPointerUp() {
     this.draggingId && (this.draggingId = "", this.overId = "", this.checked = !1, this.announceOrder());
   }
   announceOrder() {
-    this.announce = i("تم تحديث ترتيب الخطوات.", "Step order updated.");
+    this.announce = t("تم تحديث ترتيب الخطوات.", "Step order updated.");
   }
-  verify(r) {
+  verify(routine) {
     this.checked = !0;
-    const t = _(r.steps).map((e) => e.id), o = this.order.filter((e, n) => e === t[n]).length;
-    this.announce = o === r.steps.length ? i("ترتيب صحيح تمامًا.", "Perfect order.") : i(`${o} من ${r.steps.length} في مكانها الصحيح.`, `${o} of ${r.steps.length} in the correct place.`);
+    const correct = sortedByCorrect(routine.steps).map((s) => s.id), score = this.order.filter((id, i) => id === correct[i]).length;
+    this.announce = score === routine.steps.length ? t("ترتيب صحيح تمامًا.", "Perfect order.") : t(`${score} من ${routine.steps.length} في مكانها الصحيح.`, `${score} of ${routine.steps.length} in the correct place.`);
   }
-  showAnswer(r) {
-    this.order = _(r.steps).map((t) => t.id), this.checked = !0, this.revealed = !0;
+  showAnswer(routine) {
+    this.order = sortedByCorrect(routine.steps).map((s) => s.id), this.checked = !0, this.revealed = !0;
   }
-  retry(r) {
-    this.order = P(r.steps), this.checked = !1, this.revealed = !1, this.announceOrder();
+  retry(routine) {
+    this.order = shuffleOrder(routine.steps), this.checked = !1, this.revealed = !1, this.announceOrder();
   }
-  renderMeta(r) {
-    const t = [
-      r.timing ? a`<span>${i("التوقيت", "When")}: <b>${r.timing}</b></span>` : s,
-      r.wait ? a`<span>${i("الانتظار", "Wait")}: <b>${r.wait}</b></span>` : s,
-      r.amount ? a`<span>${i("الكمية", "Amount")}: <b>${r.amount}</b></span>` : s
-    ].filter((o) => o !== s);
-    return t.length ? a`<div class="brl-meta">${t}</div>` : s;
+  renderMeta(step) {
+    const bits = [
+      step.timing ? html`<span>${t("التوقيت", "When")}: <b>${step.timing}</b></span>` : nothing,
+      step.wait ? html`<span>${t("الانتظار", "Wait")}: <b>${step.wait}</b></span>` : nothing,
+      step.amount ? html`<span>${t("الكمية", "Amount")}: <b>${step.amount}</b></span>` : nothing
+    ].filter((x) => x !== nothing);
+    return bits.length ? html`<div class="brl-meta">${bits}</div>` : nothing;
   }
-  renderMarker(r, t) {
-    return a`<span
+  renderMarker(step, display) {
+    return html`<span
       class="brl-step__marker"
-      style=${k(r.color ? { "--step-color": r.color } : {})}
+      style=${styleMap(step.color ? { "--step-color": step.color } : {})}
     >
-      ${r.icon ? r.icon.startsWith("sicon-") ? a`<span class="brl-icon ${r.icon}"></span>` : a`<span class="brl-icon">${r.icon}</span>` : t}
+      ${step.icon ? step.icon.startsWith("sicon-") ? html`<span class="brl-icon ${step.icon}"></span>` : html`<span class="brl-icon">${step.icon}</span>` : display}
     </span>`;
   }
-  renderGuide(r, t) {
-    const o = _(r.steps);
-    return a`<div
-      class=${$({ "brl-board": !0, [`brl-board--${C(this.config)}`]: !0, "brl-board--horizontal": L(this.config) === "horizontal" })}
+  renderGuide(routine, locale) {
+    const steps = sortedByCorrect(routine.steps);
+    return html`<div
+      class=${classMap({ "brl-board": !0, [`brl-board--${resolveShape(this.config)}`]: !0, "brl-board--horizontal": resolveDirection(this.config) === "horizontal" })}
     >
-      ${o.map((e, n) => {
-      const d = this.expandedId === e.id;
-      return a`<div class="brl-step" style=${k(e.color ? { "--step-color": e.color } : {})}>
-          <span class="brl-step__index" aria-hidden="true">${n + 1}</span>
-          ${e.image ? a`<img class="brl-step__thumb" src=${e.image} alt="" loading="lazy" decoding="async" />` : this.renderMarker(e, n + 1)}
+      ${steps.map((step, i) => {
+      const expanded = this.expandedId === step.id;
+      return html`<div class="brl-step" style=${styleMap(step.color ? { "--step-color": step.color } : {})}>
+          <span class="brl-step__index" aria-hidden="true">${i + 1}</span>
+          ${step.image ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />` : this.renderMarker(step, i + 1)}
           <div class="brl-step__body">
             <h3 class="brl-step__title">
-              ${e.title}
-              ${e.optional ? a`<span class="brl-badge">${i("اختيارية", "Optional")}</span>` : s}
-              ${e.period !== "both" ? a`<span class="brl-badge">${R(e.period, t)}</span>` : s}
+              ${step.title}
+              ${step.optional ? html`<span class="brl-badge">${t("اختيارية", "Optional")}</span>` : nothing}
+              ${step.period !== "both" ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>` : nothing}
             </h3>
-            ${e.descShort ? a`<p class="brl-step__short">${e.descShort}</p>` : s}
-            ${this.renderMeta(e)}
-            ${d ? a`
-                  ${e.descLong ? a`<p class="brl-step__long">${e.descLong}</p>` : s}
-                  ${e.note ? a`<p class="brl-step__note">★ ${e.note}</p>` : s}
-                ` : s}
+            ${step.descShort ? html`<p class="brl-step__short">${step.descShort}</p>` : nothing}
+            ${this.renderMeta(step)}
+            ${expanded ? html`
+                  ${step.descLong ? html`<p class="brl-step__long">${step.descLong}</p>` : nothing}
+                  ${step.note ? html`<p class="brl-step__note">★ ${step.note}</p>` : nothing}
+                ` : nothing}
           </div>
-          ${e.descLong || e.note ? a`<button
+          ${step.descLong || step.note ? html`<button
                 type="button"
                 class="brl-step__toggle"
-                aria-expanded=${d ? "true" : "false"}
-                aria-label=${d ? i("إخفاء التفاصيل", "Hide details") : i("عرض التفاصيل", "Show details")}
-                @click=${() => this.toggleExpand(e.id)}
-              >${d ? "−" : "+"}</button>` : s}
+                aria-expanded=${expanded ? "true" : "false"}
+                aria-label=${expanded ? t("إخفاء التفاصيل", "Hide details") : t("عرض التفاصيل", "Show details")}
+                @click=${() => this.toggleExpand(step.id)}
+              >${expanded ? "−" : "+"}</button>` : nothing}
         </div>`;
     })}
     </div>`;
   }
-  renderQuiz(r, t) {
-    var I;
-    const o = this.ensureOrder(r), e = new Map(r.steps.map((l) => [l.id, l])), n = _(r.steps).map((l) => l.id), d = w((I = this.config) == null ? void 0 : I.brl_enable_drag, !0) && !this.revealed, v = this.checked ? o.filter((l, p) => l === n[p]).length : 0, z = this.checked ? Math.round(v / Math.max(1, r.steps.length) * 100) : 0;
-    return a`
+  renderQuiz(routine, locale) {
+    var _a;
+    const order = this.ensureOrder(routine), byId = new Map(routine.steps.map((s) => [s.id, s])), correct = sortedByCorrect(routine.steps).map((s) => s.id), enableDrag = isTruthy((_a = this.config) == null ? void 0 : _a.brl_enable_drag, !0) && !this.revealed, score = this.checked ? order.filter((id, i) => id === correct[i]).length : 0, progressPct = this.checked ? Math.round(score / Math.max(1, routine.steps.length) * 100) : 0;
+    return html`
       <div class="brl-intro">
-        <p class="brl-intro__title">${i("رتّبي الطبقات من الأولى إلى الأخيرة", "Order layers from first to last")}</p>
+        <p class="brl-intro__title">${t("رتّبي الطبقات من الأولى إلى الأخيرة", "Order layers from first to last")}</p>
         <p class="brl-intro__text">
-          ${i(
+          ${t(
       "اسحبي البطاقة من المقبض أو استخدمي الأسهم، ثم اضغطي «تحقّقي من الترتيب».",
       "Drag a card from the handle or use the arrows, then tap “Check order”."
     )}
         </p>
         <div class="brl-intro__row">
-          <span class="brl-pill">${i(`${r.steps.length} طبقات`, `${r.steps.length} layers`)}</span>
-          ${d ? a`<span class="brl-pill">⠿ ${i("اسحبي لإعادة الترتيب", "Drag to reorder")}</span>` : s}
+          <span class="brl-pill">${t(`${routine.steps.length} طبقات`, `${routine.steps.length} layers`)}</span>
+          ${enableDrag ? html`<span class="brl-pill">⠿ ${t("اسحبي لإعادة الترتيب", "Drag to reorder")}</span>` : nothing}
         </div>
       </div>
 
-      ${this.checked ? a`<div class="brl-progress" role="status">
-            <div class="brl-progress__bar"><span style=${k({ width: `${z}%` })}></span></div>
+      ${this.checked ? html`<div class="brl-progress" role="status">
+            <div class="brl-progress__bar"><span style=${styleMap({ width: `${progressPct}%` })}></span></div>
             <div class="brl-progress__text">
-              ${i(`${v} من ${r.steps.length} في المكان الصحيح`, `${v} of ${r.steps.length} in the right place`)}
+              ${t(`${score} من ${routine.steps.length} في المكان الصحيح`, `${score} of ${routine.steps.length} in the right place`)}
             </div>
-          </div>` : s}
+          </div>` : nothing}
 
       <div
-        class=${$({ "brl-board": !0, [`brl-board--${C(this.config)}`]: !0, "brl-board--horizontal": L(this.config) === "horizontal" })}
+        class=${classMap({ "brl-board": !0, [`brl-board--${resolveShape(this.config)}`]: !0, "brl-board--horizontal": resolveDirection(this.config) === "horizontal" })}
         @pointermove=${this.onPointerMove}
         @pointerup=${this.onPointerUp}
         @pointercancel=${this.onPointerUp}
       >
-        ${o.map((l, p) => {
-      const g = e.get(l);
-      if (!g) return s;
-      const x = this.checked ? l === n[p] : null;
-      return a`<div
-            class=${$({
+        ${order.map((id, i) => {
+      const step = byId.get(id);
+      if (!step) return nothing;
+      const ok = this.checked ? id === correct[i] : null;
+      return html`<div
+            class=${classMap({
         "brl-step": !0,
-        "is-dragging": this.draggingId === l,
-        "is-over": this.overId === l,
-        "is-ok": x === !0,
-        "is-bad": x === !1
+        "is-dragging": this.draggingId === id,
+        "is-over": this.overId === id,
+        "is-ok": ok === !0,
+        "is-bad": ok === !1
       })}
-            data-step=${l}
-            style=${k(g.color ? { "--step-color": g.color } : {})}
+            data-step=${id}
+            style=${styleMap(step.color ? { "--step-color": step.color } : {})}
           >
-            ${this.revealed ? s : a`<div class="brl-handles">
-                  ${d ? a`<button
+            ${this.revealed ? nothing : html`<div class="brl-handles">
+                  ${enableDrag ? html`<button
                         type="button"
                         class="brl-handle brl-handle--drag"
-                        aria-label=${i("اسحبي لإعادة الترتيب", "Drag to reorder")}
-                        @pointerdown=${(b) => this.onPointerDown(b, l)}
+                        aria-label=${t("اسحبي لإعادة الترتيب", "Drag to reorder")}
+                        @pointerdown=${(e) => this.onPointerDown(e, id)}
                       >
                         <span class="brl-handle__grip" aria-hidden="true">⠿</span>
-                        <span class="brl-handle__label">${i("اسحبي", "Drag")}</span>
-                      </button>` : s}
-                  <button type="button" class="brl-handle" ?disabled=${p === 0} aria-label=${i("نقل لأعلى", "Move up")} @click=${() => this.moveStep(p, -1)}>▲</button>
-                  <button type="button" class="brl-handle" ?disabled=${p === o.length - 1} aria-label=${i("نقل لأسفل", "Move down")} @click=${() => this.moveStep(p, 1)}>▼</button>
+                        <span class="brl-handle__label">${t("اسحبي", "Drag")}</span>
+                      </button>` : nothing}
+                  <button type="button" class="brl-handle" ?disabled=${i === 0} aria-label=${t("نقل لأعلى", "Move up")} @click=${() => this.moveStep(i, -1)}>▲</button>
+                  <button type="button" class="brl-handle" ?disabled=${i === order.length - 1} aria-label=${t("نقل لأسفل", "Move down")} @click=${() => this.moveStep(i, 1)}>▼</button>
                 </div>`}
-            <span class="brl-step__index" aria-hidden="true">${p + 1}</span>
-            ${g.image ? a`<img class="brl-step__thumb" src=${g.image} alt="" loading="lazy" decoding="async" />` : this.renderMarker(g, p + 1)}
+            <span class="brl-step__index" aria-hidden="true">${i + 1}</span>
+            ${step.image ? html`<img class="brl-step__thumb" src=${step.image} alt="" loading="lazy" decoding="async" />` : this.renderMarker(step, i + 1)}
             <div class="brl-step__body">
               <h3 class="brl-step__title">
-                ${g.title}
-                ${g.optional ? a`<span class="brl-badge">${i("اختيارية", "Optional")}</span>` : s}
-                ${g.period !== "both" ? a`<span class="brl-badge">${R(g.period, t)}</span>` : s}
+                ${step.title}
+                ${step.optional ? html`<span class="brl-badge">${t("اختيارية", "Optional")}</span>` : nothing}
+                ${step.period !== "both" ? html`<span class="brl-badge">${periodLabel(step.period, locale)}</span>` : nothing}
               </h3>
-              ${g.descShort ? a`<p class="brl-step__short">${g.descShort}</p>` : s}
+              ${step.descShort ? html`<p class="brl-step__short">${step.descShort}</p>` : nothing}
             </div>
-            ${x === null ? s : a`<span class="brl-step__result ${x ? "brl-step__result--ok" : "brl-step__result--bad"}" aria-hidden="true">${x ? "✓" : "✗"}</span>`}
+            ${ok === null ? nothing : html`<span class="brl-step__result ${ok ? "brl-step__result--ok" : "brl-step__result--bad"}" aria-hidden="true">${ok ? "✓" : "✗"}</span>`}
           </div>`;
     })}
       </div>
     `;
   }
   render() {
-    const r = this.config || {}, t = K(r, "brl_"), o = t.animate && !Q(), e = this.routines, n = f(r.brl_title), d = f(r.brl_desc), v = B(r), z = W() === "en" ? "en" : "ar", I = `${Y(r.brl_card_radius, 14)}px`;
-    if (!e.length)
-      return a`<div class="fs-empty" role="status">
-        ${i("أضيفي روتينًا واحدًا على الأقل مع خطواته من إعدادات العنصر.", "Add at least one routine with its steps in the element settings.")}
+    const c = this.config || {}, theme = readSectionTheme(c, "brl_"), animate = theme.animate && !prefersReducedMotion(), routines = this.routines, title = localizedString(c.brl_title), desc = localizedString(c.brl_desc), mode = resolveMode(c), locale = getPageLocale() === "en" ? "en" : "ar", cardRadius = `${getUnitValue(c.brl_card_radius, 14)}px`;
+    if (!routines.length)
+      return html`<div class="fs-empty" role="status">
+        ${t("أضيفي روتينًا واحدًا على الأقل مع خطواته من إعدادات العنصر.", "Add at least one routine with its steps in the element settings.")}
       </div>`;
-    const l = this.currentRoutine(e);
-    if (!l) return s;
-    const p = v === "quiz" && this.checked && this.order.every((b, S) => b === _(l.steps).map((y) => y.id)[S]), g = f(r.brl_success_msg) || i("أحسنتِ! هذا هو الترتيب الصحيح.", "Well done! This is the correct order."), x = f(r.brl_retry_msg) || i("قريب! عدّلي الترتيب وحاولي مجددًا.", "Close! Adjust the order and try again.");
-    return a`
+    const routine = this.currentRoutine(routines);
+    if (!routine) return nothing;
+    const win = mode === "quiz" && this.checked && this.order.every((id, i) => id === sortedByCorrect(routine.steps).map((s) => s.id)[i]), successMsg = localizedString(c.brl_success_msg) || t("أحسنتِ! هذا هو الترتيب الصحيح.", "Well done! This is the correct order."), retryMsg = localizedString(c.brl_retry_msg) || t("قريب! عدّلي الترتيب وحاولي مجددًا.", "Close! Adjust the order and try again.");
+    return html`
       <section
-        class=${$({ "fs-section": !0, "fs-animate": o })}
-        style=${k({
-      ...G(t),
-      "--brl-card-radius": I,
-      "--step-color": String(r.brl_step_color ?? t.accent),
-      "--success-color": String(r.brl_success_color ?? "#2f9e63"),
-      "--error-color": String(r.brl_error_color ?? "#cf4b4b")
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap({
+      ...themeStyleMap(theme),
+      "--brl-card-radius": cardRadius,
+      "--step-color": String(c.brl_step_color ?? theme.accent),
+      "--success-color": String(c.brl_success_color ?? "#2f9e63"),
+      "--error-color": String(c.brl_error_color ?? "#cf4b4b")
     })}
-        aria-label=${n || i("ترتيب طبقات روتين العناية", "Routine layering board")}
+        aria-label=${title || t("ترتيب طبقات روتين العناية", "Routine layering board")}
       >
         <div class="fs-container">
-          ${n || d ? a`<div class="fs-header">
-                ${n ? a`<h2 class="fs-title">${n}</h2>` : s}
-                ${d ? a`<p class="fs-desc">${d}</p>` : s}
-              </div>` : s}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
-          ${e.length > 1 ? a`
+          ${routines.length > 1 ? html`
                 <div class="brl-tabs" role="tablist">
-                  ${e.map(
-      (b) => a`<button
+                  ${routines.map(
+      (r) => html`<button
                       type="button"
                       role="tab"
-                      class=${$({ "brl-tab": !0, "is-active": b.id === l.id })}
-                      aria-selected=${b.id === l.id ? "true" : "false"}
-                      @click=${() => this.selectRoutine(b.id)}
-                    >${b.name}</button>`
+                      class=${classMap({ "brl-tab": !0, "is-active": r.id === routine.id })}
+                      aria-selected=${r.id === routine.id ? "true" : "false"}
+                      @click=${() => this.selectRoutine(r.id)}
+                    >${r.name}</button>`
     )}
                 </div>
                 <select
                   class="brl-select"
-                  aria-label=${i("اختاري الروتين", "Choose routine")}
-                  @change=${(b) => this.selectRoutine(b.target.value)}
+                  aria-label=${t("اختاري الروتين", "Choose routine")}
+                  @change=${(e) => this.selectRoutine(e.target.value)}
                 >
-                  ${e.map((b) => a`<option value=${b.id} ?selected=${b.id === l.id}>${b.name}</option>`)}
+                  ${routines.map((r) => html`<option value=${r.id} ?selected=${r.id === routine.id}>${r.name}</option>`)}
                 </select>
-              ` : s}
+              ` : nothing}
 
           <div class="brl-shell">
-            ${v === "quiz" ? this.renderQuiz(l, z) : this.renderGuide(l, z)}
+            ${mode === "quiz" ? this.renderQuiz(routine, locale) : this.renderGuide(routine, locale)}
 
-            ${v === "quiz" && this.checked ? a`<div class=${$({ "brl-feedback": !0, "brl-feedback--win": p, "brl-feedback--retry": !p })} role="status">
-                  <span class="brl-feedback__icon" aria-hidden="true">${p ? "✓" : "↻"}</span>
-                  <span class="brl-feedback__msg">${p ? g : x}</span>
+            ${mode === "quiz" && this.checked ? html`<div class=${classMap({ "brl-feedback": !0, "brl-feedback--win": win, "brl-feedback--retry": !win })} role="status">
+                  <span class="brl-feedback__icon" aria-hidden="true">${win ? "✓" : "↻"}</span>
+                  <span class="brl-feedback__msg">${win ? successMsg : retryMsg}</span>
                   <span class="brl-feedback__score">
                     ${(() => {
-      const b = _(l.steps).map((y) => y.id), S = this.order.filter((y, D) => y === b[D]).length;
-      return i(`${S} من ${l.steps.length} صحيحة`, `${S} of ${l.steps.length} correct`);
+      const correct = sortedByCorrect(routine.steps).map((s) => s.id), score = this.order.filter((id, i) => id === correct[i]).length;
+      return t(`${score} من ${routine.steps.length} صحيحة`, `${score} of ${routine.steps.length} correct`);
     })()}
                   </span>
-                </div>` : s}
+                </div>` : nothing}
 
             <div class="brl-actions">
-              ${v === "quiz" ? a`
-                  ${w(r.brl_enable_check, !0) && !this.revealed ? a`<button type="button" class="fs-btn" @click=${() => this.verify(l)}>${i("تحقّقي من الترتيب", "Check order")}</button>` : s}
-                  ${w(r.brl_enable_retry, !0) ? a`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.retry(l)}>${i("إعادة المحاولة", "Try again")}</button>` : s}
-                  ${w(r.brl_show_answer, !0) ? a`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.showAnswer(l)}>${i("إظهار الترتيب الصحيح", "Show correct order")}</button>` : s}
-                  ` : s}
-              ${V(r, "brl_")}
+              ${mode === "quiz" ? html`
+                  ${isTruthy(c.brl_enable_check, !0) && !this.revealed ? html`<button type="button" class="fs-btn" @click=${() => this.verify(routine)}>${t("تحقّقي من الترتيب", "Check order")}</button>` : nothing}
+                  ${isTruthy(c.brl_enable_retry, !0) ? html`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.retry(routine)}>${t("إعادة المحاولة", "Try again")}</button>` : nothing}
+                  ${isTruthy(c.brl_show_answer, !0) ? html`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.showAnswer(routine)}>${t("إظهار الترتيب الصحيح", "Show correct order")}</button>` : nothing}
+                  ` : nothing}
+              ${renderCommerceCtaButton(c, "brl_")}
             </div>
           </div>
 
@@ -945,39 +955,39 @@ const O = class O extends E {
     `;
   }
 };
-O.styles = [H, F];
-let h = O;
-m([
-  q({ type: Object })
-], h.prototype, "config");
-m([
-  u()
-], h.prototype, "routineId");
-m([
-  u()
-], h.prototype, "expandedId");
-m([
-  u()
-], h.prototype, "order");
-m([
-  u()
-], h.prototype, "orderKey");
-m([
-  u()
-], h.prototype, "checked");
-m([
-  u()
-], h.prototype, "revealed");
-m([
-  u()
-], h.prototype, "draggingId");
-m([
-  u()
-], h.prototype, "overId");
-m([
-  u()
-], h.prototype, "announce");
-typeof h < "u" && h.registerSallaComponent("salla-beauty-routine-layering-board");
+__name(_BeautyRoutineLayeringBoard, "BeautyRoutineLayeringBoard"), _BeautyRoutineLayeringBoard.styles = [sharedSectionCss, componentStyles];
+let BeautyRoutineLayeringBoard = _BeautyRoutineLayeringBoard;
+__decorateClass([
+  property({ type: Object })
+], BeautyRoutineLayeringBoard.prototype, "config");
+__decorateClass([
+  state()
+], BeautyRoutineLayeringBoard.prototype, "routineId");
+__decorateClass([
+  state()
+], BeautyRoutineLayeringBoard.prototype, "expandedId");
+__decorateClass([
+  state()
+], BeautyRoutineLayeringBoard.prototype, "order");
+__decorateClass([
+  state()
+], BeautyRoutineLayeringBoard.prototype, "orderKey");
+__decorateClass([
+  state()
+], BeautyRoutineLayeringBoard.prototype, "checked");
+__decorateClass([
+  state()
+], BeautyRoutineLayeringBoard.prototype, "revealed");
+__decorateClass([
+  state()
+], BeautyRoutineLayeringBoard.prototype, "draggingId");
+__decorateClass([
+  state()
+], BeautyRoutineLayeringBoard.prototype, "overId");
+__decorateClass([
+  state()
+], BeautyRoutineLayeringBoard.prototype, "announce");
+typeof BeautyRoutineLayeringBoard < "u" && BeautyRoutineLayeringBoard.registerSallaComponent("salla-beauty-routine-layering-board");
 export {
-  h as default
+  BeautyRoutineLayeringBoard as default
 };

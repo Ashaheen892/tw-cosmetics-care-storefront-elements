@@ -1,11 +1,13 @@
-import { css as v, LitElement as x, html as i, nothing as p } from "lit";
-import { property as w } from "lit/decorators.js";
-import { classMap as h } from "lit/directives/class-map.js";
-import { ref as y } from "lit/directives/ref.js";
-import { styleMap as _ } from "lit/directives/style-map.js";
-import { t as n, n as k, b as $, e as L, l as b, s as S, r as C, p as j, a as z } from "./sharedStyles-DKbcXBPy.js";
-import { e as M } from "./dragScroll-9IoXWKvk.js";
-const q = v`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, html, nothing } from "lit";
+import { property } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { ref } from "lit/directives/ref.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { t, n as normalizeCollection, b as extractLink, e as extractImageUrl, l as localizedString, s as sharedSectionCss, r as readSectionTheme, p as prefersReducedMotion, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { e as enableDragScroll } from "./dragScroll-CWPXfZ9c.js";
+const componentStyles = css`
   :host {
     display: block;
     direction: inherit;
@@ -181,36 +183,38 @@ const q = v`
       transform: none;
     }
   }
-`, l = [
-  { title: n("العناية بالبشرة", "Skincare"), image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80", link: "" },
-  { title: n("المكياج", "Makeup"), image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80", link: "" },
-  { title: n("العطور", "Fragrances"), image: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80", link: "" },
-  { title: n("العناية بالشعر", "Haircare"), image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80", link: "" }
+`, DEFAULTS = [
+  { title: t("العناية بالبشرة", "Skincare"), image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80", link: "" },
+  { title: t("المكياج", "Makeup"), image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80", link: "" },
+  { title: t("العطور", "Fragrances"), image: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=800&q=80", link: "" },
+  { title: t("العناية بالشعر", "Haircare"), image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80", link: "" }
 ];
-function E(o) {
-  const r = k(o).map((t) => ({
-    title: b(t.title || t.name, ""),
-    image: L(t.image),
-    link: $(t.link ?? t.url)
-  })).filter((t) => t.title || t.image);
-  return r.length ? r.map((t, a) => ({
-    ...t,
-    image: t.image || l[a % l.length].image,
-    title: t.title || l[a % l.length].title
-  })) : l.map((t) => ({ ...t }));
+function parseItems(raw) {
+  const parsed = normalizeCollection(raw).map((row) => ({
+    title: localizedString(row.title || row.name, ""),
+    image: extractImageUrl(row.image),
+    link: extractLink(row.link ?? row.url)
+  })).filter((item) => item.title || item.image);
+  return parsed.length ? parsed.map((item, i) => ({
+    ...item,
+    image: item.image || DEFAULTS[i % DEFAULTS.length].image,
+    title: item.title || DEFAULTS[i % DEFAULTS.length].title
+  })) : DEFAULTS.map((d) => ({ ...d }));
 }
-function H(o) {
-  return (typeof o == "string" ? o.trim().toLowerCase() : "") === "grid" ? "grid" : "slider";
+__name(parseItems, "parseItems");
+function resolveLayout(raw) {
+  return (typeof raw == "string" ? raw.trim().toLowerCase() : "") === "grid" ? "grid" : "slider";
 }
-var T = Object.defineProperty, D = (o, e, r, t) => {
-  for (var a = void 0, c = o.length - 1, m; c >= 0; c--)
-    (m = o[c]) && (a = m(e, r, a) || a);
-  return a && T(e, r, a), a;
-};
-const f = class f extends x {
+__name(resolveLayout, "resolveLayout");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyCategories = class _BeautyCategories extends LitElement {
   constructor() {
-    super(...arguments), this.config = {}, this.boundLangHandler = () => this.requestUpdate(), this.bindTrack = (e) => {
-      e instanceof HTMLElement && !e.classList.contains("bcat-wrap--grid") && M(e);
+    super(...arguments), this.config = {}, this.boundLangHandler = () => this.requestUpdate(), this.bindTrack = (el) => {
+      el instanceof HTMLElement && !el.classList.contains("bcat-wrap--grid") && enableDragScroll(el);
     };
   }
   connectedCallback() {
@@ -220,56 +224,56 @@ const f = class f extends x {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
   render() {
-    const e = this.config || {}, r = C(e, "bcat_"), t = r.animate && !j(), a = b(e.bcat_title), c = b(e.bcat_desc), m = H(e.bcat_layout), g = E(e.bcat_items);
-    return g.length ? i`
+    const c = this.config || {}, theme = readSectionTheme(c, "bcat_"), animate = theme.animate && !prefersReducedMotion(), title = localizedString(c.bcat_title), desc = localizedString(c.bcat_desc), layout = resolveLayout(c.bcat_layout), items = parseItems(c.bcat_items);
+    return items.length ? html`
       <section
-        class=${h({ "fs-section": !0, "fs-animate": t })}
-        style=${_(z(r))}
-        aria-label=${a || n("التصنيفات", "Categories")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("التصنيفات", "Categories")}
       >
         <div class="fs-container">
-          ${a || c ? i`<div class="fs-header">
-                ${a ? i`<h2 class="fs-title">${a}</h2>` : p}
-                ${c ? i`<p class="fs-desc">${c}</p>` : p}
-              </div>` : p}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div
-            class=${h({ "bcat-wrap": !0, "bcat-wrap--grid": m === "grid" })}
+            class=${classMap({ "bcat-wrap": !0, "bcat-wrap--grid": layout === "grid" })}
             role="list"
-            ${y(this.bindTrack)}
+            ${ref(this.bindTrack)}
           >
-            ${g.map(
-      (s) => i`
+            ${items.map(
+      (item) => html`
                 <a
                   class="bcat-item"
                   role="listitem"
-                  href=${s.link || "#"}
-                  @click=${(u) => {
-        s.link || u.preventDefault();
+                  href=${item.link || "#"}
+                  @click=${(e) => {
+        item.link || e.preventDefault();
       }}
-                  aria-label=${s.title}
+                  aria-label=${item.title}
                 >
-                  <div class="bcat-disc" aria-hidden=${s.image ? "false" : "true"}>
-                    ${s.image ? i`<img class="bcat-disc__img" src=${s.image} alt="" loading="lazy" decoding="async" />` : i`<span class="bcat-disc__placeholder" aria-hidden="true">✦</span>`}
+                  <div class="bcat-disc" aria-hidden=${item.image ? "false" : "true"}>
+                    ${item.image ? html`<img class="bcat-disc__img" src=${item.image} alt="" loading="lazy" decoding="async" />` : html`<span class="bcat-disc__placeholder" aria-hidden="true">✦</span>`}
                   </div>
-                  ${s.title ? i`<p class="bcat-label">${s.title}</p>` : p}
+                  ${item.title ? html`<p class="bcat-label">${item.title}</p>` : nothing}
                 </a>
               `
     )}
           </div>
         </div>
       </section>
-    ` : i`<div class="fs-empty" role="status">
-        ${n("أضيفي التصنيفات من إعدادات العنصر", "Add categories in the element settings")}
+    ` : html`<div class="fs-empty" role="status">
+        ${t("أضيفي التصنيفات من إعدادات العنصر", "Add categories in the element settings")}
       </div>`;
   }
 };
-f.styles = [S, q];
-let d = f;
-D([
-  w({ type: Object })
-], d.prototype, "config");
-typeof d < "u" && d.registerSallaComponent("salla-beauty-categories");
+__name(_BeautyCategories, "BeautyCategories"), _BeautyCategories.styles = [sharedSectionCss, componentStyles];
+let BeautyCategories = _BeautyCategories;
+__decorateClass([
+  property({ type: Object })
+], BeautyCategories.prototype, "config");
+typeof BeautyCategories < "u" && BeautyCategories.registerSallaComponent("salla-beauty-categories");
 export {
-  d as default
+  BeautyCategories as default
 };

@@ -1,10 +1,12 @@
-import { css as S, LitElement as I, html as n, nothing as f } from "lit";
-import { property as C, state as v } from "lit/decorators.js";
-import { classMap as y } from "lit/directives/class-map.js";
-import { styleMap as g } from "lit/directives/style-map.js";
-import { n as z, l as c, b as q, g as $, o as E, s as L, t as l, d as M, i as N, r as R, p as D, a as P } from "./sharedStyles-DKbcXBPy.js";
-import { r as A } from "./commerceOutcome-Dk8p2VWM.js";
-const B = S`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, html, nothing } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, l as localizedString, b as extractLink, g as getRadioValue, o as getPageLocale, s as sharedSectionCss, t, d as isExternalUrl, i as isTruthy, r as readSectionTheme, p as prefersReducedMotion, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   :host {
     display: block;
     direction: inherit;
@@ -358,7 +360,7 @@ const B = S`
       transition: none;
     }
   }
-`, O = [
+`, DIMENSIONS = [
   {
     key: "product_type",
     labelKey: "bsf_step_type_label",
@@ -414,63 +416,68 @@ const B = S`
     ]
   }
 ];
-function j() {
-  return E() === "en";
+function isEn() {
+  return getPageLocale() === "en";
 }
-function K(d) {
-  const e = j();
-  return O.map((s) => {
-    const a = c(d[s.labelKey]) || (e ? s.labelEn : s.labelAr), t = s.options.map((r) => ({
-      value: r.value,
-      label: e ? r.en : r.ar
+__name(isEn, "isEn");
+function buildSteps(config) {
+  const en = isEn();
+  return DIMENSIONS.map((dim) => {
+    const label = localizedString(config[dim.labelKey]) || (en ? dim.labelEn : dim.labelAr), options = dim.options.map((o) => ({
+      value: o.value,
+      label: en ? o.en : o.ar
     }));
-    return { key: s.key, label: a, options: t };
+    return { key: dim.key, label, options };
   });
 }
-function m(d, e) {
-  const s = d[e] ?? d[`bsf_shades.${e}`];
-  return $(s, "").toLowerCase().trim();
+__name(buildSteps, "buildSteps");
+function readDimensionValue(row, key) {
+  const raw = row[key] ?? row[`bsf_shades.${key}`];
+  return getRadioValue(raw, "").toLowerCase().trim();
 }
-function T(d) {
-  return z(d).map((e, s) => {
-    const a = c(e.shade_name);
+__name(readDimensionValue, "readDimensionValue");
+function parseShades(raw) {
+  return normalizeCollection(raw).map((row, index) => {
+    const name = localizedString(row.shade_name);
     return {
-      id: `shade-${s}`,
-      hex: c(e.hex) || "#d9b48f",
-      shade_name: a,
-      shade_number: c(e.shade_number),
-      name: a,
-      desc: c(e.desc),
-      link: q(e.link),
-      product_type: m(e, "product_type"),
-      skin: m(e, "skin"),
-      undertone: m(e, "undertone"),
-      result: m(e, "result")
+      id: `shade-${index}`,
+      hex: localizedString(row.hex) || "#d9b48f",
+      shade_name: name,
+      shade_number: localizedString(row.shade_number),
+      name,
+      desc: localizedString(row.desc),
+      link: extractLink(row.link),
+      product_type: readDimensionValue(row, "product_type"),
+      skin: readDimensionValue(row, "skin"),
+      undertone: readDimensionValue(row, "undertone"),
+      result: readDimensionValue(row, "result")
     };
-  }).filter((e) => e.shade_name || e.hex);
+  }).filter((s) => s.shade_name || s.hex);
 }
-function V(d, e) {
-  const s = ["product_type", "skin", "undertone", "result"], a = d.filter(
-    (r) => s.every((i) => {
-      const o = e[i];
-      if (!o) return !0;
-      const b = r[i];
-      return !b || b === o;
+__name(parseShades, "parseShades");
+function filterShades(shades, sel) {
+  const keys = ["product_type", "skin", "undertone", "result"], exact = shades.filter(
+    (shade) => keys.every((key) => {
+      const chosen = sel[key];
+      if (!chosen) return !0;
+      const shadeVal = shade[key];
+      return !shadeVal || shadeVal === chosen;
     })
   );
-  if (a.length) return a;
-  const t = d.filter((r) => {
-    const i = !e.product_type || !r.product_type || r.product_type === e.product_type, o = !e.skin || !r.skin || r.skin === e.skin;
-    return i && o;
+  if (exact.length) return exact;
+  const relaxed = shades.filter((shade) => {
+    const typeOk = !sel.product_type || !shade.product_type || shade.product_type === sel.product_type, skinOk = !sel.skin || !shade.skin || shade.skin === sel.skin;
+    return typeOk && skinOk;
   });
-  return t.length ? t : d;
+  return relaxed.length ? relaxed : shades;
 }
-var Q = Object.defineProperty, u = (d, e, s, a) => {
-  for (var t = void 0, r = d.length - 1, i; r >= 0; r--)
-    (i = d[r]) && (t = i(e, s, t) || t);
-  return t && Q(e, s, t), t;
-};
-const w = class w extends I {
+__name(filterShades, "filterShades");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyShadeFinder = class _BeautyShadeFinder extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.selection = {}, this.shades = [], this.selectedShadeId = "", this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate();
   }
@@ -480,36 +487,36 @@ const w = class w extends I {
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    e.has("config") && this.load();
+  updated(changed) {
+    changed.has("config") && this.load();
   }
   load() {
-    var e;
-    this.shades = T((e = this.config) == null ? void 0 : e.bsf_shades), this.ensureSelectedShade();
+    var _a;
+    this.shades = parseShades((_a = this.config) == null ? void 0 : _a.bsf_shades), this.ensureSelectedShade();
   }
   get steps() {
-    return K(this.config || {});
+    return buildSteps(this.config || {});
   }
   get onResults() {
     return this.stepIndex >= this.steps.length;
   }
   get filtered() {
-    return V(this.shades, this.selection);
+    return filterShades(this.shades, this.selection);
   }
   ensureSelectedShade() {
-    var s;
-    const e = this.filtered;
-    e.some((a) => a.id === this.selectedShadeId) || (this.selectedShadeId = ((s = e[0]) == null ? void 0 : s.id) ?? "");
+    var _a;
+    const list = this.filtered;
+    list.some((s) => s.id === this.selectedShadeId) || (this.selectedShadeId = ((_a = list[0]) == null ? void 0 : _a.id) ?? "");
   }
   get selectedShade() {
-    return this.filtered.find((e) => e.id === this.selectedShadeId) || null;
+    return this.filtered.find((s) => s.id === this.selectedShadeId) || null;
   }
-  pick(e, s) {
-    this.selection = { ...this.selection, [e]: s }, this.ensureSelectedShade();
+  pick(key, value) {
+    this.selection = { ...this.selection, [key]: value }, this.ensureSelectedShade();
   }
   goNext() {
-    const e = this.steps.length;
-    this.stepIndex < e && (this.stepIndex += 1);
+    const max = this.steps.length;
+    this.stepIndex < max && (this.stepIndex += 1);
   }
   goBack() {
     this.stepIndex > 0 && (this.stepIndex -= 1);
@@ -517,206 +524,206 @@ const w = class w extends I {
   reset() {
     this.selection = {}, this.stepIndex = 0, this.ensureSelectedShade();
   }
-  selectShade(e) {
-    this.selectedShadeId = e;
+  selectShade(id) {
+    this.selectedShadeId = id;
   }
-  renderProgress(e) {
-    const s = Math.min(this.stepIndex + 1, e), a = e ? Math.round(Math.min(this.stepIndex, e) / e * 100) : 0;
-    return n`
+  renderProgress(total) {
+    const current = Math.min(this.stepIndex + 1, total), pct = total ? Math.round(Math.min(this.stepIndex, total) / total * 100) : 0;
+    return html`
       <div class="bsf-progress" aria-hidden="true">
-        <div class="bsf-progress__bar"><span style=${g({ width: `${a}%` })}></span></div>
+        <div class="bsf-progress__bar"><span style=${styleMap({ width: `${pct}%` })}></span></div>
         <span class="bsf-progress__text">
-          ${this.onResults ? l("النتيجة", "Result") : l(`السؤال ${s} من ${e}`, `Question ${s} of ${e}`)}
+          ${this.onResults ? t("النتيجة", "Result") : t(`السؤال ${current} من ${total}`, `Question ${current} of ${total}`)}
         </span>
       </div>
     `;
   }
-  renderQuestion(e) {
-    var a;
-    const s = e.key === "undertone" ? c((a = this.config) == null ? void 0 : a.bsf_undertone_hint) || l("نصيحة: الأوردة الخضراء غالبًا دافئة، والزرقاء باردة، والمختلطة محايدة.", "Tip: greenish veins often mean warm, bluish mean cool, mixed mean neutral.") : "";
-    return n`
+  renderQuestion(step) {
+    var _a;
+    const hint = step.key === "undertone" ? localizedString((_a = this.config) == null ? void 0 : _a.bsf_undertone_hint) || t("نصيحة: الأوردة الخضراء غالبًا دافئة، والزرقاء باردة، والمختلطة محايدة.", "Tip: greenish veins often mean warm, bluish mean cool, mixed mean neutral.") : "";
+    return html`
       <div class="bsf-question">
-        <h3 class="bsf-question__title">${e.label}</h3>
-        ${s ? n`<p class="bsf-question__hint">${s}</p>` : f}
-        <div class="bsf-chips" role="group" aria-label=${e.label}>
-          ${e.options.map((t) => {
-      const r = this.selection[e.key] === t.value;
-      return n`<button
+        <h3 class="bsf-question__title">${step.label}</h3>
+        ${hint ? html`<p class="bsf-question__hint">${hint}</p>` : nothing}
+        <div class="bsf-chips" role="group" aria-label=${step.label}>
+          ${step.options.map((opt) => {
+      const active = this.selection[step.key] === opt.value;
+      return html`<button
               type="button"
               class="bsf-chip"
-              aria-pressed=${r ? "true" : "false"}
-              @click=${() => this.pick(e.key, t.value)}
+              aria-pressed=${active ? "true" : "false"}
+              @click=${() => this.pick(step.key, opt.value)}
             >
-              ${t.label}
+              ${opt.label}
             </button>`;
     })}
         </div>
       </div>
     `;
   }
-  renderNav(e) {
-    var i, o, b;
-    const s = c((i = this.config) == null ? void 0 : i.bsf_back_btn) || l("السابق", "Back"), a = c((o = this.config) == null ? void 0 : o.bsf_next_btn) || l("التالي", "Next"), t = c((b = this.config) == null ? void 0 : b.bsf_see_btn) || l("عرض الدرجات", "See shades"), r = this.stepIndex === this.steps.length - 1;
-    return n`
+  renderNav(canNext) {
+    var _a, _b, _c;
+    const back = localizedString((_a = this.config) == null ? void 0 : _a.bsf_back_btn) || t("السابق", "Back"), next = localizedString((_b = this.config) == null ? void 0 : _b.bsf_next_btn) || t("التالي", "Next"), see = localizedString((_c = this.config) == null ? void 0 : _c.bsf_see_btn) || t("عرض الدرجات", "See shades"), lastQ = this.stepIndex === this.steps.length - 1;
+    return html`
       <div class="bsf-nav">
-        ${this.stepIndex > 0 ? n`<button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-              ${s}
-            </button>` : n`<span></span>`}
+        ${this.stepIndex > 0 ? html`<button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
+              ${back}
+            </button>` : html`<span></span>`}
         <button
           type="button"
           class="fs-btn fs-tap"
-          ?disabled=${!e}
+          ?disabled=${!canNext}
           @click=${() => this.goNext()}
         >
-          ${r ? t : a}
+          ${lastQ ? see : next}
         </button>
       </div>
     `;
   }
-  matchChips(e) {
-    const s = this.steps, a = [];
-    for (const t of s) {
-      const r = this.selection[t.key];
-      if (!r) continue;
-      const i = e[t.key], o = t.options.find((b) => b.value === r);
-      a.push({
-        label: (o == null ? void 0 : o.label) || r,
-        active: !i || i === r
+  matchChips(shade) {
+    const steps = this.steps, chips = [];
+    for (const step of steps) {
+      const chosen = this.selection[step.key];
+      if (!chosen) continue;
+      const shadeVal = shade[step.key], opt = step.options.find((o) => o.value === chosen);
+      chips.push({
+        label: (opt == null ? void 0 : opt.label) || chosen,
+        active: !shadeVal || shadeVal === chosen
       });
     }
-    return a;
+    return chips;
   }
-  renderDetail(e, s) {
-    const a = e.link ? M(e.link) : !1, t = this.matchChips(e);
-    return n`
+  renderDetail(shade, showLink) {
+    const external = shade.link ? isExternalUrl(shade.link) : !1, chips = this.matchChips(shade);
+    return html`
       <div class="bsf-detail" aria-live="polite">
         <div
           class="bsf-detail__media"
-          style=${g({ background: e.hex })}
+          style=${styleMap({ background: shade.hex })}
           role="img"
-          aria-label=${e.name || e.shade_number || l("عينة اللون", "Shade swatch")}
+          aria-label=${shade.name || shade.shade_number || t("عينة اللون", "Shade swatch")}
         ></div>
         <h4 class="bsf-detail__name">
-          ${e.name || l("درجة مقترحة", "Suggested shade")}
-          ${e.shade_number ? n`<span class="bsf-detail__number"> · ${e.shade_number}</span>` : f}
+          ${shade.name || t("درجة مقترحة", "Suggested shade")}
+          ${shade.shade_number ? html`<span class="bsf-detail__number"> · ${shade.shade_number}</span>` : nothing}
         </h4>
-        ${e.desc ? n`<p class="bsf-detail__desc">${e.desc}</p>` : f}
-        ${t.length ? n`<div class="bsf-detail__chips" aria-label=${l("سبب المطابقة", "Match reasons")}>
-              ${t.map(
-      (r) => n`<span
-                  class=${y({
+        ${shade.desc ? html`<p class="bsf-detail__desc">${shade.desc}</p>` : nothing}
+        ${chips.length ? html`<div class="bsf-detail__chips" aria-label=${t("سبب المطابقة", "Match reasons")}>
+              ${chips.map(
+      (chip) => html`<span
+                  class=${classMap({
         "fs-pill": !0,
         "bsf-detail__chip": !0,
-        "bsf-detail__chip--on": r.active
+        "bsf-detail__chip--on": chip.active
       })}
-                >${r.label}</span>`
+                >${chip.label}</span>`
     )}
-            </div>` : f}
-        ${s && e.link ? n`<div class="bsf-detail__actions">
+            </div>` : nothing}
+        ${showLink && shade.link ? html`<div class="bsf-detail__actions">
               <a
                 class="fs-btn fs-btn--ghost"
-                href=${e.link}
-                target=${a ? "_blank" : "_self"}
-                rel=${a ? "noopener noreferrer" : f}
+                href=${shade.link}
+                target=${external ? "_blank" : "_self"}
+                rel=${external ? "noopener noreferrer" : nothing}
               >
-                ${l("التفاصيل", "Details")}
+                ${t("التفاصيل", "Details")}
               </a>
-            </div>` : f}
+            </div>` : nothing}
       </div>
     `;
   }
   renderResults() {
-    var o, b, k;
-    const e = this.config || {}, s = this.filtered, a = this.selectedShade, t = N(e.bsf_show_link, !0), r = $(e.bsf_swatch_shape, "circle"), i = c((o = this.config) == null ? void 0 : o.bsf_results_title) || l("الدرجات المناسبة لكِ", "Shades that suit you");
-    return n`
+    var _a, _b, _c;
+    const c = this.config || {}, filtered = this.filtered, selected = this.selectedShade, showLink = isTruthy(c.bsf_show_link, !0), shape = getRadioValue(c.bsf_swatch_shape, "circle"), resultsTitle = localizedString((_a = this.config) == null ? void 0 : _a.bsf_results_title) || t("الدرجات المناسبة لكِ", "Shades that suit you");
+    return html`
       <div class="bsf-results">
         <div class="bsf-results__head">
-          <h3 class="bsf-results__title">${i}</h3>
-          <span class="bsf-results__count">${s.length}</span>
+          <h3 class="bsf-results__title">${resultsTitle}</h3>
+          <span class="bsf-results__count">${filtered.length}</span>
         </div>
-        <div class="bsf-swatches" role="listbox" aria-label=${i}>
-          ${s.map((h) => {
-      const _ = h.id === this.selectedShadeId, x = h.shade_number || h.shade_name || h.name;
-      return n`<button
+        <div class="bsf-swatches" role="listbox" aria-label=${resultsTitle}>
+          ${filtered.map((shade) => {
+      const active = shade.id === this.selectedShadeId, label = shade.shade_number || shade.shade_name || shade.name;
+      return html`<button
               type="button"
-              class=${y({
+              class=${classMap({
         "bsf-swatch": !0,
-        "bsf-swatch--square": r === "square",
-        "bsf-swatch--rounded": r === "rounded",
-        "is-active": _
+        "bsf-swatch--square": shape === "square",
+        "bsf-swatch--rounded": shape === "rounded",
+        "is-active": active
       })}
               role="option"
-              aria-selected=${_ ? "true" : "false"}
-              aria-pressed=${_ ? "true" : "false"}
-              aria-label=${h.name || x || l("درجة", "Shade")}
-              @click=${() => this.selectShade(h.id)}
+              aria-selected=${active ? "true" : "false"}
+              aria-pressed=${active ? "true" : "false"}
+              aria-label=${shade.name || label || t("درجة", "Shade")}
+              @click=${() => this.selectShade(shade.id)}
             >
               <span class="bsf-swatch__ring">
-                <span class="bsf-swatch__chip" style=${g({ background: h.hex || "#c4a484" })}></span>
+                <span class="bsf-swatch__chip" style=${styleMap({ background: shade.hex || "#c4a484" })}></span>
               </span>
-              ${x ? n`<span class="bsf-swatch__name">${x}</span>` : f}
+              ${label ? html`<span class="bsf-swatch__name">${label}</span>` : nothing}
             </button>`;
     })}
         </div>
-        ${a ? this.renderDetail(a, t) : n`<p class="fs-empty">${l("لا توجد درجات مطابقة", "No matching shades")}</p>`}
+        ${selected ? this.renderDetail(selected, showLink) : html`<p class="fs-empty">${t("لا توجد درجات مطابقة", "No matching shades")}</p>`}
         <div class="bsf-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-            ${c((b = this.config) == null ? void 0 : b.bsf_back_btn) || l("تعديل الإجابات", "Edit answers")}
+            ${localizedString((_b = this.config) == null ? void 0 : _b.bsf_back_btn) || t("تعديل الإجابات", "Edit answers")}
           </button>
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
-            ${c((k = this.config) == null ? void 0 : k.bsf_reset_btn) || l("ابدئي من جديد", "Start over")}
+            ${localizedString((_c = this.config) == null ? void 0 : _c.bsf_reset_btn) || t("ابدئي من جديد", "Start over")}
           </button>
-          ${A(e, "bsf_")}
+          ${renderCommerceCtaButton(c, "bsf_")}
         </div>
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, s = R(e, "bsf_"), a = s.animate && !D(), t = c(e.bsf_title), r = c(e.bsf_desc), i = this.steps, o = i[this.stepIndex], b = o ? !!this.selection[o.key] : !1;
-    return this.shades.length ? n`
+    const c = this.config || {}, theme = readSectionTheme(c, "bsf_"), animate = theme.animate && !prefersReducedMotion(), title = localizedString(c.bsf_title), desc = localizedString(c.bsf_desc), steps = this.steps, current = steps[this.stepIndex], answered = current ? !!this.selection[current.key] : !1;
+    return this.shades.length ? html`
       <section
-        class=${y({ "fs-section": !0, "fs-animate": a })}
-        style=${g(P(s))}
-        aria-label=${t || l("محدد درجة المكياج المناسبة", "Beauty shade finder")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("محدد درجة المكياج المناسبة", "Beauty shade finder")}
       >
         <div class="fs-container">
-          ${t || r ? n`<div class="fs-header">
-                ${t ? n`<h2 class="fs-title">${t}</h2>` : f}
-                ${r ? n`<p class="fs-desc">${r}</p>` : f}
-              </div>` : f}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div class="bsf-wrap">
-            ${this.renderProgress(i.length)}
-            ${this.onResults ? this.renderResults() : n`
-                  ${o ? this.renderQuestion(o) : f}
-                  ${this.renderNav(b)}
+            ${this.renderProgress(steps.length)}
+            ${this.onResults ? this.renderResults() : html`
+                  ${current ? this.renderQuestion(current) : nothing}
+                  ${this.renderNav(answered)}
                 `}
           </div>
         </div>
       </section>
-    ` : n`<div class="fs-empty" role="status">
-        ${l("أضيفي درجات المكياج من إعدادات العنصر", "Add makeup shades in the element settings")}
+    ` : html`<div class="fs-empty" role="status">
+        ${t("أضيفي درجات المكياج من إعدادات العنصر", "Add makeup shades in the element settings")}
       </div>`;
   }
 };
-w.styles = [L, B];
-let p = w;
-u([
-  C({ type: Object })
-], p.prototype, "config");
-u([
-  v()
-], p.prototype, "selection");
-u([
-  v()
-], p.prototype, "shades");
-u([
-  v()
-], p.prototype, "selectedShadeId");
-u([
-  v()
-], p.prototype, "stepIndex");
-typeof p < "u" && p.registerSallaComponent("salla-beauty-shade-finder");
+__name(_BeautyShadeFinder, "BeautyShadeFinder"), _BeautyShadeFinder.styles = [sharedSectionCss, componentStyles];
+let BeautyShadeFinder = _BeautyShadeFinder;
+__decorateClass([
+  property({ type: Object })
+], BeautyShadeFinder.prototype, "config");
+__decorateClass([
+  state()
+], BeautyShadeFinder.prototype, "selection");
+__decorateClass([
+  state()
+], BeautyShadeFinder.prototype, "shades");
+__decorateClass([
+  state()
+], BeautyShadeFinder.prototype, "selectedShadeId");
+__decorateClass([
+  state()
+], BeautyShadeFinder.prototype, "stepIndex");
+typeof BeautyShadeFinder < "u" && BeautyShadeFinder.registerSallaComponent("salla-beauty-shade-finder");
 export {
-  p as default
+  BeautyShadeFinder as default
 };

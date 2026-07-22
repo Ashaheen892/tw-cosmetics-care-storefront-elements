@@ -1,10 +1,12 @@
-import { css as L, LitElement as I, nothing as s, html as a } from "lit";
-import { property as C, state as z } from "lit/decorators.js";
-import { classMap as h } from "lit/directives/class-map.js";
-import { styleMap as g } from "lit/directives/style-map.js";
-import { n as R, l as f, b as A, e as E, f as j, g as F, s as H, p as w, t as c, i as S, r as N, a as P } from "./sharedStyles-DKbcXBPy.js";
-import { r as M } from "./commerceOutcome-Dk8p2VWM.js";
-const Y = L`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, nothing, html } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, l as localizedString, b as extractLink, e as extractImageUrl, f as parseTags, g as getRadioValue, s as sharedSectionCss, p as prefersReducedMotion, t, i as isTruthy, r as readSectionTheme, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   .bff-shell {
     display: grid;
     gap: 1.35rem;
@@ -546,41 +548,44 @@ const Y = L`
       transform: none !important;
     }
   }
-`, O = ["wheel", "grid", "list"];
-function y(d) {
-  const e = f(d, "");
-  return e ? e.split(/\r?\n|،|;|,/).map((r) => r.trim()).filter(Boolean) : [];
+`, LAYOUTS = ["wheel", "grid", "list"];
+function splitList(raw) {
+  const text = localizedString(raw, "");
+  return text ? text.split(/\r?\n|،|;|,/).map((part) => part.trim()).filter(Boolean) : [];
 }
-function q(d) {
-  return R(d).map((e, r) => {
-    const t = f(e.name);
+__name(splitList, "splitList");
+function parseFamilies(raw) {
+  return normalizeCollection(raw).map((f, i) => {
+    const name = localizedString(f.name);
     return {
-      id: String(e.id ?? e.family_id ?? "").trim() || `family-${r + 1}`,
-      name: t,
-      color: String(e.color ?? "").trim(),
-      icon: String(e.icon ?? "").trim(),
-      desc: f(e.desc),
-      mood: j(e.mood),
-      top: y(e.top_notes),
-      heart: y(e.heart_notes),
-      base: y(e.base_notes),
-      season: f(e.season),
-      occasion: f(e.occasion),
-      image: E(e.image),
-      link: A(e.link)
+      id: String(f.id ?? f.family_id ?? "").trim() || `family-${i + 1}`,
+      name,
+      color: String(f.color ?? "").trim(),
+      icon: String(f.icon ?? "").trim(),
+      desc: localizedString(f.desc),
+      mood: parseTags(f.mood),
+      top: splitList(f.top_notes),
+      heart: splitList(f.heart_notes),
+      base: splitList(f.base_notes),
+      season: localizedString(f.season),
+      occasion: localizedString(f.occasion),
+      image: extractImageUrl(f.image),
+      link: extractLink(f.link)
     };
-  }).filter((e) => e.name || e.desc);
+  }).filter((f) => f.name || f.desc);
 }
-function D(d) {
-  const e = F(d.bff_layout, "grid");
-  return O.includes(e) ? e : "grid";
+__name(parseFamilies, "parseFamilies");
+function resolveLayout(config) {
+  const value = getRadioValue(config.bff_layout, "grid");
+  return LAYOUTS.includes(value) ? value : "grid";
 }
-var U = Object.defineProperty, $ = (d, e, r, t) => {
-  for (var i = void 0, o = d.length - 1, n; o >= 0; o--)
-    (n = d[o]) && (i = n(e, r, i) || i);
-  return i && U(e, r, i), i;
-};
-const W = [0, 400, 800], k = class k extends I {
+__name(resolveLayout, "resolveLayout");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const REVEAL_DELAYS = [0, 400, 800], _BeautyFragranceFinder = class _BeautyFragranceFinder extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.activeId = "", this.revealStep = 0, this.boundLangHandler = () => this.requestUpdate(), this.revealTimers = [], this.lastRevealFamilyId = "";
   }
@@ -590,241 +595,241 @@ const W = [0, 400, 800], k = class k extends I {
   disconnectedCallback() {
     this.clearRevealTimers(), window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    var t;
-    e.has("config") && (this.activeId = "", this.revealStep = 0, this.lastRevealFamilyId = "");
-    const r = ((t = this.resolveActive(this.families)) == null ? void 0 : t.id) ?? "";
-    r && r !== this.lastRevealFamilyId && (this.lastRevealFamilyId = r, this.startRevealSequence());
+  updated(changed) {
+    var _a;
+    changed.has("config") && (this.activeId = "", this.revealStep = 0, this.lastRevealFamilyId = "");
+    const familyId = ((_a = this.resolveActive(this.families)) == null ? void 0 : _a.id) ?? "";
+    familyId && familyId !== this.lastRevealFamilyId && (this.lastRevealFamilyId = familyId, this.startRevealSequence());
   }
   clearRevealTimers() {
-    this.revealTimers.forEach((e) => window.clearTimeout(e)), this.revealTimers = [];
+    this.revealTimers.forEach((id) => window.clearTimeout(id)), this.revealTimers = [];
   }
   startRevealSequence() {
-    if (this.clearRevealTimers(), w()) {
+    if (this.clearRevealTimers(), prefersReducedMotion()) {
       this.revealStep = 3;
       return;
     }
-    this.revealStep = 0, W.forEach((r, t) => {
-      const i = window.setTimeout(() => {
-        this.revealStep = t + 1;
-      }, r);
-      this.revealTimers.push(i);
+    this.revealStep = 0, REVEAL_DELAYS.forEach((delay, i) => {
+      const id = window.setTimeout(() => {
+        this.revealStep = i + 1;
+      }, delay);
+      this.revealTimers.push(id);
     });
   }
   get families() {
-    var e;
-    return q((e = this.config) == null ? void 0 : e.bff_families);
+    var _a;
+    return parseFamilies((_a = this.config) == null ? void 0 : _a.bff_families);
   }
-  resolveActive(e) {
-    var t;
-    if (!e.length) return null;
+  resolveActive(families) {
+    var _a;
+    if (!families.length) return null;
     if (this.activeId) {
-      const i = e.find((o) => o.id === this.activeId);
-      if (i) return i;
+      const found = families.find((f) => f.id === this.activeId);
+      if (found) return found;
     }
-    const r = String(((t = this.config) == null ? void 0 : t.bff_default_family) ?? "").trim();
-    if (r) {
-      const i = e.find((o) => o.id === r);
-      if (i) return i;
+    const preset = String(((_a = this.config) == null ? void 0 : _a.bff_default_family) ?? "").trim();
+    if (preset) {
+      const found = families.find((f) => f.id === preset);
+      if (found) return found;
     }
-    return e[0];
+    return families[0];
   }
-  select(e) {
-    e !== this.activeId && (this.activeId = e);
+  select(id) {
+    id !== this.activeId && (this.activeId = id);
   }
-  step(e, r) {
-    var n;
-    if (!e.length) return;
-    const t = this.resolveActive(e), o = ((t ? e.findIndex((l) => l.id === t.id) : -1) + r + e.length) % e.length;
-    this.activeId = ((n = e[o]) == null ? void 0 : n.id) ?? "";
+  step(families, dir) {
+    var _a;
+    if (!families.length) return;
+    const active = this.resolveActive(families), next = ((active ? families.findIndex((f) => f.id === active.id) : -1) + dir + families.length) % families.length;
+    this.activeId = ((_a = families[next]) == null ? void 0 : _a.id) ?? "";
   }
-  chipHint(e) {
-    return e.season || e.mood[0] || "";
+  chipHint(family) {
+    return family.season || family.mood[0] || "";
   }
-  renderChip(e, r, t, i) {
-    var m;
-    const o = ((m = this.resolveActive(this.families)) == null ? void 0 : m.id) === e.id, n = e.icon.startsWith("sicon-"), l = this.chipHint(e), p = e.color ? { "--fam-color": e.color } : {};
-    return r === "wheel" && (p["--i-angle"] = `${360 / Math.max(i, 1) * t}deg`), a`
+  renderChip(family, layout, index, total) {
+    var _a;
+    const active = ((_a = this.resolveActive(this.families)) == null ? void 0 : _a.id) === family.id, isSicon = family.icon.startsWith("sicon-"), hint = this.chipHint(family), chipStyle = family.color ? { "--fam-color": family.color } : {};
+    return layout === "wheel" && (chipStyle["--i-angle"] = `${360 / Math.max(total, 1) * index}deg`), html`
       <button
         type="button"
-        class=${h({ "bff-chip": !0, "is-active": o })}
-        style=${g(p)}
-        aria-pressed=${o ? "true" : "false"}
+        class=${classMap({ "bff-chip": !0, "is-active": active })}
+        style=${styleMap(chipStyle)}
+        aria-pressed=${active ? "true" : "false"}
         aria-controls="bff-detail"
-        title=${e.name}
-        @click=${() => this.select(e.id)}
+        title=${family.name}
+        @click=${() => this.select(family.id)}
       >
         <span class="bff-chip__swatch" aria-hidden="true">
-          ${e.icon ? n ? a`<span class=${e.icon}></span>` : a`<span>${e.icon}</span>` : s}
+          ${family.icon ? isSicon ? html`<span class=${family.icon}></span>` : html`<span>${family.icon}</span>` : nothing}
         </span>
         <span class="bff-chip__meta">
-          <span class="bff-chip__name">${e.name}</span>
-          ${l && r !== "wheel" ? a`<span class="bff-chip__hint">${l}</span>` : s}
+          <span class="bff-chip__name">${family.name}</span>
+          ${hint && layout !== "wheel" ? html`<span class="bff-chip__hint">${hint}</span>` : nothing}
         </span>
-        ${r !== "wheel" ? a`<span class="bff-chip__dot" aria-hidden="true"></span>` : s}
+        ${layout !== "wheel" ? html`<span class="bff-chip__dot" aria-hidden="true"></span>` : nothing}
       </button>
     `;
   }
-  renderTier(e, r, t, i) {
-    const o = this.revealStep >= i, n = w();
-    return a`
+  renderTier(labelKey, label, notes, stepIndex) {
+    const visible = this.revealStep >= stepIndex, reduced = prefersReducedMotion();
+    return html`
       <div
-        class=${h({
+        class=${classMap({
       "bff-tier": !0,
-      [`bff-tier--${e}`]: !0,
-      "is-visible": o,
-      "is-instant": n
+      [`bff-tier--${labelKey}`]: !0,
+      "is-visible": visible,
+      "is-instant": reduced
     })}
         role="listitem"
-        aria-hidden=${o ? "false" : "true"}
+        aria-hidden=${visible ? "false" : "true"}
       >
-        <span class="bff-tier__label">${r}</span>
-        ${t.length ? a`<div class="bff-tier__notes">
-              ${t.map(
-      (l, p) => a`
+        <span class="bff-tier__label">${label}</span>
+        ${notes.length ? html`<div class="bff-tier__notes">
+              ${notes.map(
+      (note, i) => html`
                   <span
-                    class=${h({ "bff-note": !0, "is-visible": o, "is-instant": n })}
-                    style=${g(n ? {} : { "--note-i": String(p) })}
-                    >${l}</span
+                    class=${classMap({ "bff-note": !0, "is-visible": visible, "is-instant": reduced })}
+                    style=${styleMap(reduced ? {} : { "--note-i": String(i) })}
+                    >${note}</span
                   >
                 `
     )}
-            </div>` : a`<span class="bff-tier__empty">${c("—", "—")}</span>`}
+            </div>` : html`<span class="bff-tier__empty">${t("—", "—")}</span>`}
       </div>
     `;
   }
-  renderDetail(e, r) {
-    const t = this.config || {}, i = r.length > 1, o = S(t.bff_show_pyramid, !0), n = e.icon.startsWith("sicon-"), l = f(t.bff_pyramid_top_label) || c("المقدمة", "Top"), p = f(t.bff_pyramid_heart_label) || c("القلب", "Heart"), m = f(t.bff_pyramid_base_label) || c("الأساس", "Base"), v = f(t.bff_season_label) || c("أنسب موسم", "Best season"), u = f(t.bff_occasion_label) || c("أنسب مناسبة", "Occasion"), x = e.top.length || e.heart.length || e.base.length, _ = e.color ? { "--fam-color": e.color } : {};
-    return a`
-      <article class="bff-story" id="bff-detail" role="region" aria-live="polite" style=${g(_)}>
-        <div class=${h({ "bff-hero": !0, "bff-hero--media": !!e.image })}>
+  renderDetail(family, families) {
+    const c = this.config || {}, showNav = families.length > 1, showPyramid = isTruthy(c.bff_show_pyramid, !0), isSicon = family.icon.startsWith("sicon-"), topLabel = localizedString(c.bff_pyramid_top_label) || t("المقدمة", "Top"), heartLabel = localizedString(c.bff_pyramid_heart_label) || t("القلب", "Heart"), baseLabel = localizedString(c.bff_pyramid_base_label) || t("الأساس", "Base"), seasonLabel = localizedString(c.bff_season_label) || t("أنسب موسم", "Best season"), occasionLabel = localizedString(c.bff_occasion_label) || t("أنسب مناسبة", "Occasion"), hasPyramid = family.top.length || family.heart.length || family.base.length, style = family.color ? { "--fam-color": family.color } : {};
+    return html`
+      <article class="bff-story" id="bff-detail" role="region" aria-live="polite" style=${styleMap(style)}>
+        <div class=${classMap({ "bff-hero": !0, "bff-hero--media": !!family.image })}>
           <div class="bff-hero__body">
             <div class="bff-hero__top">
-              ${e.icon ? a`<span class="bff-hero__icon" aria-hidden="true">
-                    ${n ? a`<span class=${e.icon}></span>` : e.icon}
-                  </span>` : a`<span class="bff-hero__icon" aria-hidden="true">✦</span>`}
+              ${family.icon ? html`<span class="bff-hero__icon" aria-hidden="true">
+                    ${isSicon ? html`<span class=${family.icon}></span>` : family.icon}
+                  </span>` : html`<span class="bff-hero__icon" aria-hidden="true">✦</span>`}
 
-              ${i ? a`<div class="bff-nav">
+              ${showNav ? html`<div class="bff-nav">
                     <button
                       type="button"
                       class="bff-nav__btn"
-                      aria-label=${c("السابق", "Previous")}
-                      @click=${() => this.step(r, -1)}
+                      aria-label=${t("السابق", "Previous")}
+                      @click=${() => this.step(families, -1)}
                     >
                       ‹
                     </button>
                     <button
                       type="button"
                       class="bff-nav__btn"
-                      aria-label=${c("التالي", "Next")}
-                      @click=${() => this.step(r, 1)}
+                      aria-label=${t("التالي", "Next")}
+                      @click=${() => this.step(families, 1)}
                     >
                       ›
                     </button>
-                  </div>` : s}
+                  </div>` : nothing}
             </div>
 
-            <h3 class="bff-hero__title">${e.name}</h3>
-            ${e.desc ? a`<p class="bff-hero__desc">${e.desc}</p>` : s}
-            ${e.mood.length ? a`<div class="bff-mood">
-                  ${e.mood.map((T) => a`<span class="bff-mood__tag">${T}</span>`)}
-                </div>` : s}
+            <h3 class="bff-hero__title">${family.name}</h3>
+            ${family.desc ? html`<p class="bff-hero__desc">${family.desc}</p>` : nothing}
+            ${family.mood.length ? html`<div class="bff-mood">
+                  ${family.mood.map((m) => html`<span class="bff-mood__tag">${m}</span>`)}
+                </div>` : nothing}
           </div>
 
-          ${e.image ? a`<div class="bff-hero__media">
-                <img src=${e.image} alt="" loading="lazy" decoding="async" />
-              </div>` : s}
+          ${family.image ? html`<div class="bff-hero__media">
+                <img src=${family.image} alt="" loading="lazy" decoding="async" />
+              </div>` : nothing}
         </div>
 
-        ${o && x ? a`<div class="bff-pyramid" role="list" aria-label=${c("هرم النوتات", "Notes pyramid")}>
-              <p class="bff-pyramid__intro">${c("تتكشّف النوتات تدريجيًا…", "Notes unfold gradually…")}</p>
-              ${this.renderTier("top", l, e.top, 1)}
-              ${this.renderTier("heart", p, e.heart, 2)}
-              ${this.renderTier("base", m, e.base, 3)}
-            </div>` : s}
+        ${showPyramid && hasPyramid ? html`<div class="bff-pyramid" role="list" aria-label=${t("هرم النوتات", "Notes pyramid")}>
+              <p class="bff-pyramid__intro">${t("تتكشّف النوتات تدريجيًا…", "Notes unfold gradually…")}</p>
+              ${this.renderTier("top", topLabel, family.top, 1)}
+              ${this.renderTier("heart", heartLabel, family.heart, 2)}
+              ${this.renderTier("base", baseLabel, family.base, 3)}
+            </div>` : nothing}
 
-        ${e.season || e.occasion ? a`<div class="bff-facts">
-              ${e.season ? a`<div class="bff-fact">
-                    <span class="bff-fact__label">${v}</span>
-                    <span class="bff-fact__value">${e.season}</span>
-                  </div>` : s}
-              ${e.occasion ? a`<div class="bff-fact">
-                    <span class="bff-fact__label">${u}</span>
-                    <span class="bff-fact__value">${e.occasion}</span>
-                  </div>` : s}
-            </div>` : s}
+        ${family.season || family.occasion ? html`<div class="bff-facts">
+              ${family.season ? html`<div class="bff-fact">
+                    <span class="bff-fact__label">${seasonLabel}</span>
+                    <span class="bff-fact__value">${family.season}</span>
+                  </div>` : nothing}
+              ${family.occasion ? html`<div class="bff-fact">
+                    <span class="bff-fact__label">${occasionLabel}</span>
+                    <span class="bff-fact__value">${family.occasion}</span>
+                  </div>` : nothing}
+            </div>` : nothing}
 
         <div class="bff-panel__actions">
-          ${e.link ? a`
-              <a class="fs-btn fs-btn--ghost" href=${e.link} target="_blank" rel="noopener noreferrer">
-                ${c("اقرئي المزيد", "Read more")}
+          ${family.link ? html`
+              <a class="fs-btn fs-btn--ghost" href=${family.link} target="_blank" rel="noopener noreferrer">
+                ${t("اقرئي المزيد", "Read more")}
               </a>
-              ` : s}
-          ${M(t, "bff_")}
+              ` : nothing}
+          ${renderCommerceCtaButton(c, "bff_")}
         </div>
       </article>
     `;
   }
   render() {
-    const e = this.config || {}, r = N(e, "bff_"), t = r.animate && !w(), i = this.families, o = f(e.bff_title), n = f(e.bff_desc), l = D(e), p = S(e.bff_show_notice, !0), m = f(e.bff_notice) || c(
+    const c = this.config || {}, theme = readSectionTheme(c, "bff_"), animate = theme.animate && !prefersReducedMotion(), families = this.families, title = localizedString(c.bff_title), desc = localizedString(c.bff_desc), layout = resolveLayout(c), showNotice = isTruthy(c.bff_show_notice, !0), notice = localizedString(c.bff_notice) || t(
       "اختيار العطر تجربة شخصية؛ هذه العائلات دليل استكشافي لمساعدتك على تحديد ما يناسب ذوقك.",
       "Choosing a fragrance is personal; these families are an exploratory guide to help you find what suits your taste."
     );
-    if (!i.length)
-      return a`<div class="fs-empty" role="status">
-        ${c("أضيفي عائلات عطرية من إعدادات العنصر.", "Add fragrance families in the element settings.")}
+    if (!families.length)
+      return html`<div class="fs-empty" role="status">
+        ${t("أضيفي عائلات عطرية من إعدادات العنصر.", "Add fragrance families in the element settings.")}
       </div>`;
-    const v = this.resolveActive(i), u = i.length;
-    return a`
+    const active = this.resolveActive(families), total = families.length;
+    return html`
       <section
-        class=${h({ "fs-section": !0, "fs-animate": t })}
-        style=${g(P(r))}
-        aria-label=${o || c("محدد عائلة العطر", "Fragrance family finder")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("محدد عائلة العطر", "Fragrance family finder")}
       >
         <div class="fs-container">
-          ${o || n ? a`<div class="fs-header">
-                ${o ? a`<h2 class="fs-title">${o}</h2>` : s}
-                ${n ? a`<p class="fs-desc">${n}</p>` : s}
-              </div>` : s}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div class="bff-shell">
             <aside class="bff-selector">
-              <p class="bff-selector__label">${c("اختاري عائلة عطرية", "Pick a fragrance family")}</p>
+              <p class="bff-selector__label">${t("اختاري عائلة عطرية", "Pick a fragrance family")}</p>
               <div
-                class=${h({
+                class=${classMap({
       "bff-chips": !0,
-      [`bff-chips--${l}`]: !0
+      [`bff-chips--${layout}`]: !0
     })}
                 role="group"
-                aria-label=${c("عائلات العطر", "Fragrance families")}
-                style=${g(l === "wheel" ? { "--wheel-r": "120px" } : {})}
+                aria-label=${t("عائلات العطر", "Fragrance families")}
+                style=${styleMap(layout === "wheel" ? { "--wheel-r": "120px" } : {})}
               >
-                ${l === "wheel" ? a`<div class="bff-wheel-core">${c("عائلات", "Families")}</div>` : s}
-                ${i.map((x, _) => this.renderChip(x, l, _, u))}
+                ${layout === "wheel" ? html`<div class="bff-wheel-core">${t("عائلات", "Families")}</div>` : nothing}
+                ${families.map((family, i) => this.renderChip(family, layout, i, total))}
               </div>
             </aside>
 
-            ${v ? this.renderDetail(v, i) : s}
+            ${active ? this.renderDetail(active, families) : nothing}
           </div>
 
-          ${p ? a`<p class="bff-notice">${m}</p>` : s}
+          ${showNotice ? html`<p class="bff-notice">${notice}</p>` : nothing}
         </div>
       </section>
     `;
   }
 };
-k.styles = [H, Y];
-let b = k;
-$([
-  C({ type: Object })
-], b.prototype, "config");
-$([
-  z()
-], b.prototype, "activeId");
-$([
-  z()
-], b.prototype, "revealStep");
-typeof b < "u" && b.registerSallaComponent("salla-beauty-fragrance-finder");
+__name(_BeautyFragranceFinder, "BeautyFragranceFinder"), _BeautyFragranceFinder.styles = [sharedSectionCss, componentStyles];
+let BeautyFragranceFinder = _BeautyFragranceFinder;
+__decorateClass([
+  property({ type: Object })
+], BeautyFragranceFinder.prototype, "config");
+__decorateClass([
+  state()
+], BeautyFragranceFinder.prototype, "activeId");
+__decorateClass([
+  state()
+], BeautyFragranceFinder.prototype, "revealStep");
+typeof BeautyFragranceFinder < "u" && BeautyFragranceFinder.registerSallaComponent("salla-beauty-fragrance-finder");
 export {
-  b as default
+  BeautyFragranceFinder as default
 };

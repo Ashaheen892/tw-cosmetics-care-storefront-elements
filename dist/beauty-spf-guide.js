@@ -1,10 +1,12 @@
-import { css as H, LitElement as j, html as r, nothing as d } from "lit";
-import { property as D, state as v } from "lit/decorators.js";
-import { classMap as z } from "lit/directives/class-map.js";
-import { styleMap as u } from "lit/directives/style-map.js";
-import { n as y, l as a, h as m, j as x, t as o, s as K, i as M, r as A, p as F, a as N } from "./sharedStyles-DKbcXBPy.js";
-import { r as U } from "./commerceOutcome-Dk8p2VWM.js";
-const O = H`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, html, nothing } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, l as localizedString, h as clamp, j as toNumber, t, s as sharedSectionCss, i as isTruthy, r as readSectionTheme, p as prefersReducedMotion, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   :host {
     display: block;
     direction: inherit;
@@ -379,60 +381,68 @@ const O = H`
     }
   }
 `;
-function q(n) {
-  const e = ["phototype", "spf"];
-  return n && e.push("condition"), e;
+function buildStepPlan(hasConditions) {
+  const steps = ["phototype", "spf"];
+  return hasConditions && steps.push("condition"), steps;
 }
-function Y(n) {
-  return y(n).map((e, s) => {
-    const t = a(e.name);
+__name(buildStepPlan, "buildStepPlan");
+function parsePhototypes(raw) {
+  return normalizeCollection(raw).map((row, i) => {
+    const name = localizedString(row.name);
     return {
-      id: String(e.id ?? e.pt_id ?? "").trim() || `pt-${s + 1}`,
-      name: t,
-      desc: a(e.desc),
-      baseMinutes: m(x(e.base_minutes, 15), 1, 240),
-      color: String(e.color ?? "").trim()
+      id: String(row.id ?? row.pt_id ?? "").trim() || `pt-${i + 1}`,
+      name,
+      desc: localizedString(row.desc),
+      baseMinutes: clamp(toNumber(row.base_minutes, 15), 1, 240),
+      color: String(row.color ?? "").trim()
     };
-  }).filter((e) => e.name);
+  }).filter((row) => row.name);
 }
-function J(n) {
-  return y(n).map((e) => {
-    const s = m(Math.round(x(e.spf, 30)), 1, 100), t = a(e.label) || `SPF ${s}`;
-    return { spf: s, label: t };
-  }).filter((e) => e.spf > 0);
+__name(parsePhototypes, "parsePhototypes");
+function parseSpfValues(raw) {
+  return normalizeCollection(raw).map((row) => {
+    const spf = clamp(Math.round(toNumber(row.spf, 30)), 1, 100), label = localizedString(row.label) || `SPF ${spf}`;
+    return { spf, label };
+  }).filter((row) => row.spf > 0);
 }
-function Q(n) {
-  return y(n).map((e, s) => {
-    const t = a(e.name);
+__name(parseSpfValues, "parseSpfValues");
+function parseConditions(raw) {
+  return normalizeCollection(raw).map((row, i) => {
+    const name = localizedString(row.name);
     return {
-      id: String(e.id ?? e.cond_id ?? "").trim() || `cond-${s + 1}`,
-      name: t,
-      factor: m(x(e.factor, 1), 0.1, 3),
-      desc: a(e.desc)
+      id: String(row.id ?? row.cond_id ?? "").trim() || `cond-${i + 1}`,
+      name,
+      factor: clamp(toNumber(row.factor, 1), 0.1, 3),
+      desc: localizedString(row.desc)
     };
-  }).filter((e) => e.name);
+  }).filter((row) => row.name);
 }
-function W(n) {
-  return y(n).map((e) => a(e.tip)).filter(Boolean);
+__name(parseConditions, "parseConditions");
+function parseTips(raw) {
+  return normalizeCollection(raw).map((row) => localizedString(row.tip)).filter(Boolean);
 }
-function X(n, e, s) {
-  return m(n * e * s, 0, 1e5);
+__name(parseTips, "parseTips");
+function estimateMinutes(base, spf, factor) {
+  return clamp(base * spf * factor, 0, 1e5);
 }
-function Z(n) {
-  const e = Math.max(0, Math.round(n)), s = Math.floor(e / 60), t = e % 60, i = o("س", "h"), l = o("د", "m");
-  return s <= 0 ? `${t}${l}` : t <= 0 ? `${s}${i}` : `${s}${i} ${t}${l}`;
+__name(estimateMinutes, "estimateMinutes");
+function formatDuration(minutes) {
+  const total = Math.max(0, Math.round(minutes)), hours = Math.floor(total / 60), mins = total % 60, hUnit = t("س", "h"), mUnit = t("د", "m");
+  return hours <= 0 ? `${mins}${mUnit}` : mins <= 0 ? `${hours}${hUnit}` : `${hours}${hUnit} ${mins}${mUnit}`;
 }
-function _(n, e) {
-  return n === "phototype" ? a(e.bsg_phototype_label) || o("نوع البشرة", "Skin phototype") : n === "spf" ? a(e.bsg_spf_label) || o("عامل الحماية SPF", "SPF value") : a(e.bsg_condition_label) || o("ظروف التعرّض", "Exposure condition");
+__name(formatDuration, "formatDuration");
+function stepLabel(key, config) {
+  return key === "phototype" ? localizedString(config.bsg_phototype_label) || t("نوع البشرة", "Skin phototype") : key === "spf" ? localizedString(config.bsg_spf_label) || t("عامل الحماية SPF", "SPF value") : localizedString(config.bsg_condition_label) || t("ظروف التعرّض", "Exposure condition");
 }
-var G = Object.defineProperty, f = (n, e, s, t) => {
-  for (var i = void 0, l = n.length - 1, c; l >= 0; l--)
-    (c = n[l]) && (i = c(e, s, i) || i);
-  return i && G(e, s, i), i;
-};
-const ee = 480, $ = class $ extends j {
+__name(stepLabel, "stepLabel");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const METER_CAP_MINUTES = 480, _BeautySpfGuide = class _BeautySpfGuide extends LitElement {
   constructor() {
-    super(...arguments), this.config = {}, this.selectedPtId = "", this.selectedSpf = 0, this.selectedCondId = "", this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate(), this.boundKeyHandler = (e) => this.onKeyDown(e);
+    super(...arguments), this.config = {}, this.selectedPtId = "", this.selectedSpf = 0, this.selectedCondId = "", this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate(), this.boundKeyHandler = (event) => this.onKeyDown(event);
   }
   connectedCallback() {
     super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.addEventListener("keydown", this.boundKeyHandler);
@@ -440,23 +450,23 @@ const ee = 480, $ = class $ extends j {
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), this.removeEventListener("keydown", this.boundKeyHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    e.has("config") && (this.selectedPtId = "", this.selectedSpf = 0, this.selectedCondId = "", this.stepIndex = 0);
+  updated(changed) {
+    changed.has("config") && (this.selectedPtId = "", this.selectedSpf = 0, this.selectedCondId = "", this.stepIndex = 0);
   }
   get phototypes() {
-    var e;
-    return Y((e = this.config) == null ? void 0 : e.bsg_phototypes);
+    var _a;
+    return parsePhototypes((_a = this.config) == null ? void 0 : _a.bsg_phototypes);
   }
   get spfValues() {
-    var e;
-    return J((e = this.config) == null ? void 0 : e.bsg_spf_values);
+    var _a;
+    return parseSpfValues((_a = this.config) == null ? void 0 : _a.bsg_spf_values);
   }
   get conditions() {
-    var e;
-    return Q((e = this.config) == null ? void 0 : e.bsg_conditions);
+    var _a;
+    return parseConditions((_a = this.config) == null ? void 0 : _a.bsg_conditions);
   }
   get plan() {
-    return q(this.conditions.length > 0);
+    return buildStepPlan(this.conditions.length > 0);
   }
   get onResults() {
     return this.stepIndex >= this.plan.length;
@@ -465,8 +475,8 @@ const ee = 480, $ = class $ extends j {
     return this.onResults ? null : this.plan[this.stepIndex] ?? null;
   }
   get canNext() {
-    const e = this.currentStep;
-    return e ? e === "phototype" ? !!this.selectedPtId : e === "spf" ? this.selectedSpf > 0 : e === "condition" ? !!this.selectedCondId : !1 : !1;
+    const step = this.currentStep;
+    return step ? step === "phototype" ? !!this.selectedPtId : step === "spf" ? this.selectedSpf > 0 : step === "condition" ? !!this.selectedCondId : !1 : !1;
   }
   goNext() {
     this.stepIndex < this.plan.length && (this.stepIndex += 1);
@@ -477,43 +487,43 @@ const ee = 480, $ = class $ extends j {
   reset() {
     this.selectedPtId = "", this.selectedSpf = 0, this.selectedCondId = "", this.stepIndex = 0;
   }
-  onKeyDown(e) {
-    const s = e.target;
-    s != null && s.closest("button, a, input, textarea, select") || (e.key === "Enter" && !this.onResults && this.canNext && (e.preventDefault(), this.goNext()), e.key === "Backspace" && this.stepIndex > 0 && !this.onResults && (e.preventDefault(), this.goBack()));
+  onKeyDown(event) {
+    const target = event.target;
+    target != null && target.closest("button, a, input, textarea, select") || (event.key === "Enter" && !this.onResults && this.canNext && (event.preventDefault(), this.goNext()), event.key === "Backspace" && this.stepIndex > 0 && !this.onResults && (event.preventDefault(), this.goBack()));
   }
-  renderProgress(e) {
-    const s = Math.min(this.stepIndex + 1, e), t = e ? Math.round(Math.min(this.stepIndex, e) / e * 100) : 0, i = this.currentStep, l = i ? _(i, this.config || {}) : "";
-    return r`
+  renderProgress(total) {
+    const current = Math.min(this.stepIndex + 1, total), pct = total ? Math.round(Math.min(this.stepIndex, total) / total * 100) : 0, step = this.currentStep, stepName = step ? stepLabel(step, this.config || {}) : "";
+    return html`
       <div class="bsg-progress" aria-hidden="true">
-        <div class="bsg-progress__bar"><span style=${u({ width: `${t}%` })}></span></div>
+        <div class="bsg-progress__bar"><span style=${styleMap({ width: `${pct}%` })}></span></div>
         <span class="bsg-progress__text">
-          ${this.onResults ? o("النتيجة", "Result") : r`${o(`الخطوة ${s} من ${e}`, `Step ${s} of ${e}`)}
-                <span class="bsg-progress__step"> · ${l}</span>`}
+          ${this.onResults ? t("النتيجة", "Result") : html`${t(`الخطوة ${current} من ${total}`, `Step ${current} of ${total}`)}
+                <span class="bsg-progress__step"> · ${stepName}</span>`}
         </span>
       </div>
     `;
   }
-  renderPhototypeStep(e) {
-    const s = _("phototype", this.config || {});
-    return r`
+  renderPhototypeStep(list) {
+    const label = stepLabel("phototype", this.config || {});
+    return html`
       <div class="bsg-step">
-        <h3 class="bsg-step__title">${s}</h3>
-        <p class="bsg-step__hint">${o("اختاري نوع بشرتك حسب حساسيتها للشمس", "Pick your sun-sensitivity phototype")}</p>
-        <div class="bsg-options" role="group" aria-label=${s}>
-          ${e.map((t) => {
-      const i = this.selectedPtId === t.id;
-      return r`
+        <h3 class="bsg-step__title">${label}</h3>
+        <p class="bsg-step__hint">${t("اختاري نوع بشرتك حسب حساسيتها للشمس", "Pick your sun-sensitivity phototype")}</p>
+        <div class="bsg-options" role="group" aria-label=${label}>
+          ${list.map((pt) => {
+      const isActive = this.selectedPtId === pt.id;
+      return html`
               <button
                 type="button"
                 class="bsg-option"
-                aria-pressed=${i ? "true" : "false"}
-                style=${u(t.color ? { "--bsg-swatch": t.color } : {})}
-                @click=${() => this.selectedPtId = t.id}
+                aria-pressed=${isActive ? "true" : "false"}
+                style=${styleMap(pt.color ? { "--bsg-swatch": pt.color } : {})}
+                @click=${() => this.selectedPtId = pt.id}
               >
                 <span class="bsg-swatch" aria-hidden="true"></span>
                 <span class="bsg-option__body">
-                  <span class="bsg-option__name">${t.name}</span>
-                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : d}
+                  <span class="bsg-option__name">${pt.name}</span>
+                  ${pt.desc ? html`<span class="bsg-option__desc">${pt.desc}</span>` : nothing}
                 </span>
               </button>
             `;
@@ -522,23 +532,23 @@ const ee = 480, $ = class $ extends j {
       </div>
     `;
   }
-  renderSpfStep(e) {
-    const s = _("spf", this.config || {});
-    return r`
+  renderSpfStep(list) {
+    const label = stepLabel("spf", this.config || {});
+    return html`
       <div class="bsg-step">
-        <h3 class="bsg-step__title">${s}</h3>
-        <p class="bsg-step__hint">${o("اختاري عامل الحماية الذي تستخدمينه", "Choose the SPF you apply")}</p>
-        <div class="bsg-options bsg-options--compact" role="group" aria-label=${s}>
-          ${e.map((t) => {
-      const i = this.selectedSpf === t.spf;
-      return r`
+        <h3 class="bsg-step__title">${label}</h3>
+        <p class="bsg-step__hint">${t("اختاري عامل الحماية الذي تستخدمينه", "Choose the SPF you apply")}</p>
+        <div class="bsg-options bsg-options--compact" role="group" aria-label=${label}>
+          ${list.map((sv) => {
+      const isActive = this.selectedSpf === sv.spf;
+      return html`
               <button
                 type="button"
                 class="bsg-option bsg-option--compact"
-                aria-pressed=${i ? "true" : "false"}
-                @click=${() => this.selectedSpf = t.spf}
+                aria-pressed=${isActive ? "true" : "false"}
+                @click=${() => this.selectedSpf = sv.spf}
               >
-                <span class="bsg-option__name">${t.label}</span>
+                <span class="bsg-option__name">${sv.label}</span>
               </button>
             `;
     })}
@@ -546,25 +556,25 @@ const ee = 480, $ = class $ extends j {
       </div>
     `;
   }
-  renderConditionStep(e) {
-    const s = _("condition", this.config || {});
-    return r`
+  renderConditionStep(list) {
+    const label = stepLabel("condition", this.config || {});
+    return html`
       <div class="bsg-step">
-        <h3 class="bsg-step__title">${s}</h3>
-        <p class="bsg-step__hint">${o("اختاري ظروف تعرّضك للشمس اليوم", "Pick today's sun exposure setting")}</p>
-        <div class="bsg-options" role="group" aria-label=${s}>
-          ${e.map((t) => {
-      const i = this.selectedCondId === t.id;
-      return r`
+        <h3 class="bsg-step__title">${label}</h3>
+        <p class="bsg-step__hint">${t("اختاري ظروف تعرّضك للشمس اليوم", "Pick today's sun exposure setting")}</p>
+        <div class="bsg-options" role="group" aria-label=${label}>
+          ${list.map((cond) => {
+      const isActive = this.selectedCondId === cond.id;
+      return html`
               <button
                 type="button"
                 class="bsg-option"
-                aria-pressed=${i ? "true" : "false"}
-                @click=${() => this.selectedCondId = t.id}
+                aria-pressed=${isActive ? "true" : "false"}
+                @click=${() => this.selectedCondId = cond.id}
               >
                 <span class="bsg-option__body">
-                  <span class="bsg-option__name">${t.name}</span>
-                  ${t.desc ? r`<span class="bsg-option__desc">${t.desc}</span>` : d}
+                  <span class="bsg-option__name">${cond.name}</span>
+                  ${cond.desc ? html`<span class="bsg-option__desc">${cond.desc}</span>` : nothing}
                 </span>
               </button>
             `;
@@ -574,131 +584,131 @@ const ee = 480, $ = class $ extends j {
     `;
   }
   renderNav() {
-    var l, c, p;
-    const e = a((l = this.config) == null ? void 0 : l.bsg_back_btn) || o("السابق", "Back"), s = a((c = this.config) == null ? void 0 : c.bsg_next_btn) || o("التالي", "Next"), t = a((p = this.config) == null ? void 0 : p.bsg_see_btn) || o("عرض التقدير", "See estimate"), i = this.stepIndex === this.plan.length - 1;
-    return r`
+    var _a, _b, _c;
+    const back = localizedString((_a = this.config) == null ? void 0 : _a.bsg_back_btn) || t("السابق", "Back"), next = localizedString((_b = this.config) == null ? void 0 : _b.bsg_next_btn) || t("التالي", "Next"), see = localizedString((_c = this.config) == null ? void 0 : _c.bsg_see_btn) || t("عرض التقدير", "See estimate"), lastStep = this.stepIndex === this.plan.length - 1;
+    return html`
       <div class="bsg-nav">
-        ${this.stepIndex > 0 ? r`<button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-              ${e}
-            </button>` : r`<span></span>`}
+        ${this.stepIndex > 0 ? html`<button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
+              ${back}
+            </button>` : html`<span></span>`}
         <button
           type="button"
           class="fs-btn fs-tap"
           ?disabled=${!this.canNext}
           @click=${() => this.goNext()}
         >
-          ${i ? t : s}
+          ${lastStep ? see : next}
         </button>
       </div>
     `;
   }
   renderCurrentStep() {
-    const e = this.currentStep;
-    return e ? e === "phototype" ? this.renderPhototypeStep(this.phototypes) : e === "spf" ? this.renderSpfStep(this.spfValues) : this.renderConditionStep(this.conditions) : d;
+    const step = this.currentStep;
+    return step ? step === "phototype" ? this.renderPhototypeStep(this.phototypes) : step === "spf" ? this.renderSpfStep(this.spfValues) : this.renderConditionStep(this.conditions) : nothing;
   }
   renderResults() {
-    var C, P;
-    const e = this.config || {}, s = this.phototypes, t = this.spfValues, i = this.conditions, l = W(e.bsg_tips), c = s.find((h) => h.id === this.selectedPtId) ?? null, p = t.find((h) => h.spf === this.selectedSpf) ?? null, g = i.find((h) => h.id === this.selectedCondId) ?? null, R = (g == null ? void 0 : g.factor) ?? 1, w = X((c == null ? void 0 : c.baseMinutes) ?? 0, (p == null ? void 0 : p.spf) ?? 0, R), k = m(w / ee * 100, 0, 100), E = M(e.bsg_show_meter, !0), L = M(e.bsg_show_notice, !0), S = m(Math.round(x(e.bsg_reapply_minutes, 120)), 1, 1e5), I = a(e.bsg_reapply_note), B = a(e.bsg_result_title) || o("توصياتك", "Your guidance"), T = a(e.bsg_notice) || o("هذه إرشادات توعوية عامة وليست نصيحة طبية.", "This is general educational guidance, not medical advice."), V = o(
-      `أعيدي التطبيق كل ${S} دقيقة`,
-      `Reapply every ${S} min`
+    var _a, _b;
+    const c = this.config || {}, phototypes = this.phototypes, spfValues = this.spfValues, conditions = this.conditions, tips = parseTips(c.bsg_tips), activePt = phototypes.find((p) => p.id === this.selectedPtId) ?? null, activeSpf = spfValues.find((s) => s.spf === this.selectedSpf) ?? null, activeCond = conditions.find((cond) => cond.id === this.selectedCondId) ?? null, factor = (activeCond == null ? void 0 : activeCond.factor) ?? 1, minutes = estimateMinutes((activePt == null ? void 0 : activePt.baseMinutes) ?? 0, (activeSpf == null ? void 0 : activeSpf.spf) ?? 0, factor), meterPct = clamp(minutes / METER_CAP_MINUTES * 100, 0, 100), showMeter = isTruthy(c.bsg_show_meter, !0), showNotice = isTruthy(c.bsg_show_notice, !0), reapplyMinutes = clamp(Math.round(toNumber(c.bsg_reapply_minutes, 120)), 1, 1e5), reapplyNote = localizedString(c.bsg_reapply_note), resultTitle = localizedString(c.bsg_result_title) || t("توصياتك", "Your guidance"), notice = localizedString(c.bsg_notice) || t("هذه إرشادات توعوية عامة وليست نصيحة طبية.", "This is general educational guidance, not medical advice."), reapplyMain = t(
+      `أعيدي التطبيق كل ${reapplyMinutes} دقيقة`,
+      `Reapply every ${reapplyMinutes} min`
     );
-    return r`
+    return html`
       <div class="bsg-results" aria-live="polite">
-        <h3 class="bsg-results__title">${B}</h3>
+        <h3 class="bsg-results__title">${resultTitle}</h3>
 
         <div class="bsg-results__summary">
-          ${c ? r`<span class="bsg-results__pill">
+          ${activePt ? html`<span class="bsg-results__pill">
                 <span
                   class="bsg-swatch"
                   aria-hidden="true"
-                  style=${u(c.color ? { "--bsg-swatch": c.color } : {})}
+                  style=${styleMap(activePt.color ? { "--bsg-swatch": activePt.color } : {})}
                 ></span>
-                ${c.name}
-              </span>` : d}
-          ${p ? r`<span class="bsg-results__pill">${p.label}</span>` : d}
-          ${g ? r`<span class="bsg-results__pill">${g.name}</span>` : d}
+                ${activePt.name}
+              </span>` : nothing}
+          ${activeSpf ? html`<span class="bsg-results__pill">${activeSpf.label}</span>` : nothing}
+          ${activeCond ? html`<span class="bsg-results__pill">${activeCond.name}</span>` : nothing}
         </div>
 
         <div class="bsg-duration bsg-duration--hero">
           <span class="bsg-duration__label">
-            ${o("تقدير تقريبي لمدة التعرّض الآمن", "Rough safe-exposure estimate")}
+            ${t("تقدير تقريبي لمدة التعرّض الآمن", "Rough safe-exposure estimate")}
           </span>
-          <span class="bsg-duration__value">${Z(w)}</span>
+          <span class="bsg-duration__value">${formatDuration(minutes)}</span>
         </div>
 
-        ${E ? r`<div class="bsg-meter-wrap bsg-meter-wrap--hero">
+        ${showMeter ? html`<div class="bsg-meter-wrap bsg-meter-wrap--hero">
               <div
                 class="bsg-meter"
                 role="progressbar"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                aria-valuenow=${Math.round(k)}
-                aria-label=${o("مؤشر التعرّض التوضيحي", "Illustrative exposure meter")}
+                aria-valuenow=${Math.round(meterPct)}
+                aria-label=${t("مؤشر التعرّض التوضيحي", "Illustrative exposure meter")}
               >
-                <span style=${u({ width: `${k}%` })}></span>
+                <span style=${styleMap({ width: `${meterPct}%` })}></span>
               </div>
               <p class="bsg-meter-caption">
-                ${o("مؤشر توضيحي فقط — التقدير يقلّ في ظروف الانعكاس العالي.", "Illustrative only — the estimate drops in high-reflection conditions.")}
+                ${t("مؤشر توضيحي فقط — التقدير يقلّ في ظروف الانعكاس العالي.", "Illustrative only — the estimate drops in high-reflection conditions.")}
               </p>
-            </div>` : d}
+            </div>` : nothing}
 
         <div class="bsg-reapply">
           <span class="bsg-reapply__icon" aria-hidden="true">☀︎</span>
           <div class="bsg-reapply__body">
-            <p class="bsg-reapply__main">${V}</p>
-            ${I ? r`<p class="bsg-reapply__note">${I}</p>` : r`<p class="bsg-reapply__note">${o("أعيدي التطبيق بعد السباحة أو التعرّق.", "Reapply after swimming or sweating.")}</p>`}
+            <p class="bsg-reapply__main">${reapplyMain}</p>
+            ${reapplyNote ? html`<p class="bsg-reapply__note">${reapplyNote}</p>` : html`<p class="bsg-reapply__note">${t("أعيدي التطبيق بعد السباحة أو التعرّق.", "Reapply after swimming or sweating.")}</p>`}
           </div>
         </div>
 
-        ${l.length ? r`<div class="bsg-tips">
-              <p class="bsg-tips__title">${o("نصائح", "Tips")}</p>
-              <ul>${l.map((h) => r`<li>${h}</li>`)}</ul>
-            </div>` : d}
+        ${tips.length ? html`<div class="bsg-tips">
+              <p class="bsg-tips__title">${t("نصائح", "Tips")}</p>
+              <ul>${tips.map((tip) => html`<li>${tip}</li>`)}</ul>
+            </div>` : nothing}
 
         <div class="bsg-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-            ${a((C = this.config) == null ? void 0 : C.bsg_back_btn) || o("تعديل الاختيارات", "Edit choices")}
+            ${localizedString((_a = this.config) == null ? void 0 : _a.bsg_back_btn) || t("تعديل الاختيارات", "Edit choices")}
           </button>
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
-            ${a((P = this.config) == null ? void 0 : P.bsg_reset_btn) || o("ابدئي من جديد", "Start over")}
+            ${localizedString((_b = this.config) == null ? void 0 : _b.bsg_reset_btn) || t("ابدئي من جديد", "Start over")}
           </button>
-          ${U(e, "bsg_")}
+          ${renderCommerceCtaButton(c, "bsg_")}
         </div>
 
-        ${L ? r`<p class="bsg-notice bsg-notice--inline">${T}</p>` : d}
+        ${showNotice ? html`<p class="bsg-notice bsg-notice--inline">${notice}</p>` : nothing}
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, s = A(e, "bsg_"), t = s.animate && !F(), i = this.phototypes, l = this.spfValues, c = this.plan, p = a(e.bsg_title), g = a(e.bsg_desc);
-    return !i.length || !l.length ? r`
+    const c = this.config || {}, theme = readSectionTheme(c, "bsg_"), animate = theme.animate && !prefersReducedMotion(), phototypes = this.phototypes, spfValues = this.spfValues, plan = this.plan, title = localizedString(c.bsg_title), desc = localizedString(c.bsg_desc);
+    return !phototypes.length || !spfValues.length ? html`
         <section
-          class=${z({ "fs-section": !0, "fs-animate": t })}
-          style=${u(N(s))}
-          aria-label=${p || o("دليل الحماية من الشمس", "Sun protection guide")}
+          class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+          style=${styleMap(themeStyleMap(theme))}
+          aria-label=${title || t("دليل الحماية من الشمس", "Sun protection guide")}
         >
           <div class="fs-container">
             <div class="fs-empty" role="status">
-              ${o("أكملي إعدادات العنصر لعرض الدليل.", "Complete the element settings to show the guide.")}
+              ${t("أكملي إعدادات العنصر لعرض الدليل.", "Complete the element settings to show the guide.")}
             </div>
           </div>
         </section>
-      ` : r`
+      ` : html`
       <section
-        class=${z({ "fs-section": !0, "fs-animate": t })}
-        style=${u(N(s))}
-        aria-label=${p || o("دليل الحماية من الشمس", "Sun protection guide")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("دليل الحماية من الشمس", "Sun protection guide")}
         tabindex="0"
       >
         <div class="fs-container">
-          ${p || g ? r`<div class="fs-header">
-                ${p ? r`<h2 class="fs-title">${p}</h2>` : d}
-                ${g ? r`<p class="fs-desc">${g}</p>` : d}
-              </div>` : d}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div class="bsg-wrap">
-            ${this.renderProgress(c.length)}
-            ${this.onResults ? this.renderResults() : r`
+            ${this.renderProgress(plan.length)}
+            ${this.onResults ? this.renderResults() : html`
                   ${this.renderCurrentStep()}
                   ${this.renderNav()}
                 `}
@@ -708,24 +718,24 @@ const ee = 480, $ = class $ extends j {
     `;
   }
 };
-$.styles = [K, O];
-let b = $;
-f([
-  D({ type: Object })
-], b.prototype, "config");
-f([
-  v()
-], b.prototype, "selectedPtId");
-f([
-  v()
-], b.prototype, "selectedSpf");
-f([
-  v()
-], b.prototype, "selectedCondId");
-f([
-  v()
-], b.prototype, "stepIndex");
-typeof b < "u" && b.registerSallaComponent("salla-beauty-spf-guide");
+__name(_BeautySpfGuide, "BeautySpfGuide"), _BeautySpfGuide.styles = [sharedSectionCss, componentStyles];
+let BeautySpfGuide = _BeautySpfGuide;
+__decorateClass([
+  property({ type: Object })
+], BeautySpfGuide.prototype, "config");
+__decorateClass([
+  state()
+], BeautySpfGuide.prototype, "selectedPtId");
+__decorateClass([
+  state()
+], BeautySpfGuide.prototype, "selectedSpf");
+__decorateClass([
+  state()
+], BeautySpfGuide.prototype, "selectedCondId");
+__decorateClass([
+  state()
+], BeautySpfGuide.prototype, "stepIndex");
+typeof BeautySpfGuide < "u" && BeautySpfGuide.registerSallaComponent("salla-beauty-spf-guide");
 export {
-  b as default
+  BeautySpfGuide as default
 };

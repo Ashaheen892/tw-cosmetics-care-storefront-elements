@@ -1,10 +1,12 @@
-import { css as R, LitElement as A, html as s, nothing as p } from "lit";
-import { property as P, state as C } from "lit/decorators.js";
-import { classMap as h } from "lit/directives/class-map.js";
-import { styleMap as f } from "lit/directives/style-map.js";
-import { n as S, l as n, t, g as T, s as E, r as V, p as B, i as N, a as z } from "./sharedStyles-DKbcXBPy.js";
-import { r as O } from "./commerceOutcome-Dk8p2VWM.js";
-const M = R`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, html, nothing } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, l as localizedString, t, g as getRadioValue, s as sharedSectionCss, r as readSectionTheme, p as prefersReducedMotion, i as isTruthy, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   .bac-picker {
     display: grid;
     gap: 0;
@@ -287,37 +289,41 @@ const M = R`
       transition: none !important;
     }
   }
-`, j = ["compatible", "caution", "avoid"];
-function D(l) {
-  const e = T(l, "compatible").toLowerCase();
-  return j.includes(e) ? e : "compatible";
+`, LEVELS = ["compatible", "caution", "avoid"];
+function normalizeLevel(value) {
+  const raw = getRadioValue(value, "compatible").toLowerCase();
+  return LEVELS.includes(raw) ? raw : "compatible";
 }
-function H(l) {
-  return S(l).map((e, i) => {
-    const o = n(e.name);
+__name(normalizeLevel, "normalizeLevel");
+function parseActives(raw) {
+  return normalizeCollection(raw).map((row, i) => {
+    const name = localizedString(row.name);
     return {
-      id: String(e.id ?? e.active_id ?? "").trim() || `active-${i + 1}`,
-      name: o,
-      color: String(e.color ?? "").trim(),
-      desc: n(e.desc)
+      id: String(row.id ?? row.active_id ?? "").trim() || `active-${i + 1}`,
+      name,
+      color: String(row.color ?? "").trim(),
+      desc: localizedString(row.desc)
     };
-  }).filter((e) => e.name);
+  }).filter((a) => a.name);
 }
-function U(l) {
-  return S(l).map((e) => ({
-    a: String(e.a ?? "").trim(),
-    b: String(e.b ?? "").trim(),
-    level: D(e.level),
-    note: n(e.note),
-    timing: n(e.timing)
-  })).filter((e) => e.a && e.b);
+__name(parseActives, "parseActives");
+function parseRules(raw) {
+  return normalizeCollection(raw).map((row) => ({
+    a: String(row.a ?? "").trim(),
+    b: String(row.b ?? "").trim(),
+    level: normalizeLevel(row.level),
+    note: localizedString(row.note),
+    timing: localizedString(row.timing)
+  })).filter((r) => r.a && r.b);
 }
-function Y(l, e, i) {
-  return !e || !i ? null : l.find(
-    (o) => o.a === e && o.b === i || o.a === i && o.b === e
+__name(parseRules, "parseRules");
+function findVerdict(rules, a, b) {
+  return !a || !b ? null : rules.find(
+    (r) => r.a === a && r.b === b || r.a === b && r.b === a
   ) ?? null;
 }
-const q = {
+__name(findVerdict, "findVerdict");
+const TIPS = {
   compatible: {
     ar: "يمكنك دمجهما في روتين واحد — راقبي بشرتك عند أول استخدام.",
     en: "You can use both in one routine — watch your skin on first use."
@@ -331,8 +337,8 @@ const q = {
     en: "Do not combine in the same routine — pick one at a time."
   }
 };
-function F(l, e, i, o) {
-  if (e && i && e === i)
+function resolveVerdict(rules, aId, bId, defaultNote) {
+  if (aId && bId && aId === bId)
     return {
       level: "same",
       note: t(
@@ -343,20 +349,20 @@ function F(l, e, i, o) {
       timing: "",
       hasRule: !1
     };
-  const r = Y(l, e, i);
-  if (r) {
-    const a = q[r.level];
+  const rule = findVerdict(rules, aId, bId);
+  if (rule) {
+    const tip = TIPS[rule.level];
     return {
-      level: r.level,
-      note: r.note || o,
-      tip: t(a.ar, a.en),
-      timing: r.timing,
+      level: rule.level,
+      note: rule.note || defaultNote,
+      tip: t(tip.ar, tip.en),
+      timing: rule.timing,
       hasRule: !0
     };
   }
   return {
     level: "unknown",
-    note: o || t(
+    note: defaultNote || t(
       "لا توجد قاعدة محددة لهذا الزوج — راجعي تعليمات المنتج أو استشيري مختصًا.",
       "No specific rule for this pair — check product labels or consult a professional."
     ),
@@ -368,24 +374,25 @@ function F(l, e, i, o) {
     hasRule: !1
   };
 }
-var G = Object.defineProperty, $ = (l, e, i, o) => {
-  for (var r = void 0, a = l.length - 1, c; a >= 0; a--)
-    (c = l[a]) && (r = c(e, i, r) || r);
-  return r && G(e, i, r), r;
-};
-const I = {
+__name(resolveVerdict, "resolveVerdict");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const VERDICT_COLORS = {
   compatible: "#2f7d5b",
   caution: "#b8791f",
   avoid: "#b23a4a",
   unknown: "#6b7280",
   same: "#8f7a86"
-}, J = {
+}, VERDICT_ICONS = {
   compatible: "✓",
   caution: "!",
   avoid: "✕",
   unknown: "?",
   same: "↔"
-}, k = class k extends A {
+}, _BeautyActivesCompatibility = class _BeautyActivesCompatibility extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.selectedA = "", this.selectedB = "", this.boundLangHandler = () => this.requestUpdate();
   }
@@ -395,39 +402,39 @@ const I = {
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    e.has("config") && (this.selectedA = "", this.selectedB = "");
+  updated(changed) {
+    changed.has("config") && (this.selectedA = "", this.selectedB = "");
   }
   get actives() {
-    var e;
-    return H((e = this.config) == null ? void 0 : e.bac_actives);
+    var _a;
+    return parseActives((_a = this.config) == null ? void 0 : _a.bac_actives);
   }
   get rules() {
-    var e;
-    return U((e = this.config) == null ? void 0 : e.bac_rules);
+    var _a;
+    return parseRules((_a = this.config) == null ? void 0 : _a.bac_rules);
   }
-  resolvePick(e, i, o) {
-    var r, a;
-    return i && e.some((c) => c.id === i) ? i : ((r = e[o]) == null ? void 0 : r.id) ?? ((a = e[0]) == null ? void 0 : a.id) ?? "";
+  resolvePick(actives, current, fallbackIndex) {
+    var _a, _b;
+    return current && actives.some((a) => a.id === current) ? current : ((_a = actives[fallbackIndex]) == null ? void 0 : _a.id) ?? ((_b = actives[0]) == null ? void 0 : _b.id) ?? "";
   }
-  renderChips(e, i, o, r) {
-    return s`
+  renderChips(actives, selectedId, onPick, slotLabel) {
+    return html`
       <div class="bac-slot">
-        <p class="bac-slot__label">${r}</p>
-        <div class="bac-chips" role="group" aria-label=${r}>
-          ${e.map((a) => {
-      const c = a.id === i;
-      return s`
+        <p class="bac-slot__label">${slotLabel}</p>
+        <div class="bac-chips" role="group" aria-label=${slotLabel}>
+          ${actives.map((active) => {
+      const selected = active.id === selectedId;
+      return html`
               <button
                 type="button"
-                class=${h({ "bac-chip": !0, "is-selected": c })}
-                style=${f(a.color ? { "--swatch": a.color } : {})}
-                aria-pressed=${c ? "true" : "false"}
-                title=${a.desc || a.name}
-                @click=${() => o(a.id)}
+                class=${classMap({ "bac-chip": !0, "is-selected": selected })}
+                style=${styleMap(active.color ? { "--swatch": active.color } : {})}
+                aria-pressed=${selected ? "true" : "false"}
+                title=${active.desc || active.name}
+                @click=${() => onPick(active.id)}
               >
                 <span class="bac-chip__swatch" aria-hidden="true"></span>
-                <span>${a.name}</span>
+                <span>${active.name}</span>
               </button>
             `;
     })}
@@ -435,77 +442,77 @@ const I = {
       </div>
     `;
   }
-  renderResult(e, i, o) {
-    const r = this.config || {}, a = e.find((y) => y.id === i) ?? null, c = e.find((y) => y.id === o) ?? null, _ = n(r.bac_default_note) || t(
+  renderResult(actives, aId, bId) {
+    const c = this.config || {}, activeA = actives.find((a) => a.id === aId) ?? null, activeB = actives.find((a) => a.id === bId) ?? null, defaultNote = localizedString(c.bac_default_note) || t(
       "لا توجد قاعدة محددة لهذا الزوج في قاعدة البيانات.",
       "No specific rule for this pair in the database."
-    ), g = {
-      compatible: n(r.bac_label_compatible) || t("متوافقان", "Compatible"),
-      caution: n(r.bac_label_caution) || t("بحذر", "Use with caution"),
-      avoid: n(r.bac_label_avoid) || t("تجنّبي الدمج", "Avoid"),
-      unknown: n(r.bac_label_unknown) || t("لا قاعدة / غير معروف", "No rule / unknown"),
+    ), labels = {
+      compatible: localizedString(c.bac_label_compatible) || t("متوافقان", "Compatible"),
+      caution: localizedString(c.bac_label_caution) || t("بحذر", "Use with caution"),
+      avoid: localizedString(c.bac_label_avoid) || t("تجنّبي الدمج", "Avoid"),
+      unknown: localizedString(c.bac_label_unknown) || t("لا قاعدة / غير معروف", "No rule / unknown"),
       same: t("نفس المكوّن", "Same ingredient")
-    }, v = F(this.rules, i, o, _), { level: d, note: x, tip: u, timing: m } = v, L = I[d], w = n(r.bac_result_title);
-    return s`
+    }, verdict = resolveVerdict(this.rules, aId, bId, defaultNote), { level, note, tip, timing } = verdict, color = VERDICT_COLORS[level], resultTitle = localizedString(c.bac_result_title);
+    return html`
       <div
-        class=${h({ "bac-verdict": !0, [`bac-verdict--${d}`]: !0 })}
+        class=${classMap({ "bac-verdict": !0, [`bac-verdict--${level}`]: !0 })}
         role="region"
         aria-live="polite"
-        aria-label=${g[d]}
-        style=${f({ "--verdict-color": L })}
+        aria-label=${labels[level]}
+        style=${styleMap({ "--verdict-color": color })}
       >
-        ${w ? s`<h3 class="bac-verdict__title">${w}</h3>` : p}
+        ${resultTitle ? html`<h3 class="bac-verdict__title">${resultTitle}</h3>` : nothing}
         <div class="bac-verdict__hero">
-          <span class="bac-verdict__icon" aria-hidden="true">${J[d]}</span>
-          <span class="bac-verdict__badge">${g[d]}</span>
+          <span class="bac-verdict__icon" aria-hidden="true">${VERDICT_ICONS[level]}</span>
+          <span class="bac-verdict__badge">${labels[level]}</span>
         </div>
 
-        ${a && c ? s`<div class="bac-pair" aria-label=${t("المكوّنان المختاران", "Selected pair")}>
+        ${activeA && activeB ? html`<div class="bac-pair" aria-label=${t("المكوّنان المختاران", "Selected pair")}>
               <span class="bac-pair__pill">
                 <span
                   class="bac-pair__dot"
-                  style=${f(a.color ? { background: a.color } : {})}
+                  style=${styleMap(activeA.color ? { background: activeA.color } : {})}
                   aria-hidden="true"
                 ></span>
-                <span>${a.name}</span>
+                <span>${activeA.name}</span>
               </span>
               <span class="bac-pair__vs" aria-hidden="true">+</span>
               <span class="bac-pair__pill">
                 <span
                   class="bac-pair__dot"
-                  style=${f(c.color ? { background: c.color } : {})}
+                  style=${styleMap(activeB.color ? { background: activeB.color } : {})}
                   aria-hidden="true"
                 ></span>
-                <span>${c.name}</span>
+                <span>${activeB.name}</span>
               </span>
-            </div>` : p}
+            </div>` : nothing}
 
-        <p class="bac-verdict__note">${x}</p>
+        <p class="bac-verdict__note">${note}</p>
 
-        ${u ? s`<div class="bac-tip">
+        ${tip ? html`<div class="bac-tip">
               <span class="bac-tip__label">${t("نصيحة", "Tip")}</span>
-              <p class="bac-tip__text">${u}</p>
-            </div>` : p}
+              <p class="bac-tip__text">${tip}</p>
+            </div>` : nothing}
 
-        ${m ? s`<div class="bac-timing">
+        ${timing ? html`<div class="bac-timing">
               <span class="bac-timing__label">${t("التوقيت", "Timing")}</span>
-              <p class="bac-timing__text">${m}</p>
-            </div>` : p}
-        ${O(r, "bac_")}
+              <p class="bac-timing__text">${timing}</p>
+            </div>` : nothing}
+        ${renderCommerceCtaButton(c, "bac_")}
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, i = V(e, "bac_"), o = i.animate && !B(), r = this.actives, a = n(e.bac_title), c = n(e.bac_desc), _ = N(e.bac_show_notice, !0), g = n(e.bac_notice) || t(
+    const c = this.config || {}, theme = readSectionTheme(c, "bac_"), animate = theme.animate && !prefersReducedMotion(), actives = this.actives, title = localizedString(c.bac_title), desc = localizedString(c.bac_desc), showNotice = isTruthy(c.bac_show_notice, !0), notice = localizedString(c.bac_notice) || t(
       "هذه المعلومات توعوية عامة ولا تُغني عن استشارة مختص العناية بالبشرة.",
       "This information is general and educational and does not replace advice from a skincare professional."
     );
-    if (r.length < 2)
-      return s`
+    if (actives.length < 2)
+      return html`
         <section
-          class=${h({ "fs-section": !0, "fs-animate": o })}
-          style=${f(z(i))}
-          aria-label=${a || t("مدقّق توافق المكونات الفعّالة", "Actives compatibility checker")}
+          class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+          style=${styleMap(themeStyleMap(theme))}
+          aria-label=${title || t("مدقّق توافق المكونات الفعّالة", "Actives compatibility checker")}
         >
           <div class="fs-container">
             <div class="fs-empty" role="status">
@@ -514,49 +521,49 @@ const I = {
           </div>
         </section>
       `;
-    const v = this.resolvePick(r, this.selectedA, 0), d = this.resolvePick(r, this.selectedB, 1), x = n(e.bac_pick_a_label) || t("المكوّن الأول", "First active"), u = n(e.bac_pick_b_label) || t("المكوّن الثاني", "Second active");
-    return s`
+    const aId = this.resolvePick(actives, this.selectedA, 0), bId = this.resolvePick(actives, this.selectedB, 1), pickALabel = localizedString(c.bac_pick_a_label) || t("المكوّن الأول", "First active"), pickBLabel = localizedString(c.bac_pick_b_label) || t("المكوّن الثاني", "Second active");
+    return html`
       <section
-        class=${h({ "fs-section": !0, "fs-animate": o })}
-        style=${f(z(i))}
-        aria-label=${a || t("مدقّق توافق المكونات الفعّالة", "Actives compatibility checker")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("مدقّق توافق المكونات الفعّالة", "Actives compatibility checker")}
       >
         <div class="fs-container">
-          ${a || c ? s`<div class="fs-header">
-                ${a ? s`<h2 class="fs-title">${a}</h2>` : p}
-                ${c ? s`<p class="fs-desc">${c}</p>` : p}
-              </div>` : p}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
-          ${this.renderResult(r, v, d)}
+          ${this.renderResult(actives, aId, bId)}
 
           <div class="bac-picker" aria-label=${t("اختيار المكوّنين", "Pick ingredients")}>
-            ${this.renderChips(r, v, (m) => this.selectedA = m, x)}
+            ${this.renderChips(actives, aId, (id) => this.selectedA = id, pickALabel)}
             <div class="bac-divider" aria-hidden="true">
               <span class="bac-divider__line"></span>
               <span class="bac-divider__icon">↕</span>
               <span class="bac-divider__line"></span>
             </div>
-            ${this.renderChips(r, d, (m) => this.selectedB = m, u)}
+            ${this.renderChips(actives, bId, (id) => this.selectedB = id, pickBLabel)}
           </div>
 
-          ${_ ? s`<p class="bac-notice">${g}</p>` : p}
+          ${showNotice ? html`<p class="bac-notice">${notice}</p>` : nothing}
         </div>
       </section>
     `;
   }
 };
-k.styles = [E, M];
-let b = k;
-$([
-  P({ type: Object })
-], b.prototype, "config");
-$([
-  C()
-], b.prototype, "selectedA");
-$([
-  C()
-], b.prototype, "selectedB");
-typeof b < "u" && b.registerSallaComponent("salla-beauty-actives-compatibility");
+__name(_BeautyActivesCompatibility, "BeautyActivesCompatibility"), _BeautyActivesCompatibility.styles = [sharedSectionCss, componentStyles];
+let BeautyActivesCompatibility = _BeautyActivesCompatibility;
+__decorateClass([
+  property({ type: Object })
+], BeautyActivesCompatibility.prototype, "config");
+__decorateClass([
+  state()
+], BeautyActivesCompatibility.prototype, "selectedA");
+__decorateClass([
+  state()
+], BeautyActivesCompatibility.prototype, "selectedB");
+typeof BeautyActivesCompatibility < "u" && BeautyActivesCompatibility.registerSallaComponent("salla-beauty-actives-compatibility");
 export {
-  b as default
+  BeautyActivesCompatibility as default
 };

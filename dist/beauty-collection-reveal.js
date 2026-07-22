@@ -1,10 +1,12 @@
-import { css as x, LitElement as y, nothing as i, html as r } from "lit";
-import { property as $, state as w } from "lit/decorators.js";
-import { classMap as f } from "lit/directives/class-map.js";
-import { styleMap as g } from "lit/directives/style-map.js";
-import { g as k, c as C, n as z, b as S, l as d, e as j, t as l, s as L, i as M, d as X, r as E, p as O, a as I } from "./sharedStyles-DKbcXBPy.js";
-import { r as T } from "./commerceOutcome-Dk8p2VWM.js";
-const A = x`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, nothing, html } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { g as getRadioValue, c as getUnitValue, n as normalizeCollection, b as extractLink, l as localizedString, e as extractImageUrl, t, s as sharedSectionCss, i as isTruthy, d as isExternalUrl, r as readSectionTheme, p as prefersReducedMotion, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   :host {
     direction: inherit;
   }
@@ -386,7 +388,7 @@ const A = x`
       animation: none !important;
     }
   }
-`, Y = [
+`, REVEAL_MODES = [
   "bag",
   "box",
   "drawers",
@@ -394,32 +396,36 @@ const A = x`
   "curtain",
   "carousel"
 ];
-function U(c) {
-  const e = k(c.bcr_mode, "box");
-  return Y.includes(e) ? e : "box";
+function resolveMode(config) {
+  const val = getRadioValue(config.bcr_mode, "box");
+  return REVEAL_MODES.includes(val) ? val : "box";
 }
-function H(c) {
-  const e = C(c.bcr_speed, 140);
-  return Math.max(0, Math.min(600, e));
+__name(resolveMode, "resolveMode");
+function revealStagger(config) {
+  const speed = getUnitValue(config.bcr_speed, 140);
+  return Math.max(0, Math.min(600, speed));
 }
-function R(c) {
-  return c === 1 ? l("بطاقة واحدة", "1 card") : l(`${c} بطاقات`, `${c} cards`);
+__name(revealStagger, "revealStagger");
+function cardCountLabel(count) {
+  return count === 1 ? t("بطاقة واحدة", "1 card") : t(`${count} بطاقات`, `${count} cards`);
 }
-function V(c) {
-  return z(c).map((e) => ({
-    title: d(e.title),
-    subtitle: d(e.subtitle),
-    image: j(e.image),
-    tag: d(e.tag),
-    link: S(e.link)
-  })).filter((e) => e.title || e.image);
+__name(cardCountLabel, "cardCountLabel");
+function parseItems(raw) {
+  return normalizeCollection(raw).map((row) => ({
+    title: localizedString(row.title),
+    subtitle: localizedString(row.subtitle),
+    image: extractImageUrl(row.image),
+    tag: localizedString(row.tag),
+    link: extractLink(row.link)
+  })).filter((item) => item.title || item.image);
 }
-var D = Object.defineProperty, h = (c, e, t, s) => {
-  for (var a = void 0, n = c.length - 1, o; n >= 0; n--)
-    (o = c[n]) && (a = o(e, t, a) || a);
-  return a && D(e, t, a), a;
-};
-const m = class m extends y {
+__name(parseItems, "parseItems");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyCollectionReveal = class _BeautyCollectionReveal extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.revealed = !1, this.boundLangHandler = () => this.requestUpdate(), this.observer = null;
   }
@@ -427,23 +433,23 @@ const m = class m extends y {
     super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler);
   }
   disconnectedCallback() {
-    var e;
-    window.removeEventListener("language-changed", this.boundLangHandler), (e = this.observer) == null || e.disconnect(), this.observer = null, super.disconnectedCallback();
+    var _a;
+    window.removeEventListener("language-changed", this.boundLangHandler), (_a = this.observer) == null || _a.disconnect(), this.observer = null, super.disconnectedCallback();
   }
-  updated(e) {
-    e.has("config") && (this.revealed = !1), this.maybeObserveAutoStart();
+  updated(changed) {
+    changed.has("config") && (this.revealed = !1), this.maybeObserveAutoStart();
   }
   maybeObserveAutoStart() {
-    var t;
-    if (!(!M((t = this.config) == null ? void 0 : t.bcr_auto_start, !1) || this.revealed || this.observer)) {
+    var _a;
+    if (!(!isTruthy((_a = this.config) == null ? void 0 : _a.bcr_auto_start, !1) || this.revealed || this.observer)) {
       if (typeof IntersectionObserver > "u") {
         this.reveal();
         return;
       }
       this.observer = new IntersectionObserver(
-        (s) => {
-          var a;
-          s.some((n) => n.isIntersecting) && (this.reveal(), (a = this.observer) == null || a.disconnect(), this.observer = null);
+        (entries) => {
+          var _a2;
+          entries.some((e) => e.isIntersecting) && (this.reveal(), (_a2 = this.observer) == null || _a2.disconnect(), this.observer = null);
         },
         { threshold: 0.35 }
       ), this.observer.observe(this);
@@ -452,92 +458,92 @@ const m = class m extends y {
   reveal() {
     this.revealed = !0;
   }
-  renderCover(e) {
-    const t = this.config || {}, s = d(t.bcr_cover_image), a = d(t.bcr_cover_title) || d(t.bcr_title), n = d(t.bcr_reveal_btn) || l("اكشفي المجموعة", "Reveal collection"), o = r`
-      ${s ? r`<img class="bcr-cover__img" src=${s} alt="" loading="lazy" decoding="async" />` : i}
+  renderCover(mode) {
+    const c = this.config || {}, coverImg = localizedString(c.bcr_cover_image), coverTitle = localizedString(c.bcr_cover_title) || localizedString(c.bcr_title), btnText = localizedString(c.bcr_reveal_btn) || t("اكشفي المجموعة", "Reveal collection"), inner = html`
+      ${coverImg ? html`<img class="bcr-cover__img" src=${coverImg} alt="" loading="lazy" decoding="async" />` : nothing}
       <div class="bcr-cover__scrim" aria-hidden="true"></div>
       <div class="bcr-cover__inner">
-        ${a ? r`<h3 class="bcr-cover__title">${a}</h3>` : i}
-        <p class="bcr-cover__hint">${l("اضغطي للكشف عن البطاقات", "Tap to reveal the cards")}</p>
-        <button type="button" class="fs-btn bcr-cover__btn" @click=${this.reveal}>${n}</button>
+        ${coverTitle ? html`<h3 class="bcr-cover__title">${coverTitle}</h3>` : nothing}
+        <p class="bcr-cover__hint">${t("اضغطي للكشف عن البطاقات", "Tap to reveal the cards")}</p>
+        <button type="button" class="fs-btn bcr-cover__btn" @click=${this.reveal}>${btnText}</button>
       </div>
     `;
-    return e === "curtain" || e === "petals" ? r`
-        <div class="bcr-cover bcr-cover--${e}" aria-hidden=${this.revealed ? "true" : "false"}>
-          ${o}
+    return mode === "curtain" || mode === "petals" ? html`
+        <div class="bcr-cover bcr-cover--${mode}" aria-hidden=${this.revealed ? "true" : "false"}>
+          ${inner}
         </div>
         <div class="bcr-cover__half bcr-cover__half--start" aria-hidden="true"></div>
         <div class="bcr-cover__half bcr-cover__half--end" aria-hidden="true"></div>
-      ` : r`
-      <div class="bcr-cover bcr-cover--${e}" aria-hidden=${this.revealed ? "true" : "false"}>
-        ${o}
+      ` : html`
+      <div class="bcr-cover bcr-cover--${mode}" aria-hidden=${this.revealed ? "true" : "false"}>
+        ${inner}
       </div>
     `;
   }
-  renderCard(e) {
-    const t = e.link || "", s = t ? X(t) : !1, a = e.image ? r`<div class="bcr-card__media">
+  renderCard(item) {
+    const href = item.link || "", external = href ? isExternalUrl(href) : !1, media = item.image ? html`<div class="bcr-card__media">
           <img
             class="bcr-card__img"
-            src=${e.image}
-            alt=${e.title || ""}
+            src=${item.image}
+            alt=${item.title || ""}
             loading="lazy"
             decoding="async"
           />
-          ${e.tag ? r`<span class="bcr-card__tag">${e.tag}</span>` : i}
-        </div>` : e.tag ? r`<span class="bcr-card__tag bcr-card__tag--standalone">${e.tag}</span>` : i, n = r`
+          ${item.tag ? html`<span class="bcr-card__tag">${item.tag}</span>` : nothing}
+        </div>` : item.tag ? html`<span class="bcr-card__tag bcr-card__tag--standalone">${item.tag}</span>` : nothing, body = html`
       <div class="bcr-card__body">
-        ${e.title ? r`<h3 class="bcr-card__title">${e.title}</h3>` : i}
-        ${e.subtitle ? r`<p class="bcr-card__subtitle">${e.subtitle}</p>` : i}
-        ${t ? r`<span class="bcr-card__link" aria-hidden="true">
-              ${l("اكتشفي المزيد", "Discover more")}
-            </span>` : i}
+        ${item.title ? html`<h3 class="bcr-card__title">${item.title}</h3>` : nothing}
+        ${item.subtitle ? html`<p class="bcr-card__subtitle">${item.subtitle}</p>` : nothing}
+        ${href ? html`<span class="bcr-card__link" aria-hidden="true">
+              ${t("اكتشفي المزيد", "Discover more")}
+            </span>` : nothing}
       </div>
     `;
-    return t ? r`
+    return href ? html`
       <a
         class="bcr-card bcr-card--link"
-        href=${t}
-        target=${s ? "_blank" : i}
-        rel=${s ? "noopener noreferrer" : i}
-        aria-label=${e.title || l("انتقل إلى المجموعة", "Go to collection")}
+        href=${href}
+        target=${external ? "_blank" : nothing}
+        rel=${external ? "noopener noreferrer" : nothing}
+        aria-label=${item.title || t("انتقل إلى المجموعة", "Go to collection")}
       >
-        ${a}${n}
+        ${media}${body}
       </a>
-    ` : r`<article class="bcr-card bcr-card--static" aria-label=${e.title || l("بطاقة المجموعة", "Collection card")}>
-        ${a}${n}
+    ` : html`<article class="bcr-card bcr-card--static" aria-label=${item.title || t("بطاقة المجموعة", "Collection card")}>
+        ${media}${body}
       </article>`;
   }
   render() {
-    const e = this.config || {}, t = E(e, "bcr_"), s = t.animate && !O(), a = U(e), n = H(e), o = d(e.bcr_title), p = d(e.bcr_desc), v = V(e.bcr_items);
-    return v.length ? r`
+    const c = this.config || {}, theme = readSectionTheme(c, "bcr_"), animate = theme.animate && !prefersReducedMotion(), mode = resolveMode(c), stagger = revealStagger(c), title = localizedString(c.bcr_title), desc = localizedString(c.bcr_desc), items = parseItems(c.bcr_items);
+    return items.length ? html`
       <section
-        class=${f({ "fs-section": !0, "fs-animate": s })}
-        style=${g(I(t))}
-        aria-label=${o || l("الكشف الإبداعي عن المجموعة", "Creative collection reveal")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("الكشف الإبداعي عن المجموعة", "Creative collection reveal")}
       >
         <div class="fs-container">
-          ${o || p ? r`<div class="fs-header">
-                ${o ? r`<h2 class="fs-title">${o}</h2>` : i}
-                ${p ? r`<p class="fs-desc">${p}</p>` : i}
-              </div>` : i}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div
-            class=${f({
+            class=${classMap({
       "bcr-scene": !0,
-      "is-open": this.revealed || !s
+      "is-open": this.revealed || !animate
     })}
           >
-            ${this.renderCover(a)}
-            <div class=${f({ "bcr-stage": !0, [`bcr-stage--${a}`]: !0 })}>
-              <div class="bcr-grid" role="list" aria-hidden=${this.revealed || !s ? "false" : "true"}>
-                ${v.map(
-      (u, _) => r`
+            ${this.renderCover(mode)}
+            <div class=${classMap({ "bcr-stage": !0, [`bcr-stage--${mode}`]: !0 })}>
+              <div class="bcr-grid" role="list" aria-hidden=${this.revealed || !animate ? "false" : "true"}>
+                ${items.map(
+      (item, i) => html`
                     <div
                       class="bcr-item"
                       role="listitem"
-                      style=${g({ "--reveal-delay": `${_ * n}ms` })}
+                      style=${styleMap({ "--reveal-delay": `${i * stagger}ms` })}
                     >
-                      ${this.renderCard(u)}
+                      ${this.renderCard(item)}
                     </div>
                   `
     )}
@@ -545,24 +551,24 @@ const m = class m extends y {
             </div>
           </div>
 
-          ${this.revealed ? r`<p class="bcr-count" role="status">${R(v.length)}</p>` : i}
-          ${this.revealed || !s ? r`<div class="bcr-cta">${T(e, "bcr_")}</div>` : i}
+          ${this.revealed ? html`<p class="bcr-count" role="status">${cardCountLabel(items.length)}</p>` : nothing}
+          ${this.revealed || !animate ? html`<div class="bcr-cta">${renderCommerceCtaButton(c, "bcr_")}</div>` : nothing}
         </div>
       </section>
-    ` : r`<div class="fs-empty" role="status">
-        ${l("أضيفي بطاقات المجموعة من إعدادات العنصر", "Add collection cards in the element settings")}
+    ` : html`<div class="fs-empty" role="status">
+        ${t("أضيفي بطاقات المجموعة من إعدادات العنصر", "Add collection cards in the element settings")}
       </div>`;
   }
 };
-m.styles = [L, A];
-let b = m;
-h([
-  $({ type: Object })
-], b.prototype, "config");
-h([
-  w()
-], b.prototype, "revealed");
-typeof b < "u" && b.registerSallaComponent("salla-beauty-collection-reveal");
+__name(_BeautyCollectionReveal, "BeautyCollectionReveal"), _BeautyCollectionReveal.styles = [sharedSectionCss, componentStyles];
+let BeautyCollectionReveal = _BeautyCollectionReveal;
+__decorateClass([
+  property({ type: Object })
+], BeautyCollectionReveal.prototype, "config");
+__decorateClass([
+  state()
+], BeautyCollectionReveal.prototype, "revealed");
+typeof BeautyCollectionReveal < "u" && BeautyCollectionReveal.registerSallaComponent("salla-beauty-collection-reveal");
 export {
-  b as default
+  BeautyCollectionReveal as default
 };

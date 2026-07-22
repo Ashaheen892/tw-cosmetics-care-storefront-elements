@@ -1,10 +1,12 @@
-import { css as I, LitElement as L, html as t, nothing as a } from "lit";
-import { property as B, state as $ } from "lit/decorators.js";
-import { classMap as E } from "lit/directives/class-map.js";
-import { styleMap as v } from "lit/directives/style-map.js";
-import { n as j, b as M, g as P, l as d, f as x, e as R, o as U, s as q, p as _, t as i, r as A, i as y, a as D } from "./sharedStyles-DKbcXBPy.js";
-import { r as F } from "./commerceOutcome-Dk8p2VWM.js";
-const H = I`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, html, nothing } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, b as extractLink, g as getRadioValue, l as localizedString, f as parseTags, e as extractImageUrl, o as getPageLocale, s as sharedSectionCss, p as prefersReducedMotion, t, r as readSectionTheme, i as isTruthy, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   :host {
     display: block;
     direction: inherit;
@@ -409,7 +411,7 @@ const H = I`
       transition: none;
     }
   }
-`, w = [
+`, TEXTURES = [
   { value: "serum", ar: "سيروم", en: "Serum" },
   { value: "gel", ar: "جل", en: "Gel" },
   { value: "cream", ar: "كريم", en: "Cream" },
@@ -419,44 +421,49 @@ const H = I`
   { value: "powder", ar: "بودرة", en: "Powder" },
   { value: "spray", ar: "رذاذ", en: "Spray" }
 ];
-function z() {
-  return U() === "en";
+function isEn() {
+  return getPageLocale() === "en";
 }
-function k(s) {
-  const e = w.find((r) => r.value === s);
-  return e ? z() ? e.en : e.ar : s;
+__name(isEn, "isEn");
+function textureLabel(value) {
+  const def = TEXTURES.find((tex) => tex.value === value);
+  return def ? isEn() ? def.en : def.ar : value;
 }
-function O(s) {
-  const e = new Set(s.map((r) => r.texture).filter(Boolean));
-  return w.filter((r) => e.has(r.value)).map((r) => ({
-    value: r.value,
-    label: z() ? r.en : r.ar
+__name(textureLabel, "textureLabel");
+function usedTextures(ingredients) {
+  const present = new Set(ingredients.map((i) => i.texture).filter(Boolean));
+  return TEXTURES.filter((tex) => present.has(tex.value)).map((tex) => ({
+    value: tex.value,
+    label: isEn() ? tex.en : tex.ar
   }));
 }
-function Y(s) {
-  return j(s).map((e, r) => ({
-    id: `ingredient-${r}`,
-    name: d(e.name),
-    image: R(e.image),
-    color: d(e.color) || "#c2527f",
-    desc: d(e.desc),
-    benefits: x(e.benefits),
-    skin_types: x(e.skin_types),
-    usage_time: d(e.usage_time),
-    note: d(e.note),
-    texture: P(e.texture, "").toLowerCase().trim(),
-    link: M(e.link ?? e["bil_ingredients.link"])
-  })).filter((e) => e.name || e.desc || e.image);
+__name(usedTextures, "usedTextures");
+function parseIngredients(raw) {
+  return normalizeCollection(raw).map((row, index) => ({
+    id: `ingredient-${index}`,
+    name: localizedString(row.name),
+    image: extractImageUrl(row.image),
+    color: localizedString(row.color) || "#c2527f",
+    desc: localizedString(row.desc),
+    benefits: parseTags(row.benefits),
+    skin_types: parseTags(row.skin_types),
+    usage_time: localizedString(row.usage_time),
+    note: localizedString(row.note),
+    texture: getRadioValue(row.texture, "").toLowerCase().trim(),
+    link: extractLink(row.link ?? row["bil_ingredients.link"])
+  })).filter((i) => i.name || i.desc || i.image);
 }
-function V(s, e) {
-  return e ? s.filter((r) => r.texture === e) : s;
+__name(parseIngredients, "parseIngredients");
+function filterByTexture(ingredients, texture) {
+  return texture ? ingredients.filter((i) => i.texture === texture) : ingredients;
 }
-var G = Object.defineProperty, m = (s, e, r, n) => {
-  for (var o = void 0, c = s.length - 1, p; c >= 0; c--)
-    (p = s[c]) && (o = p(e, r, o) || o);
-  return o && G(e, r, o), o;
-};
-const f = class f extends L {
+__name(filterByTexture, "filterByTexture");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyIngredientLab = class _BeautyIngredientLab extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.activeTexture = "", this.selectedId = "", this.boundLangHandler = () => this.requestUpdate();
   }
@@ -466,171 +473,171 @@ const f = class f extends L {
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    e.has("config") && this.ensureSelection();
+  updated(changed) {
+    changed.has("config") && this.ensureSelection();
   }
   get ingredients() {
-    var e;
-    return Y((e = this.config) == null ? void 0 : e.bil_ingredients);
+    var _a;
+    return parseIngredients((_a = this.config) == null ? void 0 : _a.bil_ingredients);
   }
   get filtered() {
-    return V(this.ingredients, this.activeTexture);
+    return filterByTexture(this.ingredients, this.activeTexture);
   }
   ensureSelection() {
-    var r;
-    const e = this.filtered;
-    e.some((n) => n.id === this.selectedId) || (this.selectedId = ((r = e[0]) == null ? void 0 : r.id) ?? "");
+    var _a;
+    const list = this.filtered;
+    list.some((i) => i.id === this.selectedId) || (this.selectedId = ((_a = list[0]) == null ? void 0 : _a.id) ?? "");
   }
   get selected() {
-    return this.filtered.find((e) => e.id === this.selectedId) || null;
+    return this.filtered.find((i) => i.id === this.selectedId) || null;
   }
-  setTexture(e) {
-    this.activeTexture = this.activeTexture === e ? "" : e, this.ensureSelection();
+  setTexture(texture) {
+    this.activeTexture = this.activeTexture === texture ? "" : texture, this.ensureSelection();
   }
-  select(e) {
-    this.selectedId = e.id, window.matchMedia("(max-width: 859px)").matches && requestAnimationFrame(() => {
-      const r = this.renderRoot.querySelector(".bil-detail");
-      r == null || r.scrollIntoView({ behavior: _() ? "auto" : "smooth", block: "nearest" });
+  select(ingredient) {
+    this.selectedId = ingredient.id, window.matchMedia("(max-width: 859px)").matches && requestAnimationFrame(() => {
+      const detail = this.renderRoot.querySelector(".bil-detail");
+      detail == null || detail.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "nearest" });
     });
   }
-  renderBadge(e, r = "bil-card__badge") {
-    return e.image ? t`<img class=${r} src=${e.image} alt="" loading="lazy" />` : t`<span class=${r} style=${v({ background: e.color })} aria-hidden="true">
-          ${(e.name || "•").slice(0, 1)}
+  renderBadge(ingredient, cls = "bil-card__badge") {
+    return ingredient.image ? html`<img class=${cls} src=${ingredient.image} alt="" loading="lazy" />` : html`<span class=${cls} style=${styleMap({ background: ingredient.color })} aria-hidden="true">
+          ${(ingredient.name || "•").slice(0, 1)}
         </span>`;
   }
-  renderDetail(e, r) {
-    return t`
+  renderDetail(ingredient, showLink) {
+    return html`
       <div class="bil-detail" aria-live="polite">
         <div class="bil-detail__head">
-          ${this.renderBadge(e, "bil-detail__badge")}
+          ${this.renderBadge(ingredient, "bil-detail__badge")}
           <div>
-            <p class="bil-detail__eyebrow">${i("المكوّن المختار", "Selected ingredient")}</p>
-            <h3 class="bil-detail__title">${e.name || i("مكوّن", "Ingredient")}</h3>
-            ${e.texture ? t`<span class="bil-detail__texture">${k(e.texture)}</span>` : a}
+            <p class="bil-detail__eyebrow">${t("المكوّن المختار", "Selected ingredient")}</p>
+            <h3 class="bil-detail__title">${ingredient.name || t("مكوّن", "Ingredient")}</h3>
+            ${ingredient.texture ? html`<span class="bil-detail__texture">${textureLabel(ingredient.texture)}</span>` : nothing}
           </div>
         </div>
 
-        ${e.desc ? t`<p class="bil-detail__desc">${e.desc}</p>` : a}
+        ${ingredient.desc ? html`<p class="bil-detail__desc">${ingredient.desc}</p>` : nothing}
 
-        ${e.benefits.length ? t`<div class="bil-block">
-              <h4 class="bil-block__title">${i("الفوائد", "Benefits")}</h4>
+        ${ingredient.benefits.length ? html`<div class="bil-block">
+              <h4 class="bil-block__title">${t("الفوائد", "Benefits")}</h4>
               <div class="bil-chips">
-                ${e.benefits.map((n) => t`<span class="bil-chip">${n}</span>`)}
+                ${ingredient.benefits.map((b) => html`<span class="bil-chip">${b}</span>`)}
               </div>
-            </div>` : a}
+            </div>` : nothing}
 
-        ${e.skin_types.length ? t`<div class="bil-block">
-              <h4 class="bil-block__title">${i("أنواع البشرة المناسبة", "Suitable skin types")}</h4>
+        ${ingredient.skin_types.length ? html`<div class="bil-block">
+              <h4 class="bil-block__title">${t("أنواع البشرة المناسبة", "Suitable skin types")}</h4>
               <div class="bil-chips">
-                ${e.skin_types.map((n) => t`<span class="bil-chip bil-chip--soft">${n}</span>`)}
+                ${ingredient.skin_types.map((s) => html`<span class="bil-chip bil-chip--soft">${s}</span>`)}
               </div>
-            </div>` : a}
+            </div>` : nothing}
 
-        ${e.usage_time ? t`<div class="bil-block">
-              <h4 class="bil-block__title">${i("وقت الاستخدام", "Usage time")}</h4>
-              <p class="bil-block__text">${e.usage_time}</p>
-            </div>` : a}
+        ${ingredient.usage_time ? html`<div class="bil-block">
+              <h4 class="bil-block__title">${t("وقت الاستخدام", "Usage time")}</h4>
+              <p class="bil-block__text">${ingredient.usage_time}</p>
+            </div>` : nothing}
 
-        ${e.note ? t`<div class="bil-note"><span aria-hidden="true">⚠︎</span><span>${e.note}</span></div> ` : a}
+        ${ingredient.note ? html`<div class="bil-note"><span aria-hidden="true">⚠︎</span><span>${ingredient.note}</span></div> ` : nothing}
 
         <div class="fs-actions">
-          ${e.link && r ? t`<a class="fs-btn fs-btn--ghost bil-link" href=${e.link}>${i("اعرفي المزيد", "Learn more")}</a>` : a}
-          ${F(this.config || {}, "bil_")}
+          ${ingredient.link && showLink ? html`<a class="fs-btn fs-btn--ghost bil-link" href=${ingredient.link}>${t("اعرفي المزيد", "Learn more")}</a>` : nothing}
+          ${renderCommerceCtaButton(this.config || {}, "bil_")}
         </div>
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, r = A(e, "bil_"), n = r.animate && !_(), o = d(e.bil_title), c = d(e.bil_desc), p = this.ingredients, g = this.filtered, u = O(p), h = this.selected, T = y(e.bil_show_link, !0), S = y(e.bil_bubbles, !0) && n;
-    return p.length ? t`
+    const c = this.config || {}, theme = readSectionTheme(c, "bil_"), animate = theme.animate && !prefersReducedMotion(), title = localizedString(c.bil_title), desc = localizedString(c.bil_desc), ingredients = this.ingredients, filtered = this.filtered, textures = usedTextures(ingredients), selected = this.selected, showLink = isTruthy(c.bil_show_link, !0), showBubbles = isTruthy(c.bil_bubbles, !0) && animate;
+    return ingredients.length ? html`
       <section
-        class=${E({ "fs-section": !0, "fs-animate": n })}
-        style=${v(D(r))}
-        aria-label=${o || i("مختبر المكونات والقوام", "Ingredient & texture lab")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("مختبر المكونات والقوام", "Ingredient & texture lab")}
       >
         <div class="fs-container">
-          ${o || c ? t`<div class="fs-header">
-                ${o ? t`<h2 class="fs-title">${o}</h2>` : a}
-                ${c ? t`<p class="fs-desc">${c}</p>` : a}
-              </div>` : a}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div class="bil-stage">
-            ${S ? t`<div class="bil-bubbles" aria-hidden="true">
+            ${showBubbles ? html`<div class="bil-bubbles" aria-hidden="true">
                   <span class="bil-bubble" style="width:70px;height:70px;inset-inline-start:8%;top:12%"></span>
                   <span class="bil-bubble" style="width:44px;height:44px;inset-inline-end:14%;top:24%;animation-delay:1.5s"></span>
                   <span class="bil-bubble" style="width:90px;height:90px;inset-inline-end:6%;bottom:10%;animation-delay:0.8s"></span>
                   <span class="bil-bubble" style="width:36px;height:36px;inset-inline-start:22%;bottom:16%;animation-delay:2.2s"></span>
-                </div>` : a}
+                </div>` : nothing}
 
-            ${u.length ? t`<div class="bil-filter-wrap">
-                  <span class="bil-filter__label">${i("القوام", "Texture")}</span>
-                  <div class="bil-segment" role="group" aria-label=${i("فلترة حسب القوام", "Filter by texture")}>
+            ${textures.length ? html`<div class="bil-filter-wrap">
+                  <span class="bil-filter__label">${t("القوام", "Texture")}</span>
+                  <div class="bil-segment" role="group" aria-label=${t("فلترة حسب القوام", "Filter by texture")}>
                     <button
                       type="button"
                       class="bil-segment__btn"
                       aria-pressed=${this.activeTexture === "" ? "true" : "false"}
                       @click=${() => this.setTexture("")}
                     >
-                      ${i("الكل", "All")}
+                      ${t("الكل", "All")}
                     </button>
-                    ${u.map(
-      (l) => t`<button
+                    ${textures.map(
+      (tex) => html`<button
                         type="button"
                         class="bil-segment__btn"
-                        aria-pressed=${this.activeTexture === l.value ? "true" : "false"}
-                        @click=${() => this.setTexture(l.value)}
+                        aria-pressed=${this.activeTexture === tex.value ? "true" : "false"}
+                        @click=${() => this.setTexture(tex.value)}
                       >
-                        ${l.label}
+                        ${tex.label}
                       </button>`
     )}
                   </div>
-                </div>` : a}
+                </div>` : nothing}
 
             <div class="bil-body">
               <div class="bil-grid" role="list">
-                ${g.length ? g.map((l) => {
-      const C = l.id === this.selectedId;
-      return t`<button
+                ${filtered.length ? filtered.map((ingredient) => {
+      const active = ingredient.id === this.selectedId;
+      return html`<button
                         type="button"
                         class="bil-card"
                         role="listitem"
-                        aria-pressed=${C ? "true" : "false"}
-                        @click=${() => this.select(l)}
+                        aria-pressed=${active ? "true" : "false"}
+                        @click=${() => this.select(ingredient)}
                       >
-                        ${this.renderBadge(l)}
+                        ${this.renderBadge(ingredient)}
                         <span class="bil-card__text">
-                          <span class="bil-card__name">${l.name || i("مكوّن", "Ingredient")}</span>
-                          ${l.texture ? t`<span class="bil-card__texture">${k(l.texture)}</span>` : a}
+                          <span class="bil-card__name">${ingredient.name || t("مكوّن", "Ingredient")}</span>
+                          ${ingredient.texture ? html`<span class="bil-card__texture">${textureLabel(ingredient.texture)}</span>` : nothing}
                         </span>
                         <span class="bil-card__check" aria-hidden="true">✓</span>
                       </button>`;
-    }) : t`<div class="bil-empty" role="status">
-                      ${i("لا توجد مكونات بهذا القوام.", "No ingredients with this texture.")}
+    }) : html`<div class="bil-empty" role="status">
+                      ${t("لا توجد مكونات بهذا القوام.", "No ingredients with this texture.")}
                     </div>`}
               </div>
 
-              ${h ? this.renderDetail(h, T) : a}
+              ${selected ? this.renderDetail(selected, showLink) : nothing}
             </div>
           </div>
         </div>
       </section>
-    ` : t`<div class="fs-empty" role="status">
-        ${i("أضيفي المكونات الفعالة من إعدادات العنصر", "Add active ingredients in the element settings")}
+    ` : html`<div class="fs-empty" role="status">
+        ${t("أضيفي المكونات الفعالة من إعدادات العنصر", "Add active ingredients in the element settings")}
       </div>`;
   }
 };
-f.styles = [q, H];
-let b = f;
-m([
-  B({ type: Object })
-], b.prototype, "config");
-m([
-  $()
-], b.prototype, "activeTexture");
-m([
-  $()
-], b.prototype, "selectedId");
-typeof b < "u" && b.registerSallaComponent("salla-beauty-ingredient-lab");
+__name(_BeautyIngredientLab, "BeautyIngredientLab"), _BeautyIngredientLab.styles = [sharedSectionCss, componentStyles];
+let BeautyIngredientLab = _BeautyIngredientLab;
+__decorateClass([
+  property({ type: Object })
+], BeautyIngredientLab.prototype, "config");
+__decorateClass([
+  state()
+], BeautyIngredientLab.prototype, "activeTexture");
+__decorateClass([
+  state()
+], BeautyIngredientLab.prototype, "selectedId");
+typeof BeautyIngredientLab < "u" && BeautyIngredientLab.registerSallaComponent("salla-beauty-ingredient-lab");
 export {
-  b as default
+  BeautyIngredientLab as default
 };

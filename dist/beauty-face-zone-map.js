@@ -1,10 +1,12 @@
-import { css as N, LitElement as O, nothing as s, html as t } from "lit";
-import { property as Z, state as j } from "lit/decorators.js";
-import { classMap as v } from "lit/directives/class-map.js";
-import { styleMap as _ } from "lit/directives/style-map.js";
-import { n as R, l as p, b as U, e as W, f as q, h as y, j as u, g as w, s as F, k as G, m as K, t as i, i as h, r as V, p as X, a as B } from "./sharedStyles-DKbcXBPy.js";
-import { r as J } from "./commerceOutcome-Dk8p2VWM.js";
-const Q = N`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, nothing, html } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, l as localizedString, b as extractLink, e as extractImageUrl, f as parseTags, h as clamp, j as toNumber, g as getRadioValue, s as sharedSectionCss, k as safeStorageGet, m as safeStorageSet, t, i as isTruthy, r as readSectionTheme, p as prefersReducedMotion, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   :host {
     display: block;
     direction: inherit;
@@ -652,128 +654,133 @@ const Q = N`
       transition: none !important;
     }
   }
-`, ee = ["pulse", "ring", "number", "icon", "area", "label"];
-function S(d) {
-  const e = p(d, "");
-  return e ? e.split(/\r?\n|،|;|,/).map((a) => a.trim()).filter(Boolean) : [];
+`, DOT_SHAPES = ["pulse", "ring", "number", "icon", "area", "label"];
+function splitList(raw) {
+  const text = localizedString(raw, "");
+  return text ? text.split(/\r?\n|،|;|,/).map((part) => part.trim()).filter(Boolean) : [];
 }
-function re(d) {
-  return R(d).map((e, a) => {
-    const r = p(e.name), o = p(e.title) || r;
+__name(splitList, "splitList");
+function parseZones(raw) {
+  return normalizeCollection(raw).map((z, i) => {
+    const name = localizedString(z.name), title = localizedString(z.title) || name;
     return {
-      id: String(e.id ?? e.zone_id ?? "").trim() || `zone-${a + 1}`,
-      name: r,
-      x: y(u(e.x, 50), 0, 100),
-      y: y(u(e.y, 50), 0, 100),
-      dotSize: y(u(e.dot_size, 30), 12, 120),
-      dotColor: String(e.dot_color ?? "").trim(),
-      icon: String(e.icon ?? "").trim(),
-      title: o,
-      desc: p(e.desc),
-      tags: q(e.tags),
-      steps: S(e.steps),
-      tips: S(e.tips),
-      warning: p(e.warning),
-      image: W(e.image),
-      link: U(e.link)
+      id: String(z.id ?? z.zone_id ?? "").trim() || `zone-${i + 1}`,
+      name,
+      x: clamp(toNumber(z.x, 50), 0, 100),
+      y: clamp(toNumber(z.y, 50), 0, 100),
+      dotSize: clamp(toNumber(z.dot_size, 30), 12, 120),
+      dotColor: String(z.dot_color ?? "").trim(),
+      icon: String(z.icon ?? "").trim(),
+      title,
+      desc: localizedString(z.desc),
+      tags: parseTags(z.tags),
+      steps: splitList(z.steps),
+      tips: splitList(z.tips),
+      warning: localizedString(z.warning),
+      image: extractImageUrl(z.image),
+      link: extractLink(z.link)
     };
-  }).filter((e) => e.name || e.title || e.desc);
+  }).filter((z) => z.name || z.title || z.desc);
 }
-function te(d) {
-  const e = w(d.bfz_dot_shape, "pulse");
-  return ee.includes(e) ? e : "pulse";
+__name(parseZones, "parseZones");
+function resolveDotShape(config) {
+  const value = getRadioValue(config.bfz_dot_shape, "pulse");
+  return DOT_SHAPES.includes(value) ? value : "pulse";
 }
-function ae(d) {
-  return w(d.bfz_detail_mode, "inline") === "sheet" ? "sheet" : "inline";
+__name(resolveDotShape, "resolveDotShape");
+function resolveDetailMode(config) {
+  return getRadioValue(config.bfz_detail_mode, "inline") === "sheet" ? "sheet" : "inline";
 }
-function oe(d, e = "3/4") {
-  return (w(d.bfz_aspect, e) || e).replace("/", " / ");
+__name(resolveDetailMode, "resolveDetailMode");
+function resolveAspect(config, fallback = "3/4") {
+  return (getRadioValue(config.bfz_aspect, fallback) || fallback).replace("/", " / ");
 }
-var se = Object.defineProperty, $ = (d, e, a, r) => {
-  for (var o = void 0, c = d.length - 1, n; c >= 0; c--)
-    (n = d[c]) && (o = n(e, a, o) || o);
-  return o && se(e, a, o), o;
-};
-const L = "tw-bfz-coach-seen", k = class k extends O {
+__name(resolveAspect, "resolveAspect");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const COACH_KEY = "tw-bfz-coach-seen", _BeautyFaceZoneMap = class _BeautyFaceZoneMap extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.activeId = "", this.showCoach = !1, this.boundLangHandler = () => this.requestUpdate();
   }
   connectedCallback() {
-    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.showCoach = !G(L, !1);
+    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.showCoach = !safeStorageGet(COACH_KEY, !1);
   }
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    e.has("config") && (this.activeId = this.defaultZoneId(this.zones));
+  updated(changed) {
+    changed.has("config") && (this.activeId = this.defaultZoneId(this.zones));
   }
   dismissCoach() {
-    this.showCoach = !1, K(L, !0);
+    this.showCoach = !1, safeStorageSet(COACH_KEY, !0);
   }
   get zones() {
-    var e;
-    return re((e = this.config) == null ? void 0 : e.bfz_zones);
+    var _a;
+    return parseZones((_a = this.config) == null ? void 0 : _a.bfz_zones);
   }
   /** Merchant preset, otherwise the first zone — never leave the panel empty. */
-  defaultZoneId(e) {
-    var r, o;
-    if (!e.length) return "";
-    const a = String(((r = this.config) == null ? void 0 : r.bfz_default_zone) ?? "").trim();
-    return a && e.some((c) => c.id === a) ? a : ((o = e[0]) == null ? void 0 : o.id) ?? "";
+  defaultZoneId(zones) {
+    var _a, _b;
+    if (!zones.length) return "";
+    const preset = String(((_a = this.config) == null ? void 0 : _a.bfz_default_zone) ?? "").trim();
+    return preset && zones.some((z) => z.id === preset) ? preset : ((_b = zones[0]) == null ? void 0 : _b.id) ?? "";
   }
-  resolveActive(e) {
-    if (!e.length || this.activeId === "__none__") return null;
+  resolveActive(zones) {
+    if (!zones.length || this.activeId === "__none__") return null;
     if (this.activeId) {
-      const r = e.find((o) => o.id === this.activeId);
-      if (r) return r;
+      const found = zones.find((z) => z.id === this.activeId);
+      if (found) return found;
     }
-    const a = this.defaultZoneId(e);
-    return e.find((r) => r.id === a) ?? e[0] ?? null;
+    const fallbackId = this.defaultZoneId(zones);
+    return zones.find((z) => z.id === fallbackId) ?? zones[0] ?? null;
   }
-  select(e) {
-    this.activeId = e, this.dismissCoach();
+  select(id) {
+    this.activeId = id, this.dismissCoach();
   }
-  step(e, a) {
-    var n;
-    const r = this.resolveActive(e), c = ((r ? e.findIndex((f) => f.id === r.id) : -1) + a + e.length) % e.length;
-    this.activeId = ((n = e[c]) == null ? void 0 : n.id) ?? "", this.dismissCoach();
+  step(zones, dir) {
+    var _a;
+    const active = this.resolveActive(zones), next = ((active ? zones.findIndex((z) => z.id === active.id) : -1) + dir + zones.length) % zones.length;
+    this.activeId = ((_a = zones[next]) == null ? void 0 : _a.id) ?? "", this.dismissCoach();
   }
-  renderDot(e, a, r, o, c, n, f) {
-    const l = f === e.id, b = e.name || e.title, x = a === "label" || c, z = r || n;
-    return t`
+  renderDot(zone, shape, pulse, index, showNames, coachPulse, activeId) {
+    const active = activeId === zone.id, label = zone.name || zone.title, withLabel = shape === "label" || showNames, shouldPulse = pulse || coachPulse;
+    return html`
       <button
         type="button"
-        class=${v({
+        class=${classMap({
       "bfz-dot": !0,
-      [`bfz-dot--${a}`]: !0,
-      "is-active": l,
-      "is-coach-pulse": n && !l
+      [`bfz-dot--${shape}`]: !0,
+      "is-active": active,
+      "is-coach-pulse": coachPulse && !active
     })}
-        style=${_({
-      "--dot-x": `${e.x}%`,
-      "--dot-y": `${e.y}%`,
-      "--dot-size": `${e.dotSize}px`,
-      ...e.dotColor ? { "--dot-color": e.dotColor } : {}
+        style=${styleMap({
+      "--dot-x": `${zone.x}%`,
+      "--dot-y": `${zone.y}%`,
+      "--dot-size": `${zone.dotSize}px`,
+      ...zone.dotColor ? { "--dot-color": zone.dotColor } : {}
     })}
-        aria-pressed=${l ? "true" : "false"}
+        aria-pressed=${active ? "true" : "false"}
         aria-controls="bfz-detail"
-        aria-label=${b}
-        title=${b}
-        @click=${() => this.select(e.id)}
+        aria-label=${label}
+        title=${label}
+        @click=${() => this.select(zone.id)}
       >
-        ${z ? t`<span class="bfz-dot__pulse" aria-hidden="true"></span>` : s}
-        ${a === "number" ? t`<span>${o + 1}</span>` : a === "icon" && e.icon ? t`<span class=${e.icon.startsWith("sicon-") ? e.icon : ""}>${e.icon.startsWith("sicon-") ? "" : e.icon}</span>` : s}
-        ${x ? t`<span class="bfz-dot__label">${b}</span>` : s}
+        ${shouldPulse ? html`<span class="bfz-dot__pulse" aria-hidden="true"></span>` : nothing}
+        ${shape === "number" ? html`<span>${index + 1}</span>` : shape === "icon" && zone.icon ? html`<span class=${zone.icon.startsWith("sicon-") ? zone.icon : ""}>${zone.icon.startsWith("sicon-") ? "" : zone.icon}</span>` : nothing}
+        ${withLabel ? html`<span class="bfz-dot__label">${label}</span>` : nothing}
       </button>
     `;
   }
-  renderEmptyPanel(e) {
-    return t`<div class="bfz-panel bfz-panel--empty" id="bfz-detail" role="region">
+  renderEmptyPanel(detailMode) {
+    return html`<div class="bfz-panel bfz-panel--empty" id="bfz-detail" role="region">
       <div class="bfz-empty-state">
         <span class="bfz-empty-state__icon" aria-hidden="true">◎</span>
-        <h3 class="bfz-empty-state__title">${i("اختاري منطقة", "Pick a zone")}</h3>
+        <h3 class="bfz-empty-state__title">${t("اختاري منطقة", "Pick a zone")}</h3>
         <p class="bfz-empty-state__text">
-          ${i(
+          ${t(
       "اضغطي على أي نقطة في الخريطة لعرض خطوات العناية والنصائح الخاصة بكل منطقة.",
       "Tap any hotspot on the map to see care steps and tips for that zone."
     )}
@@ -781,154 +788,154 @@ const L = "tw-bfz-coach-seen", k = class k extends O {
       </div>
     </div>`;
   }
-  renderLegend(e, a) {
-    return e.length < 2 ? s : t`
-      <div class="bfz-legend" role="tablist" aria-label=${i("مناطق الوجه", "Face zones")}>
-        ${e.map(
-      (r) => t`
+  renderLegend(zones, activeId) {
+    return zones.length < 2 ? nothing : html`
+      <div class="bfz-legend" role="tablist" aria-label=${t("مناطق الوجه", "Face zones")}>
+        ${zones.map(
+      (zone) => html`
             <button
               type="button"
               role="tab"
-              class=${v({ "bfz-legend__btn": !0, "is-active": a === r.id })}
-              style=${_(r.dotColor ? { "--dot-color": r.dotColor } : {})}
-              aria-selected=${a === r.id ? "true" : "false"}
-              @click=${() => this.select(r.id)}
+              class=${classMap({ "bfz-legend__btn": !0, "is-active": activeId === zone.id })}
+              style=${styleMap(zone.dotColor ? { "--dot-color": zone.dotColor } : {})}
+              aria-selected=${activeId === zone.id ? "true" : "false"}
+              @click=${() => this.select(zone.id)}
             >
               <span class="bfz-legend__swatch" aria-hidden="true"></span>
-              <span>${r.name || r.title}</span>
+              <span>${zone.name || zone.title}</span>
             </button>
           `
     )}
       </div>
     `;
   }
-  renderDetail(e, a) {
-    if (!e)
-      return this.renderEmptyPanel(a);
-    const r = this.config || {}, o = h(r.bfz_show_nav, !0) && this.zones.length > 1, c = i("خطوات العناية", "Care steps"), n = i("نصائح", "Tips"), f = this.zones.findIndex((l) => l.id === e.id);
-    return t`
+  renderDetail(zone, mode) {
+    if (!zone)
+      return this.renderEmptyPanel(mode);
+    const c = this.config || {}, showNav = isTruthy(c.bfz_show_nav, !0) && this.zones.length > 1, stepsTitle = t("خطوات العناية", "Care steps"), tipsTitle = t("نصائح", "Tips"), zoneIndex = this.zones.findIndex((z) => z.id === zone.id);
+    return html`
       <div class="bfz-panel" id="bfz-detail" role="region" aria-live="polite">
         <div class="bfz-panel__head">
           <div>
             <p class="bfz-panel__eyebrow">
-              ${i("منطقة العناية", "Care zone")}${f >= 0 ? ` · ${f + 1}/${this.zones.length}` : ""}
+              ${t("منطقة العناية", "Care zone")}${zoneIndex >= 0 ? ` · ${zoneIndex + 1}/${this.zones.length}` : ""}
             </p>
-            <h3 class="bfz-panel__title">${e.title || e.name}</h3>
+            <h3 class="bfz-panel__title">${zone.title || zone.name}</h3>
           </div>
           <div class="bfz-nav">
-            ${a === "sheet" ? t`<button
+            ${mode === "sheet" ? html`<button
                   type="button"
                   class="bfz-nav__btn bfz-sheet-close"
-                  aria-label=${i("إغلاق", "Close")}
+                  aria-label=${t("إغلاق", "Close")}
                   @click=${() => this.activeId = "__none__"}
-                >✕</button>` : s}
-            ${o ? t`
-                  <button type="button" class="bfz-nav__btn" aria-label=${i("السابق", "Previous")} @click=${() => this.step(this.zones, -1)}>‹</button>
-                  <button type="button" class="bfz-nav__btn" aria-label=${i("التالي", "Next")} @click=${() => this.step(this.zones, 1)}>›</button>
-                ` : s}
+                >✕</button>` : nothing}
+            ${showNav ? html`
+                  <button type="button" class="bfz-nav__btn" aria-label=${t("السابق", "Previous")} @click=${() => this.step(this.zones, -1)}>‹</button>
+                  <button type="button" class="bfz-nav__btn" aria-label=${t("التالي", "Next")} @click=${() => this.step(this.zones, 1)}>›</button>
+                ` : nothing}
           </div>
         </div>
 
-        ${e.image ? t`<img class="bfz-panel__img" src=${e.image} alt="" loading="lazy" decoding="async" />` : s}
-        ${e.desc ? t`<p class="bfz-panel__desc">${e.desc}</p>` : s}
+        ${zone.image ? html`<img class="bfz-panel__img" src=${zone.image} alt="" loading="lazy" decoding="async" />` : nothing}
+        ${zone.desc ? html`<p class="bfz-panel__desc">${zone.desc}</p>` : nothing}
 
-        ${e.tags.length ? t`<div class="bfz-tags">${e.tags.map((l) => t`<span class="bfz-tag">${l}</span>`)}</div>` : s}
+        ${zone.tags.length ? html`<div class="bfz-tags">${zone.tags.map((tag) => html`<span class="bfz-tag">${tag}</span>`)}</div>` : nothing}
 
-        ${e.steps.length ? t`<div class="bfz-block">
-              <h4 class="bfz-block__title">${c}</h4>
-              <ol class="bfz-steps">${e.steps.map((l) => t`<li>${l}</li>`)}</ol>
-            </div>` : s}
+        ${zone.steps.length ? html`<div class="bfz-block">
+              <h4 class="bfz-block__title">${stepsTitle}</h4>
+              <ol class="bfz-steps">${zone.steps.map((s) => html`<li>${s}</li>`)}</ol>
+            </div>` : nothing}
 
-        ${e.tips.length ? t`<div class="bfz-block">
-              <h4 class="bfz-block__title">${n}</h4>
-              <ul class="bfz-tips">${e.tips.map((l) => t`<li>${l}</li>`)}</ul>
-            </div>` : s}
+        ${zone.tips.length ? html`<div class="bfz-block">
+              <h4 class="bfz-block__title">${tipsTitle}</h4>
+              <ul class="bfz-tips">${zone.tips.map((tip) => html`<li>${tip}</li>`)}</ul>
+            </div>` : nothing}
 
-        ${e.warning ? t`<div class="bfz-warn"><span aria-hidden="true">⚠︎</span><span>${e.warning}</span></div>` : s}
+        ${zone.warning ? html`<div class="bfz-warn"><span aria-hidden="true">⚠︎</span><span>${zone.warning}</span></div>` : nothing}
 
         <div class="fs-actions">
-          ${J(r, "bfz_", { href: e.link })}
+          ${renderCommerceCtaButton(c, "bfz_", { href: zone.link })}
         </div>
       </div>
     `;
   }
   render() {
-    const e = this.config || {}, a = V(e, "bfz_"), r = a.animate && !X(), o = this.zones, c = p(e.bfz_face_image), n = p(e.bfz_title), f = p(e.bfz_desc), l = te(e), b = ae(e), x = h(e.bfz_pulse, !0) && r, z = Math.max(600, u(e.bfz_pulse_speed, 2200)), D = h(e.bfz_reverse, !1), T = h(e.bfz_show_names, !1), A = oe(e), m = this.resolveActive(o), E = h(e.bfz_show_notice, !0), M = p(e.bfz_notice) || i("المعلومات المعروضة توعوية ولا تُعد تشخيصًا طبيًا.", "The information shown is educational and is not a medical diagnosis."), C = (m == null ? void 0 : m.id) ?? "", I = this.showCoach && !m;
-    if (!o.length)
-      return t`<div class="fs-empty" role="status">
-        ${i("أضيفي مناطق الوجه من إعدادات العنصر لعرض الخريطة التفاعلية.", "Add face zones in the element settings to show the interactive map.")}
+    const c = this.config || {}, theme = readSectionTheme(c, "bfz_"), animate = theme.animate && !prefersReducedMotion(), zones = this.zones, faceImage = localizedString(c.bfz_face_image), title = localizedString(c.bfz_title), desc = localizedString(c.bfz_desc), shape = resolveDotShape(c), detailMode = resolveDetailMode(c), pulse = isTruthy(c.bfz_pulse, !0) && animate, pulseSpeed = Math.max(600, toNumber(c.bfz_pulse_speed, 2200)), reverse = isTruthy(c.bfz_reverse, !1), showNames = isTruthy(c.bfz_show_names, !1), aspect = resolveAspect(c), active = this.resolveActive(zones), showNotice = isTruthy(c.bfz_show_notice, !0), notice = localizedString(c.bfz_notice) || t("المعلومات المعروضة توعوية ولا تُعد تشخيصًا طبيًا.", "The information shown is educational and is not a medical diagnosis."), activeZoneId = (active == null ? void 0 : active.id) ?? "", coachActive = this.showCoach && !active;
+    if (!zones.length)
+      return html`<div class="fs-empty" role="status">
+        ${t("أضيفي مناطق الوجه من إعدادات العنصر لعرض الخريطة التفاعلية.", "Add face zones in the element settings to show the interactive map.")}
       </div>`;
-    const P = b === "sheet" && !!m;
-    return t`
+    const sheetOpen = detailMode === "sheet" && !!active;
+    return html`
       <section
-        class=${v({ "fs-section": !0, "fs-animate": r })}
-        style=${_({
-      ...B(a),
-      "--bfz-aspect": A,
-      "--bfz-pulse-speed": `${z}ms`
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap({
+      ...themeStyleMap(theme),
+      "--bfz-aspect": aspect,
+      "--bfz-pulse-speed": `${pulseSpeed}ms`
     })}
-        aria-label=${n || i("خريطة مناطق الوجه والعناية", "Face care zone map")}
+        aria-label=${title || t("خريطة مناطق الوجه والعناية", "Face care zone map")}
       >
         <div class="fs-container">
-          ${n || f ? t`<div class="fs-header">
-                ${n ? t`<h2 class="fs-title">${n}</h2>` : s}
-                ${f ? t`<p class="fs-desc">${f}</p>` : s}
-              </div>` : s}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div
-            class=${v({
+            class=${classMap({
       "bfz-layout": !0,
-      "bfz-layout--reverse": D,
-      "bfz-layout--sheet": b === "sheet"
+      "bfz-layout--reverse": reverse,
+      "bfz-layout--sheet": detailMode === "sheet"
     })}
           >
             <div class="bfz-stage-wrap">
               <div class="bfz-stage">
-                ${c ? t`<img class="bfz-stage__img" src=${c} alt="" loading="lazy" decoding="async" />` : t`<div class="bfz-stage__missing" role="img" aria-label=${i("صورة وجه غير متوفرة", "Face image not available")}>
+                ${faceImage ? html`<img class="bfz-stage__img" src=${faceImage} alt="" loading="lazy" decoding="async" />` : html`<div class="bfz-stage__missing" role="img" aria-label=${t("صورة وجه غير متوفرة", "Face image not available")}>
                       <span class="bfz-stage__missing-icon" aria-hidden="true">👤</span>
-                      <p>${i("أضيفي صورة وجه من الإعدادات", "Add a face image in settings")}</p>
+                      <p>${t("أضيفي صورة وجه من الإعدادات", "Add a face image in settings")}</p>
                     </div>`}
-                ${o.map(
-      (Y, H) => this.renderDot(Y, l, x, H, T, I && r, C)
+                ${zones.map(
+      (zone, i) => this.renderDot(zone, shape, pulse, i, showNames, coachActive && animate, activeZoneId)
     )}
               </div>
 
-              ${this.renderLegend(o, C)}
+              ${this.renderLegend(zones, activeZoneId)}
 
-              ${I ? t`<div class="bfz-coach" role="status">
-                    <p class="bfz-coach__text">${i("اضغطي على منطقة في الخريطة", "Tap a zone on the map")}</p>
-                    <button type="button" class="bfz-coach__dismiss" aria-label=${i("إخفاء", "Dismiss")} @click=${() => this.dismissCoach()}>✕</button>
-                  </div>` : s}
+              ${coachActive ? html`<div class="bfz-coach" role="status">
+                    <p class="bfz-coach__text">${t("اضغطي على منطقة في الخريطة", "Tap a zone on the map")}</p>
+                    <button type="button" class="bfz-coach__dismiss" aria-label=${t("إخفاء", "Dismiss")} @click=${() => this.dismissCoach()}>✕</button>
+                  </div>` : nothing}
             </div>
 
-            ${b === "sheet" ? t`
-                  ${P ? t`<button
+            ${detailMode === "sheet" ? html`
+                  ${sheetOpen ? html`<button
                         class="bfz-sheet-backdrop"
-                        aria-label=${i("إغلاق", "Close")}
+                        aria-label=${t("إغلاق", "Close")}
                         @click=${() => this.activeId = "__none__"}
-                      ></button>` : s}
-                  ${this.renderDetail(m, b)}
-                ` : this.renderDetail(m, b)}
+                      ></button>` : nothing}
+                  ${this.renderDetail(active, detailMode)}
+                ` : this.renderDetail(active, detailMode)}
           </div>
 
-          ${E ? t`<p class="bfz-notice">${M}</p>` : s}
+          ${showNotice ? html`<p class="bfz-notice">${notice}</p>` : nothing}
         </div>
       </section>
     `;
   }
 };
-k.styles = [F, Q];
-let g = k;
-$([
-  Z({ type: Object })
-], g.prototype, "config");
-$([
-  j()
-], g.prototype, "activeId");
-$([
-  j()
-], g.prototype, "showCoach");
-typeof g < "u" && g.registerSallaComponent("salla-beauty-face-zone-map");
+__name(_BeautyFaceZoneMap, "BeautyFaceZoneMap"), _BeautyFaceZoneMap.styles = [sharedSectionCss, componentStyles];
+let BeautyFaceZoneMap = _BeautyFaceZoneMap;
+__decorateClass([
+  property({ type: Object })
+], BeautyFaceZoneMap.prototype, "config");
+__decorateClass([
+  state()
+], BeautyFaceZoneMap.prototype, "activeId");
+__decorateClass([
+  state()
+], BeautyFaceZoneMap.prototype, "showCoach");
+typeof BeautyFaceZoneMap < "u" && BeautyFaceZoneMap.registerSallaComponent("salla-beauty-face-zone-map");
 export {
-  g as default
+  BeautyFaceZoneMap as default
 };

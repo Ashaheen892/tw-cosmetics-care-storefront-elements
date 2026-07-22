@@ -68,10 +68,6 @@ export default class BeautyRoutineBuilder extends LitElement {
     return buildRoutine(this.steps, this.answers);
   }
 
-  private label(key: string, ar: string, en: string): string {
-    return localizedString(this.config?.[key] as string) || t(ar, en);
-  }
-
   private pick(key: QuestionKey, value: string): void {
     this.answers = { ...this.answers, [key]: value };
   }
@@ -144,9 +140,13 @@ export default class BeautyRoutineBuilder extends LitElement {
   }
 
   private renderNav(canNext: boolean) {
-    const back = this.label('brb_back_btn', 'السابق', 'Back');
-    const next = this.label('brb_next_btn', 'التالي', 'Next');
-    const see = this.label('brb_see_btn', 'عرض الروتين', 'See routine');
+    const back =
+      localizedString(this.config?.brb_back_btn as string) || t('السابق', 'Back');
+    const next =
+      localizedString(this.config?.brb_next_btn as string) || t('التالي', 'Next');
+    const see =
+      localizedString(this.config?.brb_see_btn as string) ||
+      t('عرض الروتين', 'See routine');
     const lastQ = this.stepIndex === this.questions.length - 1;
 
     return html`
@@ -216,10 +216,12 @@ export default class BeautyRoutineBuilder extends LitElement {
 
         <div class="brb-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-            ${this.label('brb_back_btn', 'تعديل الإجابات', 'Edit answers')}
+            ${localizedString(c.brb_back_btn as string) ||
+            t('تعديل الإجابات', 'Edit answers')}
           </button>
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
-            ${localizedString(c.brb_reset_btn as string) || t('إعادة الاختيار', 'Start over')}
+            ${localizedString(c.brb_reset_btn as string) ||
+            t('إعادة الاختيار', 'Start over')}
           </button>
           ${renderCommerceCtaButton(c, 'brb_')}
         </div>

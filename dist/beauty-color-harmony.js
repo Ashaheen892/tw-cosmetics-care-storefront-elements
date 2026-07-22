@@ -1,10 +1,12 @@
-import { css as L, LitElement as I, nothing as b, html as i } from "lit";
-import { property as j, state as M } from "lit/decorators.js";
-import { classMap as E } from "lit/directives/class-map.js";
-import { styleMap as x } from "lit/directives/style-map.js";
-import { n as A, l as u, t as d, i as y, s as F, r as N, p as B, a as O } from "./sharedStyles-DKbcXBPy.js";
-import { r as P } from "./commerceOutcome-Dk8p2VWM.js";
-const Z = L`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, nothing, html } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, l as localizedString, t, i as isTruthy, s as sharedSectionCss, r as readSectionTheme, p as prefersReducedMotion, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   :host {
     display: block;
     direction: inherit;
@@ -311,114 +313,126 @@ const Z = L`
       transition: none !important;
     }
   }
-`, R = "#cccccc";
-function q(s) {
-  if (typeof s == "string") return s.trim();
-  if (typeof s == "number" && Number.isFinite(s)) return String(s);
-  if (s && typeof s == "object") {
-    const e = s;
-    for (const r of ["hex", "value", "color", "code"]) {
-      const t = e[r];
-      if (typeof t == "string" && t.trim()) return t.trim();
+`, FALLBACK_HEX = "#cccccc";
+function readHexRaw(raw) {
+  if (typeof raw == "string") return raw.trim();
+  if (typeof raw == "number" && Number.isFinite(raw)) return String(raw);
+  if (raw && typeof raw == "object") {
+    const obj = raw;
+    for (const key of ["hex", "value", "color", "code"]) {
+      const v = obj[key];
+      if (typeof v == "string" && v.trim()) return v.trim();
     }
   }
   return "";
 }
-function K(s) {
-  return A(s).map((e, r) => {
-    const t = u(e.name), o = H(q(e.hex ?? e.color));
+__name(readHexRaw, "readHexRaw");
+function parseColors(raw) {
+  return normalizeCollection(raw).map((row, i) => {
+    const name = localizedString(row.name), hex = normalizeHex(readHexRaw(row.hex ?? row.color));
     return {
-      id: String(e.id ?? e.color_id ?? e.id ?? "").trim() || `color-${r + 1}`,
-      name: t,
-      hex: o
+      id: String(row.id ?? row.color_id ?? row.id ?? "").trim() || `color-${i + 1}`,
+      name,
+      hex
     };
-  }).filter((e) => !!(e.name || e.hex));
+  }).filter((color) => !!(color.name || color.hex));
 }
-function H(s) {
-  const e = String(s || "").trim(), r = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.exec(e);
-  if (!r) return R;
-  let t = r[1].toLowerCase();
-  return t.length === 3 && (t = t.split("").map((o) => o + o).join("")), `#${t}`;
+__name(parseColors, "parseColors");
+function normalizeHex(input) {
+  const value = String(input || "").trim(), match = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.exec(value);
+  if (!match) return FALLBACK_HEX;
+  let hex = match[1].toLowerCase();
+  return hex.length === 3 && (hex = hex.split("").map((ch) => ch + ch).join("")), `#${hex}`;
 }
-function T(s) {
-  const e = H(s), r = parseInt(e.slice(1, 3), 16) / 255, t = parseInt(e.slice(3, 5), 16) / 255, o = parseInt(e.slice(5, 7), 16) / 255, a = Math.max(r, t, o), l = Math.min(r, t, o), c = a - l;
-  let n = 0;
-  c !== 0 && (a === r ? n = (t - o) / c % 6 : a === t ? n = (o - r) / c + 2 : n = (r - t) / c + 4, n *= 60, n < 0 && (n += 360));
-  const h = (a + l) / 2, m = c === 0 ? 0 : c / (1 - Math.abs(2 * h - 1));
+__name(normalizeHex, "normalizeHex");
+function hexToHsl(hex) {
+  const normalized = normalizeHex(hex), r = parseInt(normalized.slice(1, 3), 16) / 255, g = parseInt(normalized.slice(3, 5), 16) / 255, b = parseInt(normalized.slice(5, 7), 16) / 255, max = Math.max(r, g, b), min = Math.min(r, g, b), delta = max - min;
+  let h = 0;
+  delta !== 0 && (max === r ? h = (g - b) / delta % 6 : max === g ? h = (b - r) / delta + 2 : h = (r - g) / delta + 4, h *= 60, h < 0 && (h += 360));
+  const l = (max + min) / 2, s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
   return {
-    h: Math.round(n),
-    s: Math.round(m * 100),
-    l: Math.round(h * 100)
+    h: Math.round(h),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100)
   };
 }
-function p(s) {
-  const e = (s.h % 360 + 360) % 360, r = C(s.s / 100), t = C(s.l / 100), o = (1 - Math.abs(2 * t - 1)) * r, a = o * (1 - Math.abs(e / 60 % 2 - 1)), l = t - o / 2;
-  let c = 0, n = 0, h = 0;
-  e < 60 ? [c, n, h] = [o, a, 0] : e < 120 ? [c, n, h] = [a, o, 0] : e < 180 ? [c, n, h] = [0, o, a] : e < 240 ? [c, n, h] = [0, a, o] : e < 300 ? [c, n, h] = [a, 0, o] : [c, n, h] = [o, 0, a];
-  const m = (g) => Math.round((g + l) * 255).toString(16).padStart(2, "0");
-  return `#${m(c)}${m(n)}${m(h)}`;
+__name(hexToHsl, "hexToHsl");
+function hslToHex(hsl) {
+  const h = (hsl.h % 360 + 360) % 360, s = clamp01(hsl.s / 100), l = clamp01(hsl.l / 100), c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs(h / 60 % 2 - 1)), m = l - c / 2;
+  let r = 0, g = 0, b = 0;
+  h < 60 ? [r, g, b] = [c, x, 0] : h < 120 ? [r, g, b] = [x, c, 0] : h < 180 ? [r, g, b] = [0, c, x] : h < 240 ? [r, g, b] = [0, x, c] : h < 300 ? [r, g, b] = [x, 0, c] : [r, g, b] = [c, 0, x];
+  const toByte = /* @__PURE__ */ __name((v) => Math.round((v + m) * 255).toString(16).padStart(2, "0"), "toByte");
+  return `#${toByte(r)}${toByte(g)}${toByte(b)}`;
 }
-function C(s) {
-  return Math.min(1, Math.max(0, s));
+__name(hslToHex, "hslToHex");
+function clamp01(value) {
+  return Math.min(1, Math.max(0, value));
 }
-function v(s, e) {
-  return { ...s, h: ((s.h + e) % 360 + 360) % 360 };
+__name(clamp01, "clamp01");
+function rotateHue(hsl, deg) {
+  return { ...hsl, h: ((hsl.h + deg) % 360 + 360) % 360 };
 }
-function U(s, e) {
-  const r = T(s);
-  switch (e) {
+__name(rotateHue, "rotateHue");
+function buildHarmony(baseHex, type) {
+  const base = hexToHsl(baseHex);
+  switch (type) {
     case "complementary":
-      return [p(r), p(v(r, 180))];
+      return [hslToHex(base), hslToHex(rotateHue(base, 180))];
     case "analogous":
       return [
-        p(v(r, -30)),
-        p(r),
-        p(v(r, 30))
+        hslToHex(rotateHue(base, -30)),
+        hslToHex(base),
+        hslToHex(rotateHue(base, 30))
       ];
     case "triadic":
       return [
-        p(r),
-        p(v(r, 120)),
-        p(v(r, 240))
+        hslToHex(base),
+        hslToHex(rotateHue(base, 120)),
+        hslToHex(rotateHue(base, 240))
       ];
     default:
-      return [p(r)];
+      return [hslToHex(base)];
   }
 }
-function V(s, e) {
-  const r = T(e), t = s[0] || p(r), o = s[1] || s[0] || p(r), a = s[2] || p({
-    h: r.h,
-    s: Math.round(r.s * 0.55),
-    l: Math.min(92, Math.round(r.l + (100 - r.l) * 0.4))
+__name(buildHarmony, "buildHarmony");
+function mapToZones(harmony, baseHex) {
+  const base = hexToHsl(baseHex), lips = harmony[0] || hslToHex(base), eyes = harmony[1] || harmony[0] || hslToHex(base), cheeks = harmony[2] || hslToHex({
+    h: base.h,
+    s: Math.round(base.s * 0.55),
+    l: Math.min(92, Math.round(base.l + (100 - base.l) * 0.4))
   });
-  return { lips: t, eyes: o, cheeks: a };
+  return { lips, eyes, cheeks };
 }
-function X(s) {
-  const e = {
+__name(mapToZones, "mapToZones");
+function harmonyPlainLabel(type) {
+  const map = {
     complementary: ["ألوان متعاكسة", "Opposite colors"],
     analogous: ["ألوان متقاربة", "Neighboring colors"],
     triadic: ["ثلاثة ألوان متوازنة", "Three balanced colors"]
-  }, [r, t] = e[s];
-  return d(r, t);
+  }, [ar, en] = map[type];
+  return t(ar, en);
 }
-function D(s) {
-  const e = {
+__name(harmonyPlainLabel, "harmonyPlainLabel");
+function harmonyHint(type) {
+  const map = {
     complementary: ["تباين جريء", "Bold contrast"],
     analogous: ["انسجام ناعم", "Soft blend"],
     triadic: ["توازن حيوي", "Vibrant balance"]
-  }, [r, t] = e[s];
-  return d(r, t);
+  }, [ar, en] = map[type];
+  return t(ar, en);
 }
-function G(s) {
-  const e = [];
-  return y(s.bch_show_complementary, !0) && e.push("complementary"), y(s.bch_show_analogous, !0) && e.push("analogous"), y(s.bch_show_triadic, !0) && e.push("triadic"), e;
+__name(harmonyHint, "harmonyHint");
+function enabledHarmonies(config) {
+  const out = [];
+  return isTruthy(config.bch_show_complementary, !0) && out.push("complementary"), isTruthy(config.bch_show_analogous, !0) && out.push("analogous"), isTruthy(config.bch_show_triadic, !0) && out.push("triadic"), out;
 }
-var J = Object.defineProperty, _ = (s, e, r, t) => {
-  for (var o = void 0, a = s.length - 1, l; a >= 0; a--)
-    (l = s[a]) && (o = l(e, r, o) || o);
-  return o && J(e, r, o), o;
-};
-const w = class w extends I {
+__name(enabledHarmonies, "enabledHarmonies");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyColorHarmony = class _BeautyColorHarmony extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.selectedColorId = "", this.harmonyType = "", this.boundLangHandler = () => this.requestUpdate();
   }
@@ -428,77 +442,77 @@ const w = class w extends I {
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    e.has("config") && (this.selectedColorId = "", this.harmonyType = "");
+  updated(changed) {
+    changed.has("config") && (this.selectedColorId = "", this.harmonyType = "");
   }
   get colors() {
-    var e;
-    return K((e = this.config) == null ? void 0 : e.bch_colors);
+    var _a;
+    return parseColors((_a = this.config) == null ? void 0 : _a.bch_colors);
   }
-  resolveColor(e) {
-    var t;
-    if (!e.length) return null;
+  resolveColor(colors) {
+    var _a;
+    if (!colors.length) return null;
     if (this.selectedColorId) {
-      const o = e.find((a) => a.id === this.selectedColorId);
-      if (o) return o;
+      const found = colors.find((c) => c.id === this.selectedColorId);
+      if (found) return found;
     }
-    const r = String(((t = this.config) == null ? void 0 : t.bch_default_color) ?? "").trim();
-    if (r) {
-      const o = e.find((a) => a.id === r);
-      if (o) return o;
+    const preset = String(((_a = this.config) == null ? void 0 : _a.bch_default_color) ?? "").trim();
+    if (preset) {
+      const found = colors.find((c) => c.id === preset);
+      if (found) return found;
     }
-    return e[0];
+    return colors[0];
   }
-  resolveHarmony(e) {
-    return this.harmonyType && e.includes(this.harmonyType) ? this.harmonyType : e[0];
+  resolveHarmony(types) {
+    return this.harmonyType && types.includes(this.harmonyType) ? this.harmonyType : types[0];
   }
-  selectColor(e) {
-    this.selectedColorId = e;
+  selectColor(id) {
+    this.selectedColorId = id;
   }
-  selectHarmony(e) {
-    this.harmonyType = e;
+  selectHarmony(type) {
+    this.harmonyType = type;
   }
-  renderColors(e, r) {
-    return i`
-      <div class="bch-colors" role="group" aria-label=${d("اختاري لون الأساس", "Choose base color")}>
-        ${e.map((t) => {
-      const o = (r == null ? void 0 : r.id) === t.id, a = t.name || t.hex;
-      return i`
+  renderColors(colors, active) {
+    return html`
+      <div class="bch-colors" role="group" aria-label=${t("اختاري لون الأساس", "Choose base color")}>
+        ${colors.map((color) => {
+      const selected = (active == null ? void 0 : active.id) === color.id, label = color.name || color.hex;
+      return html`
             <button
               type="button"
               class="bch-color"
-              style=${x({ "--swatch": t.hex })}
-              aria-pressed=${o ? "true" : "false"}
-              aria-label=${`${a} ${t.hex}`}
-              @click=${() => this.selectColor(t.id)}
+              style=${styleMap({ "--swatch": color.hex })}
+              aria-pressed=${selected ? "true" : "false"}
+              aria-label=${`${label} ${color.hex}`}
+              @click=${() => this.selectColor(color.id)}
             >
               <span class="bch-color__swatch" aria-hidden="true"></span>
-              ${t.name ? i`<span class="bch-color__name">${t.name}</span>` : b}
+              ${color.name ? html`<span class="bch-color__name">${color.name}</span>` : nothing}
             </button>
           `;
     })}
       </div>
     `;
   }
-  renderTypes(e, r) {
-    if (!e.length) return b;
-    const t = this.config || {}, o = u(t.bch_harmony_label) || d("2) اختاري نوع التناسق", "2) Choose harmony style");
-    return i`
+  renderTypes(types, active) {
+    if (!types.length) return nothing;
+    const c = this.config || {}, groupLabel = localizedString(c.bch_harmony_label) || t("2) اختاري نوع التناسق", "2) Choose harmony style");
+    return html`
       <div class="bch-group">
-        <p class="bch-group__label">${o}</p>
-        <div class="bch-types" role="group" aria-label=${o}>
-          ${e.map((a) => {
-      const l = r === a, c = X(a), n = D(a);
-      return i`
+        <p class="bch-group__label">${groupLabel}</p>
+        <div class="bch-types" role="group" aria-label=${groupLabel}>
+          ${types.map((type) => {
+      const selected = active === type, label = harmonyPlainLabel(type), hint = harmonyHint(type);
+      return html`
               <button
                 type="button"
                 class="bch-type"
-                aria-pressed=${l ? "true" : "false"}
-                aria-describedby=${n ? `bch-hint-${a}` : b}
-                @click=${() => this.selectHarmony(a)}
+                aria-pressed=${selected ? "true" : "false"}
+                aria-describedby=${hint ? `bch-hint-${type}` : nothing}
+                @click=${() => this.selectHarmony(type)}
               >
-                <span class="bch-type__label">${c}</span>
-                ${n ? i`<span class="bch-type__hint" id=${`bch-hint-${a}`}>${n}</span>` : b}
+                <span class="bch-type__label">${label}</span>
+                ${hint ? html`<span class="bch-type__hint" id=${`bch-hint-${type}`}>${hint}</span>` : nothing}
               </button>
             `;
     })}
@@ -506,46 +520,46 @@ const w = class w extends I {
       </div>
     `;
   }
-  renderStrip(e, r) {
-    return i`
+  renderStrip(harmony, showHex) {
+    return html`
       <div class="bch-strip">
-        ${e.map(
-      (t) => i`
+        ${harmony.map(
+      (hex) => html`
             <div class="bch-swatch">
               <div
                 class="bch-swatch__chip"
-                style=${x({ "--swatch": t })}
+                style=${styleMap({ "--swatch": hex })}
                 role="img"
-                aria-label=${t}
+                aria-label=${hex}
               ></div>
-              ${r ? i`<span class="bch-swatch__hex">${t}</span>` : b}
+              ${showHex ? html`<span class="bch-swatch__hex">${hex}</span>` : nothing}
             </div>
           `
     )}
       </div>
     `;
   }
-  renderZones(e, r) {
-    const t = this.config || {}, o = [
-      { key: "lips", label: u(t.bch_lips_label) || d("الشفاه", "Lips") },
-      { key: "eyes", label: u(t.bch_eyes_label) || d("العيون", "Eyes") },
-      { key: "cheeks", label: u(t.bch_cheeks_label) || d("الخدود", "Cheeks") }
+  renderZones(zones, showHex) {
+    const c = this.config || {}, items = [
+      { key: "lips", label: localizedString(c.bch_lips_label) || t("الشفاه", "Lips") },
+      { key: "eyes", label: localizedString(c.bch_eyes_label) || t("العيون", "Eyes") },
+      { key: "cheeks", label: localizedString(c.bch_cheeks_label) || t("الخدود", "Cheeks") }
     ];
-    return i`
+    return html`
       <div class="bch-zones">
-        ${o.map((a) => {
-      const l = e[a.key];
-      return i`
+        ${items.map((item) => {
+      const hex = zones[item.key];
+      return html`
             <div class="bch-zone">
               <span
                 class="bch-zone__swatch"
-                style=${x({ "--swatch": l })}
+                style=${styleMap({ "--swatch": hex })}
                 role="img"
-                aria-label=${`${a.label} ${l}`}
+                aria-label=${`${item.label} ${hex}`}
               ></span>
               <div class="bch-zone__body">
-                <span class="bch-zone__label">${a.label}</span>
-                ${r ? i`<span class="bch-zone__hex">${l}</span>` : b}
+                <span class="bch-zone__label">${item.label}</span>
+                ${showHex ? html`<span class="bch-zone__hex">${hex}</span>` : nothing}
               </div>
             </div>
           `;
@@ -554,80 +568,80 @@ const w = class w extends I {
     `;
   }
   render() {
-    const e = this.config || {}, r = N(e, "bch_"), t = r.animate && !B(), o = this.colors, a = u(e.bch_title), l = u(e.bch_desc), c = y(e.bch_show_hex, !0), n = y(e.bch_show_notice, !0), h = u(e.bch_notice) || d(
+    const c = this.config || {}, theme = readSectionTheme(c, "bch_"), animate = theme.animate && !prefersReducedMotion(), colors = this.colors, title = localizedString(c.bch_title), desc = localizedString(c.bch_desc), showHex = isTruthy(c.bch_show_hex, !0), showNotice = isTruthy(c.bch_show_notice, !0), notice = localizedString(c.bch_notice) || t(
       "اقتراحات الألوان إرشادية لمساعدتك على التنسيق.",
       "Color suggestions are guidance to help you coordinate."
     );
-    if (!o.length)
-      return i`<div class="fs-empty" role="status">
-        ${d(
+    if (!colors.length)
+      return html`<div class="fs-empty" role="status">
+        ${t(
         "أضيفي درجات ألوان من إعدادات العنصر.",
         "Add color shades in the element settings."
       )}
       </div>`;
-    const m = G(e);
-    if (!m.length)
-      return i`<div class="fs-empty" role="status">
-        ${d(
+    const types = enabledHarmonies(c);
+    if (!types.length)
+      return html`<div class="fs-empty" role="status">
+        ${t(
         "فعّلي نوع تناسق واحدًا على الأقل من الإعدادات.",
         "Enable at least one harmony type in the settings."
       )}
       </div>`;
-    const g = this.resolveColor(o), $ = this.resolveHarmony(m), z = (g == null ? void 0 : g.hex) ?? o[0].hex, k = U(z, $), S = V(k, z);
-    return i`
+    const activeColor = this.resolveColor(colors), activeType = this.resolveHarmony(types), baseHex = (activeColor == null ? void 0 : activeColor.hex) ?? colors[0].hex, harmony = buildHarmony(baseHex, activeType), zones = mapToZones(harmony, baseHex);
+    return html`
       <section
-        class=${E({ "fs-section": !0, "fs-animate": t })}
-        style=${x(O(r))}
-        aria-label=${a || d("عجلة تناسق ألوان المكياج", "Makeup color harmony wheel")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("عجلة تناسق ألوان المكياج", "Makeup color harmony wheel")}
       >
         <div class="fs-container">
-          ${a || l ? i`<div class="fs-header">
-                ${a ? i`<h2 class="fs-title">${a}</h2>` : b}
-                ${l ? i`<p class="fs-desc">${l}</p>` : b}
-              </div>` : b}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div class="bch-wrap">
             <div class="bch-controls">
               <div class="bch-group">
-                <p class="bch-group__label">${d("1) اختاري لون الأساس", "1) Choose a base color")}</p>
-                ${this.renderColors(o, g)}
+                <p class="bch-group__label">${t("1) اختاري لون الأساس", "1) Choose a base color")}</p>
+                ${this.renderColors(colors, activeColor)}
               </div>
-              ${this.renderTypes(m, $)}
+              ${this.renderTypes(types, activeType)}
             </div>
 
             <div class="bch-result">
               <div class="bch-preview">
-                <p class="bch-preview__label">${d("لوحة التناسق", "Harmony palette")}</p>
-                ${this.renderStrip(k, c)}
+                <p class="bch-preview__label">${t("لوحة التناسق", "Harmony palette")}</p>
+                ${this.renderStrip(harmony, showHex)}
               </div>
               <div class="bch-zones-wrap">
-                <p class="bch-preview__label">${d("توزيع على الوجه", "Face placement")}</p>
-                ${this.renderZones(S, c)}
+                <p class="bch-preview__label">${t("توزيع على الوجه", "Face placement")}</p>
+                ${this.renderZones(zones, showHex)}
               </div>
               <div class="bch-cta">
-                ${P(e, "bch_", { className: "bch-cta__btn" })}
+                ${renderCommerceCtaButton(c, "bch_", { className: "bch-cta__btn" })}
               </div>
             </div>
 
-            ${n ? i`<p class="bch-notice">${h}</p>` : b}
+            ${showNotice ? html`<p class="bch-notice">${notice}</p>` : nothing}
           </div>
         </div>
       </section>
     `;
   }
 };
-w.styles = [F, Z];
-let f = w;
-_([
-  j({ type: Object })
-], f.prototype, "config");
-_([
-  M()
-], f.prototype, "selectedColorId");
-_([
-  M()
-], f.prototype, "harmonyType");
-typeof f < "u" && f.registerSallaComponent("salla-beauty-color-harmony");
+__name(_BeautyColorHarmony, "BeautyColorHarmony"), _BeautyColorHarmony.styles = [sharedSectionCss, componentStyles];
+let BeautyColorHarmony = _BeautyColorHarmony;
+__decorateClass([
+  property({ type: Object })
+], BeautyColorHarmony.prototype, "config");
+__decorateClass([
+  state()
+], BeautyColorHarmony.prototype, "selectedColorId");
+__decorateClass([
+  state()
+], BeautyColorHarmony.prototype, "harmonyType");
+typeof BeautyColorHarmony < "u" && BeautyColorHarmony.registerSallaComponent("salla-beauty-color-harmony");
 export {
-  f as default
+  BeautyColorHarmony as default
 };

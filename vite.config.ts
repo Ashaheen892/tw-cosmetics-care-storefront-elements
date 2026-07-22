@@ -148,4 +148,13 @@ export default defineConfig({
       },
     },
   ],
+  // Keep `localizedString` readable in dist so Salla review scanners can verify
+  // multilanguage fields are unwrapped before render.
+  esbuild: {
+    keepNames: true,
+    minifyIdentifiers: false,
+  },
+  build: {
+    minify: 'esbuild',
+  },
 });

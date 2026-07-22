@@ -1,10 +1,12 @@
-import { css as F, LitElement as I, html as a, nothing as c } from "lit";
-import { property as R, state as v } from "lit/decorators.js";
-import { classMap as u } from "lit/directives/class-map.js";
-import { styleMap as w } from "lit/directives/style-map.js";
-import { n as O, g as x, b as B, l as y, f as H, h as $, j as P, e as D, s as T, t as d, i as _, r as X, p as j, o as q, a as U } from "./sharedStyles-DKbcXBPy.js";
-import { r as z } from "./commerceOutcome-Dk8p2VWM.js";
-const V = F`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, html, nothing } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, g as getRadioValue, b as extractLink, l as localizedString, f as parseTags, h as clamp, j as toNumber, e as extractImageUrl, s as sharedSectionCss, t, i as isTruthy, r as readSectionTheme, p as prefersReducedMotion, o as getPageLocale, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   .bls-mode-toggle {
     display: flex;
     flex-wrap: wrap;
@@ -616,43 +618,48 @@ const V = F`
       animation: none;
     }
   }
-`, N = ["any", "matte", "dewy", "glossy", "natural", "velvet"];
-function K(p) {
-  return O(p).map((e, s) => {
-    const r = x(e.finish, "any");
+`, FINISHES = ["any", "matte", "dewy", "glossy", "natural", "velvet"];
+function parseLights(raw) {
+  return normalizeCollection(raw).map((l, i) => {
+    const finish = getRadioValue(l.finish, "any");
     return {
-      id: String(e.id ?? e.light_id ?? "").trim() || `light-${s + 1}`,
-      name: y(e.name) || `${s + 1}`,
-      icon: String(e.icon ?? "").trim(),
-      image: D(e.image),
-      imageMobile: D(e.image_mobile),
-      finish: N.includes(r) ? r : "any",
-      desc: y(e.desc),
-      colorEffect: y(e.color_effect),
-      gloss: $(P(e.gloss, 0), 0, 5),
-      clarity: $(P(e.clarity, 0), 0, 5),
-      contrast: $(P(e.contrast, 0), 0, 5),
-      palette: H(e.palette),
-      note: y(e.note),
-      link: B(e.link)
+      id: String(l.id ?? l.light_id ?? "").trim() || `light-${i + 1}`,
+      name: localizedString(l.name) || `${i + 1}`,
+      icon: String(l.icon ?? "").trim(),
+      image: extractImageUrl(l.image),
+      imageMobile: extractImageUrl(l.image_mobile),
+      finish: FINISHES.includes(finish) ? finish : "any",
+      desc: localizedString(l.desc),
+      colorEffect: localizedString(l.color_effect),
+      gloss: clamp(toNumber(l.gloss, 0), 0, 5),
+      clarity: clamp(toNumber(l.clarity, 0), 0, 5),
+      contrast: clamp(toNumber(l.contrast, 0), 0, 5),
+      palette: parseTags(l.palette),
+      note: localizedString(l.note),
+      link: extractLink(l.link)
     };
-  }).filter((e) => e.image || e.name);
+  }).filter((l) => l.image || l.name);
 }
-function G(p) {
-  return x(p.bls_view_mode, "single") === "compare" ? "compare" : "single";
+__name(parseLights, "parseLights");
+function resolveViewMode(config) {
+  return getRadioValue(config.bls_view_mode, "single") === "compare" ? "compare" : "single";
 }
-function W(p) {
-  const e = x(p.bls_compare_style, "slider");
-  return ["split", "slider", "side"].includes(e) ? e : "slider";
+__name(resolveViewMode, "resolveViewMode");
+function resolveCompareStyle(config) {
+  const value = getRadioValue(config.bls_compare_style, "slider");
+  return ["split", "slider", "side"].includes(value) ? value : "slider";
 }
-function Y(p) {
-  const e = x(p.bls_transition, "fade");
-  return ["fade", "slide", "none"].includes(e) ? e : "fade";
+__name(resolveCompareStyle, "resolveCompareStyle");
+function resolveTransition(config) {
+  const value = getRadioValue(config.bls_transition, "fade");
+  return ["fade", "slide", "none"].includes(value) ? value : "fade";
 }
-function J(p, e = "4/5") {
-  return (x(p.bls_aspect, e) || e).replace("/", " / ");
+__name(resolveTransition, "resolveTransition");
+function resolveAspect(config, fallback = "4/5") {
+  return (getRadioValue(config.bls_aspect, fallback) || fallback).replace("/", " / ");
 }
-function Q(p, e) {
+__name(resolveAspect, "resolveAspect");
+function finishLabel(finish, locale) {
   return {
     any: ["عام", "Any"],
     matte: ["مطفي", "Matte"],
@@ -660,34 +667,36 @@ function Q(p, e) {
     glossy: ["لامع", "Glossy"],
     natural: ["طبيعي", "Natural"],
     velvet: ["مخملي", "Velvet"]
-  }[p][e === "en" ? 1 : 0];
+  }[finish][locale === "en" ? 1 : 0];
 }
-function C(p) {
-  const e = /* @__PURE__ */ new Set();
-  for (const s of p) s.finish !== "any" && e.add(s.finish);
-  return N.filter((s) => e.has(s));
+__name(finishLabel, "finishLabel");
+function usedFinishes(lights) {
+  const seen = /* @__PURE__ */ new Set();
+  for (const l of lights) l.finish !== "any" && seen.add(l.finish);
+  return FINISHES.filter((f) => seen.has(f));
 }
-var Z = Object.defineProperty, f = (p, e, s, r) => {
-  for (var i = void 0, t = p.length - 1, n; t >= 0; t--)
-    (n = p[t]) && (i = n(e, s, i) || i);
-  return i && Z(e, s, i), i;
-};
-const M = class M extends I {
+__name(usedFinishes, "usedFinishes");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyLightingFinishSimulator = class _BeautyLightingFinishSimulator extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.selId = "", this.selName = "", this.selFinish = "", this.cmpA = "", this.cmpB = "", this.sliderPos = 50, this.sliderDragging = !1, this.compareOn = null, this.boundLangHandler = () => this.requestUpdate(), this.onSliderMove = (e) => {
-      var t;
-      const s = (t = this.shadowRoot) == null ? void 0 : t.querySelector(".bls-cmp-slider");
-      if (!s) return;
-      const r = s.getBoundingClientRect(), i = this.isRtl() ? (r.right - e.clientX) / r.width : (e.clientX - r.left) / r.width;
-      this.sliderPos = $(Math.round(i * 100), 0, 100);
+      var _a;
+      const stage = (_a = this.shadowRoot) == null ? void 0 : _a.querySelector(".bls-cmp-slider");
+      if (!stage) return;
+      const rect = stage.getBoundingClientRect(), raw = this.isRtl() ? (rect.right - e.clientX) / rect.width : (e.clientX - rect.left) / rect.width;
+      this.sliderPos = clamp(Math.round(raw * 100), 0, 100);
     }, this.onSliderDown = (e) => {
-      var s, r;
-      e.preventDefault(), this.sliderDragging = !0, (r = (s = e.currentTarget).setPointerCapture) == null || r.call(s, e.pointerId), this.onSliderMove(e), window.addEventListener("pointermove", this.onSliderMove), window.addEventListener("pointerup", this.onSliderUp, { once: !0 });
+      var _a, _b;
+      e.preventDefault(), this.sliderDragging = !0, (_b = (_a = e.currentTarget).setPointerCapture) == null || _b.call(_a, e.pointerId), this.onSliderMove(e), window.addEventListener("pointermove", this.onSliderMove), window.addEventListener("pointerup", this.onSliderUp, { once: !0 });
     }, this.onSliderUp = () => {
       this.sliderDragging = !1, window.removeEventListener("pointermove", this.onSliderMove);
     }, this.onSliderKey = (e) => {
-      const s = e.shiftKey ? 10 : 5, r = this.isRtl() ? -1 : 1;
-      e.key === "ArrowLeft" ? (e.preventDefault(), this.sliderPos = $(this.sliderPos - s * r, 0, 100)) : e.key === "ArrowRight" ? (e.preventDefault(), this.sliderPos = $(this.sliderPos + s * r, 0, 100)) : e.key === "Home" ? (e.preventDefault(), this.sliderPos = 0) : e.key === "End" && (e.preventDefault(), this.sliderPos = 100);
+      const step = e.shiftKey ? 10 : 5, dir = this.isRtl() ? -1 : 1;
+      e.key === "ArrowLeft" ? (e.preventDefault(), this.sliderPos = clamp(this.sliderPos - step * dir, 0, 100)) : e.key === "ArrowRight" ? (e.preventDefault(), this.sliderPos = clamp(this.sliderPos + step * dir, 0, 100)) : e.key === "Home" ? (e.preventDefault(), this.sliderPos = 0) : e.key === "End" && (e.preventDefault(), this.sliderPos = 100);
     };
   }
   connectedCallback() {
@@ -696,306 +705,306 @@ const M = class M extends I {
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    e.has("config") && (this.selId = "", this.selName = "", this.selFinish = "", this.cmpA = "", this.cmpB = "", this.compareOn = null);
+  updated(changed) {
+    changed.has("config") && (this.selId = "", this.selName = "", this.selFinish = "", this.cmpA = "", this.cmpB = "", this.compareOn = null);
   }
   get lights() {
-    var e;
-    return K((e = this.config) == null ? void 0 : e.bls_lights);
+    var _a;
+    return parseLights((_a = this.config) == null ? void 0 : _a.bls_lights);
   }
-  uniqueNames(e) {
-    const s = /* @__PURE__ */ new Set(), r = [];
-    for (const i of e)
-      s.has(i.name) || (s.add(i.name), r.push(i.name));
-    return r;
+  uniqueNames(lights) {
+    const seen = /* @__PURE__ */ new Set(), out = [];
+    for (const l of lights)
+      seen.has(l.name) || (seen.add(l.name), out.push(l.name));
+    return out;
   }
-  defaultName(e) {
-    var t, n;
-    const s = String(((t = this.config) == null ? void 0 : t.bls_default_light) ?? "").trim(), r = e.find((o) => o.id === s);
-    if (r) return r.name;
-    const i = e.find((o) => o.name === s);
-    return i ? i.name : ((n = e[0]) == null ? void 0 : n.name) ?? "";
+  defaultName(lights) {
+    var _a, _b;
+    const preset = String(((_a = this.config) == null ? void 0 : _a.bls_default_light) ?? "").trim(), byId = lights.find((l) => l.id === preset);
+    if (byId) return byId.name;
+    const byName = lights.find((l) => l.name === preset);
+    return byName ? byName.name : ((_b = lights[0]) == null ? void 0 : _b.name) ?? "";
   }
-  defaultFinish(e) {
-    var i;
-    const s = C(e), r = x((i = this.config) == null ? void 0 : i.bls_default_finish, "");
-    return s.includes(r) ? r : s[0] ?? "any";
+  defaultFinish(lights) {
+    var _a;
+    const finishes = usedFinishes(lights), preset = getRadioValue((_a = this.config) == null ? void 0 : _a.bls_default_finish, "");
+    return finishes.includes(preset) ? preset : finishes[0] ?? "any";
   }
-  activeSingle(e, s) {
-    var t;
-    if (s) {
-      const n = this.selName || this.defaultName(e), o = this.selFinish || this.defaultFinish(e);
-      return e.find((l) => l.name === n && l.finish === o) || e.find((l) => l.finish === o) || e.find((l) => l.name === n) || e[0];
+  activeSingle(lights, finishEnabled) {
+    var _a;
+    if (finishEnabled) {
+      const name = this.selName || this.defaultName(lights), finish = this.selFinish || this.defaultFinish(lights);
+      return lights.find((l) => l.name === name && l.finish === finish) || lights.find((l) => l.finish === finish) || lights.find((l) => l.name === name) || lights[0];
     }
-    const r = String(((t = this.config) == null ? void 0 : t.bls_default_light) ?? "").trim(), i = this.selId || r;
-    return e.find((n) => n.id === i) || e.find((n) => n.name === i) || e[0];
+    const preset = String(((_a = this.config) == null ? void 0 : _a.bls_default_light) ?? "").trim(), id = this.selId || preset;
+    return lights.find((l) => l.id === id) || lights.find((l) => l.name === id) || lights[0];
   }
-  renderPicture(e, s, r) {
-    return e != null && e.image ? a`<picture class="bls-pic ${s}">
-      ${e.imageMobile ? a`<source media="(max-width: 639px)" srcset=${e.imageMobile} />` : c}
+  renderPicture(light, cls, eager) {
+    return light != null && light.image ? html`<picture class="bls-pic ${cls}">
+      ${light.imageMobile ? html`<source media="(max-width: 639px)" srcset=${light.imageMobile} />` : nothing}
       <img
-        src=${e.image}
-        alt=${e.name}
-        loading=${r ? "eager" : "lazy"}
+        src=${light.image}
+        alt=${light.name}
+        loading=${eager ? "eager" : "lazy"}
         decoding="async"
-        fetchpriority=${r ? "high" : "low"}
+        fetchpriority=${eager ? "high" : "low"}
       />
-    </picture>` : a`<div class="bls-pic bls-pic--empty ${s}" role="img" aria-label=${d("لا توجد صورة", "No image")}>
+    </picture>` : html`<div class="bls-pic bls-pic--empty ${cls}" role="img" aria-label=${t("لا توجد صورة", "No image")}>
         <span class="bls-empty__icon" aria-hidden="true">◯</span>
-        <span class="bls-empty__text">${d("أضيفي صورة لهذه الحالة", "Add an image for this state")}</span>
+        <span class="bls-empty__text">${t("أضيفي صورة لهذه الحالة", "Add an image for this state")}</span>
       </div>`;
   }
   // —— compare slider ——
   isRtl() {
     return getComputedStyle(this).direction === "rtl";
   }
-  renderIndicators(e, s) {
-    const i = [
-      [s === "en" ? "Glossiness" : "اللمعان", e.gloss],
-      [s === "en" ? "Color clarity" : "وضوح اللون", e.clarity],
-      [s === "en" ? "Contrast" : "التباين", e.contrast]
-    ].filter(([, t]) => t > 0);
-    return i.length ? a`<div class="bls-indicators">
-      ${i.map(
-      ([t, n]) => a`<div class="bls-indicator">
-          <span class="bls-indicator__label">${t}</span>
-          <span class="fs-meter"><span style=${w({ width: `${n / 5 * 100}%` })}></span></span>
-          <span class="bls-indicator__val">${n}/5</span>
+  renderIndicators(light, locale) {
+    const rows = [
+      [locale === "en" ? "Glossiness" : "اللمعان", light.gloss],
+      [locale === "en" ? "Color clarity" : "وضوح اللون", light.clarity],
+      [locale === "en" ? "Contrast" : "التباين", light.contrast]
+    ].filter(([, v]) => v > 0);
+    return rows.length ? html`<div class="bls-indicators">
+      ${rows.map(
+      ([label, val]) => html`<div class="bls-indicator">
+          <span class="bls-indicator__label">${label}</span>
+          <span class="fs-meter"><span style=${styleMap({ width: `${val / 5 * 100}%` })}></span></span>
+          <span class="bls-indicator__val">${val}/5</span>
         </div>`
     )}
-    </div>` : c;
+    </div>` : nothing;
   }
-  renderPanel(e, s) {
-    const r = this.config || {}, i = _(r.bls_show_indicators, !0), t = _(r.bls_show_palette, !0);
-    return a`<div class="bls-panel">
-      ${e.desc ? a`<p class="bls-desc">${e.desc}</p>` : c}
-      ${e.colorEffect ? a`<p class="bls-color-effect">${d("تأثير اللون", "Color effect")}: ${e.colorEffect}</p>` : c}
-      ${i ? this.renderIndicators(e, s) : c}
-      ${t && e.palette.length ? a`<div class="bls-palette">${e.palette.map((n) => a`<span class="bls-swatch" style=${w({ background: n })} title=${n}></span>`)}</div>` : c}
-      ${e.note ? a`<p class="bls-note">★ ${e.note}</p>` : c}
+  renderPanel(light, locale) {
+    const c = this.config || {}, showIndicators = isTruthy(c.bls_show_indicators, !0), showPalette = isTruthy(c.bls_show_palette, !0);
+    return html`<div class="bls-panel">
+      ${light.desc ? html`<p class="bls-desc">${light.desc}</p>` : nothing}
+      ${light.colorEffect ? html`<p class="bls-color-effect">${t("تأثير اللون", "Color effect")}: ${light.colorEffect}</p>` : nothing}
+      ${showIndicators ? this.renderIndicators(light, locale) : nothing}
+      ${showPalette && light.palette.length ? html`<div class="bls-palette">${light.palette.map((col) => html`<span class="bls-swatch" style=${styleMap({ background: col })} title=${col}></span>`)}</div>` : nothing}
+      ${light.note ? html`<p class="bls-note">★ ${light.note}</p>` : nothing}
       <div class="fs-actions">
-        ${z(r, "bls_", { href: e.link })}
+        ${renderCommerceCtaButton(c, "bls_", { href: light.link })}
       </div>
     </div>`;
   }
-  renderLightChip(e, s) {
-    const r = e.icon.startsWith("sicon-");
-    return a`
+  renderLightChip(light, active) {
+    const isSicon = light.icon.startsWith("sicon-");
+    return html`
       <button
         type="button"
-        class=${u({ "bls-chip": !0, "is-active": s })}
-        aria-pressed=${s ? "true" : "false"}
-        @click=${() => this.selId = e.id}
+        class=${classMap({ "bls-chip": !0, "is-active": active })}
+        aria-pressed=${active ? "true" : "false"}
+        @click=${() => this.selId = light.id}
       >
         <span class="bls-chip__icon" aria-hidden="true">
-          ${e.icon ? r ? a`<span class=${e.icon}></span>` : e.icon : "✦"}
+          ${light.icon ? isSicon ? html`<span class=${light.icon}></span>` : light.icon : "✦"}
         </span>
-        <span class="bls-chip__name">${e.name}</span>
+        <span class="bls-chip__name">${light.name}</span>
         <span class="bls-chip__dot" aria-hidden="true"></span>
       </button>
     `;
   }
-  renderSingle(e, s) {
-    var L;
-    const r = this.config || {}, i = _(r.bls_enable_finish, !1) && C(e).length > 0, t = x((L = this.config) == null ? void 0 : L.bls_preload, "lazy") === "eager", n = Y(r), o = this.activeSingle(e, i), l = this.uniqueNames(e), k = C(e), S = o == null ? void 0 : o.name, g = this.selFinish || this.defaultFinish(e);
-    return a`
+  renderSingle(lights, locale) {
+    var _a;
+    const c = this.config || {}, finishEnabled = isTruthy(c.bls_enable_finish, !1) && usedFinishes(lights).length > 0, eagerAll = getRadioValue((_a = this.config) == null ? void 0 : _a.bls_preload, "lazy") === "eager", transition = resolveTransition(c), active = this.activeSingle(lights, finishEnabled), names = this.uniqueNames(lights), finishes = usedFinishes(lights), activeName = active == null ? void 0 : active.name, activeFinish = this.selFinish || this.defaultFinish(lights);
+    return html`
       <div class="bls-shell">
         <aside class="bls-aside">
           <div class="bls-controls-card">
-            ${i ? a`
+            ${finishEnabled ? html`
                   <div class="bls-controls">
-                    <span class="bls-controls__label">${d("اللمسة النهائية", "Finish")}</span>
-                    <div class="bls-finish-chips" role="group" aria-label=${d("اللمسة النهائية", "Finish")}>
-                      ${k.map(
-      (b) => a`<button
+                    <span class="bls-controls__label">${t("اللمسة النهائية", "Finish")}</span>
+                    <div class="bls-finish-chips" role="group" aria-label=${t("اللمسة النهائية", "Finish")}>
+                      ${finishes.map(
+      (f) => html`<button
                           type="button"
-                          class=${u({ "bls-finish-chip": !0, "is-active": b === g })}
-                          aria-pressed=${b === g ? "true" : "false"}
-                          @click=${() => this.selFinish = b}
+                          class=${classMap({ "bls-finish-chip": !0, "is-active": f === activeFinish })}
+                          aria-pressed=${f === activeFinish ? "true" : "false"}
+                          @click=${() => this.selFinish = f}
                         >
-                          ${Q(b, s)}
+                          ${finishLabel(f, locale)}
                         </button>`
     )}
                     </div>
                   </div>
                   <div class="bls-controls">
-                    <span class="bls-controls__label">${d("نوع الإضاءة", "Lighting")}</span>
-                    <div class="bls-chips" role="group" aria-label=${d("حالات الإضاءة", "Lighting states")}>
-                      ${l.map((b) => {
-      const h = e.find((A) => A.name === b), E = !!(h != null && h.icon.startsWith("sicon-"));
-      return a`<button
+                    <span class="bls-controls__label">${t("نوع الإضاءة", "Lighting")}</span>
+                    <div class="bls-chips" role="group" aria-label=${t("حالات الإضاءة", "Lighting states")}>
+                      ${names.map((n) => {
+      const sample = lights.find((l) => l.name === n), isSicon = !!(sample != null && sample.icon.startsWith("sicon-"));
+      return html`<button
                           type="button"
-                          class=${u({ "bls-chip": !0, "is-active": b === S })}
-                          aria-pressed=${b === S ? "true" : "false"}
-                          @click=${() => this.selName = b}
+                          class=${classMap({ "bls-chip": !0, "is-active": n === activeName })}
+                          aria-pressed=${n === activeName ? "true" : "false"}
+                          @click=${() => this.selName = n}
                         >
                           <span class="bls-chip__icon" aria-hidden="true">
-                            ${h != null && h.icon ? E ? a`<span class=${h.icon}></span>` : h.icon : "✦"}
+                            ${sample != null && sample.icon ? isSicon ? html`<span class=${sample.icon}></span>` : sample.icon : "✦"}
                           </span>
-                          <span class="bls-chip__name">${b}</span>
+                          <span class="bls-chip__name">${n}</span>
                           <span class="bls-chip__dot" aria-hidden="true"></span>
                         </button>`;
     })}
                     </div>
                   </div>
-                ` : a`<div class="bls-controls">
-                  <span class="bls-controls__label">${d("اختاري الإضاءة", "Pick a lighting")}</span>
-                  <div class="bls-chips" role="group" aria-label=${d("حالات الإضاءة", "Lighting states")}>
-                    ${e.map((b) => this.renderLightChip(b, b.id === (o == null ? void 0 : o.id)))}
+                ` : html`<div class="bls-controls">
+                  <span class="bls-controls__label">${t("اختاري الإضاءة", "Pick a lighting")}</span>
+                  <div class="bls-chips" role="group" aria-label=${t("حالات الإضاءة", "Lighting states")}>
+                    ${lights.map((l) => this.renderLightChip(l, l.id === (active == null ? void 0 : active.id)))}
                   </div>
                 </div>`}
           </div>
 
-          ${o ? this.renderPanel(o, s) : c}
+          ${active ? this.renderPanel(active, locale) : nothing}
         </aside>
 
         <div class="bls-mirror">
-          <div class=${u({ "bls-stage": !0, "bls-stage--fade": n === "fade" })}>
-            ${t ? e.map(
-      (b) => this.renderPicture(b, `bls-layer ${b.id === (o == null ? void 0 : o.id) ? "is-on" : ""}`, !0)
-    ) : this.renderPicture(o, "", !0)}
+          <div class=${classMap({ "bls-stage": !0, "bls-stage--fade": transition === "fade" })}>
+            ${eagerAll ? lights.map(
+      (l) => this.renderPicture(l, `bls-layer ${l.id === (active == null ? void 0 : active.id) ? "is-on" : ""}`, !0)
+    ) : this.renderPicture(active, "", !0)}
             <div class="bls-caption">
-              <b>${o == null ? void 0 : o.name}</b>${o != null && o.colorEffect ? a` — ${o.colorEffect}` : c}
+              <b>${active == null ? void 0 : active.name}</b>${active != null && active.colorEffect ? html` — ${active.colorEffect}` : nothing}
             </div>
           </div>
         </div>
       </div>
     `;
   }
-  renderCompare(e) {
-    const s = this.config || {}, r = W(s), i = e.find((l) => l.id === this.cmpA) || e[0], t = e.find((l) => l.id === this.cmpB) || e[1] || e[0], n = a`<div class="bls-compare-picks">
+  renderCompare(lights) {
+    const c = this.config || {}, style = resolveCompareStyle(c), a = lights.find((l) => l.id === this.cmpA) || lights[0], b = lights.find((l) => l.id === this.cmpB) || lights[1] || lights[0], picks = html`<div class="bls-compare-picks">
       <div>
-        <label for="bls-a">${d("الحالة الأولى", "First state")}</label>
-        <select id="bls-a" @change=${(l) => this.cmpA = l.target.value}>
-          ${e.map((l) => a`<option value=${l.id} ?selected=${l.id === (i == null ? void 0 : i.id)}>${l.name}</option>`)}
+        <label for="bls-a">${t("الحالة الأولى", "First state")}</label>
+        <select id="bls-a" @change=${(e) => this.cmpA = e.target.value}>
+          ${lights.map((l) => html`<option value=${l.id} ?selected=${l.id === (a == null ? void 0 : a.id)}>${l.name}</option>`)}
         </select>
-        ${z(s, "bls_", { href: i == null ? void 0 : i.link })}
+        ${renderCommerceCtaButton(c, "bls_", { href: a == null ? void 0 : a.link })}
       </div>
       <div>
-        <label for="bls-b">${d("الحالة الثانية", "Second state")}</label>
-        <select id="bls-b" @change=${(l) => this.cmpB = l.target.value}>
-          ${e.map((l) => a`<option value=${l.id} ?selected=${l.id === (t == null ? void 0 : t.id)}>${l.name}</option>`)}
+        <label for="bls-b">${t("الحالة الثانية", "Second state")}</label>
+        <select id="bls-b" @change=${(e) => this.cmpB = e.target.value}>
+          ${lights.map((l) => html`<option value=${l.id} ?selected=${l.id === (b == null ? void 0 : b.id)}>${l.name}</option>`)}
         </select>
-        ${z(s, "bls_", { href: t == null ? void 0 : t.link })}
+        ${renderCommerceCtaButton(c, "bls_", { href: b == null ? void 0 : b.link })}
       </div>
     </div>`;
-    if (r === "side")
-      return a`<div class="bls-wrap">
+    if (style === "side")
+      return html`<div class="bls-wrap">
         <div class="bls-cmp-side">
-          <div class="bls-stage"><span class="bls-cmp-tag bls-cmp-tag--a">${i == null ? void 0 : i.name}</span>${this.renderPicture(i, "", !0)}</div>
-          <div class="bls-stage"><span class="bls-cmp-tag bls-cmp-tag--b">${t == null ? void 0 : t.name}</span>${this.renderPicture(t, "", !0)}</div>
+          <div class="bls-stage"><span class="bls-cmp-tag bls-cmp-tag--a">${a == null ? void 0 : a.name}</span>${this.renderPicture(a, "", !0)}</div>
+          <div class="bls-stage"><span class="bls-cmp-tag bls-cmp-tag--b">${b == null ? void 0 : b.name}</span>${this.renderPicture(b, "", !0)}</div>
         </div>
-        ${n}
+        ${picks}
       </div>`;
-    const o = r === "slider" ? w({ "--bls-pos": `${this.sliderPos}%` }) : w({});
-    return a`<div class="bls-wrap">
+    const overlayStyle = style === "slider" ? styleMap({ "--bls-pos": `${this.sliderPos}%` }) : styleMap({});
+    return html`<div class="bls-wrap">
       <div
-        class=${u({
+        class=${classMap({
       "bls-stage": !0,
-      "bls-cmp-slider": r === "slider",
-      "bls-cmp-split": r === "split",
-      "is-dragging": r === "slider" && this.sliderDragging
+      "bls-cmp-slider": style === "slider",
+      "bls-cmp-split": style === "split",
+      "is-dragging": style === "slider" && this.sliderDragging
     })}
-        style=${o}
-        role=${r === "slider" ? "slider" : c}
-        tabindex=${r === "slider" ? "0" : c}
-        aria-label=${r === "slider" ? d("اسحبي للمقارنة بين الحالتين", "Drag to compare the two states") : c}
-        aria-valuenow=${r === "slider" ? Math.round(this.sliderPos) : c}
-        aria-valuemin=${r === "slider" ? "0" : c}
-        aria-valuemax=${r === "slider" ? "100" : c}
-        @pointerdown=${r === "slider" ? this.onSliderDown : void 0}
-        @keydown=${r === "slider" ? this.onSliderKey : void 0}
+        style=${overlayStyle}
+        role=${style === "slider" ? "slider" : nothing}
+        tabindex=${style === "slider" ? "0" : nothing}
+        aria-label=${style === "slider" ? t("اسحبي للمقارنة بين الحالتين", "Drag to compare the two states") : nothing}
+        aria-valuenow=${style === "slider" ? Math.round(this.sliderPos) : nothing}
+        aria-valuemin=${style === "slider" ? "0" : nothing}
+        aria-valuemax=${style === "slider" ? "100" : nothing}
+        @pointerdown=${style === "slider" ? this.onSliderDown : void 0}
+        @keydown=${style === "slider" ? this.onSliderKey : void 0}
       >
-        <span class="bls-cmp-tag bls-cmp-tag--a">${t == null ? void 0 : t.name}</span>
-        <span class="bls-cmp-tag bls-cmp-tag--b">${i == null ? void 0 : i.name}</span>
-        ${this.renderPicture(i, "", !0)}
-        ${this.renderPicture(t, "bls-img--overlay", !0)}
-        ${r === "slider" ? a`
+        <span class="bls-cmp-tag bls-cmp-tag--a">${b == null ? void 0 : b.name}</span>
+        <span class="bls-cmp-tag bls-cmp-tag--b">${a == null ? void 0 : a.name}</span>
+        ${this.renderPicture(a, "", !0)}
+        ${this.renderPicture(b, "bls-img--overlay", !0)}
+        ${style === "slider" ? html`
               <div class="bls-cmp-handle" aria-hidden="true">
                 <span class="bls-cmp-handle__pill">‹ ›</span>
               </div>
-              ${!this.sliderDragging && this.sliderPos === 50 ? a`<div class="bls-cmp-hint" aria-hidden="true">${d("اسحبي للمقارنة", "Drag to compare")}</div>` : c}
-            ` : c}
+              ${!this.sliderDragging && this.sliderPos === 50 ? html`<div class="bls-cmp-hint" aria-hidden="true">${t("اسحبي للمقارنة", "Drag to compare")}</div>` : nothing}
+            ` : nothing}
       </div>
-      ${n}
+      ${picks}
     </div>`;
   }
   render() {
-    const e = this.config || {}, s = X(e, "bls_"), r = s.animate && !j(), i = this.lights, t = y(e.bls_title), n = y(e.bls_desc), o = q() === "en" ? "en" : "ar", l = G(e), k = _(e.bls_show_compare, !0) && i.length >= 2, S = this.compareOn ?? l === "compare", g = k && S ? "compare" : "single";
-    return i.length ? (this.activeSingle(i, _(e.bls_enable_finish, !1)), a`
+    const c = this.config || {}, theme = readSectionTheme(c, "bls_"), animate = theme.animate && !prefersReducedMotion(), lights = this.lights, title = localizedString(c.bls_title), desc = localizedString(c.bls_desc), locale = getPageLocale() === "en" ? "en" : "ar", viewMode = resolveViewMode(c), showCompare = isTruthy(c.bls_show_compare, !0) && lights.length >= 2, compareActive = this.compareOn ?? viewMode === "compare", effectiveMode = showCompare && compareActive ? "compare" : "single";
+    return lights.length ? (this.activeSingle(lights, isTruthy(c.bls_enable_finish, !1)), html`
       <section
-        class=${u({ "fs-section": !0, "fs-animate": r })}
-        style=${w({
-      ...U(s),
-      "--bls-aspect": J(e),
-      "--bls-active": String(e.bls_active_color ?? s.accent),
-      "--bls-speed": `${Math.max(0, P(e.bls_speed, 400))}ms`
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap({
+      ...themeStyleMap(theme),
+      "--bls-aspect": resolveAspect(c),
+      "--bls-active": String(c.bls_active_color ?? theme.accent),
+      "--bls-speed": `${Math.max(0, toNumber(c.bls_speed, 400))}ms`
     })}
-        aria-label=${t || d("محاكي الإضاءة والمظهر", "Lighting & finish simulator")}
+        aria-label=${title || t("محاكي الإضاءة والمظهر", "Lighting & finish simulator")}
       >
         <div class="fs-container">
-          ${t || n ? a`<div class="fs-header">
-                ${t ? a`<h2 class="fs-title">${t}</h2>` : c}
-                ${n ? a`<p class="fs-desc">${n}</p>` : c}
-              </div>` : c}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
-          ${k ? a`<div class="bls-mode-toggle" role="group" aria-label=${d("طريقة العرض", "View mode")}>
+          ${showCompare ? html`<div class="bls-mode-toggle" role="group" aria-label=${t("طريقة العرض", "View mode")}>
                 <button
                   type="button"
-                  class=${u({ "bls-mode-toggle__btn": !0, "is-active": g === "single" })}
-                  aria-pressed=${g === "single" ? "true" : "false"}
+                  class=${classMap({ "bls-mode-toggle__btn": !0, "is-active": effectiveMode === "single" })}
+                  aria-pressed=${effectiveMode === "single" ? "true" : "false"}
                   @click=${() => this.compareOn = !1}
                 >
-                  ${d("حالة واحدة", "Single")}
+                  ${t("حالة واحدة", "Single")}
                 </button>
                 <button
                   type="button"
-                  class=${u({ "bls-mode-toggle__btn": !0, "is-active": g === "compare" })}
-                  aria-pressed=${g === "compare" ? "true" : "false"}
+                  class=${classMap({ "bls-mode-toggle__btn": !0, "is-active": effectiveMode === "compare" })}
+                  aria-pressed=${effectiveMode === "compare" ? "true" : "false"}
                   @click=${() => this.compareOn = !0}
                 >
-                  ${d("مقارنة", "Compare")}
+                  ${t("مقارنة", "Compare")}
                 </button>
-              </div>` : c}
+              </div>` : nothing}
 
-          ${g === "compare" ? this.renderCompare(i) : this.renderSingle(i, o)}
+          ${effectiveMode === "compare" ? this.renderCompare(lights) : this.renderSingle(lights, locale)}
         </div>
       </section>
-    `) : a`<div class="fs-empty" role="status">
-        ${d("أضيفي حالات إضاءة مع صورها من إعدادات العنصر.", "Add lighting states with their images in the element settings.")}
+    `) : html`<div class="fs-empty" role="status">
+        ${t("أضيفي حالات إضاءة مع صورها من إعدادات العنصر.", "Add lighting states with their images in the element settings.")}
       </div>`;
   }
 };
-M.styles = [T, V];
-let m = M;
-f([
-  R({ type: Object })
-], m.prototype, "config");
-f([
-  v()
-], m.prototype, "selId");
-f([
-  v()
-], m.prototype, "selName");
-f([
-  v()
-], m.prototype, "selFinish");
-f([
-  v()
-], m.prototype, "cmpA");
-f([
-  v()
-], m.prototype, "cmpB");
-f([
-  v()
-], m.prototype, "sliderPos");
-f([
-  v()
-], m.prototype, "sliderDragging");
-f([
-  v()
-], m.prototype, "compareOn");
-typeof m < "u" && m.registerSallaComponent("salla-beauty-lighting-finish-simulator");
+__name(_BeautyLightingFinishSimulator, "BeautyLightingFinishSimulator"), _BeautyLightingFinishSimulator.styles = [sharedSectionCss, componentStyles];
+let BeautyLightingFinishSimulator = _BeautyLightingFinishSimulator;
+__decorateClass([
+  property({ type: Object })
+], BeautyLightingFinishSimulator.prototype, "config");
+__decorateClass([
+  state()
+], BeautyLightingFinishSimulator.prototype, "selId");
+__decorateClass([
+  state()
+], BeautyLightingFinishSimulator.prototype, "selName");
+__decorateClass([
+  state()
+], BeautyLightingFinishSimulator.prototype, "selFinish");
+__decorateClass([
+  state()
+], BeautyLightingFinishSimulator.prototype, "cmpA");
+__decorateClass([
+  state()
+], BeautyLightingFinishSimulator.prototype, "cmpB");
+__decorateClass([
+  state()
+], BeautyLightingFinishSimulator.prototype, "sliderPos");
+__decorateClass([
+  state()
+], BeautyLightingFinishSimulator.prototype, "sliderDragging");
+__decorateClass([
+  state()
+], BeautyLightingFinishSimulator.prototype, "compareOn");
+typeof BeautyLightingFinishSimulator < "u" && BeautyLightingFinishSimulator.registerSallaComponent("salla-beauty-lighting-finish-simulator");
 export {
-  m as default
+  BeautyLightingFinishSimulator as default
 };

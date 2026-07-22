@@ -165,6 +165,11 @@ export default class BeautyCareAssistant extends LitElement {
 
   private renderResult(answer: AssistantAnswer) {
     const c = this.config || {};
+    const resultBtn =
+      localizedString(c.bca_result_btn as string) ||
+      t('انتقلي إلى النتيجة', 'Go to result');
+    const restartBtn =
+      localizedString(c.bca_restart_btn as string) || t('إعادة البدء', 'Start over');
     return html`
       <div class="bca-result" aria-live="polite">
         <div class="bca-result__badge" aria-hidden="true">✦</div>
@@ -177,7 +182,7 @@ export default class BeautyCareAssistant extends LitElement {
         ${answer.link
           ? html`<div class="bca-result__actions">
               <a class="fs-btn fs-tap" href=${answer.link}>
-                ${answer.link_text || localizedString(c.bca_result_btn as string) || t('انتقلي إلى النتيجة', 'Go to result')}
+                ${answer.link_text || resultBtn}
               </a>
             </div>`
           : nothing}
@@ -186,7 +191,7 @@ export default class BeautyCareAssistant extends LitElement {
             ${t('تعديل آخر إجابة', 'Edit last answer')}
           </button>
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.restart}>
-            ${localizedString(c.bca_restart_btn as string) || t('إعادة البدء', 'Start over')}
+            ${restartBtn}
           </button>
           ${renderCommerceCtaButton(c, 'bca_')}
         </div>
@@ -300,7 +305,8 @@ export default class BeautyCareAssistant extends LitElement {
                               ${t('رجوع', 'Back')}
                             </button>
                             <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.restart}>
-                              ${localizedString(c.bca_restart_btn as string) || t('إعادة البدء', 'Start over')}
+                              ${localizedString(c.bca_restart_btn as string) ||
+                              t('إعادة البدء', 'Start over')}
                             </button>
                           </div>`
                         : nothing}

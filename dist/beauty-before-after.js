@@ -1,9 +1,11 @@
-import { css as C, LitElement as V, html as n, nothing as l } from "lit";
-import { property as q, state as _ } from "lit/decorators.js";
-import { classMap as x } from "lit/directives/class-map.js";
-import { styleMap as k } from "lit/directives/style-map.js";
-import { t as i, n as I, l as p, e as v, s as L, r as S, p as A, a as E } from "./sharedStyles-DKbcXBPy.js";
-const T = C`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, html, nothing } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { t, n as normalizeCollection, l as localizedString, e as extractImageUrl, s as sharedSectionCss, r as readSectionTheme, p as prefersReducedMotion, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+const componentStyles = css`
   :host {
     display: block;
     direction: inherit;
@@ -337,53 +339,56 @@ const T = C`
       transition: none !important;
     }
   }
-`, z = "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=1000&q=80", P = "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1000&q=80", f = {
-  before_image: z,
-  after_image: P,
-  before_label: i("قبل", "Before"),
-  after_label: i("بعد", "After"),
-  title: i("النتيجة بعد أسبوعين", "2-week results")
+`, BEFORE = "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=1000&q=80", AFTER = "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1000&q=80", DEFAULT_PAIR = {
+  before_image: BEFORE,
+  after_image: AFTER,
+  before_label: t("قبل", "Before"),
+  after_label: t("بعد", "After"),
+  title: t("النتيجة بعد أسبوعين", "2-week results")
 };
-function j(d) {
-  const a = I(d).map((t) => ({
-    before_image: v(t.before_image),
-    after_image: v(t.after_image),
-    before_label: p(t.before_label, ""),
-    after_label: p(t.after_label, ""),
-    title: p(t.title, "")
-  })).filter((t) => t.before_image || t.after_image || t.title);
-  return a.length ? a.map((t) => ({
-    ...t,
-    before_image: t.before_image || f.before_image,
-    after_image: t.after_image || f.after_image,
-    before_label: t.before_label || f.before_label,
-    after_label: t.after_label || f.after_label,
-    title: t.title || f.title
-  })) : [{ ...f }];
+function parsePairs(raw) {
+  const parsed = normalizeCollection(raw).map((row) => ({
+    before_image: extractImageUrl(row.before_image),
+    after_image: extractImageUrl(row.after_image),
+    before_label: localizedString(row.before_label, ""),
+    after_label: localizedString(row.after_label, ""),
+    title: localizedString(row.title, "")
+  })).filter((p) => p.before_image || p.after_image || p.title);
+  return parsed.length ? parsed.map((p) => ({
+    ...p,
+    before_image: p.before_image || DEFAULT_PAIR.before_image,
+    after_image: p.after_image || DEFAULT_PAIR.after_image,
+    before_label: p.before_label || DEFAULT_PAIR.before_label,
+    after_label: p.after_label || DEFAULT_PAIR.after_label,
+    title: p.title || DEFAULT_PAIR.title
+  })) : [{ ...DEFAULT_PAIR }];
 }
-function B() {
-  return { before: z, after: P };
+__name(parsePairs, "parsePairs");
+function defaultSingleImages() {
+  return { before: BEFORE, after: AFTER };
 }
-function u(d) {
-  return Math.max(0, Math.min(100, d));
+__name(defaultSingleImages, "defaultSingleImages");
+function clampPosition(value) {
+  return Math.max(0, Math.min(100, value));
 }
-var H = Object.defineProperty, g = (d, e, a, t) => {
-  for (var r = void 0, o = d.length - 1, s; o >= 0; o--)
-    (s = d[o]) && (r = s(e, a, r) || r);
-  return r && H(e, a, r), r;
-};
-const w = class w extends V {
+__name(clampPosition, "clampPosition");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyBeforeAfter = class _BeautyBeforeAfter extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.position = 50, this.activeIndex = 0, this.dragging = !1, this.hintVisible = !0, this.boundLangHandler = () => this.requestUpdate(), this.startDrag = (e) => {
-      var a, t, r, o;
-      (t = (a = e.target) == null ? void 0 : a.closest) != null && t.call(a, ".bba-nav, .bba-toolbar, .bba-tabs") || (this.dragging = !0, this.hintVisible = !1, (o = (r = e.currentTarget) == null ? void 0 : r.setPointerCapture) == null || o.call(r, e.pointerId), this.updatePosition(e));
+      var _a, _b, _c, _d;
+      (_b = (_a = e.target) == null ? void 0 : _a.closest) != null && _b.call(_a, ".bba-nav, .bba-toolbar, .bba-tabs") || (this.dragging = !0, this.hintVisible = !1, (_d = (_c = e.currentTarget) == null ? void 0 : _c.setPointerCapture) == null || _d.call(_c, e.pointerId), this.updatePosition(e));
     }, this.onMove = (e) => {
       this.dragging && this.updatePosition(e);
     }, this.endDrag = () => {
       this.dragging = !1;
     }, this.onKeyDown = (e) => {
-      const a = e.shiftKey ? 10 : 4, t = this.isRtl ? -1 : 1;
-      e.key === "ArrowLeft" ? (e.preventDefault(), this.position = u(this.position - a * t), this.hintVisible = !1) : e.key === "ArrowRight" ? (e.preventDefault(), this.position = u(this.position + a * t), this.hintVisible = !1) : e.key === "Home" ? (e.preventDefault(), this.position = 0, this.hintVisible = !1) : e.key === "End" && (e.preventDefault(), this.position = 100, this.hintVisible = !1);
+      const step = e.shiftKey ? 10 : 4, dir = this.isRtl ? -1 : 1;
+      e.key === "ArrowLeft" ? (e.preventDefault(), this.position = clampPosition(this.position - step * dir), this.hintVisible = !1) : e.key === "ArrowRight" ? (e.preventDefault(), this.position = clampPosition(this.position + step * dir), this.hintVisible = !1) : e.key === "Home" ? (e.preventDefault(), this.position = 0, this.hintVisible = !1) : e.key === "End" && (e.preventDefault(), this.position = 100, this.hintVisible = !1);
     };
   }
   connectedCallback() {
@@ -396,81 +401,81 @@ const w = class w extends V {
     return getComputedStyle(this).direction === "rtl";
   }
   updatePosition(e) {
-    const a = this.renderRoot.querySelector(".bba-viewer");
-    if (!a) return;
-    const t = a.getBoundingClientRect(), r = e.clientX - t.left, o = this.isRtl ? (t.width - r) / t.width * 100 : r / t.width * 100;
-    this.position = u(o);
+    const viewer = this.renderRoot.querySelector(".bba-viewer");
+    if (!viewer) return;
+    const rect = viewer.getBoundingClientRect(), x = e.clientX - rect.left, pct = this.isRtl ? (rect.width - x) / rect.width * 100 : x / rect.width * 100;
+    this.position = clampPosition(pct);
   }
-  goTo(e) {
-    this.activeIndex = e, this.position = 50, this.hintVisible = !0;
+  goTo(index) {
+    this.activeIndex = index, this.position = 50, this.hintVisible = !0;
   }
-  stepPair(e, a) {
-    e < 2 || this.goTo((this.activeIndex + a + e) % e);
+  stepPair(total, dir) {
+    total < 2 || this.goTo((this.activeIndex + dir + total) % total);
   }
   onRangeInput(e) {
-    this.position = u(Number(e.target.value)), this.hintVisible = !1;
+    this.position = clampPosition(Number(e.target.value)), this.hintVisible = !1;
   }
   resolvePairs() {
-    const e = this.config || {}, a = j(e.bba_items), t = B(), r = v(e.bba_before_image) || p(e.bba_before_image) || t.before, o = v(e.bba_after_image) || p(e.bba_after_image) || t.after;
-    return a.length ? a : [
+    const c = this.config || {}, pairs = parsePairs(c.bba_items), defaults = defaultSingleImages(), singleBefore = extractImageUrl(c.bba_before_image) || localizedString(c.bba_before_image) || defaults.before, singleAfter = extractImageUrl(c.bba_after_image) || localizedString(c.bba_after_image) || defaults.after;
+    return pairs.length ? pairs : [
       {
-        before_image: r,
-        after_image: o,
-        before_label: i("قبل", "Before"),
-        after_label: i("بعد", "After"),
+        before_image: singleBefore,
+        after_image: singleAfter,
+        before_label: t("قبل", "Before"),
+        after_label: t("بعد", "After"),
         title: ""
       }
     ];
   }
   render() {
-    const e = this.config || {}, a = S(e, "bba_"), t = a.animate && !A(), r = p(e.bba_title), o = p(e.bba_desc), s = this.resolvePairs();
-    if (!s.length)
-      return n`<div class="fs-empty" role="status">
-        ${i("أضيفي صور قبل وبعد من إعدادات العنصر", "Add before & after images in element settings")}
+    const c = this.config || {}, theme = readSectionTheme(c, "bba_"), animate = theme.animate && !prefersReducedMotion(), title = localizedString(c.bba_title), desc = localizedString(c.bba_desc), allPairs = this.resolvePairs();
+    if (!allPairs.length)
+      return html`<div class="fs-empty" role="status">
+        ${t("أضيفي صور قبل وبعد من إعدادات العنصر", "Add before & after images in element settings")}
       </div>`;
-    const m = Math.min(this.activeIndex, s.length - 1), c = s[m], M = `${100 - this.position}%`, D = `${this.position}%`, y = c.before_label || i("قبل", "Before"), $ = c.after_label || i("بعد", "After");
-    return n`
+    const idx = Math.min(this.activeIndex, allPairs.length - 1), pair = allPairs[idx], clipRight = `${100 - this.position}%`, handleLeft = `${this.position}%`, beforeLabel = pair.before_label || t("قبل", "Before"), afterLabel = pair.after_label || t("بعد", "After");
+    return html`
       <section
-        class=${x({ "fs-section": !0, "fs-animate": t })}
-        style=${k(E(a))}
-        aria-label=${r || i("قبل وبعد", "Before & After")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("قبل وبعد", "Before & After")}
       >
         <div class="fs-container">
-          ${r || o ? n`<div class="fs-header">
-                ${r ? n`<h2 class="fs-title">${r}</h2>` : l}
-                ${o ? n`<p class="fs-desc">${o}</p>` : l}
-              </div>` : l}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div class="bba-shell">
-            ${s.length > 1 ? n`<div class="bba-tabs" role="tablist" aria-label=${i("نتائج المقارنة", "Comparison results")}>
-                  ${s.map(
-      (R, h) => n`<button
+            ${allPairs.length > 1 ? html`<div class="bba-tabs" role="tablist" aria-label=${t("نتائج المقارنة", "Comparison results")}>
+                  ${allPairs.map(
+      (p, i) => html`<button
                       type="button"
                       role="tab"
-                      class=${x({ "bba-tab": !0, "is-active": h === m })}
-                      aria-selected=${h === m ? "true" : "false"}
-                      @click=${() => this.goTo(h)}
+                      class=${classMap({ "bba-tab": !0, "is-active": i === idx })}
+                      aria-selected=${i === idx ? "true" : "false"}
+                      @click=${() => this.goTo(i)}
                     >
-                      ${R.title || i(`نتيجة ${h + 1}`, `Result ${h + 1}`)}
+                      ${p.title || t(`نتيجة ${i + 1}`, `Result ${i + 1}`)}
                     </button>`
     )}
-                </div>` : l}
+                </div>` : nothing}
 
-            ${c.title && s.length === 1 ? n`<p class="bba-case-title">${c.title}</p>` : l}
+            ${pair.title && allPairs.length === 1 ? html`<p class="bba-case-title">${pair.title}</p>` : nothing}
 
             <div
-              class=${x({ "bba-viewer": !0, "is-dragging": this.dragging })}
-              style=${k({ "--clip-right": M, "--handle-left": D })}
+              class=${classMap({ "bba-viewer": !0, "is-dragging": this.dragging })}
+              style=${styleMap({ "--clip-right": clipRight, "--handle-left": handleLeft })}
               role="slider"
               tabindex="0"
               aria-valuemin="0"
               aria-valuemax="100"
               aria-valuenow=${Math.round(this.position)}
-              aria-valuetext=${i(
+              aria-valuetext=${t(
       `${Math.round(this.position)}٪ قبل — ${Math.round(100 - this.position)}٪ بعد`,
       `${Math.round(this.position)}% before — ${Math.round(100 - this.position)}% after`
     )}
-              aria-label=${i("اسحبي للمقارنة بين قبل وبعد", "Drag to compare before and after")}
+              aria-label=${t("اسحبي للمقارنة بين قبل وبعد", "Drag to compare before and after")}
               @pointerdown=${this.startDrag}
               @pointermove=${this.onMove}
               @pointerup=${this.endDrag}
@@ -478,10 +483,10 @@ const w = class w extends V {
               @keydown=${this.onKeyDown}
             >
               <div class="bba-viewer__layer bba-viewer__after">
-                ${c.after_image ? n`<img class="bba-viewer__img" src=${c.after_image} alt="" loading="lazy" decoding="async" />` : l}
+                ${pair.after_image ? html`<img class="bba-viewer__img" src=${pair.after_image} alt="" loading="lazy" decoding="async" />` : nothing}
               </div>
               <div class="bba-viewer__layer bba-viewer__before">
-                ${c.before_image ? n`<img class="bba-viewer__img" src=${c.before_image} alt="" loading="lazy" decoding="async" />` : l}
+                ${pair.before_image ? html`<img class="bba-viewer__img" src=${pair.before_image} alt="" loading="lazy" decoding="async" />` : nothing}
               </div>
 
               <div class="bba-handle" aria-hidden="true">
@@ -491,18 +496,18 @@ const w = class w extends V {
                 </span>
               </div>
 
-              <span class="bba-chip bba-chip--before">${y}</span>
-              <span class="bba-chip bba-chip--after">${$}</span>
+              <span class="bba-chip bba-chip--before">${beforeLabel}</span>
+              <span class="bba-chip bba-chip--after">${afterLabel}</span>
 
-              ${this.hintVisible && !this.dragging ? n`<div class="bba-hint" aria-hidden="true">
+              ${this.hintVisible && !this.dragging ? html`<div class="bba-hint" aria-hidden="true">
                     <span class="bba-hint__icon">⇔</span>
-                    <span>${i("اسحبي للمقارنة", "Drag to compare")}</span>
-                  </div>` : l}
+                    <span>${t("اسحبي للمقارنة", "Drag to compare")}</span>
+                  </div>` : nothing}
             </div>
 
             <div class="bba-toolbar">
               <label class="bba-range">
-                <span class="bba-range__label">${i("المقارنة", "Compare")}</span>
+                <span class="bba-range__label">${t("المقارنة", "Compare")}</span>
                 <input
                   class="bba-range__input"
                   type="range"
@@ -510,7 +515,7 @@ const w = class w extends V {
                   max="100"
                   step="1"
                   .value=${String(Math.round(this.position))}
-                  aria-label=${i("مقدار إظهار صورة قبل", "Before image amount")}
+                  aria-label=${t("مقدار إظهار صورة قبل", "Before image amount")}
                   @input=${this.onRangeInput}
                 />
               </label>
@@ -519,7 +524,7 @@ const w = class w extends V {
                 <button type="button" class="bba-quick__btn" @click=${() => {
       this.position = 100, this.hintVisible = !1;
     }}>
-                  ${y}
+                  ${beforeLabel}
                 </button>
                 <button type="button" class="bba-quick__btn" @click=${() => {
       this.position = 50, this.hintVisible = !1;
@@ -529,25 +534,25 @@ const w = class w extends V {
                 <button type="button" class="bba-quick__btn" @click=${() => {
       this.position = 0, this.hintVisible = !1;
     }}>
-                  ${$}
+                  ${afterLabel}
                 </button>
               </div>
 
-              ${s.length > 1 ? n`<div class="bba-pair-nav">
+              ${allPairs.length > 1 ? html`<div class="bba-pair-nav">
                     <button
                       type="button"
                       class="bba-pair-nav__btn"
-                      aria-label=${i("السابق", "Previous")}
-                      @click=${() => this.stepPair(s.length, -1)}
+                      aria-label=${t("السابق", "Previous")}
+                      @click=${() => this.stepPair(allPairs.length, -1)}
                     >‹</button>
-                    <span class="bba-pair-nav__count">${m + 1} / ${s.length}</span>
+                    <span class="bba-pair-nav__count">${idx + 1} / ${allPairs.length}</span>
                     <button
                       type="button"
                       class="bba-pair-nav__btn"
-                      aria-label=${i("التالي", "Next")}
-                      @click=${() => this.stepPair(s.length, 1)}
+                      aria-label=${t("التالي", "Next")}
+                      @click=${() => this.stepPair(allPairs.length, 1)}
                     >›</button>
-                  </div>` : l}
+                  </div>` : nothing}
             </div>
           </div>
         </div>
@@ -555,24 +560,24 @@ const w = class w extends V {
     `;
   }
 };
-w.styles = [L, T];
-let b = w;
-g([
-  q({ type: Object })
-], b.prototype, "config");
-g([
-  _()
-], b.prototype, "position");
-g([
-  _()
-], b.prototype, "activeIndex");
-g([
-  _()
-], b.prototype, "dragging");
-g([
-  _()
-], b.prototype, "hintVisible");
-typeof b < "u" && b.registerSallaComponent("salla-beauty-before-after");
+__name(_BeautyBeforeAfter, "BeautyBeforeAfter"), _BeautyBeforeAfter.styles = [sharedSectionCss, componentStyles];
+let BeautyBeforeAfter = _BeautyBeforeAfter;
+__decorateClass([
+  property({ type: Object })
+], BeautyBeforeAfter.prototype, "config");
+__decorateClass([
+  state()
+], BeautyBeforeAfter.prototype, "position");
+__decorateClass([
+  state()
+], BeautyBeforeAfter.prototype, "activeIndex");
+__decorateClass([
+  state()
+], BeautyBeforeAfter.prototype, "dragging");
+__decorateClass([
+  state()
+], BeautyBeforeAfter.prototype, "hintVisible");
+typeof BeautyBeforeAfter < "u" && BeautyBeforeAfter.registerSallaComponent("salla-beauty-before-after");
 export {
-  b as default
+  BeautyBeforeAfter as default
 };

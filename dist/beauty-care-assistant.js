@@ -1,10 +1,12 @@
-import { css as M, LitElement as L, nothing as d, html as s } from "lit";
-import { property as T, state as v } from "lit/decorators.js";
-import { classMap as $ } from "lit/directives/class-map.js";
-import { styleMap as k } from "lit/directives/style-map.js";
-import { n as q, l as o, e as S, g as j, b as B, s as D, t as i, r as R, p as E, a as H } from "./sharedStyles-DKbcXBPy.js";
-import { r as Q } from "./commerceOutcome-Dk8p2VWM.js";
-const O = M`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, nothing, html } from "lit";
+import { property, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { n as normalizeCollection, l as localizedString, e as extractImageUrl, g as getRadioValue, b as extractLink, s as sharedSectionCss, t, r as readSectionTheme, p as prefersReducedMotion, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   :host {
     direction: inherit;
   }
@@ -326,84 +328,94 @@ const O = M`
     }
   }
 `;
-function P(a, r) {
-  return a.trim().toLowerCase().replace(/\s+/g, "-") || r;
+function slug(value, fallback) {
+  return value.trim().toLowerCase().replace(/\s+/g, "-") || fallback;
 }
-function A(a, r) {
-  return q(a).map((t, e) => ({
-    id: `${r}-a${e}`,
-    label: o(t.label),
-    image: S(t.image),
-    next: o(t.next).trim(),
-    result_title: o(t.result_title),
-    result_desc: o(t.result_desc),
-    link: B(t.link),
-    link_text: o(t.link_text)
-  })).filter((t) => t.label || t.result_title || t.link);
+__name(slug, "slug");
+function parseAnswers(raw, qKey) {
+  return normalizeCollection(raw).map((row, index) => ({
+    id: `${qKey}-a${index}`,
+    label: localizedString(row.label),
+    image: extractImageUrl(row.image),
+    next: localizedString(row.next).trim(),
+    result_title: localizedString(row.result_title),
+    result_desc: localizedString(row.result_desc),
+    link: extractLink(row.link),
+    link_text: localizedString(row.link_text)
+  })).filter((a) => a.label || a.result_title || a.link);
 }
-function I(a) {
-  return q(a).map((r, t) => {
-    const e = P(o(r.q_key), `q${t + 1}`);
+__name(parseAnswers, "parseAnswers");
+function parseQuestions(raw) {
+  return normalizeCollection(raw).map((row, index) => {
+    const key = slug(localizedString(row.q_key), `q${index + 1}`);
     return {
-      key: e,
-      text: o(r.q_text),
-      image: S(r.q_image),
-      answers: A(r.answers, e)
+      key,
+      text: localizedString(row.q_text),
+      image: extractImageUrl(row.q_image),
+      answers: parseAnswers(row.answers, key)
     };
-  }).filter((r) => r.text || r.answers.length);
+  }).filter((q) => q.text || q.answers.length);
 }
-function U(a, r) {
-  var e;
-  const t = o(a.bca_start_key).trim().toLowerCase().replace(/\s+/g, "-");
-  return t && r.some((n) => n.key === t) ? t : ((e = r[0]) == null ? void 0 : e.key) ?? "";
+__name(parseQuestions, "parseQuestions");
+function resolveStartKey(config, questions) {
+  var _a;
+  const configured = localizedString(config.bca_start_key).trim().toLowerCase().replace(/\s+/g, "-");
+  return configured && questions.some((q) => q.key === configured) ? configured : ((_a = questions[0]) == null ? void 0 : _a.key) ?? "";
 }
-function K(a, r) {
-  return a.find((t) => t.key === r) ?? null;
+__name(resolveStartKey, "resolveStartKey");
+function findQuestion(questions, key) {
+  return questions.find((q) => q.key === key) ?? null;
 }
-function z(a, r) {
-  return a.next ? !r.some((t) => t.key === a.next) : !0;
+__name(findQuestion, "findQuestion");
+function isTerminal(answer, questions) {
+  return answer.next ? !questions.some((q) => q.key === answer.next) : !0;
 }
-function Y(a) {
-  const r = j(a.bca_style, "chat");
-  return r === "expert" || r === "mirror" || r === "cards" ? r : "chat";
+__name(isTerminal, "isTerminal");
+function resolveStyle(config) {
+  const val = getRadioValue(config.bca_style, "chat");
+  return val === "expert" || val === "mirror" || val === "cards" ? val : "chat";
 }
-function G(a, r) {
-  if (!r || !a.length) return 1;
-  const t = new Map(a.map((l) => [l.key, l]));
-  let e = 1;
-  function n(l, c, h) {
-    const f = t.get(l);
-    if (!f) {
-      e = Math.max(e, c);
+__name(resolveStyle, "resolveStyle");
+function estimateMaxDepth(questions, startKey) {
+  if (!startKey || !questions.length) return 1;
+  const byKey = new Map(questions.map((q) => [q.key, q]));
+  let maxDepth = 1;
+  function walk(key, depth, seen) {
+    const question = byKey.get(key);
+    if (!question) {
+      maxDepth = Math.max(maxDepth, depth);
       return;
     }
-    if (h.has(l)) {
-      e = Math.max(e, c);
+    if (seen.has(key)) {
+      maxDepth = Math.max(maxDepth, depth);
       return;
     }
-    const m = new Set(h);
-    m.add(l);
-    let b = !1;
-    for (const p of f.answers)
-      z(p, a) ? (e = Math.max(e, c + 1), b = !0) : p.next && (b = !0, n(p.next, c + 1, m));
-    b || (e = Math.max(e, c));
+    const nextSeen = new Set(seen);
+    nextSeen.add(key);
+    let branched = !1;
+    for (const answer of question.answers)
+      isTerminal(answer, questions) ? (maxDepth = Math.max(maxDepth, depth + 1), branched = !0) : answer.next && (branched = !0, walk(answer.next, depth + 1, nextSeen));
+    branched || (maxDepth = Math.max(maxDepth, depth));
   }
-  return n(r, 1, /* @__PURE__ */ new Set()), Math.max(e, 1);
+  return __name(walk, "walk"), walk(startKey, 1, /* @__PURE__ */ new Set()), Math.max(maxDepth, 1);
 }
-function J(a, r) {
-  return a.length + 1;
+__name(estimateMaxDepth, "estimateMaxDepth");
+function currentDepth(trail, hasResult) {
+  return trail.length + 1;
 }
-function N(a, r, t) {
-  if (r) return 100;
-  const e = a.length + 1, n = Math.max(t, e);
-  return Math.min(92, Math.round(e / n * 100));
+__name(currentDepth, "currentDepth");
+function computeProgress(trail, hasResult, maxDepth) {
+  if (hasResult) return 100;
+  const depth = trail.length + 1, cap = Math.max(maxDepth, depth);
+  return Math.min(92, Math.round(depth / cap * 100));
 }
-var V = Object.defineProperty, g = (a, r, t, e) => {
-  for (var n = void 0, l = a.length - 1, c; l >= 0; l--)
-    (c = a[l]) && (n = c(r, t, n) || n);
-  return n && V(r, t, n), n;
-};
-const _ = class _ extends L {
+__name(computeProgress, "computeProgress");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const _BeautyCareAssistant = class _BeautyCareAssistant extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.currentKey = "", this.trail = [], this.result = null, this.boundLangHandler = () => this.requestUpdate();
   }
@@ -413,18 +425,18 @@ const _ = class _ extends L {
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(r) {
-    r.has("config") && this.restart();
+  updated(changed) {
+    changed.has("config") && this.restart();
   }
   get questions() {
-    var r;
-    return I((r = this.config) == null ? void 0 : r.bca_questions);
+    var _a;
+    return parseQuestions((_a = this.config) == null ? void 0 : _a.bca_questions);
   }
   get startKey() {
-    return U(this.config || {}, this.questions);
+    return resolveStartKey(this.config || {}, this.questions);
   }
   get maxDepth() {
-    return G(this.questions, this.startKey);
+    return estimateMaxDepth(this.questions, this.startKey);
   }
   restart() {
     this.currentKey = this.startKey, this.trail = [], this.result = null;
@@ -434,105 +446,105 @@ const _ = class _ extends L {
       this.result = null;
       return;
     }
-    const r = [...this.trail], t = r.pop();
-    t && (this.trail = r, this.currentKey = t.questionKey);
+    const prev = [...this.trail], last = prev.pop();
+    last && (this.trail = prev, this.currentKey = last.questionKey);
   }
-  jumpToStep(r) {
-    if (this.result && (this.result = null), r < 0) {
+  jumpToStep(index) {
+    if (this.result && (this.result = null), index < 0) {
       this.trail = [], this.currentKey = this.startKey;
       return;
     }
-    const t = this.trail.slice(0, r + 1), e = t[t.length - 1];
-    e && (this.trail = t.slice(0, -1), this.currentKey = e.questionKey);
+    const slice = this.trail.slice(0, index + 1), target = slice[slice.length - 1];
+    target && (this.trail = slice.slice(0, -1), this.currentKey = target.questionKey);
   }
-  chooseAnswer(r) {
-    const t = this.questions, e = K(t, this.currentKey);
-    if (e) {
-      if (!z(r, t)) {
+  chooseAnswer(answer) {
+    const questions = this.questions, current = findQuestion(questions, this.currentKey);
+    if (current) {
+      if (!isTerminal(answer, questions)) {
         this.trail = [
           ...this.trail,
           {
             questionKey: this.currentKey,
-            questionText: e.text,
-            answerLabel: r.label || i("اختيار", "Choice")
+            questionText: current.text,
+            answerLabel: answer.label || t("اختيار", "Choice")
           }
-        ], this.currentKey = r.next, this.result = null;
+        ], this.currentKey = answer.next, this.result = null;
         return;
       }
       this.trail = [
         ...this.trail,
         {
           questionKey: this.currentKey,
-          questionText: e.text,
-          answerLabel: r.label || i("اختيار", "Choice")
+          questionText: current.text,
+          answerLabel: answer.label || t("اختيار", "Choice")
         }
-      ], this.result = r;
+      ], this.result = answer;
     }
   }
   renderTrail() {
-    return !this.trail.length && !this.result ? d : s`
-      <nav class="bca-trail" aria-label=${i("مسار إجاباتك", "Your answer path")}>
+    return !this.trail.length && !this.result ? nothing : html`
+      <nav class="bca-trail" aria-label=${t("مسار إجاباتك", "Your answer path")}>
         <ol class="bca-trail__list">
           ${this.trail.map(
-      (r, t) => s`
+      (step, index) => html`
               <li class="bca-trail__item">
                 <button
                   type="button"
                   class="bca-trail__chip"
-                  title=${r.questionText}
-                  @click=${() => this.jumpToStep(t)}
+                  title=${step.questionText}
+                  @click=${() => this.jumpToStep(index)}
                 >
-                  <span class="bca-trail__answer">${r.answerLabel}</span>
+                  <span class="bca-trail__answer">${step.answerLabel}</span>
                 </button>
                 <span class="bca-trail__sep" aria-hidden="true">›</span>
               </li>
             `
     )}
-          ${this.result ? s`<li class="bca-trail__item bca-trail__item--current" aria-current="step">
+          ${this.result ? html`<li class="bca-trail__item bca-trail__item--current" aria-current="step">
                 <span class="bca-trail__chip bca-trail__chip--current">
-                  ${this.result.result_title || i("النتيجة", "Result")}
+                  ${this.result.result_title || t("النتيجة", "Result")}
                 </span>
-              </li>` : s`<li class="bca-trail__item bca-trail__item--current" aria-current="step">
+              </li>` : html`<li class="bca-trail__item bca-trail__item--current" aria-current="step">
                 <span class="bca-trail__chip bca-trail__chip--current">
-                  ${i("السؤال الحالي", "Current question")}
+                  ${t("السؤال الحالي", "Current question")}
                 </span>
               </li>`}
         </ol>
       </nav>
     `;
   }
-  renderResult(r) {
-    const t = this.config || {};
-    return s`
+  renderResult(answer) {
+    const c = this.config || {}, resultBtn = localizedString(c.bca_result_btn) || t("انتقلي إلى النتيجة", "Go to result"), restartBtn = localizedString(c.bca_restart_btn) || t("إعادة البدء", "Start over");
+    return html`
       <div class="bca-result" aria-live="polite">
         <div class="bca-result__badge" aria-hidden="true">✦</div>
-        ${r.result_title ? s`<h3 class="bca-result__title">${r.result_title}</h3>` : s`<h3 class="bca-result__title">${i("إليكِ توصيتنا", "Here is our recommendation")}</h3>`}
-        ${r.result_desc ? s`<p class="bca-result__desc">${r.result_desc}</p>` : d}
-        ${r.link ? s`<div class="bca-result__actions">
-              <a class="fs-btn fs-tap" href=${r.link}>
-                ${r.link_text || o(t.bca_result_btn) || i("انتقلي إلى النتيجة", "Go to result")}
+        ${answer.result_title ? html`<h3 class="bca-result__title">${answer.result_title}</h3>` : html`<h3 class="bca-result__title">${t("إليكِ توصيتنا", "Here is our recommendation")}</h3>`}
+        ${answer.result_desc ? html`<p class="bca-result__desc">${answer.result_desc}</p>` : nothing}
+        ${answer.link ? html`<div class="bca-result__actions">
+              <a class="fs-btn fs-tap" href=${answer.link}>
+                ${answer.link_text || resultBtn}
               </a>
-            </div>` : d}
+            </div>` : nothing}
         <div class="bca-nav">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.goBack}>
-            ${i("تعديل آخر إجابة", "Edit last answer")}
+            ${t("تعديل آخر إجابة", "Edit last answer")}
           </button>
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.restart}>
-            ${o(t.bca_restart_btn) || i("إعادة البدء", "Start over")}
+            ${restartBtn}
           </button>
-          ${Q(t, "bca_")}
+          ${renderCommerceCtaButton(c, "bca_")}
         </div>
       </div>
     `;
   }
-  renderQuestion(r) {
-    return s`
-      <div class="bca-answers" role="group" aria-label=${r.text || i("الخيارات", "Options")}>
-        ${r.answers.map(
-      (t) => s`
-            <button type="button" class="bca-answer fs-tap" @click=${() => this.chooseAnswer(t)}>
-              ${t.image ? s`<img class="bca-answer__icon" src=${t.image} alt="" loading="lazy" />` : d}
-              <span>${t.label || i("اختيار", "Choice")}</span>
+  renderQuestion(question) {
+    return html`
+      <div class="bca-answers" role="group" aria-label=${question.text || t("الخيارات", "Options")}>
+        ${question.answers.map(
+      (answer) => html`
+            <button type="button" class="bca-answer fs-tap" @click=${() => this.chooseAnswer(answer)}>
+              ${answer.image ? html`<img class="bca-answer__icon" src=${answer.image} alt="" loading="lazy" />` : nothing}
+              <span>${answer.label || t("اختيار", "Choice")}</span>
             </button>
           `
     )}
@@ -540,31 +552,31 @@ const _ = class _ extends L {
     `;
   }
   render() {
-    const r = this.config || {}, t = R(r, "bca_"), e = t.animate && !E(), n = this.questions, l = Y(r), c = o(r.bca_title), h = o(r.bca_desc), f = o(r.bca_assistant_name) || i("خبيرة الجمال", "Beauty expert"), m = o(r.bca_avatar);
-    if (!n.length)
-      return s`<div class="fs-empty" role="status">
-        ${i("أضيفي أسئلة المساعد من إعدادات العنصر", "Add assistant questions in the element settings")}
+    const c = this.config || {}, theme = readSectionTheme(c, "bca_"), animate = theme.animate && !prefersReducedMotion(), questions = this.questions, style = resolveStyle(c), title = localizedString(c.bca_title), desc = localizedString(c.bca_desc), assistantName = localizedString(c.bca_assistant_name) || t("خبيرة الجمال", "Beauty expert"), avatar = localizedString(c.bca_avatar);
+    if (!questions.length)
+      return html`<div class="fs-empty" role="status">
+        ${t("أضيفي أسئلة المساعد من إعدادات العنصر", "Add assistant questions in the element settings")}
       </div>`;
-    const b = K(n, this.currentKey) || n[0], p = !!this.result, x = J(this.trail, p), C = this.maxDepth, y = N(this.trail, p, C), w = p ? i("اكتملت الرحلة", "Journey complete") : i(`الخطوة ${x}`, `Step ${x}`);
-    return s`
+    const current = findQuestion(questions, this.currentKey) || questions[0], hasResult = !!this.result, depth = currentDepth(this.trail, hasResult), maxDepth = this.maxDepth, progress = computeProgress(this.trail, hasResult, maxDepth), progressLabel = hasResult ? t("اكتملت الرحلة", "Journey complete") : t(`الخطوة ${depth}`, `Step ${depth}`);
+    return html`
       <section
-        class=${$({ "fs-section": !0, "fs-animate": e })}
-        style=${k(H(t))}
-        aria-label=${c || i("مساعد اختيار منتجات الجمال", "Beauty care assistant")}
+        class=${classMap({ "fs-section": !0, "fs-animate": animate })}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("مساعد اختيار منتجات الجمال", "Beauty care assistant")}
       >
         <div class="fs-container">
-          ${c || h ? s`<div class="fs-header">
-                ${c ? s`<h2 class="fs-title">${c}</h2>` : d}
-                ${h ? s`<p class="fs-desc">${h}</p>` : d}
-              </div>` : d}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
-          <div class=${$({ [`bca--${l}`]: !0 })}>
+          <div class=${classMap({ [`bca--${style}`]: !0 })}>
             <div class="bca-shell">
               <div class="bca-topbar">
-                ${m ? s`<img class="bca-avatar" src=${m} alt="" loading="lazy" />` : s`<span class="bca-avatar" aria-hidden="true">✦</span>`}
+                ${avatar ? html`<img class="bca-avatar" src=${avatar} alt="" loading="lazy" />` : html`<span class="bca-avatar" aria-hidden="true">✦</span>`}
                 <div class="bca-topbar__meta">
-                  <span class="bca-topbar__name">${f}</span>
-                  <span class="bca-trail__hint">${i("سأساعدك في اختيار الأنسب لكِ", "I will help you choose")}</span>
+                  <span class="bca-topbar__name">${assistantName}</span>
+                  <span class="bca-trail__hint">${t("سأساعدك في اختيار الأنسب لكِ", "I will help you choose")}</span>
                 </div>
               </div>
 
@@ -573,35 +585,35 @@ const _ = class _ extends L {
                   <div
                     class="bca-progress"
                     role="progressbar"
-                    aria-valuenow=${y}
+                    aria-valuenow=${progress}
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    aria-label=${w}
+                    aria-label=${progressLabel}
                   >
-                    <span style=${k({ width: `${y}%` })}></span>
+                    <span style=${styleMap({ width: `${progress}%` })}></span>
                   </div>
-                  <span class="bca-progress__label">${w}</span>
+                  <span class="bca-progress__label">${progressLabel}</span>
                 </div>
 
                 ${this.renderTrail()}
 
-                ${this.result ? this.renderResult(this.result) : s`
-                      ${b.image ? s`<img
+                ${this.result ? this.renderResult(this.result) : html`
+                      ${current.image ? html`<img
                             class="bca-question-img"
-                            src=${b.image}
+                            src=${current.image}
                             alt=""
                             loading="lazy"
-                          />` : d}
-                      <div class="bca-bubble">${b.text || i("اختاري أحد الخيارات", "Choose an option")}</div>
-                      ${this.renderQuestion(b)}
-                      ${this.trail.length ? s`<div class="bca-nav">
+                          />` : nothing}
+                      <div class="bca-bubble">${current.text || t("اختاري أحد الخيارات", "Choose an option")}</div>
+                      ${this.renderQuestion(current)}
+                      ${this.trail.length ? html`<div class="bca-nav">
                             <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.goBack}>
-                              ${i("رجوع", "Back")}
+                              ${t("رجوع", "Back")}
                             </button>
                             <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${this.restart}>
-                              ${o(r.bca_restart_btn) || i("إعادة البدء", "Start over")}
+                              ${localizedString(c.bca_restart_btn) || t("إعادة البدء", "Start over")}
                             </button>
-                          </div>` : d}
+                          </div>` : nothing}
                     `}
               </div>
             </div>
@@ -611,21 +623,21 @@ const _ = class _ extends L {
     `;
   }
 };
-_.styles = [D, O];
-let u = _;
-g([
-  T({ type: Object })
-], u.prototype, "config");
-g([
-  v()
-], u.prototype, "currentKey");
-g([
-  v()
-], u.prototype, "trail");
-g([
-  v()
-], u.prototype, "result");
-typeof u < "u" && u.registerSallaComponent("salla-beauty-care-assistant");
+__name(_BeautyCareAssistant, "BeautyCareAssistant"), _BeautyCareAssistant.styles = [sharedSectionCss, componentStyles];
+let BeautyCareAssistant = _BeautyCareAssistant;
+__decorateClass([
+  property({ type: Object })
+], BeautyCareAssistant.prototype, "config");
+__decorateClass([
+  state()
+], BeautyCareAssistant.prototype, "currentKey");
+__decorateClass([
+  state()
+], BeautyCareAssistant.prototype, "trail");
+__decorateClass([
+  state()
+], BeautyCareAssistant.prototype, "result");
+typeof BeautyCareAssistant < "u" && BeautyCareAssistant.registerSallaComponent("salla-beauty-care-assistant");
 export {
-  u as default
+  BeautyCareAssistant as default
 };

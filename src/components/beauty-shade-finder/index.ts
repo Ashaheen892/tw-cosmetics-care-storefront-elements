@@ -279,10 +279,12 @@ export default class BeautyShadeFinder extends LitElement {
           : html`<p class="fs-empty">${t('لا توجد درجات مطابقة', 'No matching shades')}</p>`}
         <div class="bsf-results__actions">
           <button type="button" class="fs-btn fs-btn--ghost fs-tap" @click=${() => this.goBack()}>
-            ${localizedString(this.config?.bsf_back_btn as string) || t('تعديل الإجابات', 'Edit answers')}
+            ${localizedString(this.config?.bsf_back_btn as string) ||
+            t('تعديل الإجابات', 'Edit answers')}
           </button>
           <button type="button" class="fs-btn fs-tap" @click=${() => this.reset()}>
-            ${localizedString(this.config?.bsf_reset_btn as string) || t('ابدئي من جديد', 'Start over')}
+            ${localizedString(this.config?.bsf_reset_btn as string) ||
+            t('ابدئي من جديد', 'Start over')}
           </button>
           ${renderCommerceCtaButton(c, 'bsf_')}
         </div>

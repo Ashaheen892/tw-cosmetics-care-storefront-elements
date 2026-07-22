@@ -1,9 +1,11 @@
-import { css as P, LitElement as V, html as c, nothing as l } from "lit";
-import { property as U, state as u } from "lit/decorators.js";
-import { styleMap as y } from "lit/directives/style-map.js";
-import { g as N, n as I, j as v, l as g, s as j, k as F, o as Y, m as G, t as a, i as x, r as B, a as H } from "./sharedStyles-DKbcXBPy.js";
-import { r as W } from "./commerceOutcome-Dk8p2VWM.js";
-const q = P`
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css, LitElement, html, nothing } from "lit";
+import { property, state } from "lit/decorators.js";
+import { styleMap } from "lit/directives/style-map.js";
+import { g as getRadioValue, n as normalizeCollection, j as toNumber, l as localizedString, s as sharedSectionCss, k as safeStorageGet, o as getPageLocale, m as safeStorageSet, t, i as isTruthy, r as readSectionTheme, a as themeStyleMap } from "./sharedStyles-2kfPtH3m.js";
+import { r as renderCommerceCtaButton } from "./commerceOutcome-BDH0KFrf.js";
+const componentStyles = css`
   .bpa-shell {
     display: grid;
     gap: 1.35rem;
@@ -560,121 +562,133 @@ const q = P`
       transition: none !important;
     }
   }
-`, $ = 864e5;
-function K(i, e) {
-  const r = new Date(i.getTime()), n = r.getDate();
-  r.setDate(1), r.setMonth(r.getMonth() + e);
-  const t = new Date(r.getFullYear(), r.getMonth() + 1, 0).getDate();
-  return r.setDate(Math.min(n, t)), r;
+`, DAY_MS = 864e5;
+function addMonths(date, months) {
+  const d = new Date(date.getTime()), day = d.getDate();
+  d.setDate(1), d.setMonth(d.getMonth() + months);
+  const daysInTarget = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  return d.setDate(Math.min(day, daysInTarget)), d;
 }
-function L(i) {
-  const e = new Date(i.getTime());
-  return e.setHours(0, 0, 0, 0), e;
+__name(addMonths, "addMonths");
+function startOfDay(date) {
+  const d = new Date(date.getTime());
+  return d.setHours(0, 0, 0, 0), d;
 }
-function R(i) {
-  if (!i) return null;
-  const e = i.split("-").map(Number);
-  if (e.length !== 3 || e.some((s) => !Number.isFinite(s))) return null;
-  const [r, n, t] = e, o = new Date(r, n - 1, t);
-  return Number.isNaN(o.getTime()) ? null : L(o);
+__name(startOfDay, "startOfDay");
+function parseDateInput(value) {
+  if (!value) return null;
+  const parts = value.split("-").map(Number);
+  if (parts.length !== 3 || parts.some((n) => !Number.isFinite(n))) return null;
+  const [y, m, d] = parts, date = new Date(y, m - 1, d);
+  return Number.isNaN(date.getTime()) ? null : startOfDay(date);
 }
-function w(i) {
-  const e = (r) => String(r).padStart(2, "0");
-  return `${i.getFullYear()}-${e(i.getMonth() + 1)}-${e(i.getDate())}`;
+__name(parseDateInput, "parseDateInput");
+function toInputValue(date) {
+  const pad = /* @__PURE__ */ __name((n) => String(n).padStart(2, "0"), "pad");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
-function T(i, e, r) {
-  const n = L(/* @__PURE__ */ new Date()), t = K(i, e), o = Math.max(1, Math.round((t.getTime() - i.getTime()) / $)), s = Math.round((t.getTime() - n.getTime()) / $), h = Math.round((n.getTime() - i.getTime()) / $), m = Math.max(0, Math.min(1, h / o));
-  let b = "safe";
-  return s <= 0 ? b = "expired" : s <= r && (b = "warn"), { expiry: t, daysRemaining: s, totalDays: o, elapsedRatio: m, state: b };
+__name(toInputValue, "toInputValue");
+function computeExpiry(open, months, warnDays) {
+  const today = startOfDay(/* @__PURE__ */ new Date()), expiry = addMonths(open, months), totalDays = Math.max(1, Math.round((expiry.getTime() - open.getTime()) / DAY_MS)), daysRemaining = Math.round((expiry.getTime() - today.getTime()) / DAY_MS), elapsed = Math.round((today.getTime() - open.getTime()) / DAY_MS), elapsedRatio = Math.max(0, Math.min(1, elapsed / totalDays));
+  let state2 = "safe";
+  return daysRemaining <= 0 ? state2 = "expired" : daysRemaining <= warnDays && (state2 = "warn"), { expiry, daysRemaining, totalDays, elapsedRatio, state: state2 };
 }
-function S(i, e, r) {
-  const n = (t) => String(t).padStart(2, "0");
-  if (e === "short") return `${n(i.getDate())}/${n(i.getMonth() + 1)}/${i.getFullYear()}`;
-  if (e === "iso") return w(i);
+__name(computeExpiry, "computeExpiry");
+function formatDate(date, fmt, locale) {
+  const pad = /* @__PURE__ */ __name((n) => String(n).padStart(2, "0"), "pad");
+  if (fmt === "short") return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()}`;
+  if (fmt === "iso") return toInputValue(date);
   try {
-    return new Intl.DateTimeFormat(r === "en" ? "en-GB" : "ar", {
+    return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "ar", {
       day: "numeric",
       month: "long",
       year: "numeric"
-    }).format(i);
+    }).format(date);
   } catch {
-    return w(i);
+    return toInputValue(date);
   }
 }
-function J(i) {
-  return I(i).map((e, r) => ({
-    id: String(e.id ?? e.cat_id ?? "").trim() || `cat-${r + 1}`,
-    name: g(e.name),
-    icon: String(e.icon ?? "").trim(),
-    paoMonths: Math.max(0, v(e.pao_months, 0))
-  })).filter((e) => e.name);
+__name(formatDate, "formatDate");
+function parseCategories(raw) {
+  return normalizeCollection(raw).map((c, i) => ({
+    id: String(c.id ?? c.cat_id ?? "").trim() || `cat-${i + 1}`,
+    name: localizedString(c.name),
+    icon: String(c.icon ?? "").trim(),
+    paoMonths: Math.max(0, toNumber(c.pao_months, 0))
+  })).filter((c) => c.name);
 }
-function Q(i) {
-  return I(i).map((r) => ({
-    months: Math.max(1, v(r.months, 0)),
-    label: g(r.label)
-  })).filter((r) => r.months > 0);
+__name(parseCategories, "parseCategories");
+function parsePaoOptions(raw) {
+  return normalizeCollection(raw).map((o) => ({
+    months: Math.max(1, toNumber(o.months, 0)),
+    label: localizedString(o.label)
+  })).filter((o) => o.months > 0);
 }
-function X(i) {
-  return N(i.bpa_input_mode, "direct") === "category" ? "category" : "direct";
+__name(parsePaoOptions, "parsePaoOptions");
+function resolveInputMode(config) {
+  return getRadioValue(config.bpa_input_mode, "direct") === "category" ? "category" : "direct";
 }
-function E(i) {
-  const e = N(i.bpa_date_format, "long");
-  return ["long", "short", "iso"].includes(e) ? e : "long";
+__name(resolveInputMode, "resolveInputMode");
+function resolveDateFormat(config) {
+  const value = getRadioValue(config.bpa_date_format, "long");
+  return ["long", "short", "iso"].includes(value) ? value : "long";
 }
-function Z(i, e) {
-  return i.label ? i.label : e === "en" ? `${i.months} months` : `${i.months} شهرًا`;
+__name(resolveDateFormat, "resolveDateFormat");
+function paoOptionLabel(option, locale) {
+  return option.label ? option.label : locale === "en" ? `${option.months} months` : `${option.months} شهرًا`;
 }
-function ee(i, e) {
-  const r = (o) => String(o).padStart(2, "0"), n = (o) => `${o.getFullYear()}${r(o.getMonth() + 1)}${r(o.getDate())}`, t = new Date(e.getTime() + $);
+__name(paoOptionLabel, "paoOptionLabel");
+function buildIcs(title, date) {
+  const pad = /* @__PURE__ */ __name((n) => String(n).padStart(2, "0"), "pad"), stamp = /* @__PURE__ */ __name((d) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`, "stamp"), end = new Date(date.getTime() + DAY_MS);
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//beauty-pao-calculator//EN",
     "BEGIN:VEVENT",
     `UID:${Date.now()}@beauty-pao`,
-    `DTSTART;VALUE=DATE:${n(e)}`,
-    `DTEND;VALUE=DATE:${n(t)}`,
-    `SUMMARY:${i.replace(/\r?\n/g, " ")}`,
+    `DTSTART;VALUE=DATE:${stamp(date)}`,
+    `DTEND;VALUE=DATE:${stamp(end)}`,
+    `SUMMARY:${title.replace(/\r?\n/g, " ")}`,
     "END:VEVENT",
     "END:VCALENDAR"
   ].join(`\r
 `);
 }
-var re = Object.defineProperty, f = (i, e, r, n) => {
-  for (var t = void 0, o = i.length - 1, s; o >= 0; o--)
-    (s = i[o]) && (t = s(e, r, t) || t);
-  return t && re(e, r, t), t;
-};
-const C = "tw-beauty-pao-records", z = class z extends V {
+__name(buildIcs, "buildIcs");
+var __defProp2 = Object.defineProperty, __decorateClass = /* @__PURE__ */ __name((decorators, target, key, kind) => {
+  for (var result = void 0, i = decorators.length - 1, decorator; i >= 0; i--)
+    (decorator = decorators[i]) && (result = decorator(target, key, result) || result);
+  return result && __defProp2(target, key, result), result;
+}, "__decorateClass");
+const STORAGE_KEY = "tw-beauty-pao-records", _BeautyPaoExpiryCalculator = class _BeautyPaoExpiryCalculator extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.catId = "", this.pao = 0, this.openDate = "", this.recName = "", this.note = "", this.records = [], this.editingId = "", this.boundLangHandler = () => this.requestUpdate();
   }
   connectedCallback() {
-    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.records = F(C, []), this.openDate = w(/* @__PURE__ */ new Date());
+    super.connectedCallback(), window.addEventListener("language-changed", this.boundLangHandler), this.records = safeStorageGet(STORAGE_KEY, []), this.openDate = toInputValue(/* @__PURE__ */ new Date());
   }
   disconnectedCallback() {
     window.removeEventListener("language-changed", this.boundLangHandler), super.disconnectedCallback();
   }
-  updated(e) {
-    var r;
-    e.has("config") && !this.pao && (this.pao = Math.max(0, v((r = this.config) == null ? void 0 : r.bpa_default_pao, 0)));
+  updated(changed) {
+    var _a;
+    changed.has("config") && !this.pao && (this.pao = Math.max(0, toNumber((_a = this.config) == null ? void 0 : _a.bpa_default_pao, 0)));
   }
   get locale() {
-    return Y() === "en" ? "en" : "ar";
+    return getPageLocale() === "en" ? "en" : "ar";
   }
   persist() {
-    G(C, this.records);
+    safeStorageSet(STORAGE_KEY, this.records);
   }
-  onCategory(e, r) {
-    this.catId = e, r > 0 && (this.pao = r);
+  onCategory(id, months) {
+    this.catId = id, months > 0 && (this.pao = months);
   }
   saveRecord() {
-    var t;
-    if (!R(this.openDate) || this.pao <= 0) return;
-    const r = Math.max(1, v((t = this.config) == null ? void 0 : t.bpa_max_records, 12));
-    if (this.records.length >= r) return;
-    const n = {
+    var _a;
+    if (!parseDateInput(this.openDate) || this.pao <= 0) return;
+    const max = Math.max(1, toNumber((_a = this.config) == null ? void 0 : _a.bpa_max_records, 12));
+    if (this.records.length >= max) return;
+    const record = {
       id: `rec-${Date.now()}`,
       name: this.recName.trim() || (this.locale === "en" ? "Product" : "منتج"),
       category: this.catId,
@@ -682,268 +696,268 @@ const C = "tw-beauty-pao-records", z = class z extends V {
       pao: this.pao,
       note: this.note.trim()
     };
-    this.records = [n, ...this.records], this.persist(), this.recName = "", this.note = "";
+    this.records = [record, ...this.records], this.persist(), this.recName = "", this.note = "";
   }
-  deleteRecord(e) {
-    this.records = this.records.filter((r) => r.id !== e), this.persist();
+  deleteRecord(id) {
+    this.records = this.records.filter((r) => r.id !== id), this.persist();
   }
   clearRecords() {
     this.records = [], this.persist();
   }
-  renameRecord(e, r) {
-    this.records = this.records.map((n) => n.id === e ? { ...n, name: r.trim() || n.name } : n), this.persist();
+  renameRecord(id, name) {
+    this.records = this.records.map((r) => r.id === id ? { ...r, name: name.trim() || r.name } : r), this.persist();
   }
-  downloadIcs(e, r) {
-    const n = ee(e, r), t = new Blob([n], { type: "text/calendar;charset=utf-8" }), o = URL.createObjectURL(t), s = document.createElement("a");
-    s.href = o, s.download = "beauty-pao.ics", document.body.appendChild(s), s.click(), document.body.removeChild(s), setTimeout(() => URL.revokeObjectURL(o), 1e3);
+  downloadIcs(title, expiry) {
+    const ics = buildIcs(title, expiry), blob = new Blob([ics], { type: "text/calendar;charset=utf-8" }), url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url, a.download = "beauty-pao.ics", document.body.appendChild(a), a.click(), document.body.removeChild(a), setTimeout(() => URL.revokeObjectURL(url), 1e3);
   }
-  stateColor(e) {
-    const r = this.config || {};
-    return String(e === "expired" ? r.bpa_expired_color ?? "#cf4b4b" : e === "warn" ? r.bpa_warn_color ?? "#e0a100" : r.bpa_safe_color ?? "#2f9e63");
+  stateColor(state2) {
+    const c = this.config || {};
+    return String(state2 === "expired" ? c.bpa_expired_color ?? "#cf4b4b" : state2 === "warn" ? c.bpa_warn_color ?? "#e0a100" : c.bpa_safe_color ?? "#2f9e63");
   }
-  stateLabel(e, r) {
-    const n = this.config || {};
-    return e === "expired" ? g(n.bpa_state_expired) || a("انتهت المدة التقريبية", "Approximate period ended") : e === "warn" ? g(n.bpa_state_warn) || a(`قرب الانتهاء — باقٍ ${r} يومًا`, `Ending soon — ${r} days left`) : g(n.bpa_state_safe) || a(`صالح للاستخدام — باقٍ ${r} يومًا`, `Good to use — ${r} days left`);
+  stateLabel(state2, days) {
+    const c = this.config || {};
+    return state2 === "expired" ? localizedString(c.bpa_state_expired) || t("انتهت المدة التقريبية", "Approximate period ended") : state2 === "warn" ? localizedString(c.bpa_state_warn) || t(`قرب الانتهاء — باقٍ ${days} يومًا`, `Ending soon — ${days} days left`) : localizedString(c.bpa_state_safe) || t(`صالح للاستخدام — باقٍ ${days} يومًا`, `Good to use — ${days} days left`);
   }
   renderResult() {
-    const e = this.config || {}, r = R(this.openDate);
-    if (!r || this.pao <= 0)
-      return c`<div class="bpa-hero bpa-hero--empty" role="status">
+    const c = this.config || {}, open = parseDateInput(this.openDate);
+    if (!open || this.pao <= 0)
+      return html`<div class="bpa-hero bpa-hero--empty" role="status">
         <div class="bpa-hero__placeholder">
           <span class="bpa-hero__placeholder-icon" aria-hidden="true">◷</span>
           <p>
-            ${a(
+            ${t(
         "اختاري مدة الاستخدام بعد الفتح وتاريخ فتح العبوة لعرض النتيجة فورًا.",
         "Choose the period after opening and the open date to see the result instantly."
       )}
           </p>
         </div>
       </div>`;
-    const n = /* @__PURE__ */ new Date();
-    if (n.setHours(0, 0, 0, 0), r.getTime() > n.getTime())
-      return c`<div class="bpa-hero bpa-hero--empty" role="alert">
+    const today = /* @__PURE__ */ new Date();
+    if (today.setHours(0, 0, 0, 0), open.getTime() > today.getTime())
+      return html`<div class="bpa-hero bpa-hero--empty" role="alert">
         <div class="bpa-error">
-          ${a("تاريخ الفتح في المستقبل. اختاري تاريخًا صحيحًا.", "The open date is in the future. Please pick a valid date.")}
+          ${t("تاريخ الفتح في المستقبل. اختاري تاريخًا صحيحًا.", "The open date is in the future. Please pick a valid date.")}
         </div>
       </div>`;
-    const t = Math.max(1, v(e.bpa_warn_days, 30)), o = T(r, this.pao, t), s = E(e), h = this.stateColor(o.state), m = 92, b = 2 * Math.PI * m, d = o.state === "expired" ? 0 : Math.max(0, Math.min(1, o.daysRemaining / Math.max(1, o.totalDays))), _ = b * (1 - d), k = x(e.bpa_enable_calendar, !0), D = g(e.bpa_storage_tips), M = g(e.bpa_stop_signals), A = a("انتهاء صلاحية منتج التجميل", "Beauty product expiry"), O = Math.abs(o.daysRemaining);
-    return c`<div
-      class="bpa-hero bpa-hero--${o.state}"
-      style=${y({ "--bpa-color": h })}
+    const warnDays = Math.max(1, toNumber(c.bpa_warn_days, 30)), result = computeExpiry(open, this.pao, warnDays), fmt = resolveDateFormat(c), color = this.stateColor(result.state), r = 92, circ = 2 * Math.PI * r, remainingRatio = result.state === "expired" ? 0 : Math.max(0, Math.min(1, result.daysRemaining / Math.max(1, result.totalDays))), offset = circ * (1 - remainingRatio), enableCalendar = isTruthy(c.bpa_enable_calendar, !0), storageTips = localizedString(c.bpa_storage_tips), stopSignals = localizedString(c.bpa_stop_signals), calTitle = t("انتهاء صلاحية منتج التجميل", "Beauty product expiry"), daysAbs = Math.abs(result.daysRemaining);
+    return html`<div
+      class="bpa-hero bpa-hero--${result.state}"
+      style=${styleMap({ "--bpa-color": color })}
     >
       <div
         class="bpa-dial"
         role="img"
-        aria-label=${this.stateLabel(o.state, Math.max(0, o.daysRemaining))}
+        aria-label=${this.stateLabel(result.state, Math.max(0, result.daysRemaining))}
       >
         <svg viewBox="0 0 210 210" aria-hidden="true">
           <circle class="bpa-dial__disc" cx="105" cy="105" r="80"></circle>
-          <circle class="bpa-dial__track" cx="105" cy="105" r=${m}></circle>
+          <circle class="bpa-dial__track" cx="105" cy="105" r=${r}></circle>
           <circle
             class="bpa-dial__value"
             cx="105"
             cy="105"
-            r=${m}
-            style=${y({ strokeDasharray: `${b}`, strokeDashoffset: `${_}` })}
+            r=${r}
+            style=${styleMap({ strokeDasharray: `${circ}`, strokeDashoffset: `${offset}` })}
           ></circle>
         </svg>
         <div class="bpa-dial__center">
-          <div class="bpa-dial__days">${O}</div>
+          <div class="bpa-dial__days">${daysAbs}</div>
           <div class="bpa-dial__unit">
-            ${o.daysRemaining >= 0 ? a("يوم متبقٍ", "days left") : a("يوم مضى", "days over")}
+            ${result.daysRemaining >= 0 ? t("يوم متبقٍ", "days left") : t("يوم مضى", "days over")}
           </div>
-          ${o.state !== "expired" ? c`<div class="bpa-dial__ratio">
-                ${a(`${Math.round(d * 100)}٪ من المدة`, `${Math.round(d * 100)}% of period`)}
-              </div>` : l}
+          ${result.state !== "expired" ? html`<div class="bpa-dial__ratio">
+                ${t(`${Math.round(remainingRatio * 100)}٪ من المدة`, `${Math.round(remainingRatio * 100)}% of period`)}
+              </div>` : nothing}
         </div>
       </div>
 
-      <span class="bpa-state bpa-state--${o.state}">${this.stateLabel(o.state, Math.max(0, o.daysRemaining))}</span>
+      <span class="bpa-state bpa-state--${result.state}">${this.stateLabel(result.state, Math.max(0, result.daysRemaining))}</span>
 
       <div class="bpa-dates">
         <div class="bpa-date-cell">
-          <span>${a("تاريخ الفتح", "Opened")}</span>
-          <b>${S(r, s, this.locale)}</b>
+          <span>${t("تاريخ الفتح", "Opened")}</span>
+          <b>${formatDate(open, fmt, this.locale)}</b>
         </div>
         <div class="bpa-date-cell">
-          <span>${a("المدة", "Period")}</span>
-          <b>${a(`${this.pao} شهرًا`, `${this.pao} months`)}</b>
+          <span>${t("المدة", "Period")}</span>
+          <b>${t(`${this.pao} شهرًا`, `${this.pao} months`)}</b>
         </div>
         <div class="bpa-date-cell">
-          <span>${a("ينتهي تقريبًا", "Approx. end")}</span>
-          <b>${S(o.expiry, s, this.locale)}</b>
+          <span>${t("ينتهي تقريبًا", "Approx. end")}</span>
+          <b>${formatDate(result.expiry, fmt, this.locale)}</b>
         </div>
       </div>
 
-      ${D || M ? c`<div class="bpa-tips-grid">
-            ${D ? c`<div class="bpa-tips"><h4>${a("نصائح الحفظ", "Storage tips")}</h4><p>${D}</p></div>` : l}
-            ${M ? c`<div class="bpa-tips"><h4>${a("متى تتوقفين", "When to stop")}</h4><p>${M}</p></div>` : l}
-          </div>` : l}
+      ${storageTips || stopSignals ? html`<div class="bpa-tips-grid">
+            ${storageTips ? html`<div class="bpa-tips"><h4>${t("نصائح الحفظ", "Storage tips")}</h4><p>${storageTips}</p></div>` : nothing}
+            ${stopSignals ? html`<div class="bpa-tips"><h4>${t("متى تتوقفين", "When to stop")}</h4><p>${stopSignals}</p></div>` : nothing}
+          </div>` : nothing}
 
       <div class="bpa-result-actions">
-        ${k ? c`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.downloadIcs(A, o.expiry)}>
-              ${a("إضافة إلى التقويم", "Add to calendar")}
-            </button>` : l}
-        ${x(e.bpa_enable_storage, !0) ? c`<button type="button" class="fs-btn" @click=${() => this.saveRecord()}>${a("حفظ هذه العبوة", "Save this product")}</button>` : l}
-        ${W(e, "bpa_")}
+        ${enableCalendar ? html`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.downloadIcs(calTitle, result.expiry)}>
+              ${t("إضافة إلى التقويم", "Add to calendar")}
+            </button>` : nothing}
+        ${isTruthy(c.bpa_enable_storage, !0) ? html`<button type="button" class="fs-btn" @click=${() => this.saveRecord()}>${t("حفظ هذه العبوة", "Save this product")}</button>` : nothing}
+        ${renderCommerceCtaButton(c, "bpa_")}
       </div>
     </div>`;
   }
   renderSaved() {
-    const e = this.config || {};
-    if (!x(e.bpa_enable_storage, !0)) return l;
-    const r = E(e), n = Math.max(1, v(e.bpa_warn_days, 30));
-    return c`<div class="bpa-saved">
+    const c = this.config || {};
+    if (!isTruthy(c.bpa_enable_storage, !0)) return nothing;
+    const fmt = resolveDateFormat(c), warnDays = Math.max(1, toNumber(c.bpa_warn_days, 30));
+    return html`<div class="bpa-saved">
       <div class="bpa-saved__head">
-        <h3 class="bpa-saved__title">${a("عبواتي المحفوظة", "My saved products")}</h3>
-        ${this.records.length ? c`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.clearRecords()}>${a("مسح الكل", "Clear all")}</button>` : l}
+        <h3 class="bpa-saved__title">${t("عبواتي المحفوظة", "My saved products")}</h3>
+        ${this.records.length ? html`<button type="button" class="fs-btn fs-btn--ghost" @click=${() => this.clearRecords()}>${t("مسح الكل", "Clear all")}</button>` : nothing}
       </div>
-      <p class="bpa-saved__note">${a("البيانات محفوظة على جهازك فقط ولا تُرسل إلى أي خادم.", "Data is stored on your device only and never sent to any server.")}</p>
-      ${this.records.length ? c`<div class="bpa-records">
-            ${this.records.map((t) => {
-      const o = R(t.open), s = o ? T(o, t.pao, n) : null, h = s ? this.stateColor(s.state) : "var(--muted-color)", m = (s == null ? void 0 : s.state) ?? "unknown", b = s ? s.daysRemaining >= 0 ? a(`${s.daysRemaining} يوم`, `${s.daysRemaining} days`) : a(`منتهٍ ${Math.abs(s.daysRemaining)} يوم`, `Expired ${Math.abs(s.daysRemaining)}d ago`) : "";
-      return c`<article
-                class="bpa-record bpa-record--${m}"
-                style=${y({ "--rec-color": h })}
+      <p class="bpa-saved__note">${t("البيانات محفوظة على جهازك فقط ولا تُرسل إلى أي خادم.", "Data is stored on your device only and never sent to any server.")}</p>
+      ${this.records.length ? html`<div class="bpa-records">
+            ${this.records.map((rec) => {
+      const open = parseDateInput(rec.open), res = open ? computeExpiry(open, rec.pao, warnDays) : null, color = res ? this.stateColor(res.state) : "var(--muted-color)", stateClass = (res == null ? void 0 : res.state) ?? "unknown", daysLabel = res ? res.daysRemaining >= 0 ? t(`${res.daysRemaining} يوم`, `${res.daysRemaining} days`) : t(`منتهٍ ${Math.abs(res.daysRemaining)} يوم`, `Expired ${Math.abs(res.daysRemaining)}d ago`) : "";
+      return html`<article
+                class="bpa-record bpa-record--${stateClass}"
+                style=${styleMap({ "--rec-color": color })}
               >
                 <div class="bpa-record__status" aria-hidden="true">
                   <span class="bpa-record__ring"></span>
-                  ${s ? c`<span class="bpa-record__days">${Math.abs(s.daysRemaining)}</span>` : l}
+                  ${res ? html`<span class="bpa-record__days">${Math.abs(res.daysRemaining)}</span>` : nothing}
                 </div>
                 <div class="bpa-record__body">
-                  ${this.editingId === t.id ? c`<input
+                  ${this.editingId === rec.id ? html`<input
                         class="bpa-record__edit"
-                        .value=${t.name}
-                        aria-label=${a("اسم العبوة", "Product name")}
-                        @change=${(d) => {
-        this.renameRecord(t.id, d.target.value), this.editingId = "";
+                        .value=${rec.name}
+                        aria-label=${t("اسم العبوة", "Product name")}
+                        @change=${(e) => {
+        this.renameRecord(rec.id, e.target.value), this.editingId = "";
       }}
-                      />` : c`<div class="bpa-record__name">${t.name}</div>`}
+                      />` : html`<div class="bpa-record__name">${rec.name}</div>`}
                   <div class="bpa-record__meta">
-                    ${s && o ? c`<span class="bpa-record__pill bpa-record__pill--${m}">
-                          ${s.state === "expired" ? a("منتهٍ", "Expired") : s.state === "warn" ? a("قرب الانتهاء", "Ending soon") : a("صالح", "Good")}
-                        </span>` : l}
-                    ${b ? c`<span>${b}</span>` : l}
-                    ${s && o ? c`<span>· ${a("ينتهي", "Ends")} ${S(s.expiry, r, this.locale)}</span>` : l}
+                    ${res && open ? html`<span class="bpa-record__pill bpa-record__pill--${stateClass}">
+                          ${res.state === "expired" ? t("منتهٍ", "Expired") : res.state === "warn" ? t("قرب الانتهاء", "Ending soon") : t("صالح", "Good")}
+                        </span>` : nothing}
+                    ${daysLabel ? html`<span>${daysLabel}</span>` : nothing}
+                    ${res && open ? html`<span>· ${t("ينتهي", "Ends")} ${formatDate(res.expiry, fmt, this.locale)}</span>` : nothing}
                   </div>
-                  ${t.note ? c`<p class="bpa-record__note">${t.note}</p>` : l}
+                  ${rec.note ? html`<p class="bpa-record__note">${rec.note}</p>` : nothing}
                 </div>
                 <div class="bpa-record__actions">
-                  <button type="button" class="bpa-icon-btn" aria-label=${a("تعديل الاسم", "Rename")} @click=${() => this.editingId = this.editingId === t.id ? "" : t.id}>✎</button>
-                  <button type="button" class="bpa-icon-btn" aria-label=${a("حذف", "Delete")} @click=${() => this.deleteRecord(t.id)}>🗑</button>
+                  <button type="button" class="bpa-icon-btn" aria-label=${t("تعديل الاسم", "Rename")} @click=${() => this.editingId = this.editingId === rec.id ? "" : rec.id}>✎</button>
+                  <button type="button" class="bpa-icon-btn" aria-label=${t("حذف", "Delete")} @click=${() => this.deleteRecord(rec.id)}>🗑</button>
                 </div>
               </article>`;
     })}
-          </div>` : c`<div class="bpa-saved__empty">${a("لا توجد عبوات محفوظة بعد.", "No saved products yet.")}</div>`}
+          </div>` : html`<div class="bpa-saved__empty">${t("لا توجد عبوات محفوظة بعد.", "No saved products yet.")}</div>`}
     </div>`;
   }
   render() {
-    const e = this.config || {}, r = B(e, "bpa_"), n = g(e.bpa_title), t = g(e.bpa_desc), o = X(e), s = J(e.bpa_categories), h = Q(e.bpa_pao_options), m = g(e.bpa_notice) || a(
+    const c = this.config || {}, theme = readSectionTheme(c, "bpa_"), title = localizedString(c.bpa_title), desc = localizedString(c.bpa_desc), inputMode = resolveInputMode(c), categories = parseCategories(c.bpa_categories), paoOptions = parsePaoOptions(c.bpa_pao_options), notice = localizedString(c.bpa_notice) || t(
       "النتيجة تقديرية وتعتمد على تاريخ الفتح والمدة المكتوبة على العبوة. اتبعي تعليمات الشركة المصنّعة وتوقّفي عن الاستخدام عند تغيّر الرائحة أو اللون أو القوام.",
       "The result is approximate and based on the open date and the period printed on the packaging. Follow the manufacturer instructions and stop using if the smell, color or texture changes."
-    ), b = o === "category" && s.length > 0;
-    return c`
+    ), showCategories = inputMode === "category" && categories.length > 0;
+    return html`
       <section
         class="fs-section"
-        style=${y(H(r))}
-        aria-label=${n || a("حاسبة مدة الاستخدام بعد الفتح", "PAO & expiry calculator")}
+        style=${styleMap(themeStyleMap(theme))}
+        aria-label=${title || t("حاسبة مدة الاستخدام بعد الفتح", "PAO & expiry calculator")}
       >
         <div class="fs-container">
-          ${n || t ? c`<div class="fs-header">
-                ${n ? c`<h2 class="fs-title">${n}</h2>` : l}
-                ${t ? c`<p class="fs-desc">${t}</p>` : l}
-              </div>` : l}
+          ${title || desc ? html`<div class="fs-header">
+                ${title ? html`<h2 class="fs-title">${title}</h2>` : nothing}
+                ${desc ? html`<p class="fs-desc">${desc}</p>` : nothing}
+              </div>` : nothing}
 
           <div class="bpa-shell">
             <aside class="bpa-form-card">
-              <h3 class="bpa-form-card__title">${a("احسبي المدة", "Calculate the period")}</h3>
+              <h3 class="bpa-form-card__title">${t("احسبي المدة", "Calculate the period")}</h3>
               <p class="bpa-form-card__hint">
-                ${a(
+                ${t(
       "اختاري الفئة أو المدة، ثم حدّدي تاريخ فتح العبوة.",
       "Pick a category or period, then set the open date."
     )}
               </p>
 
               <div class="bpa-form">
-                ${b ? c`<div class="bpa-field">
-                      <label>${a("فئة المستحضر", "Product category")}</label>
-                      <div class="bpa-cat-chips" role="group" aria-label=${a("فئات المستحضرات", "Product categories")}>
-                        ${s.map((d) => {
-      const _ = d.id === this.catId, k = d.icon.startsWith("sicon-");
-      return c`<button
+                ${showCategories ? html`<div class="bpa-field">
+                      <label>${t("فئة المستحضر", "Product category")}</label>
+                      <div class="bpa-cat-chips" role="group" aria-label=${t("فئات المستحضرات", "Product categories")}>
+                        ${categories.map((cat) => {
+      const active = cat.id === this.catId, isSicon = cat.icon.startsWith("sicon-");
+      return html`<button
                             type="button"
-                            class=${`bpa-cat-chip${_ ? " is-active" : ""}`}
-                            aria-pressed=${_ ? "true" : "false"}
-                            @click=${() => this.onCategory(d.id, d.paoMonths)}
+                            class=${`bpa-cat-chip${active ? " is-active" : ""}`}
+                            aria-pressed=${active ? "true" : "false"}
+                            @click=${() => this.onCategory(cat.id, cat.paoMonths)}
                           >
-                            ${d.icon ? c`<span class="bpa-cat-chip__icon" aria-hidden="true">
-                                  ${k ? c`<span class=${d.icon}></span>` : d.icon}
-                                </span>` : l}
-                            <span>${d.name}</span>
-                            ${d.paoMonths ? c`<span class="bpa-cat-chip__months"
-                                  >${this.locale === "en" ? `${d.paoMonths}M` : `${d.paoMonths} شهر`}</span
-                                >` : l}
+                            ${cat.icon ? html`<span class="bpa-cat-chip__icon" aria-hidden="true">
+                                  ${isSicon ? html`<span class=${cat.icon}></span>` : cat.icon}
+                                </span>` : nothing}
+                            <span>${cat.name}</span>
+                            ${cat.paoMonths ? html`<span class="bpa-cat-chip__months"
+                                  >${this.locale === "en" ? `${cat.paoMonths}M` : `${cat.paoMonths} شهر`}</span
+                                >` : nothing}
                           </button>`;
     })}
                       </div>
-                    </div>` : l}
+                    </div>` : nothing}
 
                 <div class="bpa-field">
-                  <label>${a("مدة الاستخدام بعد الفتح", "Period after opening")}</label>
-                  ${h.length ? c`<div class="bpa-pao-chips" role="group" aria-label=${a("مدد الاستخدام", "Use periods")}>
-                        ${h.map(
-      (d) => c`<button
+                  <label>${t("مدة الاستخدام بعد الفتح", "Period after opening")}</label>
+                  ${paoOptions.length ? html`<div class="bpa-pao-chips" role="group" aria-label=${t("مدد الاستخدام", "Use periods")}>
+                        ${paoOptions.map(
+      (opt) => html`<button
                             type="button"
-                            class=${`bpa-pao-chip${this.pao === d.months ? " is-active" : ""}`}
-                            aria-pressed=${this.pao === d.months ? "true" : "false"}
-                            @click=${() => this.pao = d.months}
+                            class=${`bpa-pao-chip${this.pao === opt.months ? " is-active" : ""}`}
+                            aria-pressed=${this.pao === opt.months ? "true" : "false"}
+                            @click=${() => this.pao = opt.months}
                           >
-                            ${Z(d, this.locale)}
+                            ${paoOptionLabel(opt, this.locale)}
                           </button>`
     )}
-                      </div>` : c`<input
+                      </div>` : html`<input
                         class="bpa-input"
                         type="number"
                         min="1"
                         max="60"
                         .value=${this.pao ? String(this.pao) : ""}
-                        placeholder=${a("عدد الأشهر", "Number of months")}
-                        @input=${(d) => this.pao = Math.max(0, v(d.target.value, 0))}
+                        placeholder=${t("عدد الأشهر", "Number of months")}
+                        @input=${(e) => this.pao = Math.max(0, toNumber(e.target.value, 0))}
                       />`}
                 </div>
 
                 <div class="bpa-field">
-                  <label for="bpa-open">${a("تاريخ فتح العبوة", "Open date")}</label>
+                  <label for="bpa-open">${t("تاريخ فتح العبوة", "Open date")}</label>
                   <input
                     id="bpa-open"
                     class="bpa-input"
                     type="date"
-                    max=${w(/* @__PURE__ */ new Date())}
+                    max=${toInputValue(/* @__PURE__ */ new Date())}
                     .value=${this.openDate}
-                    @input=${(d) => this.openDate = d.target.value}
+                    @input=${(e) => this.openDate = e.target.value}
                   />
                 </div>
 
-                ${x(e.bpa_enable_name, !0) ? c`<div class="bpa-field">
-                      <label for="bpa-name">${a("اسم العبوة (اختياري)", "Product name (optional)")}</label>
+                ${isTruthy(c.bpa_enable_name, !0) ? html`<div class="bpa-field">
+                      <label for="bpa-name">${t("اسم العبوة (اختياري)", "Product name (optional)")}</label>
                       <input
                         id="bpa-name"
                         class="bpa-input"
                         .value=${this.recName}
-                        placeholder=${a("مثال: سيروم فيتامين C", "e.g. Vitamin C serum")}
-                        @input=${(d) => this.recName = d.target.value}
+                        placeholder=${t("مثال: سيروم فيتامين C", "e.g. Vitamin C serum")}
+                        @input=${(e) => this.recName = e.target.value}
                       />
-                    </div>` : l}
+                    </div>` : nothing}
 
-                ${x(e.bpa_enable_note, !1) ? c`<div class="bpa-field">
-                      <label for="bpa-note">${a("ملاحظة (اختياري)", "Note (optional)")}</label>
+                ${isTruthy(c.bpa_enable_note, !1) ? html`<div class="bpa-field">
+                      <label for="bpa-note">${t("ملاحظة (اختياري)", "Note (optional)")}</label>
                       <input
                         id="bpa-note"
                         class="bpa-input"
                         .value=${this.note}
-                        @input=${(d) => this.note = d.target.value}
+                        @input=${(e) => this.note = e.target.value}
                       />
-                    </div>` : l}
+                    </div>` : nothing}
               </div>
             </aside>
 
@@ -952,39 +966,39 @@ const C = "tw-beauty-pao-records", z = class z extends V {
 
           ${this.renderSaved()}
 
-          <p class="bpa-notice">${m}</p>
+          <p class="bpa-notice">${notice}</p>
         </div>
       </section>
     `;
   }
 };
-z.styles = [j, q];
-let p = z;
-f([
-  U({ type: Object })
-], p.prototype, "config");
-f([
-  u()
-], p.prototype, "catId");
-f([
-  u()
-], p.prototype, "pao");
-f([
-  u()
-], p.prototype, "openDate");
-f([
-  u()
-], p.prototype, "recName");
-f([
-  u()
-], p.prototype, "note");
-f([
-  u()
-], p.prototype, "records");
-f([
-  u()
-], p.prototype, "editingId");
-typeof p < "u" && p.registerSallaComponent("salla-beauty-pao-expiry-calculator");
+__name(_BeautyPaoExpiryCalculator, "BeautyPaoExpiryCalculator"), _BeautyPaoExpiryCalculator.styles = [sharedSectionCss, componentStyles];
+let BeautyPaoExpiryCalculator = _BeautyPaoExpiryCalculator;
+__decorateClass([
+  property({ type: Object })
+], BeautyPaoExpiryCalculator.prototype, "config");
+__decorateClass([
+  state()
+], BeautyPaoExpiryCalculator.prototype, "catId");
+__decorateClass([
+  state()
+], BeautyPaoExpiryCalculator.prototype, "pao");
+__decorateClass([
+  state()
+], BeautyPaoExpiryCalculator.prototype, "openDate");
+__decorateClass([
+  state()
+], BeautyPaoExpiryCalculator.prototype, "recName");
+__decorateClass([
+  state()
+], BeautyPaoExpiryCalculator.prototype, "note");
+__decorateClass([
+  state()
+], BeautyPaoExpiryCalculator.prototype, "records");
+__decorateClass([
+  state()
+], BeautyPaoExpiryCalculator.prototype, "editingId");
+typeof BeautyPaoExpiryCalculator < "u" && BeautyPaoExpiryCalculator.registerSallaComponent("salla-beauty-pao-expiry-calculator");
 export {
-  p as default
+  BeautyPaoExpiryCalculator as default
 };

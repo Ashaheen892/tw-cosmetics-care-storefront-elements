@@ -1,254 +1,282 @@
-import { css as z } from "lit";
-function v() {
-  var t, r, e;
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
+import { css } from "lit";
+function getPageLocale() {
+  var _a, _b, _c;
   try {
-    const o = typeof Salla < "u" ? (r = (t = Salla == null ? void 0 : Salla.lang) == null ? void 0 : t.getLocale) == null ? void 0 : r.call(t) : void 0, a = (e = document.documentElement.lang) == null ? void 0 : e.split("-")[0];
-    return String(o || a || "ar").toLowerCase();
+    const sallaLocale = typeof Salla < "u" ? (_b = (_a = Salla == null ? void 0 : Salla.lang) == null ? void 0 : _a.getLocale) == null ? void 0 : _b.call(_a) : void 0, htmlLocale = (_c = document.documentElement.lang) == null ? void 0 : _c.split("-")[0];
+    return String(sallaLocale || htmlLocale || "ar").toLowerCase();
   } catch {
     return "ar";
   }
 }
-function k(t, r = "") {
-  if (t == null)
-    return r;
-  if (typeof t == "string")
-    return t.trim() || r;
-  if (typeof t == "number")
-    return String(t);
-  if (typeof t == "object") {
-    const e = t, a = [v(), "ar", "en", ...Object.keys(e)];
-    for (const f of a) {
-      const s = e[f];
-      if (typeof s == "string" && s.trim())
-        return s.trim();
+__name(getPageLocale, "getPageLocale");
+function localizedString(value, fallback = "") {
+  if (value == null)
+    return fallback;
+  if (typeof value == "string")
+    return value.trim() || fallback;
+  if (typeof value == "number")
+    return String(value);
+  if (typeof value == "object") {
+    const obj = value, candidates = [getPageLocale(), "ar", "en", ...Object.keys(obj)];
+    for (const key of candidates) {
+      const v = obj[key];
+      if (typeof v == "string" && v.trim())
+        return v.trim();
     }
   }
-  return r;
+  return fallback;
 }
-const d = "var(--color-primary, var(--primary-color, var(--color-main, #64748b)))";
-function l() {
-  var e;
+__name(localizedString, "localizedString");
+const PRIMARY = "var(--color-primary, var(--primary-color, var(--color-main, #64748b)))";
+function detectFsTheme() {
+  var _a;
   if (typeof document > "u") return "light";
-  const t = document.documentElement, r = (t.getAttribute("data-theme") || t.getAttribute("data-mode") || "").toLowerCase();
-  if (r === "dark") return "dark";
-  if (r === "light") return "light";
-  if (t.classList.contains("dark") || (e = document.body) != null && e.classList.contains("dark"))
+  const root = document.documentElement, attr = (root.getAttribute("data-theme") || root.getAttribute("data-mode") || "").toLowerCase();
+  if (attr === "dark") return "dark";
+  if (attr === "light") return "light";
+  if (root.classList.contains("dark") || (_a = document.body) != null && _a.classList.contains("dark"))
     return "dark";
   try {
-    const o = localStorage.getItem("salla_demo_theme");
-    if (o === "dark" || o === "light") return o;
+    const stored = localStorage.getItem("salla_demo_theme");
+    if (stored === "dark" || stored === "light") return stored;
   } catch {
   }
   return "light";
 }
-function w(t = l()) {
-  const r = t === "dark";
+__name(detectFsTheme, "detectFsTheme");
+function fsThemeVars(mode = detectFsTheme()) {
+  const dark = mode === "dark";
   return {
-    "--fs-store-primary": d,
-    "--accent-color": d,
-    "--button-bg": d,
+    "--fs-store-primary": PRIMARY,
+    "--accent-color": PRIMARY,
+    "--button-bg": PRIMARY,
     "--button-color": "#ffffff",
-    "--text-color": r ? "#ffffff" : "#000000",
-    "--muted-color": r ? "#aaaaaa" : "#666666",
-    "--card-bg": r ? "#0f0f0f" : "#ffffff",
-    "--fs-surface": r ? "#0a0a0a" : "#f0f0f0",
-    "--border-color": r ? "rgba(255, 255, 255, 0.12)" : "#e5e7eb",
+    "--text-color": dark ? "#ffffff" : "#000000",
+    "--muted-color": dark ? "#aaaaaa" : "#666666",
+    "--card-bg": dark ? "#0f0f0f" : "#ffffff",
+    "--fs-surface": dark ? "#0a0a0a" : "#f0f0f0",
+    "--border-color": dark ? "rgba(255, 255, 255, 0.12)" : "#e5e7eb",
     "--section-bg": "transparent"
   };
 }
-function _(t, r) {
-  for (const [e, o] of Object.entries(r))
-    t.style.setProperty(e, o);
-  t.setAttribute("data-fs-theme", l());
+__name(fsThemeVars, "fsThemeVars");
+function applyVars(el, vars) {
+  for (const [key, value] of Object.entries(vars))
+    el.style.setProperty(key, value);
+  el.setAttribute("data-fs-theme", detectFsTheme());
 }
-function m(t, r) {
-  t.querySelectorAll(".fs-section").forEach((e) => {
-    _(e, r);
+__name(applyVars, "applyVars");
+function walkAndApply(root, vars) {
+  root.querySelectorAll(".fs-section").forEach((node) => {
+    applyVars(node, vars);
   });
 }
-function S(t = l()) {
+__name(walkAndApply, "walkAndApply");
+function applyFsThemeToDocument(mode = detectFsTheme()) {
   if (typeof document > "u") return;
-  const r = w(t);
-  m(document, r), document.querySelectorAll("*").forEach((e) => {
-    const o = e, a = o.shadowRoot;
-    a && a.querySelector(".fs-section") && (_(o, r), m(a, r));
+  const vars = fsThemeVars(mode);
+  walkAndApply(document, vars), document.querySelectorAll("*").forEach((node) => {
+    const el = node, shadow = el.shadowRoot;
+    shadow && shadow.querySelector(".fs-section") && (applyVars(el, vars), walkAndApply(shadow, vars));
   });
 }
-let p = !1, i = null;
-function n() {
-  i && clearTimeout(i), i = setTimeout(() => {
-    i = null, S();
+__name(applyFsThemeToDocument, "applyFsThemeToDocument");
+let watching = !1, syncTimer = null;
+function scheduleSync() {
+  syncTimer && clearTimeout(syncTimer), syncTimer = setTimeout(() => {
+    syncTimer = null, applyFsThemeToDocument();
   }, 50);
 }
-function A() {
-  if (!(p || typeof document > "u")) {
-    p = !0, n();
+__name(scheduleSync, "scheduleSync");
+function ensureFsThemeWatch() {
+  if (!(watching || typeof document > "u")) {
+    watching = !0, scheduleSync();
     try {
-      new MutationObserver(n).observe(document.documentElement, {
+      new MutationObserver(scheduleSync).observe(document.documentElement, {
         attributes: !0,
         attributeFilter: ["data-theme", "data-mode", "class"]
-      }), document.body && new MutationObserver(n).observe(document.body, {
+      }), document.body && new MutationObserver(scheduleSync).observe(document.body, {
         attributes: !0,
         attributeFilter: ["class", "data-theme", "data-mode"]
       });
     } catch {
     }
-    window.addEventListener("storage", (t) => {
-      t.key === "salla_demo_theme" && n();
+    window.addEventListener("storage", (event) => {
+      event.key === "salla_demo_theme" && scheduleSync();
     });
     try {
-      new MutationObserver((t) => {
-        t.some((r) => r.addedNodes.length) && n();
+      new MutationObserver((records) => {
+        records.some((r) => r.addedNodes.length) && scheduleSync();
       }).observe(document.documentElement, { childList: !0, subtree: !0 });
     } catch {
     }
   }
 }
-function j(t) {
-  return Object.entries(t || {}).reduce((r, [e, o]) => {
-    const a = e.includes(".") ? e.split(".").pop() : e;
-    return r[a] = o, r;
+__name(ensureFsThemeWatch, "ensureFsThemeWatch");
+function normalizeItem(item) {
+  return Object.entries(item || {}).reduce((acc, [key, value]) => {
+    const normalizedKey = key.includes(".") ? key.split(".").pop() : key;
+    return acc[normalizedKey] = value, acc;
   }, {});
 }
-function b(t, r = "") {
-  const e = typeof t == "string" || typeof t == "number" ? String(t).trim() : k(t, "").trim();
-  return e && e.toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 48) || r;
+__name(normalizeItem, "normalizeItem");
+function slugifyId(value, fallback = "") {
+  const raw = typeof value == "string" || typeof value == "number" ? String(value).trim() : localizedString(value, "").trim();
+  return raw && raw.toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 48) || fallback;
 }
-function L(t, r = "") {
-  if (t && typeof t == "object" && !Array.isArray(t)) {
-    const e = t, o = String(e.en ?? "").trim(), a = String(e.ar ?? "").trim();
-    return b(o || a, r);
+__name(slugifyId, "slugifyId");
+function itemIdFromLabel(value, fallback = "") {
+  if (value && typeof value == "object" && !Array.isArray(value)) {
+    const row = value, en = String(row.en ?? "").trim(), ar = String(row.ar ?? "").trim();
+    return slugifyId(en || ar, fallback);
   }
-  return b(t, r);
+  return slugifyId(value, fallback);
 }
-function M(t, r, e = "item") {
-  const o = String(t.id ?? t.value ?? t.key ?? "").trim();
-  return o || L(t.name ?? t.title ?? t.label ?? t.brand ?? t.model, "") || `${e}-${r + 1}`;
+__name(itemIdFromLabel, "itemIdFromLabel");
+function resolveItemId(item, index, prefix = "item") {
+  const explicit = String(item.id ?? item.value ?? item.key ?? "").trim();
+  return explicit || itemIdFromLabel(item.name ?? item.title ?? item.label ?? item.brand ?? item.model, "") || `${prefix}-${index + 1}`;
 }
-function I(t) {
-  return Array.isArray(t) ? t.filter((r) => !!r && typeof r == "object").map((r, e) => {
-    const o = j(r), a = o;
-    return String(a.id ?? "").trim() || (a.id = M(a, e)), o;
+__name(resolveItemId, "resolveItemId");
+function normalizeCollection(items) {
+  return Array.isArray(items) ? items.filter((item) => !!item && typeof item == "object").map((item, index) => {
+    const normalized = normalizeItem(item), row = normalized;
+    return String(row.id ?? "").trim() || (row.id = resolveItemId(row, index)), normalized;
   }) : [];
 }
-function c(t, r = 0) {
-  return typeof t == "number" && Number.isFinite(t) ? t : typeof t == "string" && t.trim() !== "" && Number.isFinite(Number(t)) ? Number(t) : t && typeof t == "object" && "value" in t ? c(t.value, r) : r;
+__name(normalizeCollection, "normalizeCollection");
+function getUnitValue(val, fallback = 0) {
+  return typeof val == "number" && Number.isFinite(val) ? val : typeof val == "string" && val.trim() !== "" && Number.isFinite(Number(val)) ? Number(val) : val && typeof val == "object" && "value" in val ? getUnitValue(val.value, fallback) : fallback;
 }
-function N(t, r = 0) {
-  if (typeof t == "number" && Number.isFinite(t)) return t;
-  if (typeof t == "string" && t.trim() !== "") {
-    const e = Number(t.replace(",", "."));
-    return Number.isFinite(e) ? e : r;
+__name(getUnitValue, "getUnitValue");
+function toNumber(val, fallback = 0) {
+  if (typeof val == "number" && Number.isFinite(val)) return val;
+  if (typeof val == "string" && val.trim() !== "") {
+    const n = Number(val.replace(",", "."));
+    return Number.isFinite(n) ? n : fallback;
   }
-  return r;
+  return fallback;
 }
-function F(t, r, e) {
-  return Math.min(e, Math.max(r, t));
+__name(toNumber, "toNumber");
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
 }
-function h(t, r = !1) {
-  if (typeof t == "boolean") return t;
-  if (typeof t == "string") {
-    const e = t.toLowerCase().trim();
-    if (["true", "1", "yes", "on"].includes(e)) return !0;
-    if (["false", "0", "no", "off", ""].includes(e)) return !1;
+__name(clamp, "clamp");
+function isTruthy(val, fallback = !1) {
+  if (typeof val == "boolean") return val;
+  if (typeof val == "string") {
+    const v = val.toLowerCase().trim();
+    if (["true", "1", "yes", "on"].includes(v)) return !0;
+    if (["false", "0", "no", "off", ""].includes(v)) return !1;
   }
-  return typeof t == "number" ? t !== 0 : r;
+  return typeof val == "number" ? val !== 0 : fallback;
 }
-const u = {
+__name(isTruthy, "isTruthy");
+const STATIC_LINK_PATHS = {
   offers_link: "/offers",
   offers: "/offers",
   brands_link: "/brands",
   blog_link: "/blog",
   blog: "/blog"
 };
-function g(t) {
-  if (!t) return "";
-  if (typeof t == "string") {
-    const r = t.trim();
-    return T(r) ? /^[\w-]+(\.[\w-]+)+([/?#]|$)/.test(r) && !/^https?:\/\//i.test(r) ? `https://${r}` : r : "";
+function extractLink(value) {
+  if (!value) return "";
+  if (typeof value == "string") {
+    const trimmed = value.trim();
+    return isValidHref(trimmed) ? /^[\w-]+(\.[\w-]+)+([/?#]|$)/.test(trimmed) && !/^https?:\/\//i.test(trimmed) ? `https://${trimmed}` : trimmed : "";
   }
-  if (Array.isArray(t)) {
-    for (const r of t) {
-      const e = g(r);
-      if (e) return e;
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const link = extractLink(item);
+      if (link) return link;
     }
     return "";
   }
-  if (typeof t == "object") {
-    const r = t, e = r.urls && typeof r.urls == "object" ? r.urls : void 0, o = [
-      r.url,
-      r.href,
-      e == null ? void 0 : e.customer,
-      e == null ? void 0 : e.url,
-      r.link,
-      r.custom,
-      r.path,
+  if (typeof value == "object") {
+    const obj = value, urls = obj.urls && typeof obj.urls == "object" ? obj.urls : void 0, candidates = [
+      obj.url,
+      obj.href,
+      urls == null ? void 0 : urls.customer,
+      urls == null ? void 0 : urls.url,
+      obj.link,
+      obj.custom,
+      obj.path,
       // Last: `value` may hold a nested entity, a custom URL, or a bare id.
-      r.value
+      obj.value
     ];
-    for (const f of o) {
-      const s = g(f);
-      if (s) return s;
+    for (const candidate of candidates) {
+      const link = extractLink(candidate);
+      if (link) return link;
     }
-    const a = String(r.type ?? r.key ?? r.source ?? "").toLowerCase().trim();
-    if (u[a]) return u[a];
+    const typeKey = String(obj.type ?? obj.key ?? obj.source ?? "").toLowerCase().trim();
+    if (STATIC_LINK_PATHS[typeKey]) return STATIC_LINK_PATHS[typeKey];
   }
   return "";
 }
-function T(t) {
-  if (!t || t === "#" || /^\d+$/.test(t)) return !1;
-  if (t.startsWith("/") || t.startsWith("#") || t.startsWith("?") || t.startsWith("mailto:") || t.startsWith("tel:") || t.startsWith("whatsapp:"))
+__name(extractLink, "extractLink");
+function isValidHref(url) {
+  if (!url || url === "#" || /^\d+$/.test(url)) return !1;
+  if (url.startsWith("/") || url.startsWith("#") || url.startsWith("?") || url.startsWith("mailto:") || url.startsWith("tel:") || url.startsWith("whatsapp:"))
     return !0;
-  if (/^https?:\/\//i.test(t))
+  if (/^https?:\/\//i.test(url))
     try {
-      return new URL(t), !0;
+      return new URL(url), !0;
     } catch {
       return !1;
     }
-  return /^[\w-]+(\.[\w-]+)+([/?#]|$)/.test(t);
+  return /^[\w-]+(\.[\w-]+)+([/?#]|$)/.test(url);
 }
-function E(t) {
+__name(isValidHref, "isValidHref");
+function isExternalUrl(url) {
   try {
-    return new URL(t, window.location.origin).origin !== window.location.origin;
+    return new URL(url, window.location.origin).origin !== window.location.origin;
   } catch {
     return !1;
   }
 }
-function $(t) {
-  if (!t || typeof t != "string") return !1;
+__name(isExternalUrl, "isExternalUrl");
+function isDirectMediaUrl(url) {
+  if (!url || typeof url != "string") return !1;
   try {
-    const r = new URL(t, window.location.origin);
-    return !!["http:", "https:"].includes(r.protocol);
+    const parsed = new URL(url, window.location.origin);
+    return !!["http:", "https:"].includes(parsed.protocol);
   } catch {
     return !1;
   }
 }
-function W(t, r, e, o) {
-  return v() === "en" ? r : t;
+__name(isDirectMediaUrl, "isDirectMediaUrl");
+function t(ar, en, value, fallbackAr) {
+  return getPageLocale() === "en" ? en : ar;
 }
-function O(t, r) {
+__name(t, "t");
+function safeStorageGet(key, fallback) {
   try {
-    const e = localStorage.getItem(t);
-    return e ? JSON.parse(e) : r;
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
   } catch {
-    return r;
+    return fallback;
   }
 }
-function R(t, r) {
+__name(safeStorageGet, "safeStorageGet");
+function safeStorageSet(key, value) {
   try {
-    localStorage.setItem(t, JSON.stringify(r));
+    localStorage.setItem(key, JSON.stringify(value));
   } catch {
   }
 }
-function U() {
+__name(safeStorageSet, "safeStorageSet");
+function prefersReducedMotion() {
   try {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   } catch {
     return !1;
   }
 }
-function D(t, r, e) {
-  const o = t || {};
+__name(prefersReducedMotion, "prefersReducedMotion");
+function readSectionTheme(config, prefix, defaults) {
+  const c = config || {};
   return {
     bg: "transparent",
     text: "#000000",
@@ -258,83 +286,88 @@ function D(t, r, e) {
     border: "var(--color-border, #e5e7eb)",
     buttonBg: "var(--color-primary, var(--primary-color, var(--color-main, #64748b)))",
     buttonColor: "#ffffff",
-    radius: `${c(o[`${r}radius`], 20)}px`,
-    spaceDesktop: c(
-      o[`${r}space_desktop`],
+    radius: `${getUnitValue(c[`${prefix}radius`], 20)}px`,
+    spaceDesktop: getUnitValue(
+      c[`${prefix}space_desktop`],
       48
     ),
-    spaceMobile: c(
-      o[`${r}space_mobile`],
+    spaceMobile: getUnitValue(
+      c[`${prefix}space_mobile`],
       28
     ),
-    animate: h(o[`${r}animate`], !0),
-    fullWidth: h(o[`${r}full_width`], !1),
+    animate: isTruthy(c[`${prefix}animate`], !0),
+    fullWidth: isTruthy(c[`${prefix}full_width`], !1),
     noBottomMargin: !1,
     hasContainer: !0
   };
 }
-function q(t) {
-  const r = t.hasContainer !== !1;
-  return A(), {
-    ...w(),
-    "--section-radius": t.radius,
-    "--space-desktop": `${t.spaceDesktop}px`,
-    "--space-mobile": `${t.spaceMobile}px`,
-    "--space-desktop-bottom": t.noBottomMargin ? "0px" : `${t.spaceDesktop}px`,
-    "--space-mobile-bottom": t.noBottomMargin ? "0px" : `${t.spaceMobile}px`,
-    "--section-container-max": r ? "1440px" : "none",
-    "--section-container-pad": r ? "16px" : "0px",
-    "--section-container-pad-sm": r ? "12px" : "0px"
+__name(readSectionTheme, "readSectionTheme");
+function themeStyleMap(theme) {
+  const useContainer = theme.hasContainer !== !1;
+  return ensureFsThemeWatch(), {
+    ...fsThemeVars(),
+    "--section-radius": theme.radius,
+    "--space-desktop": `${theme.spaceDesktop}px`,
+    "--space-mobile": `${theme.spaceMobile}px`,
+    "--space-desktop-bottom": theme.noBottomMargin ? "0px" : `${theme.spaceDesktop}px`,
+    "--space-mobile-bottom": theme.noBottomMargin ? "0px" : `${theme.spaceMobile}px`,
+    "--section-container-max": useContainer ? "1440px" : "none",
+    "--section-container-pad": useContainer ? "16px" : "0px",
+    "--section-container-pad-sm": useContainer ? "12px" : "0px"
   };
 }
-function x(t, r = "") {
-  if (typeof t == "string" && t.trim()) return t.trim();
-  if (Array.isArray(t) && t[0]) {
-    const e = t[0];
-    if (typeof e == "string") return e;
-    if (e && typeof e == "object" && "value" in e)
-      return String(e.value ?? r);
-    if (e && typeof e == "object" && "key" in e)
-      return String(e.key ?? r);
+__name(themeStyleMap, "themeStyleMap");
+function getRadioValue(value, fallback = "") {
+  if (typeof value == "string" && value.trim()) return value.trim();
+  if (Array.isArray(value) && value[0]) {
+    const first = value[0];
+    if (typeof first == "string") return first;
+    if (first && typeof first == "object" && "value" in first)
+      return String(first.value ?? fallback);
+    if (first && typeof first == "object" && "key" in first)
+      return String(first.key ?? fallback);
   }
-  if (t && typeof t == "object") {
-    const e = t;
-    if (Array.isArray(e.selected) && e.selected[0])
-      return x(e.selected, r);
-    if ("value" in e && e.value != null && !Array.isArray(e.value))
-      return String(e.value ?? r);
-    if (Array.isArray(e.value) && e.value[0])
-      return x(e.value, r);
+  if (value && typeof value == "object") {
+    const obj = value;
+    if (Array.isArray(obj.selected) && obj.selected[0])
+      return getRadioValue(obj.selected, fallback);
+    if ("value" in obj && obj.value != null && !Array.isArray(obj.value))
+      return String(obj.value ?? fallback);
+    if (Array.isArray(obj.value) && obj.value[0])
+      return getRadioValue(obj.value, fallback);
   }
-  return r;
+  return fallback;
 }
-function B(t) {
-  const r = k(t, "");
-  return r ? r.split(/[,،|/]/).map((e) => e.trim()).filter(Boolean) : [];
+__name(getRadioValue, "getRadioValue");
+function parseTags(raw) {
+  const text = localizedString(raw, "");
+  return text ? text.split(/[,،|/]/).map((part) => part.trim()).filter(Boolean) : [];
 }
-function y(t) {
-  if (!t) return "";
-  if (typeof t == "string") {
-    const r = t.trim();
-    return $(r) || r.startsWith("/") ? r : "";
+__name(parseTags, "parseTags");
+function extractImageUrl(val) {
+  if (!val) return "";
+  if (typeof val == "string") {
+    const trimmed = val.trim();
+    return isDirectMediaUrl(trimmed) || trimmed.startsWith("/") ? trimmed : "";
   }
-  if (Array.isArray(t)) {
-    for (const r of t) {
-      const e = y(r);
-      if (e) return e;
+  if (Array.isArray(val)) {
+    for (const item of val) {
+      const url = extractImageUrl(item);
+      if (url) return url;
     }
     return "";
   }
-  if (typeof t == "object") {
-    const r = t, e = [r.url, r.src, r.image, r.thumbnail, r.original];
-    for (const o of e) {
-      const a = y(o);
-      if (a) return a;
+  if (typeof val == "object") {
+    const obj = val, candidates = [obj.url, obj.src, obj.image, obj.thumbnail, obj.original];
+    for (const candidate of candidates) {
+      const url = extractImageUrl(candidate);
+      if (url) return url;
     }
   }
   return "";
 }
-const P = z`
+__name(extractImageUrl, "extractImageUrl");
+const sharedSectionCss = css`
   :host {
     direction: inherit;
     width: 100%;
@@ -779,12 +812,11 @@ const P = z`
     color: #ffffff;
   }
 
-  /* Align component CTAs / chips to the same button metrics */
+  /* Align pill CTAs / choice chips only — NOT card-style chips (spa-chip, ffm-chip, …) */
   .bpb-card__cta,
   .spb-card__cta,
   .gpb-card__cta,
   .spb-cta,
-  button[class*='chip']:not([class*='swatch']):not([class*='icon']),
   .bsf-chip,
   .bsg-option,
   .brb-option,
@@ -874,11 +906,22 @@ const P = z`
     gap: 0.7rem;
     padding: 0.85rem 1rem;
     border-radius: 14px;
-    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 9%, #fff);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--fs-surface, var(--card-bg, #f0f0f0)));
     border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #f2dde7));
     color: var(--text-color, #33232e);
     font-size: 0.9rem;
     line-height: 1.55;
+  }
+
+
+  :host([data-fs-theme='dark']) .fs-coach {
+    color: #ffffff;
+    background: color-mix(
+      in srgb,
+      var(--accent-color, var(--fs-store-primary)) 16%,
+      var(--fs-surface, #0a0a0a)
+    );
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
   .fs-coach__mark {
@@ -1069,7 +1112,6 @@ const P = z`
      * !important beats per-component min-heights (styles load after shared).
      * Excludes icon-only nav handles and visual sample pickers.
      */
-    button[class*='chip']:not([class*='icon']):not([class*='nav']),
     button[class*='option'],
     button[class*='segment'],
     button[class*='toggle'],
@@ -1107,9 +1149,13 @@ const P = z`
       font-size: 0.84rem !important;
     }
 
-    /* Chip leading icons / swatches scale with compact chips */
-    button[class*='chip'] [class*='swatch'],
-    button[class*='chip'] [class*='icon'] {
+    /* Pill-chip icons only — exclude card chips (spa-chip, ffm-chip, …) */
+    button.bsf-chip [class*='swatch'],
+    button.bsf-chip [class*='icon'],
+    button.bff-chip [class*='swatch'],
+    button.bff-chip [class*='icon'],
+    button.bac-chip [class*='swatch'],
+    button.bac-chip [class*='icon'] {
       width: 1.65rem !important;
       height: 1.65rem !important;
       font-size: 0.8rem !important;
@@ -1142,23 +1188,23 @@ const P = z`
   }
 `;
 export {
-  q as a,
-  g as b,
-  c,
-  E as d,
-  y as e,
-  B as f,
-  x as g,
-  F as h,
-  h as i,
-  N as j,
-  O as k,
-  k as l,
-  R as m,
-  I as n,
-  v as o,
-  U as p,
-  D as r,
-  P as s,
-  W as t
+  themeStyleMap as a,
+  extractLink as b,
+  getUnitValue as c,
+  isExternalUrl as d,
+  extractImageUrl as e,
+  parseTags as f,
+  getRadioValue as g,
+  clamp as h,
+  isTruthy as i,
+  toNumber as j,
+  safeStorageGet as k,
+  localizedString as l,
+  safeStorageSet as m,
+  normalizeCollection as n,
+  getPageLocale as o,
+  prefersReducedMotion as p,
+  readSectionTheme as r,
+  sharedSectionCss as s,
+  t
 };

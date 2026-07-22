@@ -449,12 +449,11 @@ export const sharedSectionCss = css`
     color: #ffffff;
   }
 
-  /* Align component CTAs / chips to the same button metrics */
+  /* Align pill CTAs / choice chips only — NOT card-style chips (spa-chip, ffm-chip, …) */
   .bpb-card__cta,
   .spb-card__cta,
   .gpb-card__cta,
   .spb-cta,
-  button[class*='chip']:not([class*='swatch']):not([class*='icon']),
   .bsf-chip,
   .bsg-option,
   .brb-option,
@@ -544,11 +543,22 @@ export const sharedSectionCss = css`
     gap: 0.7rem;
     padding: 0.85rem 1rem;
     border-radius: 14px;
-    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 9%, #fff);
+    background: color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 12%, var(--fs-surface, var(--card-bg, #f0f0f0)));
     border: 1px solid color-mix(in srgb, var(--accent-color, var(--fs-store-primary)) 22%, var(--border-color, #f2dde7));
     color: var(--text-color, #33232e);
     font-size: 0.9rem;
     line-height: 1.55;
+  }
+
+
+  :host([data-fs-theme='dark']) .fs-coach {
+    color: #ffffff;
+    background: color-mix(
+      in srgb,
+      var(--accent-color, var(--fs-store-primary)) 16%,
+      var(--fs-surface, #0a0a0a)
+    );
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
   .fs-coach__mark {
@@ -739,7 +749,6 @@ export const sharedSectionCss = css`
      * !important beats per-component min-heights (styles load after shared).
      * Excludes icon-only nav handles and visual sample pickers.
      */
-    button[class*='chip']:not([class*='icon']):not([class*='nav']),
     button[class*='option'],
     button[class*='segment'],
     button[class*='toggle'],
@@ -777,9 +786,13 @@ export const sharedSectionCss = css`
       font-size: 0.84rem !important;
     }
 
-    /* Chip leading icons / swatches scale with compact chips */
-    button[class*='chip'] [class*='swatch'],
-    button[class*='chip'] [class*='icon'] {
+    /* Pill-chip icons only — exclude card chips (spa-chip, ffm-chip, …) */
+    button.bsf-chip [class*='swatch'],
+    button.bsf-chip [class*='icon'],
+    button.bff-chip [class*='swatch'],
+    button.bff-chip [class*='icon'],
+    button.bac-chip [class*='swatch'],
+    button.bac-chip [class*='icon'] {
       width: 1.65rem !important;
       height: 1.65rem !important;
       font-size: 0.8rem !important;
