@@ -1847,7 +1847,7 @@ function parseAnswers(raw: unknown, qKey: string): AssistantAnswer[] {
         id: `${qKey}-a${index}`,
         label: localizedString(row.label as string),
         image: extractImageUrl(row.image),
-        next: localizedString(row.next as string).trim(),
+        next: slug(localizedString(row.next as string), ''),
         result_title: localizedString(row.result_title as string),
         result_desc: localizedString(row.result_desc as string),
         link: extractLink(row.link),
@@ -1860,7 +1860,11 @@ function parseAnswers(raw: unknown, qKey: string): AssistantAnswer[] {
 function parseQuestions(raw: unknown): AssistantQuestion[] {
   return normalizeCollection(raw)
     .map((row, index) => {
-      const key = slug(localizedString(row.q_key as string), `q${index + 1}`);
+      const explicit = slug(localizedString(row.q_key as string), '');
+      const key =
+        explicit ||
+        itemIdFromLabel(row.q_text, '') ||
+        `q${index + 1}`;
       return {
         key,
         text: localizedString(row.q_text as string),
@@ -1963,6 +1967,57 @@ function computeProgress(
 }
 
 /* ---- inlined: components/beauty-care-assistant/index.ts ---- */
+function bindSallaRegistration(
+  ctor: CustomElementConstructor & { registerSallaComponent?: (tagName: string) => void }
+): void {
+  ctor.registerSallaComponent = function registerSallaComponent(tagName: string): void {
+    if (typeof window === 'undefined') return;
+    const attempt = (): boolean => {
+      const bundles = (
+        window as Window & {
+          Salla?: {
+            bundles?: {
+              registerComponent: (
+                tag: string,
+                meta: { component: CustomElementConstructor; dynamicTagName: string }
+              ) => void;
+              isRegistered?: (tag: string) => boolean;
+            };
+          };
+        }
+      ).Salla?.bundles;
+
+      if (bundles?.registerComponent) {
+        if (bundles.isRegistered?.(tagName)) return true;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        bundles.registerComponent(tagName, {
+          component: this as CustomElementConstructor,
+          dynamicTagName,
+        });
+        return true;
+      }
+
+      const host = HTMLElement as typeof HTMLElement & {
+        registerSallaComponent?: (this: CustomElementConstructor, tag: string) => void;
+      };
+      if (typeof host.registerSallaComponent === 'function') {
+        host.registerSallaComponent.call(this as CustomElementConstructor, tagName);
+        return true;
+      }
+
+      return false;
+    };
+
+    if (attempt()) return;
+
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1;
+      if (attempt() || ticks > 200) window.clearInterval(timer);
+    }, 50);
+  };
+}
+
 export default class BeautyCareAssistant extends LitElement {
   @property({ type: Object })
   config: Record<string, unknown> = {};
@@ -2259,3 +2314,4 @@ export default class BeautyCareAssistant extends LitElement {
   }
 }
 
+bindSallaRegistration(BeautyCareAssistant as unknown as CustomElementConstructor & { registerSallaComponent?: (tagName: string) => void });

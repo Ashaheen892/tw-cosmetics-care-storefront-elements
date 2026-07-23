@@ -1625,6 +1625,25 @@ const componentStyles = css`
     line-height: 1;
   }
 
+  .bwp-chip__icon-img {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    margin-top: 0;
+    object-fit: contain;
+    border-radius: 6px;
+    display: block;
+  }
+
+  .bwp-legend__icon-img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-inline-end: 0.35rem;
+  }
+
   .bwp-chip__name {
     min-width: 0;
     flex: 1 1 auto;
@@ -1864,11 +1883,13 @@ function parseSteps(raw: unknown): PlannerStep[] {
   return normalizeCollection(raw)
     .map((s, i) => {
       const name = localizedString(s.name as LocaleValue);
+      const iconUrl = extractImageUrl(s.icon ?? s.image);
+      const iconRaw = String(s.icon ?? '').trim();
       return {
         id: String(s.id ?? s.step_id ?? '').trim() || `step-${i + 1}`,
         name,
         color: String(s.color ?? '').trim(),
-        icon: String(s.icon ?? '').trim(),
+        icon: iconUrl || iconRaw,
         slot: resolveSlot(s.slot),
         frequency: resolveFrequency(s.frequency),
         note: localizedString(s.note as LocaleValue),
@@ -1904,9 +1925,21 @@ function weekdayNames(startDay: StartDay): string[] {
   });
 }
 
-/** Soft label for days with no scheduled steps. */
-function emptyDayLabel(): string {
-  return t('راحة', 'Rest');
+function isIconImageUrl(value: string): boolean {
+  if (!value) return false;
+  if (/^https?:\/\//i.test(value) || value.startsWith('/')) return true;
+  if (value.startsWith('data:image/')) return true;
+  return /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(value);
+}
+
+function renderStepIcon(icon: string, imgClass: string, textClass = '') {
+  if (!icon) return nothing;
+  if (isIconImageUrl(icon)) {
+    return html`<img class=${imgClass} src=${icon} alt="" width="30" height="30" loading="lazy" />`;
+  }
+  const isSicon = icon.startsWith('sicon-');
+  const cls = [textClass, isSicon ? icon : ''].filter(Boolean).join(' ');
+  return html`<span class=${cls}>${isSicon ? '' : icon}</span>`;
 }
 
 /** Human-readable, localized frequency label. */
@@ -1955,6 +1988,57 @@ function buildSchedule(
 }
 
 /* ---- inlined: components/beauty-weekly-planner/index.ts ---- */
+function bindSallaRegistration(
+  ctor: CustomElementConstructor & { registerSallaComponent?: (tagName: string) => void }
+): void {
+  ctor.registerSallaComponent = function registerSallaComponent(tagName: string): void {
+    if (typeof window === 'undefined') return;
+    const attempt = (): boolean => {
+      const bundles = (
+        window as Window & {
+          Salla?: {
+            bundles?: {
+              registerComponent: (
+                tag: string,
+                meta: { component: CustomElementConstructor; dynamicTagName: string }
+              ) => void;
+              isRegistered?: (tag: string) => boolean;
+            };
+          };
+        }
+      ).Salla?.bundles;
+
+      if (bundles?.registerComponent) {
+        if (bundles.isRegistered?.(tagName)) return true;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        bundles.registerComponent(tagName, {
+          component: this as CustomElementConstructor,
+          dynamicTagName,
+        });
+        return true;
+      }
+
+      const host = HTMLElement as typeof HTMLElement & {
+        registerSallaComponent?: (this: CustomElementConstructor, tag: string) => void;
+      };
+      if (typeof host.registerSallaComponent === 'function') {
+        host.registerSallaComponent.call(this as CustomElementConstructor, tagName);
+        return true;
+      }
+
+      return false;
+    };
+
+    if (attempt()) return;
+
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1;
+      if (attempt() || ticks > 200) window.clearInterval(timer);
+    }, 50);
+  };
+}
+
 export default class BeautyWeeklyPlanner extends LitElement {
   @property({ type: Object })
   config: Record<string, unknown> = {};
@@ -1997,16 +2081,13 @@ export default class BeautyWeeklyPlanner extends LitElement {
   }
 
   private renderChip(step: PlannerStep) {
-    const isSicon = step.icon.startsWith('sicon-');
     return html`
       <span
         class="bwp-chip"
         style=${styleMap(step.color ? { '--chip-color': step.color } : {})}
       >
         <span class="bwp-chip__dot"></span>
-        ${step.icon
-          ? html`<span class="bwp-chip__icon ${isSicon ? step.icon : ''}">${isSicon ? '' : step.icon}</span>`
-          : nothing}
+        ${renderStepIcon(step.icon, 'bwp-chip__icon-img', 'bwp-chip__icon')}
         <span class="bwp-chip__name" title=${step.name}>${step.name}</span>
       </span>
     `;
@@ -2140,7 +2221,6 @@ export default class BeautyWeeklyPlanner extends LitElement {
           ${showLegend
             ? html`<div class="bwp-legend">
                 ${steps.map((step) => {
-                  const isSicon = step.icon.startsWith('sicon-');
                   const slotText =
                     step.slot === 'am' ? amLabel : step.slot === 'pm' ? pmLabel : bothLabel;
                   return html`
@@ -2151,9 +2231,7 @@ export default class BeautyWeeklyPlanner extends LitElement {
                       <span class="bwp-legend__swatch"></span>
                       <span class="bwp-legend__text">
                         <span class="bwp-legend__name">
-                          ${step.icon
-                            ? html`<span class="${isSicon ? step.icon : ''}">${isSicon ? '' : step.icon}</span>`
-                            : nothing}
+                          ${renderStepIcon(step.icon, 'bwp-legend__icon-img')}
                           ${step.name}
                         </span>
                         <span class="bwp-legend__freq">
@@ -2174,3 +2252,4 @@ export default class BeautyWeeklyPlanner extends LitElement {
   }
 }
 
+bindSallaRegistration(BeautyWeeklyPlanner as unknown as CustomElementConstructor & { registerSallaComponent?: (tagName: string) => void });

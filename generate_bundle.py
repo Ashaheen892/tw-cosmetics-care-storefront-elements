@@ -188,8 +188,7 @@ def multilang(fid, label, ar="", en="", fmt="text", max_len="160", desc=None, co
     """Multilanguage string field — same shape as the Salla reference bundle.
 
     Value key order is ``en`` then ``ar`` (as in
-    tw-increase-sales-and-professional-presentation). Defaults are empty so
-    merchants fill their own copy; no sample/demo texts are pre-seeded.
+    tw-increase-sales-and-professional-presentation).
     """
     return with_conditions(
         {
@@ -234,7 +233,20 @@ def text(fid, label, value="", fmt="text", max_len="200", desc=None,
     )
 
 
-def image(fid, label, value="", desc=None, conditions=None):
+def image(fid, label, value="", desc=None, conditions=None, *, size_hint=None):
+    """Optional ``size_hint`` is ``(w, h, guide_ar)`` e.g. ``(30, 30, "أيقونة مربعة صغيرة")``."""
+    description = desc
+    label_html = None
+    if size_hint:
+        w, h, guide_ar = size_hint
+        description = (
+            f"المقاس المقترح: {w}×{h} بكسل ({guide_ar}). "
+            f"Recommended size: {w}×{h}px. يفضّل PNG أو WebP بخلفية شفافة."
+        )
+        label_html = (
+            f'<small style="display:block;margin-top:4px;opacity:.85">'
+            f"📐 المقاس المقترح: <b>{w}×{h}</b> بكسل — {guide_ar}</small>"
+        )
     return with_conditions(
         {
             "id": fid,
@@ -242,8 +254,8 @@ def image(fid, label, value="", desc=None, conditions=None):
             "type": "string",
             "format": "image",
             "label": label,
-            "description": desc,
-            "labelHTML": None,
+            "description": description,
+            "labelHTML": label_html,
             "placeholder": "e.g. https://hostname.com/image.png",
             "icon": "sicon-image",
             "value": value,
@@ -768,10 +780,16 @@ def build_routine_builder():
     p = "brb_"
     step_fields = [
         multilang(f"{p}steps.step_name", "اسم الخطوة", "المنظف", "Cleanser"),
-        multilang(f"{p}steps.step_desc", "وصف مختصر", "", "", "textarea", "260"),
-        image(f"{p}steps.image", "صورة توضيحية (اختياري)"),
+        multilang(
+            f"{p}steps.step_desc",
+            "وصف مختصر",
+            "ينظّف البشرة بلطف ويهيئها.",
+            "Gently cleanses and prepares the skin.",
+            "textarea",
+            "260",
+        ),
+        image(f"{p}steps.image", "صورة توضيحية (اختياري)", ROUTINE_STEP_IMAGES[0]),
         variable_list(f"{p}steps.link", "رابط دليل أو صفحة (اختياري)"),
-        number(f"{p}steps.order", "ترتيب الخطوة", 1, 1, 30, ""),
         dropdown_manual(f"{p}steps.level", "تظهر في روتين", LEVEL_OPTS, "quick",
                         desc="سريع = أساسية فقط، متكامل = كل الخطوات"),
         dropdown_manual(f"{p}steps.skin", "نوع البشرة المناسب", SKIN_TYPE_OPTS, ""),
@@ -779,18 +797,26 @@ def build_routine_builder():
         dropdown_manual(f"{p}steps.time", "وقت الاستخدام", TIME_OPTS, ""),
     ]
     sample = [
-        {"step_name": {"en": "Cleanser", "ar": "المنظف"}, "step_desc": {"en": "Gently cleanses and prepares the skin.", "ar": "ينظّف البشرة بلطف ويهيئها."},
-         "image": ROUTINE_STEP_IMAGES[0], "order": 1, "level": _dd("روتين سريع", "quick")},
-        {"step_name": {"en": "Toner", "ar": "التونر"}, "step_desc": {"en": "Balances skin after cleansing.", "ar": "يوازن البشرة بعد التنظيف."},
-         "image": ROUTINE_STEP_IMAGES[1], "order": 2, "level": _dd("روتين أساسي", "basic")},
-        {"step_name": {"en": "Serum", "ar": "السيروم"}, "step_desc": {"en": "A focused treatment for your skin need.", "ar": "علاج مركّز حسب حاجة بشرتك."},
-         "image": ROUTINE_STEP_IMAGES[2], "order": 3, "level": _dd("روتين أساسي", "basic")},
-        {"step_name": {"en": "Moisturizer", "ar": "المرطب"}, "step_desc": {"en": "Hydrates and locks in moisture.", "ar": "يرطّب ويحبس الترطيب."},
-         "image": ROUTINE_STEP_IMAGES[3], "order": 4, "level": _dd("روتين سريع", "quick")},
-        {"step_name": {"en": "Sunscreen", "ar": "واقي الشمس"}, "step_desc": {"en": "Essential daily protection in the morning.", "ar": "حماية يومية ضرورية صباحاً."},
-         "image": ROUTINE_STEP_IMAGES[4], "order": 5, "level": _dd("روتين سريع", "quick"), "time": _dd("صباحي", "morning")},
-        {"step_name": {"en": "Eye cream", "ar": "كريم العين"}, "step_desc": {"en": "Cares for the delicate eye area.", "ar": "يعتني بمنطقة العين الدقيقة."},
-         "image": ROUTINE_STEP_IMAGES[5], "order": 6, "level": _dd("روتين متكامل", "complete")},
+        {"step_name": {"en": "Cleanser", "ar": "المنظف"},
+         "step_desc": {"en": "Gently cleanses and prepares the skin.", "ar": "ينظّف البشرة بلطف ويهيئها."},
+         "image": ROUTINE_STEP_IMAGES[0], "level": _dd("روتين سريع", "quick"),
+         "time": _dd("صباحي ومسائي", "both")},
+        {"step_name": {"en": "Toner", "ar": "التونر"},
+         "step_desc": {"en": "Balances skin after cleansing.", "ar": "يوازن البشرة بعد التنظيف."},
+         "image": ROUTINE_STEP_IMAGES[1], "level": _dd("روتين أساسي", "basic")},
+        {"step_name": {"en": "Serum", "ar": "السيروم"},
+         "step_desc": {"en": "A focused treatment for your skin need.", "ar": "علاج مركّز حسب حاجة بشرتك."},
+         "image": ROUTINE_STEP_IMAGES[2], "level": _dd("روتين أساسي", "basic")},
+        {"step_name": {"en": "Moisturizer", "ar": "المرطب"},
+         "step_desc": {"en": "Hydrates and locks in moisture.", "ar": "يرطّب ويحبس الترطيب."},
+         "image": ROUTINE_STEP_IMAGES[3], "level": _dd("روتين سريع", "quick"),
+         "time": _dd("صباحي ومسائي", "both")},
+        {"step_name": {"en": "Sunscreen", "ar": "واقي الشمس"},
+         "step_desc": {"en": "Essential daily protection in the morning.", "ar": "حماية يومية ضرورية صباحاً."},
+         "image": ROUTINE_STEP_IMAGES[4], "level": _dd("روتين سريع", "quick"), "time": _dd("صباحي", "morning")},
+        {"step_name": {"en": "Eye cream", "ar": "كريم العين"},
+         "step_desc": {"en": "Cares for the delicate eye area.", "ar": "يعتني بمنطقة العين الدقيقة."},
+         "image": ROUTINE_STEP_IMAGES[5], "level": _dd("روتين متكامل", "complete")},
     ]
     return component(
         "beauty-routine-builder", "منشئ روتين العناية", "sicon-list",
@@ -895,68 +921,278 @@ def build_ingredient_lab():
 
 def build_care_assistant():
     p = "bca_"
+    answer_template = {
+        "label": {"ar": "خيار جديد", "en": "New option"},
+        "image": "",
+        "next": "",
+        "result_title": {"ar": "", "en": ""},
+        "result_desc": {"ar": "", "en": ""},
+        "link": None,
+        "link_text": {"ar": "انتقلي إلى النتيجة", "en": "Go to result"},
+    }
     answer_fields = [
-        multilang(f"{p}questions.answers.label", "نص الإجابة", "بشرة جافة", "Dry skin"),
-        image(f"{p}questions.answers.image", "أيقونة أو صورة (اختياري)"),
-        text(f"{p}questions.answers.next", "مفتاح السؤال التالي",
-             "", desc="اتركيه فارغاً لعرض النتيجة النهائية مباشرة"),
-        multilang(f"{p}questions.answers.result_title", "عنوان النتيجة", "", "", "text", "160"),
-        multilang(f"{p}questions.answers.result_desc", "وصف النتيجة", "", "", "textarea", "300"),
-        variable_list(f"{p}questions.answers.link", "رابط النتيجة (اختياري)"),
-        multilang(f"{p}questions.answers.link_text", "نص زر الرابط", "انتقلي إلى النتيجة", "Go to result"),
+        multilang(
+            f"{p}questions.answers.label",
+            "نص الإجابة",
+            "بشرة جافة",
+            "Dry skin",
+            desc="النص الذي يظهر على زر/بطاقة الإجابة.",
+        ),
+        image(
+            f"{p}questions.answers.image",
+            "أيقونة أو صورة الإجابة (اختياري)",
+            "",
+        ),
+        static_title(
+            f"{p}questions.answers.branch_title",
+            "الانتقال لسؤال آخر (اختياري)",
+        ),
+        text(
+            f"{p}questions.answers.next",
+            "رمز السؤال التالي",
+            "",
+            desc=(
+                "اكتبي نفس «رمز السؤال» للسؤال المقصود (مثل skin). "
+                "اتركي الحقل فارغًا إذا كانت هذه إجابة نهائية تؤدي لنتيجة."
+            ),
+        ),
+        static_title(
+            f"{p}questions.answers.result_block_title",
+            "النتيجة النهائية (عند ترك رمز السؤال التالي فارغًا)",
+        ),
+        multilang(
+            f"{p}questions.answers.result_title",
+            "عنوان النتيجة",
+            "",
+            "",
+            "text",
+            "160",
+            desc="يظهر بعد اختيار هذه الإجابة عندما لا يوجد سؤال تالٍ.",
+        ),
+        multilang(
+            f"{p}questions.answers.result_desc",
+            "وصف النتيجة",
+            "",
+            "",
+            "textarea",
+            "300",
+        ),
+        variable_list(
+            f"{p}questions.answers.link",
+            "رابط خاص بهذه النتيجة (اختياري)",
+            desc="إن وُجد يُستخدم بدل الرابط العام لزر التسوق في هذه النتيجة فقط.",
+        ),
+        multilang(
+            f"{p}questions.answers.link_text",
+            "نص زر رابط النتيجة",
+            "انتقلي إلى النتيجة",
+            "Go to result",
+        ),
     ]
     question_fields = [
-        text(f"{p}questions.q_key", "مفتاح السؤال (فريد)", "start"),
-        multilang(f"{p}questions.q_text", "نص السؤال", "ما نوع بشرتك؟", "What is your skin type?"),
-        image(f"{p}questions.q_image", "صورة السؤال (اختياري)"),
-        collection(f"{p}questions.answers", "إجابة", answer_fields, []),
+        text(
+            f"{p}questions.q_key",
+            "رمز السؤال",
+            "start",
+            desc=(
+                "كلمة قصيرة بالإنجليزية بدون مسافات (مثال: start أو skin أو makeup). "
+                "استخدمي نفس الرمز في حقل «رمز السؤال التالي» داخل الإجابات."
+            ),
+        ),
+        multilang(
+            f"{p}questions.q_text",
+            "نص السؤال",
+            "ما نوع بشرتك؟",
+            "What is your skin type?",
+            desc="السؤال الذي يظهر للزائرة في هذه الخطوة.",
+        ),
+        image(f"{p}questions.q_image", "صورة السؤال (اختياري)", ""),
+        collection(
+            f"{p}questions.answers",
+            "إجابة",
+            answer_fields,
+            [dict(answer_template)],
+            min_len=1,
+            max_len=12,
+        ),
     ]
     sample = [
-        {"q_key": "start", "q_text": {"ar": "ما الذي تبحثين عنه اليوم؟", "en": "What are you looking for today?"},
-         "answers": [
-             {"label": {"ar": "عناية بالبشرة", "en": "Skincare"}, "next": "skin"},
-             {"label": {"ar": "مكياج", "en": "Makeup"}, "next": "makeup"},
-         ]},
-        {"q_key": "skin", "q_text": {"ar": "ما نوع بشرتك؟", "en": "What is your skin type?"},
-         "answers": [
-             {"label": {"ar": "جافة", "en": "Dry"},
-              "result_title": {"ar": "روتين ترطيب مكثّف", "en": "Deep hydration routine"},
-              "result_desc": {"ar": "منتجات غنية بالترطيب لبشرتك الجافة.", "en": ""}},
-             {"label": {"ar": "دهنية", "en": "Oily"},
-              "result_title": {"ar": "روتين متوازن خفيف", "en": "Balanced lightweight routine"},
-              "result_desc": {"ar": "منتجات خفيفة تنظّم الدهون.", "en": ""}},
-         ]},
-        {"q_key": "makeup", "q_text": {"ar": "ما النتيجة التي تفضّلينها؟", "en": "Which finish do you prefer?"},
-         "answers": [
-             {"label": {"ar": "طبيعية", "en": "Natural"},
-              "result_title": {"ar": "إطلالة طبيعية", "en": "Natural look"},
-              "result_desc": {"ar": "منتجات بتغطية خفيفة ولمسة طبيعية.", "en": ""}},
-             {"label": {"ar": "تغطية عالية", "en": "Full coverage"},
-              "result_title": {"ar": "إطلالة تغطية كاملة", "en": "Full coverage look"},
-              "result_desc": {"ar": "منتجات بتغطية عالية وثبات طويل.", "en": ""}},
-         ]},
+        {
+            "q_key": "start",
+            "q_text": {
+                "ar": "ما الذي تبحثين عنه اليوم؟",
+                "en": "What are you looking for today?",
+            },
+            "q_image": unsplash("1586495777744-4413f21062fa", 800),
+            "answers": [
+                {
+                    "label": {"ar": "عناية بالبشرة", "en": "Skincare"},
+                    "image": "",
+                    "next": "skin",
+                    "result_title": {"ar": "", "en": ""},
+                    "result_desc": {"ar": "", "en": ""},
+                    "link": None,
+                    "link_text": {"ar": "انتقلي إلى النتيجة", "en": "Go to result"},
+                },
+                {
+                    "label": {"ar": "مكياج", "en": "Makeup"},
+                    "image": "",
+                    "next": "makeup",
+                    "result_title": {"ar": "", "en": ""},
+                    "result_desc": {"ar": "", "en": ""},
+                    "link": None,
+                    "link_text": {"ar": "انتقلي إلى النتيجة", "en": "Go to result"},
+                },
+            ],
+        },
+        {
+            "q_key": "skin",
+            "q_text": {"ar": "ما نوع بشرتك؟", "en": "What is your skin type?"},
+            "q_image": unsplash("1580489944761-15a19d654956", 900),
+            "answers": [
+                {
+                    "label": {"ar": "جافة", "en": "Dry"},
+                    "image": "",
+                    "next": "",
+                    "result_title": {
+                        "ar": "روتين ترطيب مكثّف",
+                        "en": "Deep hydration routine",
+                    },
+                    "result_desc": {
+                        "ar": "منتجات غنية بالترطيب لبشرتك الجافة.",
+                        "en": "Rich hydrating products for dry skin.",
+                    },
+                    "link": None,
+                    "link_text": {"ar": "انتقلي إلى النتيجة", "en": "Go to result"},
+                },
+                {
+                    "label": {"ar": "دهنية", "en": "Oily"},
+                    "image": "",
+                    "next": "",
+                    "result_title": {
+                        "ar": "روتين متوازن خفيف",
+                        "en": "Balanced lightweight routine",
+                    },
+                    "result_desc": {
+                        "ar": "منتجات خفيفة تنظّم الدهون.",
+                        "en": "Lightweight products that balance oil.",
+                    },
+                    "link": None,
+                    "link_text": {"ar": "انتقلي إلى النتيجة", "en": "Go to result"},
+                },
+            ],
+        },
+        {
+            "q_key": "makeup",
+            "q_text": {
+                "ar": "ما النتيجة التي تفضّلينها؟",
+                "en": "Which finish do you prefer?",
+            },
+            "q_image": unsplash("1487412720507-e7ab37603c6f", 900),
+            "answers": [
+                {
+                    "label": {"ar": "طبيعية", "en": "Natural"},
+                    "image": "",
+                    "next": "",
+                    "result_title": {"ar": "إطلالة طبيعية", "en": "Natural look"},
+                    "result_desc": {
+                        "ar": "منتجات بتغطية خفيفة ولمسة طبيعية.",
+                        "en": "Sheer coverage with a natural finish.",
+                    },
+                    "link": None,
+                    "link_text": {"ar": "انتقلي إلى النتيجة", "en": "Go to result"},
+                },
+                {
+                    "label": {"ar": "تغطية عالية", "en": "Full coverage"},
+                    "image": "",
+                    "next": "",
+                    "result_title": {
+                        "ar": "إطلالة تغطية كاملة",
+                        "en": "Full coverage look",
+                    },
+                    "result_desc": {
+                        "ar": "منتجات بتغطية عالية وثبات طويل.",
+                        "en": "High coverage with long wear.",
+                    },
+                    "link": None,
+                    "link_text": {"ar": "انتقلي إلى النتيجة", "en": "Go to result"},
+                },
+            ],
+        },
     ]
     return component(
-        "beauty-care-assistant", "مساعد اختيار منتجات الجمال", "sicon-list",
+        "beauty-care-assistant",
+        "مساعد اختيار منتجات الجمال",
+        "sicon-list",
         [
             static_title(f"{p}content_title", "محتوى العنصر"),
-            multilang(f"{p}title", "العنوان", "مساعدتك لاختيار الأنسب", "Your beauty assistant"),
-            multilang(f"{p}desc", "الوصف",
-                      "أجيبي عن أسئلة بسيطة لنرشدك إلى الروتين أو النصيحة المناسبة.",
-                      "Answer a few simple questions to get the right routine or advice.",
-                      "textarea", "300"),
-            multilang(f"{p}assistant_name", "اسم المساعدة", "خبيرة الجمال", "Beauty expert"),
+            multilang(
+                f"{p}title",
+                "العنوان",
+                "مساعدتك لاختيار الأنسب",
+                "Your beauty assistant",
+            ),
+            multilang(
+                f"{p}desc",
+                "الوصف",
+                "أجيبي عن أسئلة بسيطة لنرشدك إلى الروتين أو النصيحة المناسبة.",
+                "Answer a few simple questions to get the right routine or advice.",
+                "textarea",
+                "300",
+            ),
+            multilang(
+                f"{p}assistant_name",
+                "اسم المساعدة",
+                "خبيرة الجمال",
+                "Beauty expert",
+            ),
             image(f"{p}avatar", "صورة المساعدة (اختياري)", ASSISTANT_AVATAR),
-            text(f"{p}start_key", "مفتاح سؤال البداية", "start",
-                 desc="اتركيه فارغاً لبدء المساعد من أول سؤال"),
+            text(
+                f"{p}start_key",
+                "رمز سؤال البداية",
+                "start",
+                desc=(
+                    "اكتبي رمز أحد الأسئلة أدناه لبدء المحادثة منه. "
+                    "اتركيه فارغًا للبدء من أول سؤال في القائمة."
+                ),
+            ),
             static_title(f"{p}questions_title", "الأسئلة والإجابات المتفرعة"),
-            collection(f"{p}questions", "سؤال", question_fields, sample),
+            static_title(
+                f"{p}questions_help",
+                "كيف تربطين الأسئلة؟ أضيفي سؤالاً برمز فريد ← في كل إجابة إما «رمز السؤال التالي» أو عنوان/وصف النتيجة",
+            ),
+            collection(
+                f"{p}questions",
+                "سؤال",
+                question_fields,
+                sample,
+                min_len=1,
+                max_len=20,
+            ),
             static_title(f"{p}display_title", "خيارات العرض"),
-            dropdown_manual(f"{p}style", "شكل المساعد",
-                            [("نافذة محادثة", "chat"), ("خبيرة تجميل افتراضية", "expert"),
-                             ("مرآة ذكية", "mirror"), ("بطاقات أسئلة", "cards")], "chat"),
-            multilang(f"{p}result_btn", "نص زر النتيجة الافتراضي", "انتقلي إلى النتيجة", "Go to result"),
-            multilang(f"{p}restart_btn", "نص زر إعادة البدء", "إعادة البدء", "Start over"),
+            dropdown_manual(
+                f"{p}style",
+                "شكل المساعد",
+                [
+                    ("نافذة محادثة", "chat"),
+                    ("خبيرة تجميل افتراضية", "expert"),
+                    ("مرآة ذكية", "mirror"),
+                    ("بطاقات أسئلة", "cards"),
+                ],
+                "chat",
+            ),
+            multilang(
+                f"{p}result_btn",
+                "نص زر النتيجة الافتراضي",
+                "انتقلي إلى النتيجة",
+                "Go to result",
+            ),
+            multilang(
+                f"{p}restart_btn",
+                "نص زر إعادة البدء",
+                "إعادة البدء",
+                "Start over",
+            ),
             *theme_fields(p),
         ],
     )
@@ -1127,8 +1363,15 @@ def build_layering_board():
     step_fields = [
         multilang(f"{p}routines.steps.step_title", "اسم الخطوة", "المنظف", "Cleanser"),
         text(f"{p}routines.steps.icon", "أيقونة أو رمز (اختياري)", ""),
-        image(f"{p}routines.steps.image", "صورة (اختياري)"),
-        multilang(f"{p}routines.steps.desc_short", "وصف مختصر", "", "", "text", "160"),
+        image(f"{p}routines.steps.image", "صورة (اختياري)", ROUTINE_STEP_IMAGES[0]),
+        multilang(
+            f"{p}routines.steps.desc_short",
+            "وصف مختصر",
+            "ابدئي بتنظيف لطيف.",
+            "Start with a gentle cleanse.",
+            "text",
+            "160",
+        ),
         multilang(f"{p}routines.steps.desc_long", "شرح موقع الخطوة", "", "", "textarea", "400"),
         multilang(f"{p}routines.steps.timing", "التوقيت", "صباحاً ومساءً", "Morning & evening"),
         multilang(f"{p}routines.steps.wait", "مدة الانتظار قبل التالية", "", ""),
@@ -1139,38 +1382,46 @@ def build_layering_board():
         dropdown_manual(f"{p}routines.steps.period", "وقت الاستخدام", PERIOD_OPTS, "both"),
         number(f"{p}routines.steps.correct_order", "الترتيب الصحيح", 1, 1, 30, ""),
     ]
+    morning_steps = [
+        {"step_title": {"ar": "المنظف", "en": "Cleanser"}, "correct_order": 1, "color": "#6c8ea8",
+         "image": ROUTINE_STEP_IMAGES[0],
+         "desc_short": {"ar": "ابدئي بتنظيف لطيف.", "en": "Start with a gentle cleanse."},
+         "period": _dd("صباحي ومسائي", "both")},
+        {"step_title": {"ar": "التونر", "en": "Toner"}, "correct_order": 2, "color": "#7fae9b",
+         "image": ROUTINE_STEP_IMAGES[1],
+         "desc_short": {"ar": "يوازن البشرة بعد التنظيف.", "en": "Balances skin after cleansing."}},
+        {"step_title": {"ar": "السيروم", "en": "Serum"}, "correct_order": 3, "color": "#c9a24b",
+         "image": ROUTINE_STEP_IMAGES[2],
+         "desc_short": {"ar": "علاج مركّز حسب الحاجة.", "en": "A focused treatment for your need."}},
+        {"step_title": {"ar": "المرطب", "en": "Moisturizer"}, "correct_order": 4, "color": "#b06a8a",
+         "image": ROUTINE_STEP_IMAGES[3],
+         "desc_short": {"ar": "يرطّب ويحبس الترطيب.", "en": "Hydrates and locks moisture."}},
+        {"step_title": {"ar": "واقي الشمس", "en": "Sunscreen"}, "correct_order": 5, "color": "#e08a3c",
+         "image": ROUTINE_STEP_IMAGES[4],
+         "period": _dd("صباحي", "morning"),
+         "desc_short": {"ar": "آخر خطوة صباحية دائمًا.", "en": "Always the last morning step."}},
+    ]
+    evening_steps = [
+        {"step_title": {"ar": "مزيل المكياج", "en": "Makeup remover"}, "correct_order": 1, "color": "#c2527f",
+         "image": ROUTINE_STEP_IMAGES[5],
+         "desc_short": {"ar": "أزيلي المكياج بلطف أولاً.", "en": "Gently remove makeup first."}},
+        {"step_title": {"ar": "المنظف", "en": "Cleanser"}, "correct_order": 2, "color": "#6c8ea8",
+         "image": ROUTINE_STEP_IMAGES[0]},
+        {"step_title": {"ar": "السيروم", "en": "Serum"}, "correct_order": 3, "color": "#c9a24b",
+         "image": ROUTINE_STEP_IMAGES[2]},
+        {"step_title": {"ar": "كريم الليل", "en": "Night cream"}, "correct_order": 4, "color": "#b06a8a",
+         "image": ROUTINE_STEP_IMAGES[3],
+         "desc_short": {"ar": "ترطيب ليلي مركّز.", "en": "Focused overnight hydration."}},
+    ]
     routine_fields = [
         multilang(f"{p}routines.name", "اسم الروتين", "روتين صباحي", "Morning routine"),
-        collection(f"{p}routines.steps", "خطوة", step_fields, []),
+        collection(f"{p}routines.steps", "خطوة", step_fields, morning_steps),
     ]
     sample = [
         {"routine_id": "morning", "name": {"ar": "روتين صباحي", "en": "Morning routine"},
-         "steps": [
-             {"step_title": {"ar": "المنظف", "en": "Cleanser"}, "correct_order": 1, "color": "#6c8ea8",
-              "image": ROUTINE_STEP_IMAGES[0],
-              "desc_short": {"ar": "ابدئي بتنظيف لطيف.", "en": ""}},
-             {"step_title": {"ar": "التونر", "en": "Toner"}, "correct_order": 2, "color": "#7fae9b",
-              "image": ROUTINE_STEP_IMAGES[1]},
-             {"step_title": {"ar": "السيروم", "en": "Serum"}, "correct_order": 3, "color": "#c9a24b",
-              "image": ROUTINE_STEP_IMAGES[2],
-              "desc_short": {"ar": "علاج مركّز حسب الحاجة.", "en": ""}},
-             {"step_title": {"ar": "المرطب", "en": "Moisturizer"}, "correct_order": 4, "color": "#b06a8a",
-              "image": ROUTINE_STEP_IMAGES[3]},
-             {"step_title": {"ar": "واقي الشمس", "en": "Sunscreen"}, "correct_order": 5, "color": "#e08a3c",
-              "image": ROUTINE_STEP_IMAGES[4],
-              "period": "morning", "desc_short": {"ar": "آخر خطوة صباحية دائمًا.", "en": ""}},
-         ]},
+         "steps": morning_steps},
         {"routine_id": "evening", "name": {"ar": "روتين مسائي", "en": "Evening routine"},
-         "steps": [
-             {"step_title": {"ar": "مزيل المكياج", "en": "Makeup remover"}, "correct_order": 1, "color": "#c2527f",
-              "image": ROUTINE_STEP_IMAGES[5]},
-             {"step_title": {"ar": "المنظف", "en": "Cleanser"}, "correct_order": 2, "color": "#6c8ea8",
-              "image": ROUTINE_STEP_IMAGES[0]},
-             {"step_title": {"ar": "السيروم", "en": "Serum"}, "correct_order": 3, "color": "#c9a24b",
-              "image": ROUTINE_STEP_IMAGES[2]},
-             {"step_title": {"ar": "كريم الليل", "en": "Night cream"}, "correct_order": 4, "color": "#b06a8a",
-              "image": ROUTINE_STEP_IMAGES[3]},
-         ]},
+         "steps": evening_steps},
     ]
     return component(
         "beauty-routine-layering-board", "ترتيب طبقات روتين العناية", "sicon-list",
@@ -1739,28 +1990,47 @@ def build_weekly_planner():
     step_fields = [
         multilang(f"{p}steps.name", "اسم الخطوة", "المنظّف", "Cleanser"),
         color(f"{p}steps.color", "اللون", "#6c8ea8"),
-        text(f"{p}steps.icon", "أيقونة أو رمز (اختياري)", "🧴"),
+        image(
+            f"{p}steps.icon",
+            "صورة الأيقونة (اختياري)",
+            "",
+            size_hint=(30, 30, "أيقونة مربعة صغيرة"),
+        ),
         dropdown_manual(f"{p}steps.slot", "وقت الاستخدام",
                         [("صباحًا ومساءً", "both"), ("صباحًا", "am"), ("مساءً", "pm")], "both"),
         dropdown_manual(f"{p}steps.frequency", "التكرار الأسبوعي",
                         [("يوميًا", "daily"), ("٣ مرات", "x3"), ("مرتين", "x2"),
                          ("مرة واحدة", "x1"), ("يوم بعد يوم", "alternate")], "daily"),
-        multilang(f"{p}steps.note", "ملاحظة (اختياري)", "", "", "text", "200"),
+        multilang(f"{p}steps.note", "ملاحظة (اختياري)", "حسب حاجة بشرتك", "Adjust to your skin", "text", "200"),
     ]
+    # Icon images: small square crops (merchant can replace with 30×30 assets).
+    icon_imgs = [unsplash(pid, 60) for pid in (
+        "1556228720-195a672e8a03",
+        "1571781926291-c477ebfd024b",
+        "1620916566398-39f1143ab7be",
+        "1608248543803-ba4f8c70ae0b",
+        "1556228578-8c89e6adf883",
+        "1487412720507-e7ab37603c6f",
+    )]
     step_sample = [
         {"step_id": "cleanser", "name": {"ar": "المنظّف", "en": "Cleanser"}, "color": "#6c8ea8",
-         "icon": "🧴", "slot": "both", "frequency": "daily"},
+         "icon": icon_imgs[0], "slot": _dd("صباحًا ومساءً", "both"), "frequency": _dd("يوميًا", "daily"),
+         "note": {"ar": "أساس يومي لكل أنواع البشرة.", "en": "Daily base for all skin types."}},
         {"step_id": "vitc", "name": {"ar": "سيروم فيتامين C", "en": "Vitamin C serum"}, "color": "#e0a52e",
-         "icon": "🍊", "slot": "am", "frequency": "daily"},
+         "icon": icon_imgs[1], "slot": _dd("صباحًا", "am"), "frequency": _dd("يوميًا", "daily"),
+         "note": {"ar": "صباحًا قبل واقي الشمس.", "en": "Morning, before sunscreen."}},
         {"step_id": "retinol", "name": {"ar": "الريتينول", "en": "Retinol"}, "color": "#b06a8a",
-         "icon": "🌙", "slot": "pm", "frequency": "x3",
-         "note": {"ar": "ابدئي تدريجيًا لتجنّب التهيّج.", "en": ""}},
+         "icon": icon_imgs[2], "slot": _dd("مساءً", "pm"), "frequency": _dd("٣ مرات", "x3"),
+         "note": {"ar": "ابدئي تدريجيًا لتجنّب التهيّج.", "en": "Start slowly to avoid irritation."}},
         {"step_id": "exfoliant", "name": {"ar": "المقشّر", "en": "Exfoliant"}, "color": "#c97b5a",
-         "icon": "✨", "slot": "pm", "frequency": "x2"},
+         "icon": icon_imgs[3], "slot": _dd("مساءً", "pm"), "frequency": _dd("مرتين", "x2"),
+         "note": {"ar": "لا تخلطيه مع الريتينول في نفس الليلة.", "en": "Avoid same night as retinol."}},
         {"step_id": "moisturizer", "name": {"ar": "المرطّب", "en": "Moisturizer"}, "color": "#5aa3a0",
-         "icon": "💧", "slot": "both", "frequency": "daily"},
+         "icon": icon_imgs[4], "slot": _dd("صباحًا ومساءً", "both"), "frequency": _dd("يوميًا", "daily"),
+         "note": {"ar": "احبسي الترطيب بعد السيروم.", "en": "Seal hydration after serums."}},
         {"step_id": "sunscreen", "name": {"ar": "واقي الشمس", "en": "Sunscreen"}, "color": "#e6b422",
-         "icon": "☀️", "slot": "am", "frequency": "daily"},
+         "icon": icon_imgs[5], "slot": _dd("صباحًا", "am"), "frequency": _dd("يوميًا", "daily"),
+         "note": {"ar": "آخر خطوة صباحية — أعيدي التطبيق عند الحاجة.", "en": "Last AM step — reapply as needed."}},
     ]
     return component(
         "beauty-weekly-planner", "مخطّط الروتين الأسبوعي", "sicon-calendar",
@@ -1984,21 +2254,19 @@ _TECHNICAL_TEXT_LEAVES = {
 def polish_bundle_content(components):
     """Keep rich defaults and normalize multilanguage shape to ``{"en","ar"}``.
 
-    Unlike emptying defaults, this preserves complete sample experiences so
-    merchants preview real interactions in the editor and demo.
+    Preserves complete sample experiences (texts + images) so merchants preview
+    real interactions in the editor and demo.
     """
 
     def normalize_locale_obj(value):
         if not isinstance(value, dict):
             return value
-        # Multilang leaf: only ar/en (and maybe empty keys)
         keys = set(value.keys())
         if keys and keys <= {"ar", "en", "fr"}:
             return {
                 "en": str(value.get("en") or ""),
                 "ar": str(value.get("ar") or ""),
             }
-        # Nested structures (collection rows, dropdown selected, etc.)
         return {k: walk(v) for k, v in value.items()}
 
     def walk(node):
@@ -2020,7 +2288,10 @@ def polish_bundle_content(components):
         if not isinstance(field, dict):
             return
         if field.get("format") == "image" and not field.get("value"):
-            field["value"] = component_image or media_pool[component_index % len(media_pool)]
+            # Tiny optional icons (30×30) stay empty — do not inject Unsplash fills.
+            desc = str(field.get("description") or "")
+            if "30×30" not in desc and "30x30" not in desc.lower():
+                field["value"] = component_image or media_pool[component_index % len(media_pool)]
         if field.get("multilanguage") and isinstance(field.get("value"), dict):
             field["value"] = {
                 "en": str(field["value"].get("en") or ""),
@@ -2035,6 +2306,9 @@ def polish_bundle_content(components):
                     continue
                 for nested in nested_fields:
                     if nested.get("format") != "image":
+                        continue
+                    nested_desc = str(nested.get("description") or "")
+                    if "30×30" in nested_desc or "30x30" in nested_desc.lower():
                         continue
                     leaf = str(nested.get("id") or "").rsplit(".", 1)[-1]
                     if row.get(leaf):
@@ -2051,7 +2325,6 @@ def polish_bundle_content(components):
     for component_index, comp in enumerate(components):
         title = comp.get("title")
         if isinstance(title, dict):
-            # Component title is Arabic-only in this kit.
             comp["title"] = str(title.get("ar") or title.get("en") or "").strip()
         elif title is not None:
             comp["title"] = str(title).strip()
@@ -2069,8 +2342,8 @@ def main():
         "en": "Cosmetics & Care Storefront Elements",
     }
     bundle["description"] = {
-        "ar": "عناصر تفاعلية لمتاجر مستحضرات التجميل والعناية: محدد الدرجات، منشئ الروتين، مختبر المكونات، مساعد الاختيار والمزيد.",
-        "en": "Interactive elements for cosmetics & beauty-care stores: shade finder, routine builder, ingredient lab, care assistant and more.",
+        "ar": "عناصر واجهة تفاعلية لمتاجر التجميل والعناية — أدوات اختيار، روتينات، ومقارنات تساعد المتسوق على الشراء بثقة.",
+        "en": "Interactive storefront elements for beauty and care shops — finders, routines, and comparisons that guide shoppers to purchase with confidence.",
     }
     bundle["components"] = build_components()
     prepend_editor_controls(bundle["components"])

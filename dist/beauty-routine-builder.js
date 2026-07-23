@@ -132,15 +132,6 @@ function getUnitValue(val, fallback = 0) {
   return typeof val == "number" && Number.isFinite(val) ? val : typeof val == "string" && val.trim() !== "" && Number.isFinite(Number(val)) ? Number(val) : val && typeof val == "object" && "value" in val ? getUnitValue(val.value, fallback) : fallback;
 }
 __name(getUnitValue, "getUnitValue");
-function toNumber(val, fallback = 0) {
-  if (typeof val == "number" && Number.isFinite(val)) return val;
-  if (typeof val == "string" && val.trim() !== "") {
-    const n = Number(val.replace(",", "."));
-    return Number.isFinite(n) ? n : fallback;
-  }
-  return fallback;
-}
-__name(toNumber, "toNumber");
 function isTruthy(val, fallback = !1) {
   if (typeof val == "boolean") return val;
   if (typeof val == "string") {
@@ -1516,7 +1507,7 @@ function parseSteps(raw) {
       id: `step-${index}`,
       step_name: name,
       step_desc: localizedString(row.step_desc),
-      order: toNumber(row.order, index + 1),
+      order: index + 1,
       level: readMatch(row, "level") || "quick",
       skin: readMatch(row, "skin"),
       concern: readMatch(row, "concern"),
@@ -1537,9 +1528,34 @@ function buildRoutine(steps, answers) {
   return steps.filter((step) => {
     const levelOk = (LEVEL_RANK[step.level] ?? 1) <= maxRank, skinOk = !answers.skin || !step.skin || step.skin === answers.skin, concernOk = !answers.concern || !step.concern || step.concern === answers.concern, timeOk = timeMatches(step.time, answers.time);
     return levelOk && skinOk && concernOk && timeOk;
-  }).sort((a, b) => a.order - b.order);
+  });
 }
 __name(buildRoutine, "buildRoutine");
+function bindSallaRegistration(ctor) {
+  ctor.registerSallaComponent = /* @__PURE__ */ __name(function(tagName) {
+    if (typeof window > "u") return;
+    const attempt = /* @__PURE__ */ __name(() => {
+      var _a, _b;
+      const bundles = (_a = window.Salla) == null ? void 0 : _a.bundles;
+      if (bundles != null && bundles.registerComponent) {
+        if ((_b = bundles.isRegistered) != null && _b.call(bundles, tagName)) return !0;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        return bundles.registerComponent(tagName, {
+          component: this,
+          dynamicTagName
+        }), !0;
+      }
+      const host = HTMLElement;
+      return typeof host.registerSallaComponent == "function" ? (host.registerSallaComponent.call(this, tagName), !0) : !1;
+    }, "attempt");
+    if (attempt()) return;
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1, (attempt() || ticks > 200) && window.clearInterval(timer);
+    }, 50);
+  }, "registerSallaComponent");
+}
+__name(bindSallaRegistration, "bindSallaRegistration");
 const _BeautyRoutineBuilder = class _BeautyRoutineBuilder extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.answers = {}, this.steps = [], this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate(), this.boundKeyHandler = (event) => this.onKeyDown(event);
@@ -1731,6 +1747,7 @@ __decorateClass([
 __decorateClass([
   state()
 ], BeautyRoutineBuilder.prototype, "stepIndex");
+bindSallaRegistration(BeautyRoutineBuilder);
 typeof BeautyRoutineBuilder < "u" && BeautyRoutineBuilder.registerSallaComponent("salla-beauty-routine-builder");
 export {
   BeautyRoutineBuilder as default

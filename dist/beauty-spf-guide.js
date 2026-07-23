@@ -1550,7 +1550,33 @@ function stepLabel(key, config) {
   return key === "phototype" ? localizedString(config.bsg_phototype_label) || t("نوع البشرة", "Skin phototype") : key === "spf" ? localizedString(config.bsg_spf_label) || t("عامل الحماية SPF", "SPF value") : localizedString(config.bsg_condition_label) || t("ظروف التعرّض", "Exposure condition");
 }
 __name(stepLabel, "stepLabel");
-const METER_CAP_MINUTES = 480, _BeautySpfGuide = class _BeautySpfGuide extends LitElement {
+const METER_CAP_MINUTES = 480;
+function bindSallaRegistration(ctor) {
+  ctor.registerSallaComponent = /* @__PURE__ */ __name(function(tagName) {
+    if (typeof window > "u") return;
+    const attempt = /* @__PURE__ */ __name(() => {
+      var _a, _b;
+      const bundles = (_a = window.Salla) == null ? void 0 : _a.bundles;
+      if (bundles != null && bundles.registerComponent) {
+        if ((_b = bundles.isRegistered) != null && _b.call(bundles, tagName)) return !0;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        return bundles.registerComponent(tagName, {
+          component: this,
+          dynamicTagName
+        }), !0;
+      }
+      const host = HTMLElement;
+      return typeof host.registerSallaComponent == "function" ? (host.registerSallaComponent.call(this, tagName), !0) : !1;
+    }, "attempt");
+    if (attempt()) return;
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1, (attempt() || ticks > 200) && window.clearInterval(timer);
+    }, 50);
+  }, "registerSallaComponent");
+}
+__name(bindSallaRegistration, "bindSallaRegistration");
+const _BeautySpfGuide = class _BeautySpfGuide extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.selectedPtId = "", this.selectedSpf = 0, this.selectedCondId = "", this.stepIndex = 0, this.boundLangHandler = () => this.requestUpdate(), this.boundKeyHandler = (event) => this.onKeyDown(event);
   }
@@ -1845,6 +1871,7 @@ __decorateClass([
 __decorateClass([
   state()
 ], BeautySpfGuide.prototype, "stepIndex");
+bindSallaRegistration(BeautySpfGuide);
 typeof BeautySpfGuide < "u" && BeautySpfGuide.registerSallaComponent("salla-beauty-spf-guide");
 export {
   BeautySpfGuide as default

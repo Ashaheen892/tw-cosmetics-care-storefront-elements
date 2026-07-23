@@ -1890,6 +1890,57 @@ function resolveLayout(raw: unknown): 'slider' | 'grid' {
 /* ---- inlined: components/beauty-categories/index.ts ---- */
 const AUTOPLAY_MS = 3500;
 
+function bindSallaRegistration(
+  ctor: CustomElementConstructor & { registerSallaComponent?: (tagName: string) => void }
+): void {
+  ctor.registerSallaComponent = function registerSallaComponent(tagName: string): void {
+    if (typeof window === 'undefined') return;
+    const attempt = (): boolean => {
+      const bundles = (
+        window as Window & {
+          Salla?: {
+            bundles?: {
+              registerComponent: (
+                tag: string,
+                meta: { component: CustomElementConstructor; dynamicTagName: string }
+              ) => void;
+              isRegistered?: (tag: string) => boolean;
+            };
+          };
+        }
+      ).Salla?.bundles;
+
+      if (bundles?.registerComponent) {
+        if (bundles.isRegistered?.(tagName)) return true;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        bundles.registerComponent(tagName, {
+          component: this as CustomElementConstructor,
+          dynamicTagName,
+        });
+        return true;
+      }
+
+      const host = HTMLElement as typeof HTMLElement & {
+        registerSallaComponent?: (this: CustomElementConstructor, tag: string) => void;
+      };
+      if (typeof host.registerSallaComponent === 'function') {
+        host.registerSallaComponent.call(this as CustomElementConstructor, tagName);
+        return true;
+      }
+
+      return false;
+    };
+
+    if (attempt()) return;
+
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1;
+      if (attempt() || ticks > 200) window.clearInterval(timer);
+    }, 50);
+  };
+}
+
 export default class BeautyCategories extends LitElement {
   @property({ type: Object })
   config: Record<string, unknown> = {};
@@ -2104,3 +2155,4 @@ export default class BeautyCategories extends LitElement {
   }
 }
 
+bindSallaRegistration(BeautyCategories as unknown as CustomElementConstructor & { registerSallaComponent?: (tagName: string) => void });

@@ -1980,6 +1980,31 @@ function periodLabel(period, locale) {
   }[period][locale === "en" ? 1 : 0];
 }
 __name(periodLabel, "periodLabel");
+function bindSallaRegistration(ctor) {
+  ctor.registerSallaComponent = /* @__PURE__ */ __name(function(tagName) {
+    if (typeof window > "u") return;
+    const attempt = /* @__PURE__ */ __name(() => {
+      var _a, _b;
+      const bundles = (_a = window.Salla) == null ? void 0 : _a.bundles;
+      if (bundles != null && bundles.registerComponent) {
+        if ((_b = bundles.isRegistered) != null && _b.call(bundles, tagName)) return !0;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        return bundles.registerComponent(tagName, {
+          component: this,
+          dynamicTagName
+        }), !0;
+      }
+      const host = HTMLElement;
+      return typeof host.registerSallaComponent == "function" ? (host.registerSallaComponent.call(this, tagName), !0) : !1;
+    }, "attempt");
+    if (attempt()) return;
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1, (attempt() || ticks > 200) && window.clearInterval(timer);
+    }, 50);
+  }, "registerSallaComponent");
+}
+__name(bindSallaRegistration, "bindSallaRegistration");
 const _BeautyRoutineLayeringBoard = class _BeautyRoutineLayeringBoard extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.routineId = "", this.expandedId = "", this.order = [], this.orderKey = "", this.checked = !1, this.revealed = !1, this.draggingId = "", this.overId = "", this.announce = "", this.boundLangHandler = () => this.requestUpdate();
@@ -2308,6 +2333,7 @@ __decorateClass([
 __decorateClass([
   state()
 ], BeautyRoutineLayeringBoard.prototype, "announce");
+bindSallaRegistration(BeautyRoutineLayeringBoard);
 typeof BeautyRoutineLayeringBoard < "u" && BeautyRoutineLayeringBoard.registerSallaComponent("salla-beauty-routine-layering-board");
 export {
   BeautyRoutineLayeringBoard as default

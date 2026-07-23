@@ -1864,6 +1864,31 @@ function usedFinishes(lights) {
   return FINISHES.filter((f) => seen.has(f));
 }
 __name(usedFinishes, "usedFinishes");
+function bindSallaRegistration(ctor) {
+  ctor.registerSallaComponent = /* @__PURE__ */ __name(function(tagName) {
+    if (typeof window > "u") return;
+    const attempt = /* @__PURE__ */ __name(() => {
+      var _a, _b;
+      const bundles = (_a = window.Salla) == null ? void 0 : _a.bundles;
+      if (bundles != null && bundles.registerComponent) {
+        if ((_b = bundles.isRegistered) != null && _b.call(bundles, tagName)) return !0;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        return bundles.registerComponent(tagName, {
+          component: this,
+          dynamicTagName
+        }), !0;
+      }
+      const host = HTMLElement;
+      return typeof host.registerSallaComponent == "function" ? (host.registerSallaComponent.call(this, tagName), !0) : !1;
+    }, "attempt");
+    if (attempt()) return;
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1, (attempt() || ticks > 200) && window.clearInterval(timer);
+    }, 50);
+  }, "registerSallaComponent");
+}
+__name(bindSallaRegistration, "bindSallaRegistration");
 const _BeautyLightingFinishSimulator = class _BeautyLightingFinishSimulator extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.selId = "", this.selName = "", this.selFinish = "", this.cmpA = "", this.cmpB = "", this.sliderPos = 50, this.sliderDragging = !1, this.compareOn = null, this.boundLangHandler = () => this.requestUpdate(), this.onSliderMove = (e) => {
@@ -2187,6 +2212,7 @@ __decorateClass([
 __decorateClass([
   state()
 ], BeautyLightingFinishSimulator.prototype, "compareOn");
+bindSallaRegistration(BeautyLightingFinishSimulator);
 typeof BeautyLightingFinishSimulator < "u" && BeautyLightingFinishSimulator.registerSallaComponent("salla-beauty-lighting-finish-simulator");
 export {
   BeautyLightingFinishSimulator as default

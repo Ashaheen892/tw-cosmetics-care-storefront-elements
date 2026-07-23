@@ -1809,7 +1809,33 @@ function buildIcs(title, date) {
 `);
 }
 __name(buildIcs, "buildIcs");
-const STORAGE_KEY = "tw-beauty-pao-records", _BeautyPaoExpiryCalculator = class _BeautyPaoExpiryCalculator extends LitElement {
+const STORAGE_KEY = "tw-beauty-pao-records";
+function bindSallaRegistration(ctor) {
+  ctor.registerSallaComponent = /* @__PURE__ */ __name(function(tagName) {
+    if (typeof window > "u") return;
+    const attempt = /* @__PURE__ */ __name(() => {
+      var _a, _b;
+      const bundles = (_a = window.Salla) == null ? void 0 : _a.bundles;
+      if (bundles != null && bundles.registerComponent) {
+        if ((_b = bundles.isRegistered) != null && _b.call(bundles, tagName)) return !0;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        return bundles.registerComponent(tagName, {
+          component: this,
+          dynamicTagName
+        }), !0;
+      }
+      const host = HTMLElement;
+      return typeof host.registerSallaComponent == "function" ? (host.registerSallaComponent.call(this, tagName), !0) : !1;
+    }, "attempt");
+    if (attempt()) return;
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1, (attempt() || ticks > 200) && window.clearInterval(timer);
+    }, 50);
+  }, "registerSallaComponent");
+}
+__name(bindSallaRegistration, "bindSallaRegistration");
+const _BeautyPaoExpiryCalculator = class _BeautyPaoExpiryCalculator extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.catId = "", this.pao = 0, this.openDate = "", this.recName = "", this.note = "", this.records = [], this.editingId = "", this.boundLangHandler = () => this.requestUpdate();
   }
@@ -2147,6 +2173,7 @@ __decorateClass([
 __decorateClass([
   state()
 ], BeautyPaoExpiryCalculator.prototype, "editingId");
+bindSallaRegistration(BeautyPaoExpiryCalculator);
 typeof BeautyPaoExpiryCalculator < "u" && BeautyPaoExpiryCalculator.registerSallaComponent("salla-beauty-pao-expiry-calculator");
 export {
   BeautyPaoExpiryCalculator as default

@@ -1536,7 +1536,33 @@ function resolveLayout(raw) {
   return getRadioValue(raw, "slider").toLowerCase().trim() === "grid" ? "grid" : "slider";
 }
 __name(resolveLayout, "resolveLayout");
-const AUTOPLAY_MS = 3500, _BeautyCategories = class _BeautyCategories extends LitElement {
+const AUTOPLAY_MS = 3500;
+function bindSallaRegistration(ctor) {
+  ctor.registerSallaComponent = /* @__PURE__ */ __name(function(tagName) {
+    if (typeof window > "u") return;
+    const attempt = /* @__PURE__ */ __name(() => {
+      var _a, _b;
+      const bundles = (_a = window.Salla) == null ? void 0 : _a.bundles;
+      if (bundles != null && bundles.registerComponent) {
+        if ((_b = bundles.isRegistered) != null && _b.call(bundles, tagName)) return !0;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        return bundles.registerComponent(tagName, {
+          component: this,
+          dynamicTagName
+        }), !0;
+      }
+      const host = HTMLElement;
+      return typeof host.registerSallaComponent == "function" ? (host.registerSallaComponent.call(this, tagName), !0) : !1;
+    }, "attempt");
+    if (attempt()) return;
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1, (attempt() || ticks > 200) && window.clearInterval(timer);
+    }, 50);
+  }, "registerSallaComponent");
+}
+__name(bindSallaRegistration, "bindSallaRegistration");
+const _BeautyCategories = class _BeautyCategories extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.swiperReady = !1, this.boundLangHandler = () => {
       this.requestUpdate(), queueMicrotask(() => this.remountSwiper());
@@ -1696,6 +1722,7 @@ __decorateClass([
 __decorateClass([
   state()
 ], BeautyCategories.prototype, "swiperReady");
+bindSallaRegistration(BeautyCategories);
 typeof BeautyCategories < "u" && BeautyCategories.registerSallaComponent("salla-beauty-categories");
 export {
   BeautyCategories as default

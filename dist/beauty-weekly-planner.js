@@ -1,6 +1,6 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: !0 });
-import { css, LitElement, nothing, html } from "lit";
+import { css, LitElement, html, nothing } from "lit";
 import { property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { styleMap } from "lit/directives/style-map.js";
@@ -142,6 +142,16 @@ function isTruthy(val, fallback = !1) {
   return typeof val == "number" ? val !== 0 : fallback;
 }
 __name(isTruthy, "isTruthy");
+function isDirectMediaUrl(url) {
+  if (!url || typeof url != "string") return !1;
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return !!["http:", "https:"].includes(parsed.protocol);
+  } catch {
+    return !1;
+  }
+}
+__name(isDirectMediaUrl, "isDirectMediaUrl");
 function t(ar, en, value, fallbackAr) {
   return getPageLocale() === "en" ? en : fallbackAr || ar;
 }
@@ -231,6 +241,29 @@ function getRadioValue(value, fallback = "") {
   return fallback;
 }
 __name(getRadioValue, "getRadioValue");
+function extractImageUrl(val) {
+  if (!val) return "";
+  if (typeof val == "string") {
+    const trimmed = val.trim();
+    return isDirectMediaUrl(trimmed) || trimmed.startsWith("/") ? trimmed : "";
+  }
+  if (Array.isArray(val)) {
+    for (const item of val) {
+      const url = extractImageUrl(item);
+      if (url) return url;
+    }
+    return "";
+  }
+  if (typeof val == "object") {
+    const obj = val, candidates = [obj.url, obj.src, obj.image, obj.thumbnail, obj.original];
+    for (const candidate of candidates) {
+      const url = extractImageUrl(candidate);
+      if (url) return url;
+    }
+  }
+  return "";
+}
+__name(extractImageUrl, "extractImageUrl");
 const sharedSectionCss = css`
   :host {
     direction: inherit;
@@ -1247,6 +1280,25 @@ const sharedSectionCss = css`
     line-height: 1;
   }
 
+  .bwp-chip__icon-img {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    margin-top: 0;
+    object-fit: contain;
+    border-radius: 6px;
+    display: block;
+  }
+
+  .bwp-legend__icon-img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-inline-end: 0.35rem;
+  }
+
   .bwp-chip__name {
     min-width: 0;
     flex: 1 1 auto;
@@ -1451,12 +1503,12 @@ function resolveSlot(raw) {
 __name(resolveSlot, "resolveSlot");
 function parseSteps(raw) {
   return normalizeCollection(raw).map((s, i) => {
-    const name = localizedString(s.name);
+    const name = localizedString(s.name), iconUrl = extractImageUrl(s.icon ?? s.image), iconRaw = String(s.icon ?? "").trim();
     return {
       id: String(s.id ?? s.step_id ?? "").trim() || `step-${i + 1}`,
       name,
       color: String(s.color ?? "").trim(),
-      icon: String(s.icon ?? "").trim(),
+      icon: iconUrl || iconRaw,
       slot: resolveSlot(s.slot),
       frequency: resolveFrequency(s.frequency),
       note: localizedString(s.note)
@@ -1489,10 +1541,18 @@ function weekdayNames(startDay) {
   });
 }
 __name(weekdayNames, "weekdayNames");
-function emptyDayLabel() {
-  return t("راحة", "Rest");
+function isIconImageUrl(value) {
+  return value ? /^https?:\/\//i.test(value) || value.startsWith("/") || value.startsWith("data:image/") ? !0 : /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(value) : !1;
 }
-__name(emptyDayLabel, "emptyDayLabel");
+__name(isIconImageUrl, "isIconImageUrl");
+function renderStepIcon(icon, imgClass, textClass = "") {
+  if (!icon) return nothing;
+  if (isIconImageUrl(icon))
+    return html`<img class=${imgClass} src=${icon} alt="" width="30" height="30" loading="lazy" />`;
+  const isSicon = icon.startsWith("sicon-"), cls = [textClass, isSicon ? icon : ""].filter(Boolean).join(" ");
+  return html`<span class=${cls}>${isSicon ? "" : icon}</span>`;
+}
+__name(renderStepIcon, "renderStepIcon");
 function frequencyLabel(freq) {
   switch (freq) {
     case "daily":
@@ -1523,6 +1583,31 @@ function buildSchedule(steps, _startDay, view) {
   return schedule;
 }
 __name(buildSchedule, "buildSchedule");
+function bindSallaRegistration(ctor) {
+  ctor.registerSallaComponent = /* @__PURE__ */ __name(function(tagName) {
+    if (typeof window > "u") return;
+    const attempt = /* @__PURE__ */ __name(() => {
+      var _a, _b;
+      const bundles = (_a = window.Salla) == null ? void 0 : _a.bundles;
+      if (bundles != null && bundles.registerComponent) {
+        if ((_b = bundles.isRegistered) != null && _b.call(bundles, tagName)) return !0;
+        const dynamicTagName = `${tagName}-${Math.random().toString(36).slice(2, 8)}`;
+        return bundles.registerComponent(tagName, {
+          component: this,
+          dynamicTagName
+        }), !0;
+      }
+      const host = HTMLElement;
+      return typeof host.registerSallaComponent == "function" ? (host.registerSallaComponent.call(this, tagName), !0) : !1;
+    }, "attempt");
+    if (attempt()) return;
+    let ticks = 0;
+    const timer = window.setInterval(() => {
+      ticks += 1, (attempt() || ticks > 200) && window.clearInterval(timer);
+    }, 50);
+  }, "registerSallaComponent");
+}
+__name(bindSallaRegistration, "bindSallaRegistration");
 const _BeautyWeeklyPlanner = class _BeautyWeeklyPlanner extends LitElement {
   constructor() {
     super(...arguments), this.config = {}, this.view = "week", this.viewSynced = !1, this.boundLangHandler = () => this.requestUpdate();
@@ -1547,14 +1632,13 @@ const _BeautyWeeklyPlanner = class _BeautyWeeklyPlanner extends LitElement {
     this.view = view;
   }
   renderChip(step) {
-    const isSicon = step.icon.startsWith("sicon-");
     return html`
       <span
         class="bwp-chip"
         style=${styleMap(step.color ? { "--chip-color": step.color } : {})}
       >
         <span class="bwp-chip__dot"></span>
-        ${step.icon ? html`<span class="bwp-chip__icon ${isSicon ? step.icon : ""}">${isSicon ? "" : step.icon}</span>` : nothing}
+        ${renderStepIcon(step.icon, "bwp-chip__icon-img", "bwp-chip__icon")}
         <span class="bwp-chip__name" title=${step.name}>${step.name}</span>
       </span>
     `;
@@ -1653,7 +1737,7 @@ const _BeautyWeeklyPlanner = class _BeautyWeeklyPlanner extends LitElement {
 
           ${showLegend ? html`<div class="bwp-legend">
                 ${steps.map((step) => {
-      const isSicon = step.icon.startsWith("sicon-"), slotText = step.slot === "am" ? amLabel : step.slot === "pm" ? pmLabel : bothLabel;
+      const slotText = step.slot === "am" ? amLabel : step.slot === "pm" ? pmLabel : bothLabel;
       return html`
                     <div
                       class="bwp-legend__item"
@@ -1662,7 +1746,7 @@ const _BeautyWeeklyPlanner = class _BeautyWeeklyPlanner extends LitElement {
                       <span class="bwp-legend__swatch"></span>
                       <span class="bwp-legend__text">
                         <span class="bwp-legend__name">
-                          ${step.icon ? html`<span class="${isSicon ? step.icon : ""}">${isSicon ? "" : step.icon}</span>` : nothing}
+                          ${renderStepIcon(step.icon, "bwp-legend__icon-img")}
                           ${step.name}
                         </span>
                         <span class="bwp-legend__freq">
@@ -1689,6 +1773,7 @@ __decorateClass([
 __decorateClass([
   state()
 ], BeautyWeeklyPlanner.prototype, "view");
+bindSallaRegistration(BeautyWeeklyPlanner);
 typeof BeautyWeeklyPlanner < "u" && BeautyWeeklyPlanner.registerSallaComponent("salla-beauty-weekly-planner");
 export {
   BeautyWeeklyPlanner as default
